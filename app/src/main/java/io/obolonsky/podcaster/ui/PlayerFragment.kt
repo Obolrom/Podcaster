@@ -2,12 +2,12 @@ package io.obolonsky.podcaster.ui
 
 import android.content.Context
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.exoplayer2.*
@@ -16,6 +16,8 @@ import io.obolonsky.podcaster.viewmodels.PlayerViewModel
 import io.obolonsky.podcaster.appComponent
 import io.obolonsky.podcaster.databinding.FragmentPlayerBinding
 import io.obolonsky.podcaster.di.AppViewModelFactory
+import io.obolonsky.podcaster.misc.getMegaBytes
+import io.obolonsky.podcaster.misc.orZero
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -35,9 +37,16 @@ class PlayerFragment : Fragment() {
 
     private lateinit var file: Uri
 
+    private var lastPosition: Long = 0L
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         context.appComponent.inject(this)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        savedInstanceState?.getLong(KEY_CURRENT_PLAY_POSITION)?.let { lastPosition = it }
     }
 
     override fun onCreateView(
@@ -56,10 +65,28 @@ class PlayerFragment : Fragment() {
         if (player == null) initPlayer()
 
         val files = context?.assets?.list("media")
-        file = Uri.parse("asset:///media/${files?.getOrNull(0)!!}")
+        file = "asset:///media/${files?.firstOrNull()}".toUri()
+        val fuckIt = context?.assets?.open("media/${files?.firstOrNull()}")
+        Toast.makeText(
+            requireContext(),
+            fuckIt?.getMegaBytes(),
+            Toast.LENGTH_SHORT
+        ).show()
+
+        binding.startButton.setOnClickListener {
+            if (player?.isPlaying == true) pausePlay()
+            else startPlay()
+        }
+
+        binding.rewind.setOnClickListener {
+            player?.apply { seekTo(currentPosition - 15000) }
+        }
+
+        binding.forward.setOnClickListener {
+            player?.apply { seekTo(currentPosition + 15000) }
+        }
 
         initMP3File(file)
-        startPlay()
     }
 
     override fun onDestroy() {
@@ -101,11 +128,22 @@ class PlayerFragment : Fragment() {
 
     private fun startPlay() {
         player?.apply {
-            playWhenReady = playWhenReady
-            seekTo(0)
+            seekTo(lastPosition)
             prepare()
             play()
         }
+    }
+
+    private fun pausePlay() {
+        player?.let {
+            it.pause()
+            lastPosition = it.currentPosition
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putLong(KEY_CURRENT_PLAY_POSITION, player?.currentPosition.orZero())
     }
 
     private inner class PlaybackStateListener(): Player.Listener {
@@ -128,5 +166,9 @@ class PlayerFragment : Fragment() {
             }
             Timber.d("changed state to $stateString")
         }
+    }
+
+    companion object {
+        private const val KEY_CURRENT_PLAY_POSITION = "KEY_CURRENT_PLAY_POSITION"
     }
 }

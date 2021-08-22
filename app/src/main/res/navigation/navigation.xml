@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/playerFragment"
-        android:name="io.obolonsky.podcaster.PlayerFragment"
+        android:name="io.obolonsky.podcaster.ui.PlayerFragment"
         android:label="PlayerFragment"
         tools:layout="@layout/fragment_player" />
 

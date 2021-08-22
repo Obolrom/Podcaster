@@ -1,5 +1,6 @@
-package io.obolonsky.podcaster
+package io.obolonsky.podcaster.ui
 
+import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -8,13 +9,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.ui.PlayerView
+import io.obolonsky.podcaster.viewmodels.PlayerViewModel
+import io.obolonsky.podcaster.appComponent
 import io.obolonsky.podcaster.databinding.FragmentPlayerBinding
+import io.obolonsky.podcaster.di.AppViewModelFactory
 import timber.log.Timber
+import javax.inject.Inject
 
 class PlayerFragment : Fragment() {
+
+    @Inject
+    lateinit var appViewModelFactory: AppViewModelFactory
+
+    private val playerViewModel: PlayerViewModel by viewModels { appViewModelFactory }
 
     private var _binding: FragmentPlayerBinding? = null
     private val binding: FragmentPlayerBinding get() = _binding!!
@@ -24,6 +34,11 @@ class PlayerFragment : Fragment() {
     private val playbackStateListener = PlaybackStateListener()
 
     private lateinit var file: Uri
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        context.appComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

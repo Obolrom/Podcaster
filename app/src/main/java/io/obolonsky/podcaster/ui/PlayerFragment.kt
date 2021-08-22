@@ -53,22 +53,13 @@ class PlayerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (player == null) initPlayer()
+
         val files = context?.assets?.list("media")
         file = Uri.parse("asset:///media/${files?.getOrNull(0)!!}")
-    }
 
-    override fun onStart() {
-        super.onStart()
-        if (Build.VERSION.SDK_INT > 23) {
-            initPlayer()
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (Build.VERSION.SDK_INT <= 23 || player == null) {
-            initPlayer()
-        }
+        initMP3File(file)
+        startPlay()
     }
 
     override fun onDestroy() {
@@ -98,8 +89,6 @@ class PlayerFragment : Fragment() {
 
         binding.videoPlayer.player = player
         player?.addListener(playbackStateListener)
-        initMP3File(file)
-        startPlay()
     }
 
     private fun releasePlayer() {

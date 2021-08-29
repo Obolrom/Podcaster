@@ -4,5 +4,6 @@ import dagger.Module
 
 @Module(includes = [
     WebServiceModule::class,
+    PlayerModule::class,
 ])
 class CoreModule

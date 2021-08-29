@@ -32,9 +32,6 @@ class PlayerFragment : Fragment() {
 
     private val playerViewModel: PlayerViewModel by viewModels { appViewModelFactory }
 
-    @Inject
-    lateinit var player: MusicPlayer
-
     private var _binding: FragmentPlayerBinding? = null
     private val binding: FragmentPlayerBinding get() = _binding!!
 
@@ -56,19 +53,19 @@ class PlayerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.videoPlayer.player = player.getPlayer()
+        binding.videoPlayer.player = playerViewModel.player.getPlayer()
 
         binding.startButton.setOnClickListener {
-            if (player.isPlaying) pausePlay()
+            if (playerViewModel.player.isPlaying) pausePlay()
             else startPlay()
         }
 
         binding.rewind.setOnClickListener {
-            player.apply { seekTo(currentPosition - 15000) }
+            playerViewModel.player.rewind(15000)
         }
 
         binding.forward.setOnClickListener {
-            player.apply { seekTo(currentPosition + 15000) }
+            playerViewModel.player.forward(15000)
         }
 
         executeApiQuery()
@@ -81,7 +78,7 @@ class PlayerFragment : Fragment() {
                     val playlist = response.body()
                     playlist?.mediaItems?.getOrNull(0)?.let {
                         initMP3File(it.mediaUrl.toUri()).let { item ->
-                            player.apply {
+                            playerViewModel.player.apply {
                                 setMediaItem(item)
                                 resume()
                             }
@@ -96,7 +93,7 @@ class PlayerFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        player.release()
+        playerViewModel.player.release()
     }
 
     private fun initMP3File(uri: Uri): MediaItem {
@@ -107,10 +104,10 @@ class PlayerFragment : Fragment() {
     }
 
     private fun startPlay() {
-        player.resume()
+        playerViewModel.player.resume()
     }
 
     private fun pausePlay() {
-        player.pause()
+        playerViewModel.player.pause()
     }
 }

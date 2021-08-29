@@ -10,24 +10,15 @@ import javax.inject.Singleton
 
 @Singleton
 class MusicPlayer @Inject constructor(
+    private val player: SimpleExoPlayer,
     private val context: Context,
 ): ExoPlayerController {
-
-    private var player: ExoPlayer
 
     private val playbackStateListener = PlaybackStateListener()
 
     private var lastPosition: Long = 0L
 
     init {
-        val trackSelector = DefaultTrackSelector(context)
-        trackSelector.setParameters(
-            trackSelector.buildUponParameters())
-        player = SimpleExoPlayer.Builder(context)
-            .setTrackSelector(trackSelector)
-            .setLoadControl(DefaultLoadControl())
-            .build()
-
         player.addListener(playbackStateListener)
     }
 

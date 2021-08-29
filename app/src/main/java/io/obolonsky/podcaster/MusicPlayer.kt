@@ -5,16 +5,17 @@ import android.widget.Toast
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import timber.log.Timber
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class MusicPlayer(
+@Singleton
+class MusicPlayer @Inject constructor(
     private val context: Context,
 ): ExoPlayerController {
 
     private var player: ExoPlayer
 
     private val playbackStateListener = PlaybackStateListener()
-
-    private var mediaItems: MutableList<MediaItem> = mutableListOf()
 
     private var lastPosition: Long = 0L
 
@@ -30,7 +31,7 @@ class MusicPlayer(
         player.addListener(playbackStateListener)
     }
 
-    private inner class PlaybackStateListener(): Player.Listener {
+    private inner class PlaybackStateListener: Player.Listener {
 
         override fun onPlaybackStateChanged(state: Int) {
             super.onPlaybackStateChanged(state)
@@ -95,8 +96,7 @@ class MusicPlayer(
         }
     }
 
-    override fun addMediaItem(item: MediaItem) {
-        mediaItems.add(item)
+    override fun setMediaItem(item: MediaItem) {
         player.setMediaItem(item)
     }
 

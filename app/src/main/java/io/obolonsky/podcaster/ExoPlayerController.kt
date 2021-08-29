@@ -21,7 +21,7 @@ interface ExoPlayerController {
 
     fun seekTo(position: Long)
 
-    fun addMediaItem(item: MediaItem)
+    fun setMediaItem(item: MediaItem)
 
     fun release()
 

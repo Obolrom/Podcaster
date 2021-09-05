@@ -10,16 +10,11 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.exoplayer2.*
-import io.obolonsky.podcaster.MusicPlayer
-import io.obolonsky.podcaster.api.TestMusicLibraryApi
 import io.obolonsky.podcaster.viewmodels.PlayerViewModel
 import io.obolonsky.podcaster.appComponent
-import io.obolonsky.podcaster.data.responses.MediaResponse
 import io.obolonsky.podcaster.databinding.FragmentPlayerBinding
 import io.obolonsky.podcaster.di.AppViewModelFactory
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.obolonsky.podcaster.viewmodels.SongsViewModel
 import javax.inject.Inject
 
 class PlayerFragment : Fragment() {
@@ -27,8 +22,7 @@ class PlayerFragment : Fragment() {
     @Inject
     lateinit var appViewModelFactory: AppViewModelFactory
 
-    @Inject
-    lateinit var musicLibraryApi: TestMusicLibraryApi
+    private val songsViewModel: SongsViewModel by viewModels { appViewModelFactory }
 
     private val playerViewModel: PlayerViewModel by viewModels { appViewModelFactory }
 
@@ -68,27 +62,17 @@ class PlayerFragment : Fragment() {
             playerViewModel.player.forward(15000)
         }
 
-        executeApiQuery()
-    }
-
-    private fun executeApiQuery() {
-        musicLibraryApi.getMusic().enqueue(object : Callback<MediaResponse> {
-            override fun onResponse(call: Call<MediaResponse>, response: Response<MediaResponse>) {
-                if (response.isSuccessful) {
-                    val playlist = response.body()
-                    playlist?.mediaItems?.getOrNull(0)?.let {
-                        initMP3File(it.mediaUrl.toUri()).let { item ->
-                            playerViewModel.player.apply {
-                                setMediaItem(item)
-                                resume()
-                            }
-                        }
+        songsViewModel.songs.observe(viewLifecycleOwner) { musicItems ->
+            musicItems?.let { playlist ->
+                initMP3File(playlist[0].mediaUrl.toUri()).let { song ->
+                    playerViewModel.player.apply {
+                        setMediaItem(song)
+                        resume()
                     }
                 }
             }
-
-            override fun onFailure(call: Call<MediaResponse>, t: Throwable) {}
-        })
+        }
+        songsViewModel.loadSongs()
     }
 
     override fun onDestroy() {

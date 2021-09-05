@@ -13,15 +13,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.exoplayer2.*
 import io.obolonsky.podcaster.viewmodels.PlayerViewModel
 import io.obolonsky.podcaster.appComponent
-import io.obolonsky.podcaster.data.responses.MusicItem
+import io.obolonsky.podcaster.data.room.Resource
+import io.obolonsky.podcaster.data.room.entities.Song
 import io.obolonsky.podcaster.databinding.FragmentPlayerBinding
 import io.obolonsky.podcaster.di.AppViewModelFactory
 import io.obolonsky.podcaster.ui.adapters.BaseAdapter
-import io.obolonsky.podcaster.ui.adapters.MusicItemAdapter
+import io.obolonsky.podcaster.ui.adapters.SongAdapter
 import io.obolonsky.podcaster.viewmodels.SongsViewModel
 import javax.inject.Inject
 
-class PlayerFragment : Fragment(), BaseAdapter.OnClickItemListener<MusicItem> {
+class PlayerFragment : Fragment(), BaseAdapter.OnClickItemListener<Song> {
 
     @Inject
     lateinit var appViewModelFactory: AppViewModelFactory
@@ -30,7 +31,7 @@ class PlayerFragment : Fragment(), BaseAdapter.OnClickItemListener<MusicItem> {
 
     private val playerViewModel: PlayerViewModel by viewModels { appViewModelFactory }
 
-    private val musicItemsAdapter = MusicItemAdapter()
+    private val musicItemsAdapter = SongAdapter()
 
     private var _binding: FragmentPlayerBinding? = null
     private val binding: FragmentPlayerBinding get() = _binding!!
@@ -75,15 +76,15 @@ class PlayerFragment : Fragment(), BaseAdapter.OnClickItemListener<MusicItem> {
             musicItemsAdapter.onClick = this@PlayerFragment
         }
 
-        songsViewModel.songs.observe(viewLifecycleOwner) {
+        songsViewModel.loadSongs().observe(viewLifecycleOwner) {
             it?.let { items -> onDataLoaded(items) }
         }
         songsViewModel.loadSongs()
     }
 
-    private fun onDataLoaded(musicItems: List<MusicItem>) {
+    private fun onDataLoaded(musicItems: Resource<List<Song>>) {
         musicItemsAdapter.apply {
-            submitList(musicItems)
+            submitList(musicItems.data)
         }
     }
 
@@ -107,7 +108,7 @@ class PlayerFragment : Fragment(), BaseAdapter.OnClickItemListener<MusicItem> {
         playerViewModel.player.pause()
     }
 
-    override fun onItemClick(item: MusicItem) {
+    override fun onItemClick(item: Song) {
         initMP3File(item.mediaUrl.toUri()).let { song ->
             playerViewModel.player.apply {
                 setMediaItem(song)

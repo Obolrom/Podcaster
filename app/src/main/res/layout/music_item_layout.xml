@@ -4,7 +4,7 @@
     <data>
         <variable
             name="music_item"
-            type="io.obolonsky.podcaster.data.responses.MusicItem" />
+            type="io.obolonsky.podcaster.data.room.entities.Song" />
     </data>
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"

@@ -4,15 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import io.obolonsky.podcaster.R
-import io.obolonsky.podcaster.data.responses.MusicItem
+import io.obolonsky.podcaster.data.room.entities.Song
 import io.obolonsky.podcaster.databinding.MusicItemLayoutBinding
 
-class MusicItemAdapter: BaseAdapter<MusicItem>(MusicItemComparator(), R.layout.music_item_layout) {
+class SongAdapter: BaseAdapter<Song>(SongComparator(), R.layout.music_item_layout) {
 
-    inner class MusicItemViewHolder(private val binding: MusicItemLayoutBinding) :
-        BaseAdapter.BaseViewHolder<MusicItem>(binding.root) {
+    inner class SongViewHolder(private val binding: MusicItemLayoutBinding) :
+        BaseAdapter.BaseViewHolder<Song>(binding.root) {
 
-        override fun bind(item: MusicItem) {
+        override fun bind(item: Song) {
             binding.musicItem = item
             binding.executePendingBindings()
 
@@ -22,19 +22,19 @@ class MusicItemAdapter: BaseAdapter<MusicItem>(MusicItemComparator(), R.layout.m
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<MusicItem> {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Song> {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = MusicItemLayoutBinding.inflate(layoutInflater, parent, false)
 
-        return MusicItemViewHolder(binding)
+        return SongViewHolder(binding)
     }
 
-    class MusicItemComparator : DiffUtil.ItemCallback<MusicItem>() {
-        override fun areItemsTheSame(oldItem: MusicItem, newItem: MusicItem): Boolean {
+    class SongComparator : DiffUtil.ItemCallback<Song>() {
+        override fun areItemsTheSame(oldItem: Song, newItem: Song): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: MusicItem, newItem: MusicItem): Boolean {
+        override fun areContentsTheSame(oldItem: Song, newItem: Song): Boolean {
             return oldItem.id== newItem.id
                     && oldItem.title == newItem.title
         }

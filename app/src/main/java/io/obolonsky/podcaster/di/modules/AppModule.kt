@@ -9,4 +9,7 @@ class AppModule(private val application: PodcasterApp) {
 
     @Provides
     fun getContext() = application.applicationContext
+
+    @Provides
+    fun getApp() = application
 }

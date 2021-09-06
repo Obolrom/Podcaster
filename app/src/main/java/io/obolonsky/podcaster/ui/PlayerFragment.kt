@@ -1,31 +1,25 @@
 package io.obolonsky.podcaster.ui
 
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.net.toUri
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.exoplayer2.*
 import io.obolonsky.podcaster.viewmodels.PlayerViewModel
-import io.obolonsky.podcaster.appComponent
 import io.obolonsky.podcaster.data.room.Resource
 import io.obolonsky.podcaster.data.room.entities.Song
 import io.obolonsky.podcaster.databinding.FragmentPlayerBinding
-import io.obolonsky.podcaster.di.AppViewModelFactory
 import io.obolonsky.podcaster.ui.adapters.BaseAdapter
 import io.obolonsky.podcaster.ui.adapters.SongAdapter
 import io.obolonsky.podcaster.viewmodels.SongsViewModel
-import javax.inject.Inject
+import timber.log.Timber
 
-class PlayerFragment : Fragment(), BaseAdapter.OnClickItemListener<Song> {
-
-    @Inject
-    lateinit var appViewModelFactory: AppViewModelFactory
+class PlayerFragment : AbsFragment(), BaseAdapter.OnClickItemListener<Song> {
 
     private val songsViewModel: SongsViewModel by viewModels { appViewModelFactory }
 
@@ -35,11 +29,6 @@ class PlayerFragment : Fragment(), BaseAdapter.OnClickItemListener<Song> {
 
     private var _binding: FragmentPlayerBinding? = null
     private val binding: FragmentPlayerBinding get() = _binding!!
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        context.appComponent.inject(this)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,14 +40,20 @@ class PlayerFragment : Fragment(), BaseAdapter.OnClickItemListener<Song> {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun initViewModels() {
+        songsViewModel.loadSongs().observe(viewLifecycleOwner) {
+            it?.let { items -> onDataLoaded(items) }
+        }
+    }
 
+    override fun initViews(savedInstanceState: Bundle?) {
         binding.videoPlayer.player = playerViewModel.player.getPlayer()
 
         binding.startButton.setOnClickListener {
-            if (playerViewModel.player.isPlaying) pausePlay()
-            else startPlay()
+            if (playerViewModel.player.isPlaying)
+                playerViewModel.player.pause()
+            else
+                playerViewModel.player.resume()
         }
 
         binding.rewind.setOnClickListener {
@@ -68,23 +63,36 @@ class PlayerFragment : Fragment(), BaseAdapter.OnClickItemListener<Song> {
         binding.forward.setOnClickListener {
             playerViewModel.player.forward(15000)
         }
+    }
 
+    private fun onDataLoaded(musicItems: Resource<List<Song>>) {
+        initAdapter()
+
+        musicItemsAdapter.apply {
+            when (musicItems) {
+                is Resource.Loading -> {
+                    Timber.d("fuck loading")
+                }
+                is Resource.Success -> {
+                    submitList(musicItems.data)
+                }
+                is Resource.Error -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "data error",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+    }
+
+    private fun initAdapter() {
         binding.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
             adapter = musicItemsAdapter
             musicItemsAdapter.onClick = this@PlayerFragment
-        }
-
-        songsViewModel.loadSongs().observe(viewLifecycleOwner) {
-            it?.let { items -> onDataLoaded(items) }
-        }
-        songsViewModel.loadSongs()
-    }
-
-    private fun onDataLoaded(musicItems: Resource<List<Song>>) {
-        musicItemsAdapter.apply {
-            submitList(musicItems.data)
         }
     }
 
@@ -98,14 +106,6 @@ class PlayerFragment : Fragment(), BaseAdapter.OnClickItemListener<Song> {
             .setUri(uri)
             .setMediaId("RHCP")
             .build()
-    }
-
-    private fun startPlay() {
-        playerViewModel.player.resume()
-    }
-
-    private fun pausePlay() {
-        playerViewModel.player.pause()
     }
 
     override fun onItemClick(item: Song) {

@@ -3,11 +3,11 @@ package io.obolonsky.podcaster.data.room
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 
-fun <ResultType, RequestType> load(
-    query: () -> Flow<ResultType>,
-    fetch: suspend () -> RequestType,
-    saveFetchResult: suspend (RequestType) -> Unit,
-    shouldFetch: (ResultType) -> Boolean = { true },
+inline fun <ResultType, RequestType> load(
+    crossinline query: () -> Flow<ResultType>,
+    crossinline fetch: suspend () -> RequestType,
+    crossinline saveFetchResult: suspend (RequestType) -> Unit,
+    crossinline shouldFetch: (ResultType) -> Boolean = { true },
 ) = flow {
     val data = query().first()
 

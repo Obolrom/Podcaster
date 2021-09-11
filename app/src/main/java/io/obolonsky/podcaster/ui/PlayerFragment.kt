@@ -77,6 +77,7 @@ class PlayerFragment : AbsFragment(), BaseAdapter.OnClickItemListener<Song> {
                     submitList(musicItems.data)
                 }
                 is Resource.Error -> {
+                    submitList(musicItems.data)
                     Toast.makeText(
                         requireContext(),
                         "data error",

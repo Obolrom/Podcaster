@@ -12,6 +12,7 @@ inline fun <ResultType, RequestType> load(
     val data = query().first()
 
     val flow = if (shouldFetch(data)) {
+        kotlinx.coroutines.delay(5000L)
         emit(Resource.Loading(data))
 
         try {

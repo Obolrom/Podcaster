@@ -41,9 +41,10 @@ class PlayerFragment : AbsFragment(), BaseAdapter.OnClickItemListener<Song> {
     }
 
     override fun initViewModels() {
-        songsViewModel.loadSongs().observe(viewLifecycleOwner) {
+        songsViewModel.songs.observe(viewLifecycleOwner) {
             it?.let { items -> onDataLoaded(items) }
         }
+        songsViewModel.loadSongs()
     }
 
     override fun initViews(savedInstanceState: Bundle?) {

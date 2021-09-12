@@ -2,7 +2,7 @@ package io.obolonsky.podcaster.data.repositories
 
 import androidx.room.withTransaction
 import io.obolonsky.podcaster.api.TestMusicLibraryApi
-import io.obolonsky.podcaster.data.mappers.toSongList
+import io.obolonsky.podcaster.data.mappers.*
 import io.obolonsky.podcaster.data.room.PodcasterDatabase
 import io.obolonsky.podcaster.data.room.daos.SongDao
 import io.obolonsky.podcaster.data.room.load
@@ -24,7 +24,7 @@ class SongsRepository @Inject constructor(
         saveFetchResult = { musicItems ->
             database.withTransaction {
                 songsDao.deleteSongs()
-                songsDao.insertSongs(musicItems.toSongList())
+                songsDao.insertSongs(musicItems.mapList(MusicItemToSongMapper))
             }
         },
         shouldFetch = { shouldFetch }

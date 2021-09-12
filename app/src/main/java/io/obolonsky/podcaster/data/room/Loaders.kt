@@ -10,9 +10,10 @@ inline fun <ResultType, RequestType> load(
     crossinline shouldFetch: (ResultType) -> Boolean = { true },
 ) = flow {
     val data = query().first()
+    // TODO: 12.09.21 is this ok ?
+    query().map { Resource.Success(it) }
 
     val flow = if (shouldFetch(data)) {
-        kotlinx.coroutines.delay(5000L)
         emit(Resource.Loading(data))
 
         try {

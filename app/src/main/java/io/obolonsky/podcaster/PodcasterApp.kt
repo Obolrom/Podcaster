@@ -4,19 +4,20 @@ import android.app.Application
 import android.content.Context
 import androidx.lifecycle.*
 import io.obolonsky.podcaster.di.AppComponent
-import io.obolonsky.podcaster.di.injectors.AppInjector
+import io.obolonsky.podcaster.di.DaggerAppComponent
 import timber.log.Timber
 
 class PodcasterApp : Application(), ViewModelStoreOwner, LifecycleObserver {
 
-    lateinit var appComponent: AppComponent
+    val appComponent: AppComponent by lazy {
+        DaggerAppComponent.builder()
+            .application(this)
+            .context(this)
+            .build()
+    }
 
     override fun onCreate() {
         super.onCreate()
-
-        AppInjector.init(this)
-
-        appComponent = AppInjector.appComponent
 
         initTimber()
 

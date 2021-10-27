@@ -10,14 +10,13 @@ import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.exoplayer2.*
+import io.obolonsky.podcaster.data.misc.handle
 import io.obolonsky.podcaster.viewmodels.PlayerViewModel
-import io.obolonsky.podcaster.data.room.Resource
 import io.obolonsky.podcaster.data.room.entities.Song
 import io.obolonsky.podcaster.databinding.FragmentPlayerBinding
 import io.obolonsky.podcaster.ui.adapters.BaseAdapter
 import io.obolonsky.podcaster.ui.adapters.SongAdapter
 import io.obolonsky.podcaster.viewmodels.SongsViewModel
-import timber.log.Timber
 
 class PlayerFragment : AbsFragment(), BaseAdapter.OnClickItemListener<Song> {
 
@@ -25,7 +24,7 @@ class PlayerFragment : AbsFragment(), BaseAdapter.OnClickItemListener<Song> {
 
     private val playerViewModel: PlayerViewModel by viewModels { appViewModelFactory }
 
-    private val musicItemsAdapter = SongAdapter()
+    private val musicItemsAdapter by lazy(LazyThreadSafetyMode.NONE) { SongAdapter() }
 
     private var _binding: FragmentPlayerBinding? = null
     private val binding: FragmentPlayerBinding get() = _binding!!
@@ -41,9 +40,8 @@ class PlayerFragment : AbsFragment(), BaseAdapter.OnClickItemListener<Song> {
     }
 
     override fun initViewModels() {
-        songsViewModel.loadSongs().observe(viewLifecycleOwner) {
-            it?.let { items -> onDataLoaded(items) }
-        }
+        songsViewModel.songs.handle(this, ::onDataLoaded)
+        songsViewModel.loadSongs()
     }
 
     override fun initViews(savedInstanceState: Bundle?) {
@@ -65,27 +63,10 @@ class PlayerFragment : AbsFragment(), BaseAdapter.OnClickItemListener<Song> {
         }
     }
 
-    private fun onDataLoaded(musicItems: Resource<List<Song>>) {
+    private fun onDataLoaded(musicItems: List<Song>) {
         initAdapter()
 
-        musicItemsAdapter.apply {
-            when (musicItems) {
-                is Resource.Loading -> {
-                    Timber.d("fuck loading")
-                }
-                is Resource.Success -> {
-                    submitList(musicItems.data)
-                }
-                is Resource.Error -> {
-                    submitList(musicItems.data)
-                    Toast.makeText(
-                        requireContext(),
-                        "data error",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        }
+        musicItemsAdapter.submitList(musicItems)
     }
 
     private fun initAdapter() {

@@ -12,16 +12,16 @@ inline fun <ResultType, RequestType> load(
     val data = query().first()
 
     val flow = if (shouldFetch(data)) {
-        emit(Resource.Loading(data))
+        emit(StatefulData.Loading(data))
 
         try {
             saveFetchResult(fetch())
-            query().map { Resource.Success(it) }
+            query().map { StatefulData.Success(it) }
         } catch (error: Throwable) {
-            query().map { Resource.Error(error, it) }
+            query().map { StatefulData.Error(error, it) }
         }
     } else {
-        query().map { Resource.Success(it) }
+        query().map { StatefulData.Success(it) }
     }
 
     emitAll(flow)

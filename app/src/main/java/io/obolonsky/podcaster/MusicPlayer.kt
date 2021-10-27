@@ -3,14 +3,13 @@ package io.obolonsky.podcaster
 import android.content.Context
 import android.widget.Toast
 import com.google.android.exoplayer2.*
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class MusicPlayer @Inject constructor(
-    private val player: SimpleExoPlayer,
+    private val exoPlayer: SimpleExoPlayer,
     private val context: Context,
 ): ExoPlayerController {
 
@@ -19,7 +18,7 @@ class MusicPlayer @Inject constructor(
     private var lastPosition: Long = 0L
 
     init {
-        player.addListener(playbackStateListener)
+        exoPlayer.addListener(playbackStateListener)
     }
 
     private inner class PlaybackStateListener: Player.Listener {
@@ -45,24 +44,24 @@ class MusicPlayer @Inject constructor(
     }
 
     override val currentPosition: Long
-        get() = player.currentPosition
+        get() = exoPlayer.currentPosition
 
     override val isPlaying: Boolean
-        get() = player.isPlaying
+        get() = exoPlayer.isPlaying
 
     override fun getPlayer(): Player {
-        return player
+        return exoPlayer
     }
 
     override fun pause() {
-        player.let {
+        exoPlayer.let {
             it.pause()
             lastPosition = it.currentPosition
         }
     }
 
     override fun resume() {
-        player.apply {
+        exoPlayer.apply {
             seekTo(lastPosition)
             prepare()
             play()
@@ -70,29 +69,29 @@ class MusicPlayer @Inject constructor(
     }
 
     override fun forward(mills: Long) {
-        player.apply {
+        exoPlayer.apply {
             seekTo(currentPosition + mills)
         }
     }
 
     override fun rewind(mills: Long) {
-        player.apply {
+        exoPlayer.apply {
             seekTo(currentPosition - mills)
         }
     }
 
     override fun seekTo(position: Long) {
-        player.apply {
+        exoPlayer.apply {
             seekTo(position)
         }
     }
 
     override fun setMediaItem(item: MediaItem) {
-        player.setMediaItem(item)
+        exoPlayer.setMediaItem(item)
     }
 
     override fun release() {
-        player.apply {
+        exoPlayer.apply {
             removeListener(playbackStateListener)
             release()
         }

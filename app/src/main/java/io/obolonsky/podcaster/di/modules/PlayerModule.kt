@@ -29,7 +29,6 @@ object PlayerModule {
         return DefaultLoadControl()
     }
 
-    @Singleton
     @Provides
     fun provideSimpleExoPlayer(
         context: Context,
@@ -41,4 +40,5 @@ object PlayerModule {
             .setLoadControl(loadControl)
             .build()
     }
+
 }

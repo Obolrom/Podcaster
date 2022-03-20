@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.MediaItem
+import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.data.misc.handle
 import io.obolonsky.podcaster.viewmodels.PlayerViewModel
 import io.obolonsky.podcaster.data.room.entities.Song
@@ -17,8 +17,10 @@ import io.obolonsky.podcaster.databinding.FragmentPlayerBinding
 import io.obolonsky.podcaster.ui.adapters.BaseAdapter
 import io.obolonsky.podcaster.ui.adapters.SongAdapter
 import io.obolonsky.podcaster.viewmodels.SongsViewModel
+import kotlinx.android.synthetic.main.fragment_player.*
 
-class PlayerFragment : AbsFragment(), BaseAdapter.OnClickItemListener<Song> {
+class PlayerFragment : AbsFragment(R.layout.fragment_player),
+    BaseAdapter.OnClickItemListener<Song> {
 
     private val songsViewModel: SongsViewModel by viewModels { appViewModelFactory }
 
@@ -26,39 +28,26 @@ class PlayerFragment : AbsFragment(), BaseAdapter.OnClickItemListener<Song> {
 
     private val musicItemsAdapter by lazy(LazyThreadSafetyMode.NONE) { SongAdapter() }
 
-    private var _binding: FragmentPlayerBinding? = null
-    private val binding: FragmentPlayerBinding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentPlayerBinding.inflate(inflater, container, false)
-
-        return binding.root
-    }
-
     override fun initViewModels() {
         songsViewModel.songs.handle(this, ::onDataLoaded)
         songsViewModel.loadSongs()
     }
 
     override fun initViews(savedInstanceState: Bundle?) {
-        binding.videoPlayer.player = playerViewModel.player.getPlayer()
+        video_player.player = playerViewModel.player.getPlayer()
 
-        binding.startButton.setOnClickListener {
+        start_button.setOnClickListener {
             if (playerViewModel.player.isPlaying)
                 playerViewModel.player.pause()
             else
                 playerViewModel.player.resume()
         }
 
-        binding.rewind.setOnClickListener {
+        rewind.setOnClickListener {
             playerViewModel.player.rewind(15000)
         }
 
-        binding.forward.setOnClickListener {
+        forward.setOnClickListener {
             playerViewModel.player.forward(15000)
         }
     }
@@ -70,7 +59,7 @@ class PlayerFragment : AbsFragment(), BaseAdapter.OnClickItemListener<Song> {
     }
 
     private fun initAdapter() {
-        binding.recyclerView.apply {
+        recycler_view.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
             adapter = musicItemsAdapter

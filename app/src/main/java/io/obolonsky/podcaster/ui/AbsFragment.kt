@@ -3,12 +3,15 @@ package io.obolonsky.podcaster.ui
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import io.obolonsky.podcaster.appComponent
 import io.obolonsky.podcaster.di.AppViewModelFactory
 import javax.inject.Inject
 
-abstract class AbsFragment(): Fragment() {
+abstract class AbsFragment(
+    @LayoutRes layoutId: Int,
+) : Fragment(layoutId) {
 
     @Inject
     protected lateinit var appViewModelFactory: AppViewModelFactory

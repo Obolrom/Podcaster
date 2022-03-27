@@ -16,6 +16,8 @@ class SongsRepository @Inject constructor(
     private val songsDao: SongDao,
 ) {
 
+    suspend fun getItems() = musicLibraryApi.getMusic().mediaItems
+
     fun getMusicItems() = load(
         query = { songsDao.getSongs() },
         fetch = {

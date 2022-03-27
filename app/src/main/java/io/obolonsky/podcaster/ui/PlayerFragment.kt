@@ -2,20 +2,16 @@ package io.obolonsky.podcaster.ui
 
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.exoplayer2.MediaItem
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.data.misc.handle
-import io.obolonsky.podcaster.viewmodels.PlayerViewModel
 import io.obolonsky.podcaster.data.room.entities.Song
-import io.obolonsky.podcaster.databinding.FragmentPlayerBinding
 import io.obolonsky.podcaster.ui.adapters.BaseAdapter
 import io.obolonsky.podcaster.ui.adapters.SongAdapter
+import io.obolonsky.podcaster.viewmodels.PlayerViewModel
 import io.obolonsky.podcaster.viewmodels.SongsViewModel
 import kotlinx.android.synthetic.main.fragment_player.*
 
@@ -30,11 +26,12 @@ class PlayerFragment : AbsFragment(R.layout.fragment_player),
 
     override fun initViewModels() {
         songsViewModel.songs.handle(this, ::onDataLoaded)
-        songsViewModel.loadSongs()
     }
 
     override fun initViews(savedInstanceState: Bundle?) {
         video_player.player = playerViewModel.player.getPlayer()
+
+        initAdapter()
 
         start_button.setOnClickListener {
             if (playerViewModel.player.isPlaying)
@@ -50,11 +47,11 @@ class PlayerFragment : AbsFragment(R.layout.fragment_player),
         forward.setOnClickListener {
             playerViewModel.player.forward(15000)
         }
+
+        songsViewModel.loadSongList()
     }
 
     private fun onDataLoaded(musicItems: List<Song>) {
-        initAdapter()
-
         musicItemsAdapter.submitList(musicItems)
     }
 
@@ -81,10 +78,24 @@ class PlayerFragment : AbsFragment(R.layout.fragment_player),
 
     override fun onItemClick(item: Song) {
         initMP3File(item.mediaUrl.toUri()).let { song ->
-            playerViewModel.player.apply {
-                setMediaItem(song)
-                resume()
-            }
+            songsViewModel.songs.value?.data
+                ?.let {
+                    val new = it.map {
+                        Song(
+                            id = it.id,
+                            title = it.title,
+                            mediaUrl = it.mediaUrl,
+                            isFavorite = it.isFavorite
+                        )
+                    }
+                    new.find { it.id == item.id }
+                        ?.let { it.isFavorite = !it.isFavorite }
+                    songsViewModel.update(new)
+                }
+//            playerViewModel.player.apply {
+//                setMediaItem(song)
+//                resume()
+//            }
         }
     }
 }

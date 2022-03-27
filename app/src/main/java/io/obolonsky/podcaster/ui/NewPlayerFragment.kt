@@ -1,9 +1,11 @@
 package io.obolonsky.podcaster.ui
 
 import android.os.Bundle
+import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.R
 
-class NewPlayerFragment : AbsFragment(R.layout.fragment_new_player) {
+@AndroidEntryPoint
+class NewPlayerFragment : AbsFragment(R.layout.fragment_player_navigation) {
 
     override fun initViewModels() { }
 

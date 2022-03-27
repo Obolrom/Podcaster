@@ -54,6 +54,7 @@ class PlayerFragment : AbsFragment(R.layout.fragment_player),
     }
 
     private fun onDataLoaded(musicItems: List<Song>) {
+
         musicItemsAdapter.submitList(musicItems)
     }
 
@@ -80,24 +81,24 @@ class PlayerFragment : AbsFragment(R.layout.fragment_player),
 
     override fun onItemClick(item: Song) {
         initMP3File(item.mediaUrl.toUri()).let { song ->
-            songsViewModel.songs.value?.data
-                ?.let {
-                    val new = it.map {
-                        Song(
-                            id = it.id,
-                            title = it.title,
-                            mediaUrl = it.mediaUrl,
-                            isFavorite = it.isFavorite
-                        )
-                    }
-                    new.find { it.id == item.id }
-                        ?.let { it.isFavorite = !it.isFavorite }
-                    songsViewModel.update(new)
-                }
-//            playerViewModel.player.apply {
-//                setMediaItem(song)
-//                resume()
-//            }
+//            songsViewModel.songs.value?.data
+//                ?.let {
+//                    val new = it.map {
+//                        Song(
+//                            id = it.id,
+//                            title = it.title,
+//                            mediaUrl = it.mediaUrl,
+//                            isFavorite = it.isFavorite
+//                        )
+//                    }
+//                    new.find { it.id == item.id }
+//                        ?.let { it.isFavorite = !it.isFavorite }
+//                    songsViewModel.update(new)
+//                }
+            playerViewModel.player.apply {
+                setMediaItem(song)
+                resume()
+            }
         }
     }
 }

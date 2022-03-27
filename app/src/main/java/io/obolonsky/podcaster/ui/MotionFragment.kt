@@ -1,10 +1,10 @@
 package io.obolonsky.podcaster.ui
 
 import android.os.Bundle
-import android.view.MotionEvent
+import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.R
-import kotlinx.android.synthetic.main.fragment_motion.*
 
+@AndroidEntryPoint
 class MotionFragment : AbsFragment(R.layout.fragment_motion) {
 
     override fun initViewModels() { }

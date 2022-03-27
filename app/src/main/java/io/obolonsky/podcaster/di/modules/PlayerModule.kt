@@ -6,17 +6,21 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
+@InstallIn(SingletonComponent::class)
 object PlayerModule {
 
     @Singleton
     @Provides
     fun provideDefaultTrackSelector(
-        context: Context
+        @ApplicationContext applicationContext: Context
     ): DefaultTrackSelector {
-        val trackSelector = DefaultTrackSelector(context)
+        val trackSelector = DefaultTrackSelector(applicationContext)
 
         trackSelector.setParameters(trackSelector.buildUponParameters())
 
@@ -31,11 +35,11 @@ object PlayerModule {
 
     @Provides
     fun provideSimpleExoPlayer(
-        context: Context,
+        @ApplicationContext applicationContext: Context,
         trackSelector: DefaultTrackSelector,
         loadControl: DefaultLoadControl,
     ): SimpleExoPlayer {
-        return SimpleExoPlayer.Builder(context)
+        return SimpleExoPlayer.Builder(applicationContext)
             .setTrackSelector(trackSelector)
             .setLoadControl(loadControl)
             .build()

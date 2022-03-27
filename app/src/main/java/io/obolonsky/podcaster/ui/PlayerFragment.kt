@@ -6,6 +6,7 @@ import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.exoplayer2.MediaItem
+import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.data.misc.handle
 import io.obolonsky.podcaster.data.room.entities.Song
@@ -15,12 +16,13 @@ import io.obolonsky.podcaster.viewmodels.PlayerViewModel
 import io.obolonsky.podcaster.viewmodels.SongsViewModel
 import kotlinx.android.synthetic.main.fragment_player.*
 
+@AndroidEntryPoint
 class PlayerFragment : AbsFragment(R.layout.fragment_player),
     BaseAdapter.OnClickItemListener<Song> {
 
-    private val songsViewModel: SongsViewModel by viewModels { appViewModelFactory }
+    private val songsViewModel: SongsViewModel by viewModels()
 
-    private val playerViewModel: PlayerViewModel by viewModels { appViewModelFactory }
+    private val playerViewModel: PlayerViewModel by viewModels()
 
     private val musicItemsAdapter by lazy(LazyThreadSafetyMode.NONE) { SongAdapter() }
 

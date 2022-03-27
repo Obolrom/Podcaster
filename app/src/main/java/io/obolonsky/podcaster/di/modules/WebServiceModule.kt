@@ -2,6 +2,8 @@ package io.obolonsky.podcaster.di.modules
 
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import io.obolonsky.podcaster.BuildConfig
 import io.obolonsky.podcaster.api.TestMusicLibraryApi
 import okhttp3.OkHttpClient
@@ -11,6 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
+@InstallIn(SingletonComponent::class)
 object WebServiceModule {
 
     @Singleton

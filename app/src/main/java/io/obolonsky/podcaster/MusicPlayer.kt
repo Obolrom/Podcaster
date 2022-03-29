@@ -22,7 +22,7 @@ class MusicPlayer @Inject constructor(
         exoPlayer.addListener(playbackStateListener)
     }
 
-    private inner class PlaybackStateListener: Player.Listener {
+    private inner class PlaybackStateListener : Player.Listener {
 
         override fun onPlaybackStateChanged(state: Int) {
             super.onPlaybackStateChanged(state)

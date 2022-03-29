@@ -8,9 +8,10 @@
     tools:context=".ui.PlayerFragment">
 
     <com.google.android.exoplayer2.ui.PlayerView
-        android:id="@+id/video_player"
+        android:id="@+id/exo_player"
         android:layout_width="match_parent"
-        android:layout_height="480dp"
+        android:layout_height="match_parent"
+        app:shutter_background_color="#f4f0e5"
         app:show_timeout="0"
         app:hide_on_touch="false"
         app:surface_type="none"

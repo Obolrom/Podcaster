@@ -1,11 +1,10 @@
 package io.obolonsky.podcaster.ui
 
-import android.net.Uri
 import android.os.Bundle
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.*
 import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.data.misc.handle
@@ -15,6 +14,8 @@ import io.obolonsky.podcaster.ui.adapters.SongAdapter
 import io.obolonsky.podcaster.viewmodels.PlayerViewModel
 import io.obolonsky.podcaster.viewmodels.SongsViewModel
 import kotlinx.android.synthetic.main.fragment_player.*
+import kotlinx.android.synthetic.main.fragment_player_navigation.*
+import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class PlayerFragment : AbsFragment(R.layout.fragment_player),
@@ -26,36 +27,82 @@ class PlayerFragment : AbsFragment(R.layout.fragment_player),
 
     private val musicItemsAdapter by lazy(LazyThreadSafetyMode.NONE) { SongAdapter() }
 
+    private val speedArray by lazy {
+        listOf(
+            1.0f,
+            1.5f,
+            2.0f,
+            0.8f,
+        )
+    }
+
+    private val rewindTime by lazy {
+        resources.getInteger(R.integer.player_rewind_time) * TimeUnit.SECONDS.toMillis(1)
+    }
+
+    private var currentSpeedPosition = 0
+
+    private val List<Float>.next: Float
+        get() {
+            if (currentSpeedPosition == speedArray.size) currentSpeedPosition = 0
+            return this[currentSpeedPosition++]
+        }
+
     override fun initViewModels() {
         songsViewModel.songs.handle(this, ::onDataLoaded)
     }
 
     override fun initViews(savedInstanceState: Bundle?) {
-        video_player.player = playerViewModel.player.getPlayer()
+        exo_player.player = playerViewModel.player.getPlayer()
 
         initAdapter()
 
-        start_button.setOnClickListener {
-            if (playerViewModel.player.isPlaying)
-                playerViewModel.player.pause()
-            else
-                playerViewModel.player.resume()
+        exo_player.player?.addListener(object : Player.Listener {
+            override fun onIsPlayingChanged(isPlaying: Boolean) {
+                val imageResource =
+                    if (isPlaying) R.drawable.ic_round_pause
+                    else R.drawable.ic_round_play_arrow
+                exo_play_pause.setImageResource(imageResource)
+            }
+
+            override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters) {
+                exo_playback_speed.text = "${playbackParameters.speed}X Speed"
+            }
+
+            override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
+                audio_track_title.text = mediaMetadata.title
+            }
+        })
+
+        exo_play_pause.setOnClickListener {
+            playerViewModel.player.apply {
+                if (isPlaying) pause()
+                else resume()
+            }
         }
 
-        rewind.setOnClickListener {
-            playerViewModel.player.rewind(15000)
+        exo_forward.setOnClickListener {
+            playerViewModel.player.forward(rewindTime)
         }
 
-        forward.setOnClickListener {
-            playerViewModel.player.forward(15000)
+        exo_rewind.setOnClickListener {
+            playerViewModel.player.rewind(rewindTime)
+        }
+
+        exo_playback_speed.setOnClickListener {
+            playerViewModel.player
+                .getPlayer()
+                .playbackParameters = PlaybackParameters(speedArray.next)
         }
 
         songsViewModel.loadSongList()
     }
 
     private fun onDataLoaded(musicItems: List<Song>) {
-
         musicItemsAdapter.submitList(musicItems)
+        playerViewModel.player.getPlayer()
+            .setMediaItems(musicItems.map(::initMP3File), 0, 0)
+            .also { playerViewModel.resume() }
     }
 
     private fun initAdapter() {
@@ -72,31 +119,25 @@ class PlayerFragment : AbsFragment(R.layout.fragment_player),
         playerViewModel.player.release()
     }
 
-    private fun initMP3File(uri: Uri): MediaItem {
+    private fun initMP3File(song: Song): MediaItem {
         return MediaItem.Builder()
-            .setUri(uri)
+            .setUri(song.mediaUrl.toUri())
             .setMediaId("RHCP")
+            .setMediaMetadata(
+                MediaMetadata.Builder()
+                    .build()
+            )
             .build()
     }
 
     override fun onItemClick(item: Song) {
-        initMP3File(item.mediaUrl.toUri()).let { song ->
-//            songsViewModel.songs.value?.data
-//                ?.let {
-//                    val new = it.map {
-//                        Song(
-//                            id = it.id,
-//                            title = it.title,
-//                            mediaUrl = it.mediaUrl,
-//                            isFavorite = it.isFavorite
-//                        )
-//                    }
-//                    new.find { it.id == item.id }
-//                        ?.let { it.isFavorite = !it.isFavorite }
-//                    songsViewModel.update(new)
-//                }
+        play(item)
+    }
+
+    private fun play(song: Song) {
+        initMP3File(song).let {
             playerViewModel.player.apply {
-                setMediaItem(song)
+                setMediaItem(it)
                 resume()
             }
         }

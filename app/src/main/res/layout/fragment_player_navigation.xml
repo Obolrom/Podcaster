@@ -1,19 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/audio_track_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/big_margin"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        app:layout_constraintBottom_toTopOf="@+id/exo_progress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Otherside" />
 
     <com.google.android.exoplayer2.ui.DefaultTimeBar
         android:id="@+id/exo_progress"
         android:layout_width="0dp"
-        android:layout_height="4dp"
+        android:layout_height="6dp"
+        android:layout_marginHorizontal="@dimen/big_margin"
         app:bar_height="4dp"
-        app:buffered_color="@color/black"
-        app:played_color="#ccff00"
+        app:buffered_color="@color/gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:played_color="@color/blue"
+        app:unplayed_color="@color/black_10"
+        tools:background="@color/black" />
+
+    <TextView
+        android:id="@+id/exo_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/normal_margin"
+        android:layout_marginTop="@dimen/small_margin"
+        app:layout_constraintTop_toBottomOf="@+id/exo_progress"
+        app:layout_constraintStart_toStartOf="@+id/exo_progress"
+        tools:text="01:07" />
+
+    <TextView
+        android:id="@+id/exo_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/normal_margin"
+        android:layout_marginTop="@dimen/small_margin"
+        app:layout_constraintTop_toBottomOf="@+id/exo_progress"
+        app:layout_constraintEnd_toEndOf="@+id/exo_progress"
+        tools:text="04:15" />
+
+    <ImageView
+        android:id="@+id/exo_prev"
+        android:layout_width="@dimen/exo_forward_rewind_icon_width"
+        android:layout_height="@dimen/exo_forward_rewind_icon_width"
+        android:contentDescription="@string/image_view_description"
+        android:src="@drawable/ic_round_skip_previous"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/exo_rewind"
+        app:layout_constraintEnd_toStartOf="@+id/exo_rewind"
+        app:layout_constraintTop_toTopOf="@+id/exo_rewind" />
+
+    <ImageView
+        android:id="@+id/exo_rewind"
+        android:layout_width="@dimen/exo_forward_rewind_icon_width"
+        android:layout_height="@dimen/exo_forward_rewind_icon_width"
+        android:layout_marginHorizontal="@dimen/small_margin"
+        android:contentDescription="@string/image_view_description"
+        android:src="@drawable/ic_round_replay_30"
+        app:layout_constraintBottom_toBottomOf="@+id/exo_play_pause"
+        app:layout_constraintStart_toEndOf="@+id/exo_prev"
+        app:layout_constraintEnd_toStartOf="@+id/exo_play_pause"
+        app:layout_constraintTop_toTopOf="@+id/exo_play_pause" />
+
+    <ImageView
+        android:id="@+id/exo_play_pause"
+        android:layout_width="@dimen/exo_play_pause_icon_width"
+        android:layout_height="@dimen/exo_play_pause_icon_width"
+        android:layout_marginHorizontal="@dimen/small_margin"
+        android:contentDescription="@string/image_view_description"
+        android:src="@drawable/ic_round_play_arrow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/exo_rewind"
+        app:layout_constraintEnd_toStartOf="@+id/exo_forward"
+        app:layout_constraintTop_toBottomOf="@+id/exo_progress" />
+
+    <ImageView
+        android:id="@+id/exo_forward"
+        android:layout_width="@dimen/exo_forward_rewind_icon_width"
+        android:layout_height="@dimen/exo_forward_rewind_icon_width"
+        android:layout_marginHorizontal="@dimen/small_margin"
+        android:contentDescription="@string/image_view_description"
+        android:src="@drawable/ic_round_forward_30"
+        app:layout_constraintEnd_toStartOf="@+id/exo_next"
+        app:layout_constraintBottom_toBottomOf="@+id/exo_play_pause"
+        app:layout_constraintStart_toEndOf="@+id/exo_play_pause"
+        app:layout_constraintTop_toTopOf="@+id/exo_play_pause" />
+
+    <ImageView
+        android:id="@+id/exo_next"
+        android:layout_width="@dimen/exo_forward_rewind_icon_width"
+        android:layout_height="@dimen/exo_forward_rewind_icon_width"
+        android:contentDescription="@string/image_view_description"
+        android:src="@drawable/ic_round_skip_next"
+        app:layout_constraintBottom_toBottomOf="@+id/exo_forward"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/exo_forward"
+        app:layout_constraintTop_toTopOf="@+id/exo_forward" />
+
+    <TextView
+        android:id="@+id/exo_playback_speed"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:background="@drawable/round_background"
+        android:layout_marginBottom="16dp"
+        android:padding="@dimen/normal_margin"
+        android:gravity="center"
+        android:text="Speed"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

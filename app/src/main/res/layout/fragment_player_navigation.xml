@@ -125,6 +125,7 @@
         android:layout_marginHorizontal="@dimen/small_margin"
         android:contentDescription="@string/image_view_description"
         android:src="@drawable/ic_round_play_arrow"
+        app:layout_constraintVertical_bias="0.6"
         app:layout_constraintBottom_toTopOf="@id/exo_playback_speed"
         app:layout_constraintStart_toEndOf="@+id/exo_rewind"
         app:layout_constraintEnd_toStartOf="@+id/exo_forward"
@@ -153,15 +154,13 @@
         app:layout_constraintStart_toEndOf="@+id/exo_forward"
         app:layout_constraintTop_toTopOf="@+id/exo_forward" />
 
-    <TextView
+    <io.obolonsky.podcaster.ui.widgets.SpeedView
         android:id="@+id/exo_playback_speed"
         android:layout_width="wrap_content"
-        android:layout_height="52dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="28dp"
         android:background="@drawable/round_background"
-        android:layout_marginBottom="16dp"
-        android:padding="@dimen/normal_margin"
-        android:gravity="center"
-        android:text="Speed"
+        app:speed_text="1.0x"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

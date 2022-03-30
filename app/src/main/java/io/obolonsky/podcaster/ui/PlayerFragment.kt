@@ -44,8 +44,9 @@ class PlayerFragment : AbsFragment(R.layout.fragment_player),
 
     private val List<Float>.next: Float
         get() {
+            ++currentSpeedPosition
             if (currentSpeedPosition == speedArray.size) currentSpeedPosition = 0
-            return this[currentSpeedPosition++]
+            return this[currentSpeedPosition]
         }
 
     override fun initViewModels() {
@@ -66,7 +67,7 @@ class PlayerFragment : AbsFragment(R.layout.fragment_player),
             }
 
             override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters) {
-                exo_playback_speed.text = "${playbackParameters.speed}X Speed"
+                exo_playback_speed.setSpeedText("${playbackParameters.speed}X")
             }
 
             override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {

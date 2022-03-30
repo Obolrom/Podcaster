@@ -2,7 +2,7 @@
 <resources>
 
     <declare-styleable name="SpeedView">
-
+        <attr name="speed_text" format="string" />
     </declare-styleable>
     
 </resources>

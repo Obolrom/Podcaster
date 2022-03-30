@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Podcaster</string>
     <string name="image_view_description">image</string>
+    <string name="speed">Speed</string>
 </resources>

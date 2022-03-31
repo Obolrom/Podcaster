@@ -1,9 +1,6 @@
 package io.obolonsky.podcaster
 
-import android.content.Context
-import android.widget.Toast
 import com.google.android.exoplayer2.*
-import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -11,7 +8,6 @@ import javax.inject.Singleton
 @Singleton
 class MusicPlayer @Inject constructor(
     private val exoPlayer: SimpleExoPlayer,
-    @ApplicationContext private val context: Context,
 ): ExoPlayerController {
 
     private val playbackStateListener = PlaybackStateListener()
@@ -28,14 +24,7 @@ class MusicPlayer @Inject constructor(
             super.onPlaybackStateChanged(state)
             val stateString = when (state) {
                 ExoPlayer.STATE_IDLE -> "ExoPlayer.STATE_IDLE      -"
-                ExoPlayer.STATE_BUFFERING -> {
-                    Toast.makeText(
-                        context,
-                        "buffering",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    "ExoPlayer.STATE_BUFFERING -"
-                }
+                ExoPlayer.STATE_BUFFERING -> { "ExoPlayer.STATE_BUFFERING -" }
                 ExoPlayer.STATE_READY -> "ExoPlayer.STATE_READY     -"
                 ExoPlayer.STATE_ENDED -> "ExoPlayer.STATE_ENDED     -"
                 else -> "UNKNOWN_STATE             -"

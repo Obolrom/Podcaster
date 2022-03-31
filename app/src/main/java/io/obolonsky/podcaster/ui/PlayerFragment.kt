@@ -3,7 +3,6 @@ package io.obolonsky.podcaster.ui
 import android.os.Bundle
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.exoplayer2.*
 import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.R
@@ -56,8 +55,6 @@ class PlayerFragment : AbsFragment(R.layout.fragment_player),
     override fun initViews(savedInstanceState: Bundle?) {
         exo_player.player = playerViewModel.player.getPlayer()
 
-        initAdapter()
-
         exo_player.player?.addListener(object : Player.Listener {
             override fun onIsPlayingChanged(isPlaying: Boolean) {
                 val imageResource =
@@ -67,7 +64,7 @@ class PlayerFragment : AbsFragment(R.layout.fragment_player),
             }
 
             override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters) {
-                exo_playback_speed.setSpeedText("${playbackParameters.speed}X")
+                exo_playback_speed.setSpeedText("${playbackParameters.speed}x")
             }
 
             override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
@@ -104,15 +101,6 @@ class PlayerFragment : AbsFragment(R.layout.fragment_player),
         playerViewModel.player.getPlayer()
             .setMediaItems(musicItems.map(::initMP3File), 0, 0)
             .also { playerViewModel.resume() }
-    }
-
-    private fun initAdapter() {
-        recycler_view.apply {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = musicItemsAdapter
-            musicItemsAdapter.onClick = this@PlayerFragment
-        }
     }
 
     override fun onDestroy() {

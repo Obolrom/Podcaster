@@ -2,6 +2,7 @@ package io.obolonsky.podcaster.ui
 
 import android.os.Bundle
 import androidx.core.net.toUri
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import coil.load
 import com.google.android.exoplayer2.MediaItem
@@ -23,7 +24,7 @@ import java.util.concurrent.TimeUnit
 class PlayerFragment : AbsFragment(R.layout.fragment_player),
     BaseAdapter.OnClickItemListener<Song> {
 
-    private val songsViewModel: SongsViewModel by viewModels()
+    private val songsViewModel: SongsViewModel by activityViewModels()
 
     private val musicItemsAdapter by lazy(LazyThreadSafetyMode.NONE) { SongAdapter() }
 

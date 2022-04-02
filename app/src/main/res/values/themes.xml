@@ -4,7 +4,7 @@
     <style name="Base.Theme.MaterialThemeBuilder" parent="Theme.MaterialComponents.NoActionBar">
         <item name="windowNoTitle">true</item>
         <item name="android:windowNoTitle">true</item>
-        <!--    todo export from Startup    <item name="android:fontFamily">@font/product_sans_regular</item>-->
+        <item name="android:fontFamily">@font/product_sans_regular</item>
         <item name="android:splitMotionEvents">false</item>
     </style>
 

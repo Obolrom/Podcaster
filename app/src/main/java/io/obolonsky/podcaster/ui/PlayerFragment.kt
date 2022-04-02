@@ -3,7 +3,10 @@ package io.obolonsky.podcaster.ui
 import android.os.Bundle
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
-import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.MediaMetadata
+import com.google.android.exoplayer2.PlaybackParameters
+import com.google.android.exoplayer2.Player
 import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.data.misc.handle
@@ -111,7 +114,6 @@ class PlayerFragment : AbsFragment(R.layout.fragment_player),
     private fun initMP3File(song: Song): MediaItem {
         return MediaItem.Builder()
             .setUri(song.mediaUrl.toUri())
-            .setMediaId("RHCP")
             .setMediaMetadata(
                 MediaMetadata.Builder()
                     .build()

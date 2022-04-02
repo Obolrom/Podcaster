@@ -1,6 +1,9 @@
 package io.obolonsky.podcaster
 
-import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.SimpleExoPlayer
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton

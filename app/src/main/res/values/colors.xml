@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="pink_red">#E9D5DA</color>
+    <color name="blue_magenta">#827397</color>
+    <color name="blue_magenta_dark">#4D4C7D</color>
+    <color name="blue_magenta_ultra_dark">#363062</color>
+
     <color name="white">#FFFFFF</color>
 
     <color name="blue">#2474FF</color>
@@ -21,6 +26,7 @@
     <color name="top_bar">@color/black_90</color>
     <color name="dark_gray">#1A1A1A</color>
     <color name="gray">#757575</color>
+    <color name="transparent">#00000000</color>
     <color name="black_half_transparent">#7F000000</color>
 
     <color name="dark_blue">#2A9DF4</color>

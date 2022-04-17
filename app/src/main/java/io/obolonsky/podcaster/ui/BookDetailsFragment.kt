@@ -9,9 +9,7 @@ import io.obolonsky.podcaster.data.misc.handle
 import io.obolonsky.podcaster.data.room.entities.Book
 import io.obolonsky.podcaster.viewmodels.SongsViewModel
 import kotlinx.android.synthetic.main.fragment_book_details.*
-import java.math.BigDecimal
-import java.math.RoundingMode
-import kotlin.math.round
+import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class BookDetailsFragment : AbsFragment(R.layout.fragment_book_details) {
@@ -39,5 +37,13 @@ class BookDetailsFragment : AbsFragment(R.layout.fragment_book_details) {
         book_rating_bar.rating = book.rating
 
         book_rating_number.text = String.format("%.1f", book.rating)
+
+        book_rated_by_users.text = getString(R.string.details_rated_by_users, book.auditions)
+
+        book_description.text = book.description
+
+        total_duration.text = (book.totalDuration / TimeUnit.SECONDS.toMillis(60)).toString()
+
+        book_memory_size.text = "15 MB"
     }
 }

@@ -3,6 +3,10 @@
     <string name="image_view_description">image</string>
     <string name="speed">Speed</string>
     <string name="author">Author:</string>
+    <string name="about">About</string>
+
+    <!--  Details  -->
+    <string name="details_rated_by_users">Rated by %d users</string>
     <string name="exo_playback_speed">%1$.1fx</string>
 
     <string name="notification_channel_name">Music Channel</string>

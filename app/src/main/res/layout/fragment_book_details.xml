@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<androidx.core.widget.NestedScrollView-->
-<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:orientation="vertical"-->
-<!--    android:layout_height="match_parent">-->
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/content_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -28,6 +25,7 @@
                 android:id="@+id/book_banner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:scaleType="centerCrop"
                 android:contentDescription="@string/image_view_description"
                 tools:background="@color/blue" />
 
@@ -104,4 +102,66 @@
             app:layout_constraintTop_toTopOf="@+id/book_rating_bar"
             tools:text="4.4" />
 
+        <TextView
+            android:id="@+id/book_rated_by_users"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_margin"
+            android:textAllCaps="false"
+            android:textColor="@color/gray"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            app:layout_constraintStart_toStartOf="@id/book_rating_bar"
+            app:layout_constraintTop_toBottomOf="@+id/book_rating_bar"
+            tools:text="Rated by 228 users" />
+
+        <TextView
+            android:id="@+id/total_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:textAllCaps="false"
+            android:textColor="@color/gray"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            app:layout_constraintStart_toStartOf="@id/book_rated_by_users"
+            app:layout_constraintTop_toBottomOf="@+id/book_rated_by_users"
+            tools:text="16 minutes" />
+
+        <TextView
+            android:id="@+id/book_memory_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:textAllCaps="false"
+            android:textColor="@color/gray"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            app:layout_constraintTop_toTopOf="@+id/total_duration"
+            app:layout_constraintBottom_toBottomOf="@+id/total_duration"
+            app:layout_constraintStart_toEndOf="@+id/total_duration"
+            tools:text="15 MB" />
+
+        <TextView
+            android:id="@+id/about"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/big_margin"
+            android:text="@string/about"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            app:layout_constraintTop_toBottomOf="@+id/total_duration"
+            app:layout_constraintStart_toStartOf="@+id/total_duration" />
+
+        <TextView
+            android:id="@+id/book_description"
+            android:layout_width="360dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:maxLines="5"
+            android:ellipsize="end"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintStart_toStartOf="@id/about"
+            app:layout_constraintTop_toBottomOf="@+id/about"
+            tools:text="Take in on the Otherside, take it on, take it on...Take in on the Otherside, take it on, take it on...Take in on the Otherside, take it on, take it on..." />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

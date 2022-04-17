@@ -94,4 +94,5 @@ dependencies {
 
     // Utilities
     implementation "com.jakewharton.timber:timber:4.7.1"
+    implementation "io.coil-kt:coil:2.0.0-rc03"
 }

@@ -2,6 +2,7 @@ package io.obolonsky.podcaster.data.repositories
 
 import androidx.room.withTransaction
 import io.obolonsky.podcaster.api.TestMusicLibraryApi
+import io.obolonsky.podcaster.data.responses.MusicItem
 import io.obolonsky.podcaster.data.room.PodcasterDatabase
 import io.obolonsky.podcaster.data.room.daos.SongDao
 import io.obolonsky.podcaster.data.room.entities.Song
@@ -16,7 +17,9 @@ class SongsRepository @Inject constructor(
     private val songsDao: SongDao,
 ) {
 
-    suspend fun getItems() = musicLibraryApi.getMusic().mediaItems
+    suspend fun getItems() = /*musicLibraryApi.getMusic().mediaItems*/listOf(
+        MusicItem("Otherside", 1488L, "https://github.com/Obolrom/MusicLibrary/blob/master/rhcp_californication/red-hot-chili-peppers-otherside.mp3?raw=true")
+    )
 
     fun getMusicItems() = load(
         query = { songsDao.getSongs() },

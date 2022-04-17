@@ -3,6 +3,7 @@ package io.obolonsky.podcaster.ui
 import android.os.Bundle
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
+import coil.load
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.MediaMetadata
 import com.google.android.exoplayer2.PlaybackParameters
@@ -72,6 +73,9 @@ class PlayerFragment : AbsFragment(R.layout.fragment_player),
 
             override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
                 audio_track_title.text = mediaMetadata.title
+                audio_image.load("https://upload.wikimedia.org/wikipedia/ru/c/c9/Red_hot_chili_peppers_otherside.jpg") {
+                    crossfade(500)
+                }
             }
         })
 

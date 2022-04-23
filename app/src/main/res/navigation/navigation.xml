@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/playerFragment">
+    app:startDestination="@id/newPlayerFragment">
 
     <fragment
         android:id="@+id/playerFragment"
@@ -16,5 +16,11 @@
         android:name="io.obolonsky.podcaster.ui.MotionFragment"
         android:label="MotionFragment"
         tools:layout="@layout/fragment_motion" />
+
+    <fragment
+        android:id="@+id/newPlayerFragment"
+        android:name="io.obolonsky.podcaster.ui.NewPlayerFragment"
+        android:label="NewPlayerFragment"
+        tools:layout="@layout/fragment_player_navigation" />
 
 </navigation>

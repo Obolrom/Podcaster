@@ -17,9 +17,19 @@ class SongsRepository @Inject constructor(
     private val songsDao: SongDao,
 ) {
 
-    suspend fun getItems() = /*musicLibraryApi.getMusic().mediaItems*/listOf(
+    fun getItems() = /*musicLibraryApi.getMusic().mediaItems*/listOf(
         MusicItem("Otherside", 1488L, "https://github.com/Obolrom/MusicLibrary/blob/master/rhcp_californication/red-hot-chili-peppers-otherside.mp3?raw=true")
     )
+
+    fun getSongs() = getItems().map {
+        Song(
+            id = it.id,
+            title = it.title ?: "no Info",
+            mediaUrl = it.mediaUrl,
+            isFavorite = false,
+            mediaId = "RHCP"
+        )
+    }
 
     fun getMusicItems() = load(
         query = { songsDao.getSongs() },

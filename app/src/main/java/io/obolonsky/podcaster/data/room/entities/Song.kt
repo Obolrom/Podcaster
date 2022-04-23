@@ -12,6 +12,7 @@ data class Song(
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "media_url") val mediaUrl: String,
     @Ignore var isFavorite: Boolean = false,
+    @Ignore var mediaId: String? = null
 ) {
     constructor(
         id: Long,
@@ -21,6 +22,7 @@ data class Song(
         id = id,
         title = title,
         mediaUrl = mediaUrl,
-        isFavorite = false,
+        mediaId = null,
+        isFavorite = false
     )
 }

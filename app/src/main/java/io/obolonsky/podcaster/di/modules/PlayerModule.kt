@@ -6,17 +6,22 @@ import com.google.android.exoplayer2.DefaultLoadControl
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.util.Util
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ServiceScoped
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
+//@InstallIn(ServiceComponent::class)
 class PlayerModule {
 
+//    @ServiceScoped
     @Singleton
     @Provides
     fun provideDefaultTrackSelector(
@@ -31,6 +36,7 @@ class PlayerModule {
         return trackSelector
     }
 
+//    @ServiceScoped
     @Singleton
     @Provides
     fun provideLoadControl(): DefaultLoadControl {
@@ -38,7 +44,8 @@ class PlayerModule {
             .build()
     }
 
-    @Singleton
+//    @ServiceScoped
+
     @Provides
     fun provideAudioAttributes(): AudioAttributes {
         return AudioAttributes.Builder()
@@ -47,6 +54,7 @@ class PlayerModule {
             .build()
     }
 
+//    @ServiceScoped
     @Provides
     fun provideSimpleExoPlayer(
         @ApplicationContext applicationContext: Context,
@@ -60,4 +68,10 @@ class PlayerModule {
             .setLoadControl(loadControl)
             .build()
     }
+
+//    @ServiceScoped
+    @Provides
+    fun provideDataSourceFactory(
+        @ApplicationContext context: Context
+    ) = DefaultDataSourceFactory(context, Util.getUserAgent(context, "Podcaster"))
 }

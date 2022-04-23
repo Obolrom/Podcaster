@@ -14,6 +14,7 @@ import io.obolonsky.podcaster.data.misc.handle
 import io.obolonsky.podcaster.data.room.entities.Song
 import io.obolonsky.podcaster.ui.adapters.BaseAdapter
 import io.obolonsky.podcaster.ui.adapters.SongAdapter
+import io.obolonsky.podcaster.viewmodels.MainViewModel
 import io.obolonsky.podcaster.viewmodels.PlayerViewModel
 import io.obolonsky.podcaster.viewmodels.SongsViewModel
 import kotlinx.android.synthetic.main.fragment_player.*
@@ -27,6 +28,8 @@ class PlayerFragment : AbsFragment(R.layout.fragment_player),
     private val songsViewModel: SongsViewModel by viewModels()
 
     private val playerViewModel: PlayerViewModel by viewModels()
+
+    private val mainViewModel: MainViewModel by viewModels()
 
     private val musicItemsAdapter by lazy(LazyThreadSafetyMode.NONE) { SongAdapter() }
 
@@ -126,7 +129,8 @@ class PlayerFragment : AbsFragment(R.layout.fragment_player),
     }
 
     override fun onItemClick(item: Song) {
-        play(item)
+        mainViewModel.playOrToggleSong(item)
+//        play(item)
     }
 
     private fun play(song: Song) {

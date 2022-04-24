@@ -4,21 +4,22 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.source.MediaSource
+import dagger.hilt.android.scopes.ServiceScoped
 import timber.log.Timber
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+@ServiceScoped
 class MusicPlayer @Inject constructor(
     private val exoPlayer: SimpleExoPlayer,
-): ExoPlayerController {
+) : ExoPlayerController {
 
-    private val playbackStateListener = PlaybackStateListener()
+    private val playerListeners = mutableListOf<Player.Listener>()
 
     private var lastPosition: Long = 0L
 
     init {
-        exoPlayer.addListener(playbackStateListener)
+        exoPlayer.addListener(PlaybackStateListener())
     }
 
     private inner class PlaybackStateListener : Player.Listener {
@@ -44,6 +45,14 @@ class MusicPlayer @Inject constructor(
 
     override fun getPlayer(): Player {
         return exoPlayer
+    }
+
+    override fun addListener(listener: Player.Listener) {
+        exoPlayer.addListener(listener)
+    }
+
+    override fun stop() {
+        exoPlayer.stop()
     }
 
     override fun pause() {
@@ -83,9 +92,13 @@ class MusicPlayer @Inject constructor(
         exoPlayer.setMediaItem(item)
     }
 
-    override fun release() {
+    fun addMediaSource(mediaSource: MediaSource) {
+        exoPlayer.addMediaSource(mediaSource)
+    }
+
+    override fun freeUpResourcesAndRelease() {
         exoPlayer.apply {
-            removeListener(playbackStateListener)
+            playerListeners.forEach(::removeListener)
             release()
         }
     }

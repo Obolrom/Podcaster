@@ -11,6 +11,8 @@ interface ExoPlayerController {
 
     fun getPlayer(): Player
 
+    fun stop()
+
     fun pause()
 
     fun resume()
@@ -23,6 +25,7 @@ interface ExoPlayerController {
 
     fun setMediaItem(item: MediaItem)
 
-    fun release()
+    fun freeUpResourcesAndRelease()
 
+    fun addListener(listener: Player.Listener)
 }

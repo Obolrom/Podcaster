@@ -11,18 +11,15 @@ import com.google.android.exoplayer2.util.Util
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ServiceComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ServiceScoped
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
-//@InstallIn(ServiceComponent::class)
+@InstallIn(ServiceComponent::class)
 class PlayerModule {
 
-//    @ServiceScoped
-    @Singleton
+    @ServiceScoped
     @Provides
     fun provideDefaultTrackSelector(
         @ApplicationContext applicationContext: Context
@@ -36,16 +33,14 @@ class PlayerModule {
         return trackSelector
     }
 
-//    @ServiceScoped
-    @Singleton
+    @ServiceScoped
     @Provides
     fun provideLoadControl(): DefaultLoadControl {
         return DefaultLoadControl.Builder()
             .build()
     }
 
-//    @ServiceScoped
-
+    @ServiceScoped
     @Provides
     fun provideAudioAttributes(): AudioAttributes {
         return AudioAttributes.Builder()
@@ -54,7 +49,7 @@ class PlayerModule {
             .build()
     }
 
-//    @ServiceScoped
+    @ServiceScoped
     @Provides
     fun provideSimpleExoPlayer(
         @ApplicationContext applicationContext: Context,
@@ -69,7 +64,7 @@ class PlayerModule {
             .build()
     }
 
-//    @ServiceScoped
+    @ServiceScoped
     @Provides
     fun provideDataSourceFactory(
         @ApplicationContext context: Context

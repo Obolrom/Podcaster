@@ -27,7 +27,7 @@ class PlayerFragment : AbsFragment(R.layout.fragment_player),
 
     private val songsViewModel: SongsViewModel by viewModels()
 
-    private val playerViewModel: PlayerViewModel by viewModels()
+//    private val playerViewModel: PlayerViewModel by viewModels()
 
     private val mainViewModel: MainViewModel by viewModels()
 
@@ -60,7 +60,7 @@ class PlayerFragment : AbsFragment(R.layout.fragment_player),
     }
 
     override fun initViews(savedInstanceState: Bundle?) {
-        exo_player.player = playerViewModel.player.getPlayer()
+//        exo_player.player = playerViewModel.player.getPlayer()
 
         exo_player.player?.addListener(object : Player.Listener {
             override fun onIsPlayingChanged(isPlaying: Boolean) {
@@ -83,24 +83,24 @@ class PlayerFragment : AbsFragment(R.layout.fragment_player),
         })
 
         exo_play_pause.setOnClickListener {
-            playerViewModel.player.apply {
+           /* playerViewModel.player.apply {
                 if (isPlaying) pause()
                 else resume()
-            }
+            }*/
         }
 
         exo_forward.setOnClickListener {
-            playerViewModel.player.forward(rewindTime)
+//            playerViewModel.player.forward(rewindTime)
         }
 
         exo_rewind.setOnClickListener {
-            playerViewModel.player.rewind(rewindTime)
+//            playerViewModel.player.rewind(rewindTime)
         }
 
         exo_playback_speed.setOnClickListener {
-            playerViewModel.player
-                .getPlayer()
-                .playbackParameters = PlaybackParameters(speedArray.next)
+//            playerViewModel.player
+//                .getPlayer()
+//                .playbackParameters = PlaybackParameters(speedArray.next)
         }
 
         songsViewModel.loadSongList()
@@ -108,14 +108,14 @@ class PlayerFragment : AbsFragment(R.layout.fragment_player),
 
     private fun onDataLoaded(musicItems: List<Song>) {
         musicItemsAdapter.submitList(musicItems)
-        playerViewModel.player.getPlayer()
+        /*playerViewModel.player.getPlayer()
             .setMediaItems(musicItems.map(::initMP3File), 0, 0)
-            .also { playerViewModel.resume() }
+            .also { playerViewModel.resume() }*/
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        playerViewModel.player.release()
+//        playerViewModel.player.release()
     }
 
     private fun initMP3File(song: Song): MediaItem {
@@ -135,10 +135,10 @@ class PlayerFragment : AbsFragment(R.layout.fragment_player),
 
     private fun play(song: Song) {
         initMP3File(song).let {
-            playerViewModel.player.apply {
+            /*playerViewModel.player.apply {
                 setMediaItem(it)
                 resume()
-            }
+            }*/
         }
     }
 }

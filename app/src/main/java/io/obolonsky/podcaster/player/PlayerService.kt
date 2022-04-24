@@ -8,16 +8,13 @@ import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
-import androidx.core.net.toUri
 import androidx.media.MediaBrowserServiceCompat
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.MediaMetadata
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import dagger.hilt.android.AndroidEntryPoint
+import io.obolonsky.podcaster.MusicPlayer
 import io.obolonsky.podcaster.player.Constants.MEDIA_ROOT_ID
 import io.obolonsky.podcaster.player.Constants.NETWORK_ERROR
 import kotlinx.coroutines.*
@@ -30,7 +27,10 @@ class PlayerService : MediaBrowserServiceCompat() {
     lateinit var dataSourceFactory: DefaultDataSourceFactory
 
     @Inject
-    lateinit var exoPlayer: SimpleExoPlayer
+    lateinit var musicPlayer: MusicPlayer
+
+//    @Inject
+//    lateinit var exoPlayer: SimpleExoPlayer
 
     @Inject
     lateinit var musicDataSource: MusicDataSource
@@ -87,13 +87,12 @@ class PlayerService : MediaBrowserServiceCompat() {
         mediaSessionConnector = MediaSessionConnector(mediaSession).apply {
             setPlaybackPreparer(musicPlaybackPreparer)
             setQueueNavigator(MusicQueueNavigator())
-            setPlayer(exoPlayer)
+            setPlayer(musicPlayer.getPlayer())
         }
 
         musicPlayerListener = MusicPlayerListener(this)
-
-        exoPlayer.addListener(musicPlayerListener)
-        notificationManager.showNotification(exoPlayer)
+        musicPlayer.addListener(musicPlayerListener)
+        notificationManager.showNotification(musicPlayer.getPlayer())
     }
 
     override fun onGetRoot(
@@ -140,24 +139,20 @@ class PlayerService : MediaBrowserServiceCompat() {
         playNow: Boolean = true,
     ) {
         val curSongIndex = if(curPlayingSong == null) 0 else songs.indexOf(itemToPlay)
-        exoPlayer.addMediaSource(musicDataSource.asMediaSource(dataSourceFactory))
-        exoPlayer.prepare()
-        exoPlayer.seekTo(curSongIndex, 0L)
-        exoPlayer.play()
+        musicPlayer.addMediaSource(musicDataSource.asMediaSource(dataSourceFactory))
+        musicPlayer.resume()
 //        exoPlayer.playWhenReady = playNow
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
         super.onTaskRemoved(rootIntent)
-        exoPlayer.stop()
+        musicPlayer.stop()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         serviceScope.cancel()
-
-        exoPlayer.removeListener(musicPlayerListener)
-        exoPlayer.release()
+        musicPlayer.freeUpResourcesAndRelease()
     }
 
     private inner class MusicQueueNavigator : TimelineQueueNavigator(mediaSession) {

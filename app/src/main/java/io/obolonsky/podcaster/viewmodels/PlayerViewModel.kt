@@ -46,17 +46,17 @@ class PlayerViewModel @Inject constructor(
     }
 
     init {
-        musicServiceConnection.subscribe(
-            parentId = Constants.MEDIA_ROOT_ID,
-            callback = subscriptionCallback,
-        )
+//        musicServiceConnection.subscribe(
+//            parentId = Constants.MEDIA_ROOT_ID,
+//            callback = subscriptionCallback,
+//        )
     }
 
     override fun onCleared() {
         super.onCleared()
-        musicServiceConnection.unsubscribe(
-            parentId = Constants.MEDIA_ROOT_ID,
-            subscriptionCallback
-        )
+//        musicServiceConnection.unsubscribe(
+//            parentId = Constants.MEDIA_ROOT_ID,
+//            subscriptionCallback
+//        )
     }
 }

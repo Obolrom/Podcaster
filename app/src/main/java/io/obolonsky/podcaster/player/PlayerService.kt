@@ -2,13 +2,16 @@ package io.obolonsky.podcaster.player
 
 import android.app.PendingIntent
 import android.content.Intent
+import android.os.Binder
 import android.os.Build
 import android.os.Bundle
+import android.os.ResultReceiver
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.media.MediaBrowserServiceCompat
+import com.google.android.exoplayer2.ControlDispatcher
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
@@ -29,9 +32,6 @@ class PlayerService : MediaBrowserServiceCompat() {
     @Inject
     lateinit var musicPlayer: MusicPlayer
 
-//    @Inject
-//    lateinit var exoPlayer: SimpleExoPlayer
-
     @Inject
     lateinit var musicDataSource: MusicDataSource
 
@@ -47,6 +47,7 @@ class PlayerService : MediaBrowserServiceCompat() {
     private lateinit var mediaSession: MediaSessionCompat
     private lateinit var mediaSessionConnector: MediaSessionConnector
     private lateinit var musicPlayerListener: Player.Listener
+    private val playerCommandReceiver by lazy { GetPlayerCommandReceiver() }
 
     override fun onCreate() {
         super.onCreate()
@@ -88,6 +89,7 @@ class PlayerService : MediaBrowserServiceCompat() {
             setPlaybackPreparer(musicPlaybackPreparer)
             setQueueNavigator(MusicQueueNavigator())
             setPlayer(musicPlayer.getPlayer())
+            registerCustomCommandReceiver(playerCommandReceiver)
         }
 
         musicPlayerListener = MusicPlayerListener(this)
@@ -109,7 +111,6 @@ class PlayerService : MediaBrowserServiceCompat() {
     ) {
         when(parentId) {
             MEDIA_ROOT_ID -> {
-//                val resultsSent = musicDataSource.whenReady { isInitialized ->
                 val resultsSent = true
                 if (true /*isPlayerInitialized*/) {
                     result.sendResult(musicDataSource.asMediaItems())
@@ -125,8 +126,7 @@ class PlayerService : MediaBrowserServiceCompat() {
                     mediaSession.sendSessionEvent(NETWORK_ERROR, null)
                     result.sendResult(null)
                 }
-//                }
-                if(!resultsSent) {
+                if (!resultsSent) {
                     result.detach()
                 }
             }
@@ -138,10 +138,8 @@ class PlayerService : MediaBrowserServiceCompat() {
         itemToPlay: MediaMetadataCompat?,
         playNow: Boolean = true,
     ) {
-        val curSongIndex = if(curPlayingSong == null) 0 else songs.indexOf(itemToPlay)
         musicPlayer.addMediaSource(musicDataSource.asMediaSource(dataSourceFactory))
         musicPlayer.resume()
-//        exoPlayer.playWhenReady = playNow
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
@@ -152,6 +150,7 @@ class PlayerService : MediaBrowserServiceCompat() {
     override fun onDestroy() {
         super.onDestroy()
         serviceScope.cancel()
+        mediaSessionConnector.unregisterCustomCommandReceiver(playerCommandReceiver)
         musicPlayer.freeUpResourcesAndRelease()
     }
 
@@ -160,13 +159,38 @@ class PlayerService : MediaBrowserServiceCompat() {
             player: Player,
             windowIndex: Int
         ): MediaDescriptionCompat {
-            return musicDataSource.songs[0/*windowIndex*/].description
+            return musicDataSource.songs[windowIndex].description
         }
+    }
+
+    private inner class GetPlayerCommandReceiver: MediaSessionConnector.CommandReceiver {
+        override fun onCommand(
+            player: Player,
+            controlDispatcher: ControlDispatcher,
+            command: String,
+            extras: Bundle?,
+            cb: ResultReceiver?
+        ): Boolean {
+            if (command != GET_PLAYER_COMMAND) {
+                return false
+            }
+
+            val bundle = Bundle()
+            bundle.putBinder(MUSIC_SERVICE_BINDER_KEY, MusicServiceBinder())
+            cb?.send(0, bundle)
+            return true
+        }
+    }
+
+    inner class MusicServiceBinder : Binder() {
+        fun getExoPlayer() = musicPlayer
     }
 
     companion object {
         private const val NOTIFICATION_REQUEST_CODE = 0
         private const val SERVICE_TAG = "PlayerService"
+        const val GET_PLAYER_COMMAND = "getPlayer"
+        const val MUSIC_SERVICE_BINDER_KEY = "MusicServiceBinder"
 
         fun getPendingIntentFlags(): Int {
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

@@ -3,8 +3,11 @@ package io.obolonsky.podcaster.player
 import android.app.PendingIntent
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
+import coil.ImageLoader
+import coil.request.ImageRequest
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import io.obolonsky.podcaster.R
@@ -61,18 +64,15 @@ class MusicNotificationManager(
             player: Player,
             callback: PlayerNotificationManager.BitmapCallback
         ): Bitmap? {
-//            Glide.with(context).asBitmap()
-//                .load(mediaController.metadata.description.iconUri)
-//                .into(object : CustomTarget<Bitmap>() {
-//                    override fun onResourceReady(
-//                        resource: Bitmap,
-//                        transition: Transition<in Bitmap>?
-//                    ) {
-//                        callback.onBitmap(resource)
-//                    }
-//
-//                    override fun onLoadCleared(placeholder: Drawable?) = Unit
-//                })
+            val loader = ImageLoader(context)
+            val req = ImageRequest.Builder(context)
+                .data("https://upload.wikimedia.org/wikipedia/ru/c/c9/Red_hot_chili_peppers_otherside.jpg")
+                .target { result ->
+                    callback.onBitmap((result as BitmapDrawable).bitmap)
+                }
+                .build()
+            loader.enqueue(req)
+
             return null
         }
     }

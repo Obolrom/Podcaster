@@ -58,7 +58,10 @@ class MusicServiceConnection(
     ) : MediaBrowserCompat.ConnectionCallback() {
 
         override fun onConnected() {
-            mediaController = MediaControllerCompat(context, mediaBrowser.sessionToken).apply {
+            mediaController = MediaControllerCompat(
+                context,
+                mediaBrowser.sessionToken
+            ).apply {
                 registerCallback(MediaControllerCallback())
             }
             _isConnected.postValue(Event(StatefulData.Success(true)))

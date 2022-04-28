@@ -1,6 +1,7 @@
 package io.obolonsky.podcaster.data.misc
 
-import io.obolonsky.podcaster.data.responses.BookResponse
+import io.obolonsky.podcaster.data.responses.BookDetailsResponse
+import io.obolonsky.podcaster.data.responses.BookPagingResponse
 import io.obolonsky.podcaster.data.room.entities.Book
 import io.obolonsky.podcaster.data.room.entities.BookAuthor
 import io.obolonsky.podcaster.data.room.entities.Chapter
@@ -11,9 +12,9 @@ interface Mapper<I : Any, O : Any> {
     fun map(input: I): O
 }
 
-object BookMapper : Mapper<BookResponse, Book> {
+object BookMapper : Mapper<BookDetailsResponse, Book> {
 
-    override fun map(input: BookResponse): Book {
+    override fun map(input: BookDetailsResponse): Book {
         return Book(
             id = input.id,
             bookTitle = input.bookTitle,
@@ -31,9 +32,29 @@ object BookMapper : Mapper<BookResponse, Book> {
     }
 }
 
-object BookAuthorMapper : Mapper<BookResponse.BookAuthorResponse, BookAuthor> {
+object BookPagingMapper : Mapper<BookPagingResponse, Book> {
 
-    override fun map(input: BookResponse.BookAuthorResponse): BookAuthor {
+    override fun map(input: BookPagingResponse): Book {
+        return Book(
+            id = input.id,
+            bookTitle = input.title,
+            imageUrl = input.imageUrl,
+            raiting = input.raiting,
+            description = input.description,
+            chapters = emptyList(),
+            category = null,
+            duration = null,
+            bookAuthor = null,
+            voiceOverAuthor = null,
+            auditionsCount = null,
+            lastChapter = null
+        )
+    }
+}
+
+object BookAuthorMapper : Mapper<BookDetailsResponse.BookAuthorResponse, BookAuthor> {
+
+    override fun map(input: BookDetailsResponse.BookAuthorResponse): BookAuthor {
         return BookAuthor(
             id = input.id,
             firstName = input.firstName,
@@ -43,9 +64,9 @@ object BookAuthorMapper : Mapper<BookResponse.BookAuthorResponse, BookAuthor> {
     }
 }
 
-object VoiceOverAuthorMapper : Mapper<BookResponse.VoiceOverAuthorResponse, VoiceOverAuthor> {
+object VoiceOverAuthorMapper : Mapper<BookDetailsResponse.VoiceOverAuthorResponse, VoiceOverAuthor> {
 
-    override fun map(input: BookResponse.VoiceOverAuthorResponse): VoiceOverAuthor {
+    override fun map(input: BookDetailsResponse.VoiceOverAuthorResponse): VoiceOverAuthor {
         return VoiceOverAuthor(
             id = input.id,
             firstName = input.firstName,
@@ -57,9 +78,9 @@ object VoiceOverAuthorMapper : Mapper<BookResponse.VoiceOverAuthorResponse, Voic
     }
 }
 
-object ChapterMapper : Mapper<BookResponse.ChapterResponse, Chapter> {
+object ChapterMapper : Mapper<BookDetailsResponse.ChapterResponse, Chapter> {
 
-    override fun map(input: BookResponse.ChapterResponse): Chapter {
+    override fun map(input: BookDetailsResponse.ChapterResponse): Chapter {
         return Chapter(
             id = input.id,
             bookId = input.bookId,

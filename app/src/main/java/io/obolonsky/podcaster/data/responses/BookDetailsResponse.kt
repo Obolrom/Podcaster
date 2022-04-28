@@ -2,7 +2,7 @@ package io.obolonsky.podcaster.data.responses
 
 import com.google.gson.annotations.SerializedName
 
-data class BookResponse(
+data class BookDetailsResponse(
     @SerializedName("bookId") val id: String,
     @SerializedName("bookTitle") val bookTitle: String,
     @SerializedName("imageUrl") val imageUrl: String,

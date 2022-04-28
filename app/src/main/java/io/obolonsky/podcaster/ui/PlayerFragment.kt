@@ -97,7 +97,6 @@ class PlayerFragment : AbsFragment(R.layout.fragment_player),
 //                .playbackParameters = PlaybackParameters(speedArray.next)
         }
 
-        songsViewModel.loadSongList()
     }
 
     private fun onDataLoaded(musicItems: List<Song>) {

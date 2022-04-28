@@ -2,6 +2,7 @@
     <string name="app_name">Podcaster</string>
     <string name="image_view_description">image</string>
     <string name="speed">Speed</string>
+    <string name="exo_playback_speed">%1$.1fx</string>
 
     <string name="notification_channel_name">Music Channel</string>
     <string name="notification_channel_description">Shows the currently playing music</string>

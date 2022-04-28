@@ -64,12 +64,17 @@ class NewPlayerFragment : AbsFragment(R.layout.fragment_player) {
             }
 
             override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters) {
-                exo_playback_speed?.setSpeedText("${playbackParameters.speed}x")
+                exo_playback_speed?.setSpeedText(
+                    getString(
+                        R.string.exo_playback_speed,
+                        playbackParameters.speed
+                    )
+                )
             }
 
             override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
-                audio_track_title?.text = mediaMetadata.title
-                audio_image?.load("https://upload.wikimedia.org/wikipedia/ru/c/c9/Red_hot_chili_peppers_otherside.jpg") {
+                audio_track_title?.text = mediaMetadata.displayTitle
+                audio_image?.load(mediaMetadata.artworkUri) {
                     crossfade(500)
                 }
             }

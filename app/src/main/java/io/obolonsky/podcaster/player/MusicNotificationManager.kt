@@ -36,6 +36,8 @@ class MusicNotificationManager(
             .setNotificationListener(notificationListener)
             .setSmallIconResourceId(R.drawable.ic_baseline_music_note)
             .build().apply {
+                setColorized(true)
+                setColor(R.color.blue_magenta)
                 setMediaSessionToken(sessionToken)
             }
     }

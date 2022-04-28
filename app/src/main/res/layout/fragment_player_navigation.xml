@@ -59,9 +59,12 @@
 
     <TextView
         android:id="@+id/audio_track_title"
-        android:layout_width="wrap_content"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/normal_margin"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         app:layout_constraintBottom_toTopOf="@+id/exo_progress"
         app:layout_constraintEnd_toEndOf="parent"

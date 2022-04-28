@@ -5,7 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.obolonsky.podcaster.BuildConfig
-import io.obolonsky.podcaster.api.TestMusicLibraryApi
+import io.obolonsky.podcaster.api.BookApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -49,7 +49,7 @@ class WebServiceModule {
         converter: GsonConverterFactory,
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://raw.githubusercontent.com/Obolrom/MusicLibrary/")
+            .baseUrl("http://diploma123-001-site1.ctempurl.com/api/")
             .client(client)
             .addConverterFactory(converter)
             .build()
@@ -57,9 +57,9 @@ class WebServiceModule {
 
     @Singleton
     @Provides
-    fun provideTestLibraryApi(
+    fun provideBookApi(
         retrofit: Retrofit
-    ): TestMusicLibraryApi {
-        return retrofit.create(TestMusicLibraryApi::class.java)
+    ): BookApi {
+        return retrofit.create(BookApi::class.java)
     }
 }

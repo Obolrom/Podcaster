@@ -33,16 +33,4 @@ class SongsViewModel @Inject constructor(
             _songs.postValue(StatefulData.Success(items))
         }
     }
-
-    fun update(songs: List<Song>) {
-        _songs.value = StatefulData.Success(songs)
-    }
-
-    fun loadSongs() {
-        viewModelScope.launch(Dispatchers.IO) {
-            songsRepository.getMusicItems()
-                .collect { _songs.postValue(it) }
-        }
-    }
-
 }

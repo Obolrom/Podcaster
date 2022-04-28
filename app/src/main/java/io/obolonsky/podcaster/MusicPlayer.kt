@@ -1,9 +1,6 @@
 package io.obolonsky.podcaster
 
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.source.MediaSource
 import dagger.hilt.android.scopes.ServiceScoped
 import timber.log.Timber

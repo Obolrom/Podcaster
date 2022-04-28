@@ -11,7 +11,7 @@ import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import io.obolonsky.podcaster.data.repositories.SongsRepository
-import io.obolonsky.podcaster.data.room.entities.Song
+import io.obolonsky.podcaster.data.room.entities.Chapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -21,21 +21,21 @@ class MusicDataSource @Inject constructor(
 ) {
 
     private val _songs = mutableListOf<MediaMetadataCompat>()
-    private val data = mutableListOf<Song>()
+    private val data = mutableListOf<Chapter>()
     val songs: List<MediaMetadataCompat> get() = _songs
 
     suspend fun fetch() = withContext(Dispatchers.IO) {
-        return@withContext songsRepository.getSongs()
+        return@withContext songsRepository.chapters
             .map { song ->
                 data.add(song)
                 MediaMetadataCompat.Builder()
                     .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, "RHCP")
-                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, song.id.toString())
+                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, song.id)
                     .putString(MediaMetadataCompat.METADATA_KEY_TITLE, song.title)
                     .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, song.title)
-                    .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, "no icon")
+                    .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, song.mediaUrl)
                     .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, song.mediaUrl)
-                    .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI, "no icon")
+                    .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI, song.imageUrl)
                     .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, "RHCP")
                     .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION, "no subtitle")
                     .build()
@@ -48,9 +48,13 @@ class MusicDataSource @Inject constructor(
             val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
                 .createMediaSource(
                     MediaItem.Builder()
+                        .setMediaId(song.id)
                         .setUri(song.mediaUrl.toUri())
                         .setMediaMetadata(
                             MediaMetadata.Builder()
+                                .setTitle(song.title)
+                                .setDisplayTitle(song.title)
+                                .setArtworkUri(song.imageUrl.toUri())
                                 .build()
                         )
                         .build()

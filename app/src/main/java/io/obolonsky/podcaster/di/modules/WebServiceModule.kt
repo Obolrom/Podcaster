@@ -1,5 +1,6 @@
 package io.obolonsky.podcaster.di.modules
 
+import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -51,6 +52,7 @@ class WebServiceModule {
         return Retrofit.Builder()
             .baseUrl("http://diploma123-001-site1.ctempurl.com/api/")
             .client(client)
+            .addCallAdapterFactory(NetworkResponseAdapterFactory())
             .addConverterFactory(converter)
             .build()
     }

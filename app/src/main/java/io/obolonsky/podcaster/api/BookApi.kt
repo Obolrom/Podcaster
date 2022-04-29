@@ -1,9 +1,9 @@
 package io.obolonsky.podcaster.api
 
+import com.haroldadmin.cnradapter.NetworkResponse
 import io.obolonsky.podcaster.data.responses.BookDetailsResponse
 import io.obolonsky.podcaster.data.responses.BookPagingResponse
 import io.obolonsky.podcaster.data.responses.BookProgressRequest
-import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -15,16 +15,18 @@ interface BookApi {
     suspend fun getBookDetails(
         @Path(BOOK_ID) bookId: String,
         @Path(PERSON_ID) personId: String,
-    ): Response<BookDetailsResponse>
+    ): NetworkResponse<BookDetailsResponse, Unit>
 
     @GET("bookInfo/books/{$OFFSET}/{$LIMIT}")
     suspend fun getBookRange(
         @Path(OFFSET) offset: Int,
         @Path(LIMIT) limit: Int,
-    ): Response<List<BookPagingResponse>>
+    ): NetworkResponse<List<BookPagingResponse>, Unit>
 
     @POST("bookInfo/book-progress")
-    suspend fun postProgress(@Body bookProgressRequest: BookProgressRequest)
+    suspend fun postProgress(
+        @Body bookProgressRequest: BookProgressRequest,
+    ): NetworkResponse<Unit, Unit>
 }
 
 private const val BOOK_ID = "bookId"

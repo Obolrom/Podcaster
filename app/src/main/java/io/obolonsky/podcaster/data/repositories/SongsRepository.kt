@@ -1,16 +1,17 @@
 package io.obolonsky.podcaster.data.repositories
 
+import com.haroldadmin.cnradapter.NetworkResponse
 import io.obolonsky.podcaster.api.BookApi
 import io.obolonsky.podcaster.data.misc.BookMapper
-import io.obolonsky.podcaster.data.misc.handle
 import io.obolonsky.podcaster.data.responses.BookProgressRequest
-import io.obolonsky.podcaster.data.responses.MusicItem
 import io.obolonsky.podcaster.data.room.PodcasterDatabase
 import io.obolonsky.podcaster.data.room.daos.SongDao
 import io.obolonsky.podcaster.data.room.entities.Chapter
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -28,15 +29,22 @@ class SongsRepository @Inject constructor(
     }
 
     init {
-        CoroutineScope(Dispatchers.IO).launch(exceptionHandler) {
+        CoroutineScope(Dispatchers.IO).launch {
             val response = bookApi.getBookDetails(
                 bookId = "4c652d97-ab4a-4897-85f1-1257a2e59200",
                 personId = "5AFAEC8E-7C32-4008-9762-48C04D73B8C0",
             )
-            chapters.addAll(BookMapper.map(response.handle()).chapters)
+            when (response) {
+                is NetworkResponse.Success -> {
+                    chapters.addAll(BookMapper.map(response.body).chapters)
+                }
 
-            val post = async(exceptionHandler) {
-                bookApi.postProgress(
+                is NetworkResponse.Error -> {
+
+                }
+            }
+
+            val progressResponse = bookApi.postProgress(
                     BookProgressRequest(
                         "3fdd18e1-af5f-44a2-8863-5c283563c0ac",
                         "5AFAEC8E-7C32-4008-9762-48C04D73B8C0",
@@ -44,8 +52,15 @@ class SongsRepository @Inject constructor(
                         20003,
                     )
                 )
+            when (progressResponse) {
+                is NetworkResponse.Success -> {
+                    Timber.d("okHttp $progressResponse")
+                }
+
+                is NetworkResponse.Error -> {
+                    Timber.d("okHttp $progressResponse")
+                }
             }
-            post.await()
 
             bookApi.getBookRange(0, 5)
         }

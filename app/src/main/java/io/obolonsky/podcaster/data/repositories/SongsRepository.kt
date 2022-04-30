@@ -8,6 +8,7 @@ import io.obolonsky.podcaster.api.BookApi
 import io.obolonsky.podcaster.data.misc.BookMapper
 import io.obolonsky.podcaster.data.responses.BookProgressRequest
 import io.obolonsky.podcaster.data.room.PodcasterDatabase
+import io.obolonsky.podcaster.data.room.StatefulData
 import io.obolonsky.podcaster.data.room.daos.SongDao
 import io.obolonsky.podcaster.data.room.entities.Book
 import io.obolonsky.podcaster.data.room.entities.Chapter
@@ -17,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -31,20 +33,6 @@ class SongsRepository @Inject constructor(
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
-            val response = bookApi.getBookDetails(
-                bookId = "4c652d97-ab4a-4897-85f1-1257a2e59200",
-                personId = "5AFAEC8E-7C32-4008-9762-48C04D73B8C0",
-            )
-            when (response) {
-                is NetworkResponse.Success -> {
-                    chapters.addAll(BookMapper.map(response.body).chapters)
-                }
-
-                is NetworkResponse.Error -> {
-
-                }
-            }
-
             val progressResponse = bookApi.postProgress(
                     BookProgressRequest(
                         "3fdd18e1-af5f-44a2-8863-5c283563c0ac",
@@ -62,8 +50,6 @@ class SongsRepository @Inject constructor(
                     Timber.d("okHttp $progressResponse")
                 }
             }
-
-            bookApi.getBookRange(0, 5)
         }
     }
 
@@ -74,5 +60,21 @@ class SongsRepository @Inject constructor(
                 BookPagingSource(bookApi)
             }
         ).flow
+    }
+
+    suspend fun loadBook(id: String): StatefulData<Book> {
+        val response = bookApi.getBookDetails(
+            bookId = id,
+            personId = "5AFAEC8E-7C32-4008-9762-48C04D73B8C0"
+        )
+        return when (response) {
+            is NetworkResponse.Success -> {
+                StatefulData.Success(BookMapper.map(response.body))
+            }
+
+            is NetworkResponse.Error -> {
+                StatefulData.Error(response.error ?: Exception("Unknown error"))
+            }
+        }
     }
 }

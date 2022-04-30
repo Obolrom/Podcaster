@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import io.obolonsky.podcaster.ui.widgets.LoadingDialog
 
 abstract class AbsFragment(
     @LayoutRes layoutId: Int,
@@ -20,4 +21,10 @@ abstract class AbsFragment(
 
     protected abstract fun initViews(savedInstanceState: Bundle?)
 
+    protected fun handleLoading(isLoading: Boolean) {
+        context?.let { context ->
+            if (isLoading) LoadingDialog.showLoadingDialog(context)
+            else LoadingDialog.destroyDialog()
+        }
+    }
 }

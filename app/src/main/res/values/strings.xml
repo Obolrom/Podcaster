@@ -8,6 +8,7 @@
     <!--  Details  -->
     <string name="details_rated_by_users">Rated by %d users</string>
     <string name="exo_playback_speed">%1$.1fx</string>
+    <string name="book_total_duration">minutes: %1$d</string>
 
     <string name="notification_channel_name">Music Channel</string>
     <string name="notification_channel_description">Shows the currently playing music</string>

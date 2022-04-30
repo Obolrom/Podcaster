@@ -13,7 +13,7 @@ data class Book(
     val voiceOverAuthor: VoiceOverAuthor?,
     val raiting: Int,
     val description: String,
-    val auditionsCount: Int?,
+    val auditions: Int?,
     val lastChapter: Chapter?,
     val chapters: List<Chapter> = mutableListOf(),
 ) : Identifiable

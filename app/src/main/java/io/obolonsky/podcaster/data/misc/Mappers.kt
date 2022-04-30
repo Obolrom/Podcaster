@@ -25,7 +25,7 @@ object BookMapper : Mapper<BookDetailsResponse, Book> {
             voiceOverAuthor = VoiceOverAuthorMapper.map(input.voiceOverAuthor),
             raiting = input.raiting,
             description = input.description,
-            auditionsCount = input.auditionsCount,
+            auditions = input.auditionsCount,
             lastChapter = input.lastChapter?.let { ChapterMapper.map(it) },
             chapters = input.chapters.map { ChapterMapper.map(it) }
         )
@@ -46,7 +46,7 @@ object BookPagingMapper : Mapper<BookPagingResponse, Book> {
             duration = null,
             bookAuthor = null,
             voiceOverAuthor = null,
-            auditionsCount = null,
+            auditions = null,
             lastChapter = null
         )
     }

@@ -8,4 +8,8 @@ data class BookAuthor(
     val firstName: String,
     val lastName: String,
     val raiting: Int,
-) : Identifiable
+) : Identifiable {
+
+    val fullName: String
+        get() = "$firstName $lastName"
+}

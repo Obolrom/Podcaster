@@ -1,8 +1,8 @@
 package io.obolonsky.podcaster.player
 
-import android.widget.Toast
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
+import io.obolonsky.podcaster.data.misc.Toaster
 
 class MusicPlayerListener(
     private val musicService: PlayerService,
@@ -15,10 +15,6 @@ class MusicPlayerListener(
     }
 
     override fun onPlayerError(error: PlaybackException) {
-        Toast.makeText(
-            musicService,
-            "An unknown error occured",
-            Toast.LENGTH_LONG
-        ).show()
+        Toaster.showToast(musicService, "An unknown error occurred")
     }
 }

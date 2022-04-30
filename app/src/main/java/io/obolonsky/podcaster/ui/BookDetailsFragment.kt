@@ -1,12 +1,12 @@
 package io.obolonsky.podcaster.ui
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.R
+import io.obolonsky.podcaster.data.misc.Toaster
 import io.obolonsky.podcaster.data.room.StatefulData
 import io.obolonsky.podcaster.data.room.entities.Book
 import io.obolonsky.podcaster.misc.NetworkBroadcastReceiver
@@ -36,11 +36,7 @@ class BookDetailsFragment : AbsFragment(R.layout.fragment_book_details) {
 
                     is StatefulData.Error -> {
                         handleLoading(false)
-                        Toast.makeText(
-                            requireContext(),
-                            "error",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toaster.showToast(requireContext(), "error")
                     }
 
                     is StatefulData.Loading -> {
@@ -94,11 +90,7 @@ class BookDetailsFragment : AbsFragment(R.layout.fragment_book_details) {
         if (isConnected) {
             songsViewModel.loadBook("4c652d97-ab4a-4897-85f1-1257a2e59200")
         } else {
-            Toast.makeText(
-                requireContext(),
-                "Network disconnected",
-                Toast.LENGTH_SHORT
-            ).show()
+            Toaster.showToast(requireContext(), "Network disconnected")
         }
     }
 }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/newPlayerFragment">
+    app:startDestination="@id/bookFeedFragment">
 
     <fragment
         android:id="@+id/playerFragment"
@@ -22,5 +22,11 @@
         android:name="io.obolonsky.podcaster.ui.NewPlayerFragment"
         android:label="NewPlayerFragment"
         tools:layout="@layout/fragment_player_navigation" />
+
+    <fragment
+        android:id="@+id/bookFeedFragment"
+        android:name="io.obolonsky.podcaster.ui.BookFeedFragment"
+        android:label="BookFeedFragment"
+        tools:layout="@layout/fragment_book_feed" />
 
 </navigation>

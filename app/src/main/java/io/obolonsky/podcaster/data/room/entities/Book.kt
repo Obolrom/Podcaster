@@ -5,7 +5,7 @@ import androidx.room.Entity
 @Entity
 data class Book(
     override val id: String,
-    val bookTitle: String,
+    val title: String,
     val imageUrl: String,
     val category: String?,
     val duration: Long?,

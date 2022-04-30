@@ -17,7 +17,7 @@ object BookMapper : Mapper<BookDetailsResponse, Book> {
     override fun map(input: BookDetailsResponse): Book {
         return Book(
             id = input.id,
-            bookTitle = input.bookTitle,
+            title = input.bookTitle,
             imageUrl = input.imageUrl,
             category = input.category,
             duration = input.duration,
@@ -37,7 +37,7 @@ object BookPagingMapper : Mapper<BookPagingResponse, Book> {
     override fun map(input: BookPagingResponse): Book {
         return Book(
             id = input.id,
-            bookTitle = input.title,
+            title = input.title,
             imageUrl = input.imageUrl,
             raiting = input.raiting,
             description = input.description,

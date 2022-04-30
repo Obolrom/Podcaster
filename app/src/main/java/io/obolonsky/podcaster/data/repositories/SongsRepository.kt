@@ -1,15 +1,20 @@
 package io.obolonsky.podcaster.data.repositories
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.haroldadmin.cnradapter.NetworkResponse
 import io.obolonsky.podcaster.api.BookApi
 import io.obolonsky.podcaster.data.misc.BookMapper
 import io.obolonsky.podcaster.data.responses.BookProgressRequest
 import io.obolonsky.podcaster.data.room.PodcasterDatabase
 import io.obolonsky.podcaster.data.room.daos.SongDao
+import io.obolonsky.podcaster.data.room.entities.Book
 import io.obolonsky.podcaster.data.room.entities.Chapter
-import kotlinx.coroutines.CoroutineExceptionHandler
+import io.obolonsky.podcaster.paging.BookPagingSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -23,10 +28,6 @@ class SongsRepository @Inject constructor(
 ) {
 
     val chapters = mutableListOf<Chapter>()
-
-    val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        Timber.d("okHttp error: ${throwable.message}")
-    }
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
@@ -64,5 +65,14 @@ class SongsRepository @Inject constructor(
 
             bookApi.getBookRange(0, 5)
         }
+    }
+
+    fun loadBooks(pagingConfig: PagingConfig): Flow<PagingData<Book>> {
+        return Pager(
+            config = pagingConfig,
+            pagingSourceFactory = {
+                BookPagingSource(bookApi)
+            }
+        ).flow
     }
 }

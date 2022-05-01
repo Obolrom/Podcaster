@@ -21,7 +21,11 @@
         android:id="@+id/bookDetailsFragment"
         android:name="io.obolonsky.podcaster.ui.BookDetailsFragment"
         android:label="BookDetailsFragment"
-        tools:layout="@layout/fragment_book_details" />
+        tools:layout="@layout/fragment_book_details" >
+        <action
+            android:id="@+id/action_bookDetailsFragment_to_newPlayerFragment"
+            app:destination="@id/newPlayerFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/newPlayerFragment"
@@ -36,7 +40,15 @@
         tools:layout="@layout/fragment_book_feed" >
         <action
             android:id="@+id/action_bookFeedFragment_to_bookDetailsFragment"
-            app:destination="@id/bookDetailsFragment" />
+            app:destination="@id/bookDetailsFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
+
+<!--    app:exitAnim="@anim/slide_out_left"-->
+<!--    app:popEnterAnim="@anim/slide_in_left"-->
+<!--    app:popExitAnim="@anim/slide_out_right"-->
 
 </navigation>

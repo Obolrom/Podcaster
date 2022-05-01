@@ -3,6 +3,7 @@ package io.obolonsky.podcaster.ui
 import android.os.Bundle
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.R
@@ -40,7 +41,7 @@ class BookDetailsFragment : AbsFragment(R.layout.fragment_book_details) {
                     }
 
                     is StatefulData.Loading -> {
-                        handleLoading(true)
+//                        handleLoading(true)
                     }
                 }
             }
@@ -49,6 +50,11 @@ class BookDetailsFragment : AbsFragment(R.layout.fragment_book_details) {
 
     override fun initViews(savedInstanceState: Bundle?) {
         songsViewModel.loadBook(getBookId())
+
+        listen.setOnClickListener {
+            findNavController()
+                .navigate(R.id.action_bookDetailsFragment_to_newPlayerFragment)
+        }
     }
 
     private fun onBook(book: Book) {

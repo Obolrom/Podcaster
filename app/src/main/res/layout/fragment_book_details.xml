@@ -140,6 +140,17 @@
             app:layout_constraintStart_toEndOf="@+id/total_duration"
             tools:text="15 MB" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/listen"
+            android:layout_width="360dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/big_margin"
+            android:background="@color/pink_red"
+            android:textAllCaps="false"
+            android:text="@string/listen"
+            app:layout_constraintStart_toStartOf="@+id/total_duration"
+            app:layout_constraintTop_toBottomOf="@+id/total_duration" />
+
         <TextView
             android:id="@+id/about"
             android:layout_width="wrap_content"
@@ -148,8 +159,8 @@
             android:text="@string/about"
             android:textStyle="bold"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-            app:layout_constraintTop_toBottomOf="@+id/total_duration"
-            app:layout_constraintStart_toStartOf="@+id/total_duration" />
+            app:layout_constraintTop_toBottomOf="@+id/listen"
+            app:layout_constraintStart_toStartOf="@+id/listen" />
 
         <TextView
             android:id="@+id/book_description"

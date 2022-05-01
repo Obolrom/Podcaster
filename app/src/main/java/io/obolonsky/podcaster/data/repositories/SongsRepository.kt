@@ -69,7 +69,10 @@ class SongsRepository @Inject constructor(
         )
         return when (response) {
             is NetworkResponse.Success -> {
-                StatefulData.Success(BookMapper.map(response.body))
+                val data = BookMapper.map(response.body)
+                chapters.clear()
+                chapters.addAll(data.chapters)
+                StatefulData.Success(data)
             }
 
             is NetworkResponse.Error -> {

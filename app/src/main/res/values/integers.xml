@@ -2,5 +2,6 @@
 <resources>
 
     <integer name="player_rewind_time">30</integer>
+    <integer name="navigation_animation_duration">300</integer>
 
 </resources>

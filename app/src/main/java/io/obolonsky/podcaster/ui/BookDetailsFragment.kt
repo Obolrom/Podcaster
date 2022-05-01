@@ -48,7 +48,7 @@ class BookDetailsFragment : AbsFragment(R.layout.fragment_book_details) {
     }
 
     override fun initViews(savedInstanceState: Bundle?) {
-        songsViewModel.loadBook("4c652d97-ab4a-4897-85f1-1257a2e59200")
+        songsViewModel.loadBook(getBookId())
     }
 
     private fun onBook(book: Book) {
@@ -86,9 +86,11 @@ class BookDetailsFragment : AbsFragment(R.layout.fragment_book_details) {
         context?.let { networkBroadcastReceiver.unregisterReceiver(it) }
     }
 
+    private fun getBookId() = arguments?.getString("bookId") ?: ""
+
     private fun onNetworkConnectionChanged(isConnected: Boolean) {
         if (isConnected) {
-            songsViewModel.loadBook("4c652d97-ab4a-4897-85f1-1257a2e59200")
+            songsViewModel.loadBook(getBookId())
         } else {
             Toaster.showToast(requireContext(), "Network disconnected")
         }

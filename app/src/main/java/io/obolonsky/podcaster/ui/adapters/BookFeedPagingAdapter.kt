@@ -23,9 +23,14 @@ class BookFeedPagingAdapter(
     },
 ) : PagingDataAdapter<Book, BookViewHolder>(diffUtil) {
 
+    var onClick: (Book) -> Unit = { }
+
     override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
         getItem(position)
-            ?.let { holder.bind(it) }
+            ?.let { book ->
+                holder.bind(book)
+                holder.itemView.setOnClickListener { onClick(book) }
+            }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {

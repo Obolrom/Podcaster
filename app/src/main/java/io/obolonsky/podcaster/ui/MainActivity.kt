@@ -24,6 +24,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         bottom_bar.setupWithNavController(navController)
+        bottom_bar.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.discover_dest -> {
+
+                }
+
+                else -> { }
+            }
+            true
+        }
     }
 
     override fun onStop() {

@@ -2,13 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/search_dest"
-        android:title="@string/search"
-        android:icon="@drawable/ic_round_clear" />
-
-    <item
         android:id="@+id/discover_dest"
         android:title="@string/discover"
-        android:icon="@drawable/ic_round_pause" />
+        android:icon="@drawable/ic_baseline_lightbulb" />
+
+    <item
+        android:id="@+id/search_dest"
+        android:title="@string/search"
+        android:icon="@drawable/ic_round_search" />
+
+    <item
+        android:id="@+id/profile_dest"
+        android:title="@string/profile"
+        android:icon="@drawable/ic_round_profile" />
 
 </menu>

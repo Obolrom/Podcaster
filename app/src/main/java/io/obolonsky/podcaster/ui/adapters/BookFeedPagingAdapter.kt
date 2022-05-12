@@ -2,13 +2,14 @@ package io.obolonsky.podcaster.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.data.room.entities.Book
-import kotlinx.android.synthetic.main.book_item.view.*
 
 class BookFeedPagingAdapter(
     diffUtil: DiffUtil.ItemCallback<Book> = object : DiffUtil.ItemCallback<Book>() {
@@ -47,10 +48,10 @@ class BookViewHolder(
 
     fun bind(item: Book) {
         itemView.apply {
-            banner.load(item.imageUrl) {
+            findViewById<AppCompatImageView>(R.id.banner).load(item.imageUrl) {
                 crossfade(500)
             }
-            title.text = item.title
+            findViewById<TextView>(R.id.title).text = item.title
         }
     }
 }

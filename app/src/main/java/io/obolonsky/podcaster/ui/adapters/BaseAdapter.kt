@@ -5,7 +5,6 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import io.obolonsky.podcaster.data.responses.MusicItem
 
 abstract class BaseAdapter<T>(
     diffCallback: DiffUtil.ItemCallback<T>,

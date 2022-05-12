@@ -6,12 +6,6 @@
     app:startDestination="@id/bookFeedFragment">
 
     <fragment
-        android:id="@+id/playerFragment"
-        android:name="io.obolonsky.podcaster.ui.PlayerFragment"
-        android:label="PlayerFragment"
-        tools:layout="@layout/fragment_player" />
-
-    <fragment
         android:id="@+id/motionFragment"
         android:name="io.obolonsky.podcaster.ui.MotionFragment"
         android:label="MotionFragment"

@@ -3,8 +3,10 @@ package io.obolonsky.podcaster.ui.widgets
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.LinearLayoutCompat
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import io.obolonsky.podcaster.R
-import kotlinx.android.synthetic.main.speed_item_layout.view.*
+import io.obolonsky.podcaster.databinding.SpeedItemLayoutBinding
 
 class SpeedView @JvmOverloads constructor(
     context: Context,
@@ -12,9 +14,9 @@ class SpeedView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : LinearLayoutCompat(context, attrs, defStyleAttr) {
 
-    init {
-        inflate(context, R.layout.speed_item_layout, this)
+    private val binding: SpeedItemLayoutBinding by viewBinding(createMethod = CreateMethod.INFLATE)
 
+    init {
         orientation = HORIZONTAL
         setPadding(24, 16, 24, 16)
 
@@ -26,10 +28,10 @@ class SpeedView @JvmOverloads constructor(
     }
 
     fun setSpeedText(text: String?) {
-        text?.let { speed_text.text = it }
+        text?.let { binding.speedText.text = it }
     }
 
     fun setSpeedText(charSequence: CharSequence?) {
-        charSequence?.let { speed_text.text = it }
+        charSequence?.let { binding.speedText.text = it }
     }
 }

@@ -4,10 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.data.misc.Toaster
-import kotlinx.android.synthetic.main.activity_main.*
+import io.obolonsky.podcaster.databinding.ActivityMainBinding
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -20,11 +21,13 @@ class MainActivity : AppCompatActivity() {
 
     private val navController by lazy { navHostFragment.navController }
 
+    private val binding: ActivityMainBinding by viewBinding()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        bottom_bar.setupWithNavController(navController)
-        bottom_bar.setOnItemSelectedListener {
+        binding.bottomBar.setupWithNavController(navController)
+        binding.bottomBar.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.discover_dest -> {
 

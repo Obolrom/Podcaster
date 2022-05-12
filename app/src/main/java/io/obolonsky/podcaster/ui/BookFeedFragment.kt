@@ -3,17 +3,16 @@ package io.obolonsky.podcaster.ui
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavDirections
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.data.room.entities.Book
+import io.obolonsky.podcaster.databinding.FragmentBookFeedBinding
 import io.obolonsky.podcaster.ui.adapters.BookFeedPagingAdapter
 import io.obolonsky.podcaster.ui.adapters.OffsetItemDecorator
 import io.obolonsky.podcaster.viewmodels.SongsViewModel
-import kotlinx.android.synthetic.main.fragment_book_feed.*
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -21,15 +20,17 @@ class BookFeedFragment : AbsFragment(R.layout.fragment_book_feed) {
 
     private val songsViewModel: SongsViewModel by viewModels()
 
+    private val binding: FragmentBookFeedBinding by viewBinding()
+
     override fun initViewModels() {
         songsViewModel.books.observe(this) {
-            (recycler_feed.adapter as? BookFeedPagingAdapter)
+            (binding.recyclerFeed.adapter as? BookFeedPagingAdapter)
                 ?.apply { submitData(lifecycle, it) }
         }
     }
 
     override fun initViews(savedInstanceState: Bundle?) {
-        recycler_feed.apply {
+        binding.recyclerFeed.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = BookFeedPagingAdapter().apply {
                 onClick = ::onBookClicked

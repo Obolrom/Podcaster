@@ -7,8 +7,6 @@ import android.os.Looper
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
@@ -19,10 +17,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.MusicPlayer
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.databinding.FragmentPlayerBinding
+import io.obolonsky.podcaster.databinding.FragmentPlayerNavigationBinding
 import io.obolonsky.podcaster.player.PlayerService
 import io.obolonsky.podcaster.player.PlayerService.Companion.GET_PLAYER_COMMAND
 import io.obolonsky.podcaster.player.PlayerService.Companion.MUSIC_SERVICE_BINDER_KEY
-import io.obolonsky.podcaster.ui.widgets.SpeedView
 import io.obolonsky.podcaster.viewmodels.PlayerViewModel
 import java.util.concurrent.TimeUnit
 
@@ -33,7 +31,9 @@ class NewPlayerFragment : AbsFragment(R.layout.fragment_player) {
         resources.getInteger(R.integer.player_rewind_time) * TimeUnit.SECONDS.toMillis(1)
     }
 
-    private val binding: FragmentPlayerBinding by viewBinding(/*viewBindingClass = */)
+    private val binding: FragmentPlayerBinding by viewBinding()
+    private val playerNavBinding: FragmentPlayerNavigationBinding by
+        viewBinding(viewBindingRootId = R.id.player_navigation)
 
     private val speedArray by lazy {
         listOf(
@@ -65,31 +65,23 @@ class NewPlayerFragment : AbsFragment(R.layout.fragment_player) {
                 val imageResource =
                     if (isPlaying) R.drawable.ic_round_pause
                     else R.drawable.ic_round_play_arrow
-                binding.exoPlayer
-                    .findViewById<ImageView>(R.id.exo_play_pause)
-                    ?.setImageResource(imageResource)
+                playerNavBinding.exoPlayPause.setImageResource(imageResource)
             }
 
             override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters) {
-                binding.exoPlayer
-                    .findViewById<SpeedView>(R.id.exo_playback_speed)
-                    ?.setSpeedText(
-                        getString(
-                            R.string.exo_playback_speed,
-                            playbackParameters.speed
-                        )
+                playerNavBinding.exoPlaybackSpeed.setSpeedText(
+                    getString(
+                        R.string.exo_playback_speed,
+                        playbackParameters.speed
                     )
+                )
             }
 
             override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
-                binding.exoPlayer
-                    .findViewById<TextView>(R.id.audio_track_title)
-                    ?.text = mediaMetadata.displayTitle
-                binding.exoPlayer
-                    .findViewById<ImageView>(R.id.audio_image)
-                    ?.load(mediaMetadata.artworkUri) {
-                        crossfade(500)
-                    }
+                playerNavBinding.audioTrackTitle.text = mediaMetadata.displayTitle
+                playerNavBinding.audioImage.load(mediaMetadata.artworkUri) {
+                    crossfade(500)
+                }
             }
         }
     }
@@ -123,24 +115,22 @@ class NewPlayerFragment : AbsFragment(R.layout.fragment_player) {
             ResultReceiver(Handler(Looper.getMainLooper()))
         )
 
-        binding.exoPlayer
-            .findViewById<ImageView>(R.id.exo_play_pause)
-            .setOnClickListener {
-                musicPlayer?.apply {
-                    if (isPlaying) pause()
-                    else resume()
-                }
+        playerNavBinding.exoPlayPause.setOnClickListener {
+            musicPlayer?.apply {
+                if (isPlaying) pause()
+                else resume()
             }
+        }
 
-        binding.exoPlayer.findViewById<ImageView>(R.id.exo_forward).setOnClickListener {
+        playerNavBinding.exoForward.setOnClickListener {
             musicPlayer?.forward(rewindTime)
         }
 
-        binding.exoPlayer.findViewById<ImageView>(R.id.exo_rewind).setOnClickListener {
+        playerNavBinding.exoRewind.setOnClickListener {
             musicPlayer?.rewind(rewindTime)
         }
 
-        binding.exoPlayer.findViewById<SpeedView>(R.id.exo_playback_speed).setOnClickListener {
+        playerNavBinding.exoPlaybackSpeed.setOnClickListener {
             musicPlayer
                 ?.getPlayer()
                 ?.playbackParameters = PlaybackParameters(speedArray.next)

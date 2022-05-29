@@ -3,9 +3,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
+        maven {
+            url = java.net.URI.create("https://jitpack.io")
+        }
         jcenter() // Warning: this repository is going to shut down soon
     }
 }
 rootProject.name = "Podcaster"
-include ':app'
+include(":app")

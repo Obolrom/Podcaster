@@ -3,6 +3,7 @@ package io.obolonsky.podcaster.ui
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -13,6 +14,8 @@ import io.obolonsky.podcaster.databinding.FragmentBookFeedBinding
 import io.obolonsky.podcaster.ui.adapters.BookFeedPagingAdapter
 import io.obolonsky.podcaster.ui.adapters.OffsetItemDecorator
 import io.obolonsky.podcaster.viewmodels.SongsViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -23,9 +26,13 @@ class BookFeedFragment : AbsFragment(R.layout.fragment_book_feed) {
     private val binding: FragmentBookFeedBinding by viewBinding()
 
     override fun initViewModels() {
-        songsViewModel.books.observe(this) {
-            (binding.recyclerFeed.adapter as? BookFeedPagingAdapter)
-                ?.apply { submitData(lifecycle, it) }
+        lifecycleScope.launchWhenStarted {
+            songsViewModel.books
+                .onEach {
+                    (binding.recyclerFeed.adapter as? BookFeedPagingAdapter)
+                        ?.apply { submitData(lifecycle, it) }
+                }
+                .collect()
         }
     }
 

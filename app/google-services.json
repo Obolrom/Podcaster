@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "375108400337",
+    "project_id": "podcaster-45a72",
+    "storage_bucket": "podcaster-45a72.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375108400337:android:2d77a5dc0436fee7ee81f0",
+        "android_client_info": {
+          "package_name": "io.obolonsky.podcaster"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "375108400337-91otf7p8h2m946rcahfuc7vcuhf51ql7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDS9VP0MT_xOGTOIRbe-MX6pxPqhUgkD2g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "375108400337-91otf7p8h2m946rcahfuc7vcuhf51ql7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

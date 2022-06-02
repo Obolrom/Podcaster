@@ -1,5 +1,7 @@
 plugins {
     id("com.android.application")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
     id("kotlin-android")
     id("dagger.hilt.android.plugin")
     id("kotlin-kapt")
@@ -73,6 +75,10 @@ dependencies {
 
     // Paging 3
     implementation("androidx.paging:paging-runtime-ktx:3.1.1")
+
+    // Firebase
+    implementation("com.google.firebase:firebase-crashlytics-ktx:18.2.11")
+    implementation("com.google.firebase:firebase-analytics-ktx:21.0.0")
 
     // Room
     implementation(Dependencies.Room.runtime)

@@ -1,13 +1,12 @@
 package io.obolonsky.podcaster.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.R
-import io.obolonsky.podcaster.data.misc.Toaster
 import io.obolonsky.podcaster.databinding.ActivityMainBinding
 
 @AndroidEntryPoint
@@ -37,10 +36,5 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Toaster.clear()
     }
 }

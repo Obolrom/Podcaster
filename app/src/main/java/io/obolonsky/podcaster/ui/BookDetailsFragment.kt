@@ -8,7 +8,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.R
-import io.obolonsky.podcaster.data.misc.Toaster
+import io.obolonsky.podcaster.data.misc.toaster
 import io.obolonsky.podcaster.data.room.StatefulData
 import io.obolonsky.podcaster.data.room.entities.Book
 import io.obolonsky.podcaster.databinding.FragmentBookDetailsBinding
@@ -25,6 +25,8 @@ class BookDetailsFragment : AbsFragment(R.layout.fragment_book_details) {
 
     private val binding: FragmentBookDetailsBinding by viewBinding()
 
+    private val toaster by toaster()
+
     private val networkBroadcastReceiver by lazy {
         NetworkBroadcastReceiver(::onNetworkConnectionChanged)
     }
@@ -40,7 +42,7 @@ class BookDetailsFragment : AbsFragment(R.layout.fragment_book_details) {
 
                     is StatefulData.Error -> {
                         handleLoading(false)
-                        Toaster.showToast(requireContext(), "error")
+                        toaster.showToast(requireContext(), "error")
                     }
 
                     is StatefulData.Loading -> {
@@ -101,7 +103,7 @@ class BookDetailsFragment : AbsFragment(R.layout.fragment_book_details) {
         if (isConnected) {
             songsViewModel.loadBook(getBookId())
         } else {
-            Toaster.showToast(requireContext(), "Network disconnected")
+            toaster.showToast(requireContext(), "Network disconnected")
         }
     }
 }

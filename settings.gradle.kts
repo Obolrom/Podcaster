@@ -4,7 +4,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven {
-            url = java.net.URI.create("https://jitpack.io")
+            url = uri("https://jitpack.io")
         }
         jcenter() // Warning: this repository is going to shut down soon
     }

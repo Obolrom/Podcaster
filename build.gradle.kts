@@ -4,7 +4,7 @@ buildscript {
         google()
         mavenCentral()
         maven {
-            url = java.net.URI.create("https://jitpack.io")
+            url = uri("https://jitpack.io")
         }
     }
     dependencies {
@@ -20,6 +20,6 @@ buildscript {
     }
 }
 
-//task clean(type: Delete) {
-//    delete rootProject.buildDir
-//}
+tasks.register("clean", Delete::class) {
+    delete(rootProject.buildDir)
+}

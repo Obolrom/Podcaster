@@ -16,4 +16,5 @@
     <string name="discover">Discover</string>
     <string name="listen">Listen</string>
     <string name="profile">Profile</string>
+    <string name="favorites">Favorites</string>
 </resources>

@@ -48,6 +48,8 @@ android {
 
 dependencies {
 
+    implementation(project(":CoreUi"))
+
     implementation("com.google.android.material:material:1.5.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")

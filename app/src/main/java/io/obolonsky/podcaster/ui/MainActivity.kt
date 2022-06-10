@@ -1,14 +1,13 @@
 package io.obolonsky.podcaster.ui
 
-import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.View
-import android.view.animation.DecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
+import io.obolonsky.coreui.bottomNavigationSmoothVisibilityChanger
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.databinding.ActivityMainBinding
 
@@ -25,24 +24,22 @@ class MainActivity : AppCompatActivity() {
 
     private val binding: ActivityMainBinding by viewBinding()
 
-    private var offsetAnimator: ValueAnimator? = null
+    private val visibilityChanger by bottomNavigationSmoothVisibilityChanger()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         binding.bottomBar.setupWithNavController(navController)
 
-        binding.bottomBar.menu.findItem(R.id.favorites).isChecked = true
-
         binding.bottomBar
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.bookDetailsFragment -> {
-                    binding.bottomBar.hideWithAnimation()
+                    visibilityChanger.hideWithAnimation(binding.bottomBar)
                 }
 
                 else -> {
-                    binding.bottomBar.showWithAnimation()
+                    visibilityChanger.showWithAnimation(binding.bottomBar)
                 }
             }
         }
@@ -59,31 +56,5 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.bottomBar.selectedItemId = R.id.discover_dest
-    }
-
-    private fun View.showWithAnimation() = animateBarVisibility(this, true)
-
-    private fun View.hideWithAnimation() = animateBarVisibility(this, false)
-
-    private fun animateBarVisibility(child: View, isVisible: Boolean) {
-        if (offsetAnimator == null) {
-            offsetAnimator = ValueAnimator().apply {
-                interpolator = DecelerateInterpolator()
-                duration = 250L
-            }
-
-            offsetAnimator?.addUpdateListener {
-                child.translationY = it.animatedValue as Float
-            }
-        } else {
-            offsetAnimator?.cancel()
-            child.clearAnimation()
-        }
-
-        val targetTranslation = if (isVisible) 0f else child.height.toFloat()
-        offsetAnimator?.apply {
-            setFloatValues(child.translationY, targetTranslation)
-            start()
-        }
     }
 }

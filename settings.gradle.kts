@@ -11,3 +11,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Podcaster"
 include(":app")
+include(":CoreUi")

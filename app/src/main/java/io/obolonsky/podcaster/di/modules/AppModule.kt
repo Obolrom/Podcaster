@@ -18,4 +18,17 @@ class AppModule {
     fun provideMusicServiceConnection(
         @ApplicationContext context: Context
     ) = MusicServiceConnection(context)
+
+    @Singleton
+    @Provides
+    fun provideDispatchers() = object : CoroutineSchedulers {
+
+        override val main = kotlinx.coroutines.Dispatchers.Main
+
+        override val io = kotlinx.coroutines.Dispatchers.IO
+
+        override val computation = kotlinx.coroutines.Dispatchers.Default
+
+        override val unconfined = kotlinx.coroutines.Dispatchers.Unconfined
+    }
 }

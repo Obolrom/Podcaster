@@ -9,7 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.obolonsky.podcaster.data.repositories.SongsRepository
 import io.obolonsky.podcaster.data.room.StatefulData
 import io.obolonsky.podcaster.data.room.entities.Book
-import kotlinx.coroutines.Dispatchers
+import io.obolonsky.podcaster.di.modules.CoroutineSchedulers
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -18,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SongsViewModel @Inject constructor(
     private val songsRepository: SongsRepository,
+    private val dispatchers: CoroutineSchedulers,
 ): ViewModel() {
 
     private val _books by lazy {
@@ -37,12 +38,12 @@ class SongsViewModel @Inject constructor(
         )
             .cachedIn(viewModelScope)
             .onEach { _books.emit(it) }
-            .flowOn(Dispatchers.IO)
+            .flowOn(dispatchers.io)
             .launchIn(viewModelScope)
     }
 
     fun loadBook(id: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatchers.io) {
             _book.emit(StatefulData.Loading())
             _book.emit(songsRepository.loadBook(id))
         }

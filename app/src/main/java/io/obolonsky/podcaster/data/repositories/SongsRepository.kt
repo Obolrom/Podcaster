@@ -32,7 +32,7 @@ class SongsRepository @Inject constructor(
     val chapters = mutableListOf<Chapter>()
 
     init {
-        CoroutineScope(Dispatchers.IO).launch {
+       /* CoroutineScope(Dispatchers.IO).launch {
             val progressResponse = bookApi.postProgress(
                     BookProgressRequest(
                         "3fdd18e1-af5f-44a2-8863-5c283563c0ac",
@@ -50,7 +50,7 @@ class SongsRepository @Inject constructor(
                     Timber.d("okHttp $progressResponse")
                 }
             }
-        }
+        }*/
     }
 
     fun loadBooks(pagingConfig: PagingConfig): Flow<PagingData<Book>> {

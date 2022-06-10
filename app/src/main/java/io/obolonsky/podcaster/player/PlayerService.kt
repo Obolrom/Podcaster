@@ -18,6 +18,7 @@ import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.MusicPlayer
+import io.obolonsky.podcaster.di.modules.CoroutineSchedulers
 import io.obolonsky.podcaster.player.Constants.MEDIA_ROOT_ID
 import io.obolonsky.podcaster.player.Constants.NETWORK_ERROR
 import kotlinx.coroutines.*
@@ -25,6 +26,9 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class PlayerService : MediaBrowserServiceCompat() {
+
+    @Inject
+    lateinit var dispatchers: CoroutineSchedulers
 
     @Inject
     lateinit var dataSourceFactory: DefaultDataSourceFactory
@@ -40,8 +44,7 @@ class PlayerService : MediaBrowserServiceCompat() {
 
     private lateinit var notificationManager: MusicNotificationManager
 
-    private val serviceJob = Job()
-    private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
+    private val serviceScope = MainScope()
 
     private var curPlayingSong: MediaMetadataCompat? = null
     private lateinit var mediaSession: MediaSessionCompat
@@ -51,7 +54,7 @@ class PlayerService : MediaBrowserServiceCompat() {
 
     override fun onCreate() {
         super.onCreate()
-        serviceScope.launch(Dispatchers.IO) {
+        serviceScope.launch(dispatchers.io) {
             musicDataSource.fetch()
         }
 

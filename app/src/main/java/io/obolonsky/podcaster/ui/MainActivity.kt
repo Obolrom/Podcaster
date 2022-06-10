@@ -1,7 +1,6 @@
 package io.obolonsky.podcaster.ui
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -31,10 +30,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         binding.bottomBar.setupWithNavController(navController)
 
-        binding.bottomBar
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.bookDetailsFragment -> {
+                R.id.bookDetailsFragment,
+                R.id.newPlayerFragment -> {
                     visibilityChanger.hideWithAnimation(binding.bottomBar)
                 }
 
@@ -46,9 +45,13 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomBar.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.favorites -> {
-                    binding.bottomBar.visibility = View.GONE
-                }
+                R.id.favorites -> { }
+
+                R.id.search_dest -> { }
+
+                R.id.discover_dest -> { }
+
+                R.id.profile_dest -> { }
 
                 else -> { }
             }

@@ -12,19 +12,20 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import io.obolonsky.podcaster.data.repositories.SongsRepository
 import io.obolonsky.podcaster.data.room.entities.Chapter
-import kotlinx.coroutines.Dispatchers
+import io.obolonsky.podcaster.di.modules.CoroutineSchedulers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MusicDataSource @Inject constructor(
     private val songsRepository: SongsRepository,
+    private val dispatchers: CoroutineSchedulers,
 ) {
 
     private val _songs = mutableListOf<MediaMetadataCompat>()
     private val data = mutableListOf<Chapter>()
     val songs: List<MediaMetadataCompat> get() = _songs
 
-    suspend fun fetch() = withContext(Dispatchers.IO) {
+    suspend fun fetch() = withContext(dispatchers.io) {
         return@withContext songsRepository.chapters
             .map { song ->
                 data.add(song)

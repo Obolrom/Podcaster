@@ -3,13 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/bookFeedFragment">
+    app:startDestination="@id/discover_dest">
 
     <fragment
         android:id="@+id/motionFragment"
         android:name="io.obolonsky.podcaster.ui.MotionFragment"
         android:label="MotionFragment"
         tools:layout="@layout/fragment_motion" />
+
+    <fragment
+        android:id="@+id/search_dest"
+        android:name="io.obolonsky.podcaster.ui.SearchFragment"
+        android:label="@string/search"
+        tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/bookDetailsFragment"
@@ -28,9 +34,9 @@
         tools:layout="@layout/fragment_player_navigation" />
 
     <fragment
-        android:id="@+id/bookFeedFragment"
+        android:id="@+id/discover_dest"
         android:name="io.obolonsky.podcaster.ui.BookFeedFragment"
-        android:label="BookFeedFragment"
+        android:label="@string/discover"
         tools:layout="@layout/fragment_book_feed" >
         <action
             android:id="@+id/action_bookFeedFragment_to_bookDetailsFragment"
@@ -40,9 +46,5 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_out_right" />
     </fragment>
-
-<!--    app:exitAnim="@anim/slide_out_left"-->
-<!--    app:popEnterAnim="@anim/slide_in_left"-->
-<!--    app:popExitAnim="@anim/slide_out_right"-->
 
 </navigation>

@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         binding.bottomBar.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -41,21 +42,6 @@ class MainActivity : AppCompatActivity() {
                     visibilityChanger.showWithAnimation(binding.bottomBar)
                 }
             }
-        }
-
-        binding.bottomBar.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.favorites -> { }
-
-                R.id.search_dest -> { }
-
-                R.id.discover_dest -> { }
-
-                R.id.profile_dest -> { }
-
-                else -> { }
-            }
-            true
         }
 
         binding.bottomBar.selectedItemId = R.id.discover_dest

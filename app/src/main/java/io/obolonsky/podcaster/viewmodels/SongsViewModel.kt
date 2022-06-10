@@ -19,7 +19,7 @@ import javax.inject.Inject
 class SongsViewModel @Inject constructor(
     private val songsRepository: SongsRepository,
     private val dispatchers: CoroutineSchedulers,
-): ViewModel() {
+) : ViewModel() {
 
     private val _books by lazy {
         MutableSharedFlow<PagingData<Book>>(

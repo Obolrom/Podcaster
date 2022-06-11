@@ -1,7 +1,6 @@
 package io.obolonsky.podcaster.ui
 
 import android.os.Bundle
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -52,12 +51,8 @@ class BookFeedFragment : AbsFragment(R.layout.fragment_book_feed) {
 
     private fun onBookClicked(book: Book) {
         Timber.d("onBookClicked book: ${book.title}")
-        findNavController()
-            .navigate(
-                resId = R.id.action_bookFeedFragment_to_bookDetailsFragment,
-                args = bundleOf(
-                    "bookId" to book.id
-                )
-            )
+        val action = BookFeedFragmentDirections
+            .actionBookFeedFragmentToBookDetailsFragment(book.id)
+        findNavController().navigate(action)
     }
 }

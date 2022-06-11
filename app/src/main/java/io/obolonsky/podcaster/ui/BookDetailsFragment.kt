@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,6 +25,8 @@ class BookDetailsFragment : AbsFragment(R.layout.fragment_book_details) {
     private val songsViewModel: SongsViewModel by activityViewModels()
 
     private val binding: FragmentBookDetailsBinding by viewBinding()
+
+    private val args: BookDetailsFragmentArgs by navArgs()
 
     private val toaster by toaster()
 
@@ -54,7 +57,7 @@ class BookDetailsFragment : AbsFragment(R.layout.fragment_book_details) {
     }
 
     override fun initViews(savedInstanceState: Bundle?) {
-        songsViewModel.loadBook(getBookId())
+        songsViewModel.loadBook(args.detailsBookId)
 
         binding.listen.setOnClickListener {
             findNavController()
@@ -97,11 +100,9 @@ class BookDetailsFragment : AbsFragment(R.layout.fragment_book_details) {
         context?.let { networkBroadcastReceiver.unregisterReceiver(it) }
     }
 
-    private fun getBookId() = arguments?.getString("bookId") ?: ""
-
     private fun onNetworkConnectionChanged(isConnected: Boolean) {
         if (isConnected) {
-            songsViewModel.loadBook(getBookId())
+            songsViewModel.loadBook(args.detailsBookId)
         } else {
             toaster.showToast(requireContext(), "Network disconnected")
         }

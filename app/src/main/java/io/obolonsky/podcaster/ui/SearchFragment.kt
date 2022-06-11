@@ -1,6 +1,7 @@
 package io.obolonsky.podcaster.ui
 
 import android.os.Bundle
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +33,12 @@ class SearchFragment : AbsFragment(R.layout.fragment_search) {
     }
 
     override fun initViews(savedInstanceState: Bundle?) {
+        binding.searchInput.addTextChangedListener(
+            onTextChanged = { text: CharSequence?, _: Int, _: Int, _: Int ->
+                text?.let { searchViewModel.searchQuery.value = it.toString() }
+            }
+        )
+
         binding.recyclerSearch.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = searchPagingAdapter

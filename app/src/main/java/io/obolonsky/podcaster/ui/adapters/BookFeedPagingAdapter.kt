@@ -22,9 +22,8 @@ class BookFeedPagingAdapter(
                     && oldItem.imageUrl == newItem.imageUrl
         }
     },
+    private val onClick: (Book) -> Unit,
 ) : PagingDataAdapter<Book, BookViewHolder>(diffUtil) {
-
-    var onClick: (Book) -> Unit = { }
 
     override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
         getItem(position)

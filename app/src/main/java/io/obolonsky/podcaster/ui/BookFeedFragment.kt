@@ -38,9 +38,7 @@ class BookFeedFragment : AbsFragment(R.layout.fragment_book_feed) {
     override fun initViews(savedInstanceState: Bundle?) {
         binding.recyclerFeed.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = BookFeedPagingAdapter().apply {
-                onClick = ::onBookClicked
-            }
+            adapter = BookFeedPagingAdapter(onClick = ::onBookClicked)
 
             addItemDecoration(
                 OffsetItemDecorator(resources.getDimensionPixelOffset(R.dimen.big_margin))

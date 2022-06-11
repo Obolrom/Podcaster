@@ -4,10 +4,12 @@ import android.os.Bundle
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.R
+import io.obolonsky.podcaster.data.room.entities.Book
 import io.obolonsky.podcaster.databinding.FragmentSearchBinding
 import io.obolonsky.podcaster.ui.adapters.BookSearchAdapter
 import io.obolonsky.podcaster.ui.adapters.OffsetItemDecorator
@@ -22,7 +24,7 @@ class SearchFragment : AbsFragment(R.layout.fragment_search) {
 
     private val binding by viewBinding<FragmentSearchBinding>()
 
-    private val searchPagingAdapter = BookSearchAdapter()
+    private val searchPagingAdapter = BookSearchAdapter(onClick = ::onBookClicked)
 
     override fun initViewModels() {
         lifecycleScope.launchWhenStarted {
@@ -49,9 +51,11 @@ class SearchFragment : AbsFragment(R.layout.fragment_search) {
         }
 
         searchViewModel.searchSubscribe()
+    }
 
-        lifecycleScope.launchWhenStarted {
-            searchViewModel.searchQuery.value = "flo"
-        }
+    private fun onBookClicked(book: Book) {
+        val action = SearchFragmentDirections
+            .actionSearchFragmentToBookDetailsFragment(book.id)
+        findNavController().navigate(action)
     }
 }

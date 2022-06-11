@@ -17,6 +17,7 @@ class BookSearchAdapter(
                     && oldItem.imageUrl == newItem.imageUrl
         }
     },
+    private val onClick: (Book) -> Unit,
 ) : ListAdapter<Book, BookViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
@@ -27,6 +28,7 @@ class BookSearchAdapter(
         getItem(position)
             ?.let { book ->
                 holder.bind(book)
+                holder.itemView.setOnClickListener { onClick(book) }
             }
     }
 }

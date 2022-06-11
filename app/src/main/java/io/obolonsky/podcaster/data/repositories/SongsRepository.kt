@@ -6,19 +6,18 @@ import androidx.paging.PagingData
 import com.haroldadmin.cnradapter.NetworkResponse
 import io.obolonsky.podcaster.api.BookApi
 import io.obolonsky.podcaster.data.misc.BookMapper
-import io.obolonsky.podcaster.data.responses.BookProgressRequest
+import io.obolonsky.podcaster.data.misc.BookPagingMapper
 import io.obolonsky.podcaster.data.room.PodcasterDatabase
 import io.obolonsky.podcaster.data.room.StatefulData
 import io.obolonsky.podcaster.data.room.daos.SongDao
 import io.obolonsky.podcaster.data.room.entities.Book
 import io.obolonsky.podcaster.data.room.entities.Chapter
+import io.obolonsky.podcaster.di.modules.CoroutineSchedulers
 import io.obolonsky.podcaster.paging.BookPagingSource
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import io.obolonsky.podcaster.paging.BookSearchPagingSource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -27,6 +26,7 @@ class SongsRepository @Inject constructor(
     private val bookApi: BookApi,
     private val database: PodcasterDatabase,
     private val songsDao: SongDao,
+    private val dispatchers: CoroutineSchedulers,
 ) {
 
     val chapters = mutableListOf<Chapter>()
@@ -60,6 +60,33 @@ class SongsRepository @Inject constructor(
                 BookPagingSource(bookApi)
             }
         ).flow
+    }
+
+    fun search(query: String, pagingConfig: PagingConfig): Flow<PagingData<Book>> {
+        return Pager(
+            config = pagingConfig,
+            pagingSourceFactory = {
+                BookSearchPagingSource(
+                    bookApi,
+                    query,
+                )
+            }
+        ).flow
+    }
+
+    suspend fun search(query: String) = withContext(dispatchers.io) {
+        when (val response = bookApi.getSearchRange(query, 0, 30)) {
+            is NetworkResponse.Success -> {
+                withContext(dispatchers.computation) {
+                    response.body.map { BookPagingMapper.map(it) }
+                }
+            }
+
+            is NetworkResponse.Error -> {
+                Timber.d("fuckingSearch error")
+                emptyList()
+            }
+        }
     }
 
     suspend fun loadBook(id: String): StatefulData<Book> {

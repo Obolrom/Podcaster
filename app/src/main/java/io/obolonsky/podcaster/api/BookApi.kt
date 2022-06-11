@@ -23,6 +23,13 @@ interface BookApi {
         @Path(LIMIT) limit: Int,
     ): NetworkResponse<List<BookPagingResponse>, Unit>
 
+    @GET("search-filter/global/{$SEARCH_QUERY}/{$OFFSET}/{$LIMIT}")
+    suspend fun getSearchRange(
+        @Path(SEARCH_QUERY) searchQuery: String,
+        @Path(OFFSET) offset: Int,
+        @Path(LIMIT) limit: Int,
+    ): NetworkResponse<List<BookPagingResponse>, Unit>
+
     @POST("bookInfo/book-progress")
     suspend fun postProgress(
         @Body bookProgressRequest: BookProgressRequest,
@@ -33,3 +40,4 @@ private const val BOOK_ID = "bookId"
 private const val PERSON_ID = "personId"
 private const val OFFSET = "offset"
 private const val LIMIT = "limit"
+private const val SEARCH_QUERY = "search_query"

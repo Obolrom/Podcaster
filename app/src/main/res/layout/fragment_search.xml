@@ -5,9 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".ui.SearchFragment">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello search fragment" />
+        tools:listitem="@layout/book_item" />
 
 </FrameLayout>

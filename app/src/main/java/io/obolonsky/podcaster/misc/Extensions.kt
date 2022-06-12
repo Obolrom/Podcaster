@@ -1,5 +1,8 @@
 package io.obolonsky.podcaster.misc
 
+import androidx.lifecycle.LifecycleCoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import java.io.InputStream
 
 fun Int?.orZero() = this ?: 0
@@ -18,4 +21,10 @@ fun InputStream.getMegaBytes(): String {
     val megaBytes = kiloBytes.div(1000)
 
     return "${megaBytes.round(2)} mb"
+}
+
+fun Flow<*>.launchWhenStarted(
+    lifecycleScope: LifecycleCoroutineScope
+) = lifecycleScope.launchWhenStarted {
+    collect()
 }

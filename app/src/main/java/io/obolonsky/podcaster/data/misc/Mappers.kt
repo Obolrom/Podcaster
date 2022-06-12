@@ -2,10 +2,8 @@ package io.obolonsky.podcaster.data.misc
 
 import io.obolonsky.podcaster.data.responses.BookDetailsResponse
 import io.obolonsky.podcaster.data.responses.BookPagingResponse
-import io.obolonsky.podcaster.data.room.entities.Book
-import io.obolonsky.podcaster.data.room.entities.BookAuthor
-import io.obolonsky.podcaster.data.room.entities.Chapter
-import io.obolonsky.podcaster.data.room.entities.VoiceOverAuthor
+import io.obolonsky.podcaster.data.responses.UserProfileResponse
+import io.obolonsky.podcaster.data.room.entities.*
 
 interface Mapper<I : Any, O : Any> {
 
@@ -91,6 +89,21 @@ object ChapterMapper : Mapper<BookDetailsResponse.ChapterResponse, Chapter> {
             mediaUrl = input.mediaUrl,
             duration = input.duration,
             lastTimeStamp = input.lastTimeStamp,
+        )
+    }
+}
+
+object UserProfileMapper : Mapper<UserProfileResponse, UserProfile> {
+
+    override fun map(input: UserProfileResponse): UserProfile {
+        return UserProfile(
+            userId = input.userId,
+            firstName = input.firstName,
+            lastName = input.lastName,
+            ownMaterialsCount = input.ownMaterialsCount,
+            balance = input.balance,
+            auditionCount = input.auditionCount,
+            raiting = input.raiting
         )
     }
 }

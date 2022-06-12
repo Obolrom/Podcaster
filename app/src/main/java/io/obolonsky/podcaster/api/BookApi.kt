@@ -4,6 +4,7 @@ import com.haroldadmin.cnradapter.NetworkResponse
 import io.obolonsky.podcaster.data.responses.BookDetailsResponse
 import io.obolonsky.podcaster.data.responses.BookPagingResponse
 import io.obolonsky.podcaster.data.responses.BookProgressRequest
+import io.obolonsky.podcaster.data.responses.UserProfileResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -31,6 +32,9 @@ interface BookApi {
 
     @GET("user-book/user-book-library")
     suspend fun getUserBookLibrary(): NetworkResponse<List<BookPagingResponse>, Unit>
+
+    @GET("user/get-user-info")
+    suspend fun getUserProfile(): NetworkResponse<UserProfileResponse, Unit>
 
     @POST("user-book/book-progress")
     suspend fun postProgress(

@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:background="@color/pink_red"
         android:layout_gravity="bottom"
+        app:backgroundTint="@color/blue_magenta_dark_80"
         app:itemBackground="@drawable/ripple_effect"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="@+id/nav_host_fragment"

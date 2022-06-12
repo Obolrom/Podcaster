@@ -11,10 +11,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.data.room.entities.Book
 import io.obolonsky.podcaster.databinding.FragmentSearchBinding
+import io.obolonsky.podcaster.misc.launchWhenStarted
 import io.obolonsky.podcaster.ui.adapters.BookSearchAdapter
 import io.obolonsky.podcaster.ui.adapters.OffsetItemDecorator
 import io.obolonsky.podcaster.viewmodels.SearchViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
@@ -27,11 +27,9 @@ class SearchFragment : AbsFragment(R.layout.fragment_search) {
     private val searchPagingAdapter = BookSearchAdapter(onClick = ::onBookClicked)
 
     override fun initViewModels() {
-        lifecycleScope.launchWhenStarted {
-            searchViewModel.searchBooks
-                .onEach { searchPagingAdapter.submitList(it) }
-                .collect()
-        }
+        searchViewModel.searchBooks
+            .onEach { searchPagingAdapter.submitList(it) }
+            .launchWhenStarted(lifecycleScope)
     }
 
     override fun initViews(savedInstanceState: Bundle?) {

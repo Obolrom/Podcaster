@@ -20,5 +20,13 @@
 
     <!--  Search  -->
     <string name="search_hint">Search for book, author…</string>
-    
+    <string name="statistics">Account statistics</string>
+
+    <!--  Profile  -->
+    <string name="rating">Rating: %d</string>
+    <string name="total_auditions">Total auditions: %d</string>
+    <string name="balance">Balance: %d$</string>
+    <string name="subscribers">Subscribers: %d</string>
+    <string name="subscriptions">Subscriptions</string>
+    <string name="publications">Publications</string>
 </resources>

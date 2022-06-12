@@ -7,6 +7,7 @@ import com.haroldadmin.cnradapter.NetworkResponse
 import io.obolonsky.podcaster.api.BookApi
 import io.obolonsky.podcaster.data.misc.BookMapper
 import io.obolonsky.podcaster.data.misc.BookPagingMapper
+import io.obolonsky.podcaster.data.misc.UserProfileMapper
 import io.obolonsky.podcaster.data.responses.BookProgressRequest
 import io.obolonsky.podcaster.data.room.PodcasterDatabase
 import io.obolonsky.podcaster.data.room.StatefulData
@@ -37,24 +38,6 @@ class SongsRepository @Inject constructor(
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
-            val progressResponse = bookApi.postProgress(
-                    BookProgressRequest(
-                        "3fdd18e1-af5f-44a2-8863-5c283563c0ac",
-                        "5AFAEC8E-7C32-4008-9762-48C04D73B8C0",
-                        "2fe26e2e-bbc0-4443-bfa8-e2c496077f05",
-                        20003,
-                    )
-                )
-            when (progressResponse) {
-                is NetworkResponse.Success -> {
-                    Timber.d("okHttp $progressResponse")
-                }
-
-                is NetworkResponse.Error -> {
-                    Timber.d("okHttp $progressResponse")
-                }
-            }
-
             when (val shit = bookApi.getUserBookLibrary()) {
                 is NetworkResponse.Success -> {
                     Timber.d("asdgnnflskjfs lib is working: ${shit.body}")
@@ -65,6 +48,8 @@ class SongsRepository @Inject constructor(
             }
         }
     }
+
+
 
     suspend fun saveAuditionProgress(
         bookId: String,
@@ -100,6 +85,21 @@ class SongsRepository @Inject constructor(
                 )
             }
         ).flow
+    }
+
+    suspend fun getUserProfile() = withContext(dispatchers.io) {
+        when (val response = bookApi.getUserProfile()) {
+            is NetworkResponse.Success -> {
+                val mappedProfile = withContext(dispatchers.computation) {
+                    UserProfileMapper.map(response.body)
+                }
+                StatefulData.Success(mappedProfile)
+            }
+
+            is NetworkResponse.Error -> {
+                StatefulData.Error(response.error ?: Exception())
+            }
+        }
     }
 
     suspend fun search(query: String) = withContext(dispatchers.io) {

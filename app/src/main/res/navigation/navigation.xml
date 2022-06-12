@@ -26,6 +26,12 @@
     </fragment>
 
     <fragment
+        android:id="@id/profile_dest"
+        android:name="io.obolonsky.podcaster.ui.UserProfileFragment"
+        android:label="@string/profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
         android:id="@+id/bookDetailsFragment"
         android:name="io.obolonsky.podcaster.ui.BookDetailsFragment"
         android:label="BookDetailsFragment"

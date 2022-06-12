@@ -8,4 +8,5 @@ data class BookPagingResponse(
     @SerializedName("imageUrl") val imageUrl: String,
     @SerializedName("raiting") val raiting: Int,
     @SerializedName("description") val description: String,
+    @SerializedName("isFavourite") val isFavorite: Boolean,
 )

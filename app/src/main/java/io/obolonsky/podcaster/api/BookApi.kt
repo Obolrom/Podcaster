@@ -11,10 +11,9 @@ import retrofit2.http.Path
 
 interface BookApi {
 
-    @GET("bookInfo/bookDetails/{$BOOK_ID}/{$PERSON_ID}")
+    @GET("bookInfo/bookDetails/{$BOOK_ID}")
     suspend fun getBookDetails(
         @Path(BOOK_ID) bookId: String,
-        @Path(PERSON_ID) personId: String,
     ): NetworkResponse<BookDetailsResponse, Unit>
 
     @GET("bookInfo/books/{$OFFSET}/{$LIMIT}")
@@ -30,14 +29,16 @@ interface BookApi {
         @Path(LIMIT) limit: Int,
     ): NetworkResponse<List<BookPagingResponse>, Unit>
 
-    @POST("bookInfo/book-progress")
+    @GET("user-book/user-book-library")
+    suspend fun getUserBookLibrary(): NetworkResponse<List<BookPagingResponse>, Unit>
+
+    @POST("user-book/book-progress")
     suspend fun postProgress(
         @Body bookProgressRequest: BookProgressRequest,
     ): NetworkResponse<Unit, Unit>
 }
 
 private const val BOOK_ID = "bookId"
-private const val PERSON_ID = "personId"
 private const val OFFSET = "offset"
 private const val LIMIT = "limit"
 private const val SEARCH_QUERY = "search_query"

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="290dp"
+    android:layout_height="240dp"
     android:foreground="@drawable/ripple_effect"
     android:elevation="8dp"
     app:cardCornerRadius="10dp">
@@ -15,6 +15,12 @@
         android:scaleType="fitXY"
         tools:background="@color/gray" />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/gradient_top_to_bottom"
+        android:layout_gravity="bottom" />
+
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
@@ -23,6 +29,7 @@
         android:background="@color/transparent"
         android:layout_margin="@dimen/small_margin"
         android:textStyle="bold"
+        android:textColor="@color/pink_red"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         tools:text="Otherside" />
 

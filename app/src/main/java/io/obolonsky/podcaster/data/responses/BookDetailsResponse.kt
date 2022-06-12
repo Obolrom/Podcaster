@@ -14,7 +14,8 @@ data class BookDetailsResponse(
     @SerializedName("description") val description: String,
     @SerializedName("auditionsCount") val auditionsCount: Int,
     @SerializedName("lastChapter") val lastChapter: ChapterResponse?,
-    @SerializedName("chapters") val chapters: List<ChapterResponse>
+    @SerializedName("chapters") val chapters: List<ChapterResponse>,
+    @SerializedName("isFavourite") val isFavorite: Boolean,
 ) {
 
     data class BookAuthorResponse(

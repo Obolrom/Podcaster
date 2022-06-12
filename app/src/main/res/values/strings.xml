@@ -17,4 +17,8 @@
     <string name="listen">Listen</string>
     <string name="profile">Profile</string>
     <string name="favorites">Favorites</string>
+
+    <!--  Search  -->
+    <string name="search_hint">Search for book, author…</string>
+    
 </resources>

@@ -7,6 +7,7 @@ data class Book(
     override val id: String,
     val title: String,
     val imageUrl: String,
+    val isFavorite: Boolean,
     val category: String?,
     val duration: Long?,
     val bookAuthor: BookAuthor?,

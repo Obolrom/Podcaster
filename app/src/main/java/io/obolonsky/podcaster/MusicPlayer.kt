@@ -34,6 +34,9 @@ class MusicPlayer @Inject constructor(
         }
     }
 
+    val currentWindow: Int
+        get() = exoPlayer.currentWindowIndex
+
     override val currentPosition: Long
         get() = exoPlayer.currentPosition
 

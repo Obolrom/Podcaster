@@ -21,6 +21,7 @@ object BookMapper : Mapper<BookDetailsResponse, Book> {
             imageUrl = input.imageUrl,
             category = input.category,
             duration = input.duration,
+            isFavorite = input.isFavorite,
             bookAuthor = BookAuthorMapper.map(input.bookAuthor),
             voiceOverAuthor = VoiceOverAuthorMapper.map(input.voiceOverAuthor),
             raiting = input.raiting,
@@ -39,6 +40,7 @@ object BookPagingMapper : Mapper<BookPagingResponse, Book> {
             id = input.id,
             title = input.title,
             imageUrl = input.imageUrl,
+            isFavorite = input.isFavorite,
             raiting = input.raiting,
             description = input.description,
             chapters = emptyList(),
@@ -47,7 +49,7 @@ object BookPagingMapper : Mapper<BookPagingResponse, Book> {
             bookAuthor = null,
             voiceOverAuthor = null,
             auditions = null,
-            lastChapter = null
+            lastChapter = null,
         )
     }
 }

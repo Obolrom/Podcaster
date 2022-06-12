@@ -23,6 +23,7 @@ class MusicDataSource @Inject constructor(
 
     private val _songs = mutableListOf<MediaMetadataCompat>()
     private val data = mutableListOf<Chapter>()
+    val chapters: List<Chapter> get() = data
     val songs: List<MediaMetadataCompat> get() = _songs
 
     suspend fun fetch() = withContext(dispatchers.io) {

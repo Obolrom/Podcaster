@@ -10,6 +10,8 @@
         android:id="@+id/textInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/normal_margin"
+        android:layout_marginHorizontal="@dimen/normal_margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -19,7 +21,7 @@
             android:id="@+id/search_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/search"
+            android:hint="@string/search_hint"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 

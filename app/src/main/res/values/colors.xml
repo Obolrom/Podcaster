@@ -36,6 +36,8 @@
 
     <color name="dark_blue">#2A9DF4</color>
     <color name="yellow">#f6c61a</color>
+    <color name="yellow_80">#d9f6c61a</color>
+    <color name="saffron">#f4c430</color>
     <color name="red">#ff0000</color>
     <color name="dark_red">#FF4A4A</color>
     <color name="green">#00ff00</color>

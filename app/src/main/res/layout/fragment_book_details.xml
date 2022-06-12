@@ -17,7 +17,7 @@
             android:id="@+id/image_container"
             android:layout_width="0dp"
             android:layout_height="220dp"
-            android:foreground="@drawable/gradient_left_to_right"
+            android:foreground="@color/black_70"
             app:layout_constraintEnd_toEndOf="@id/content_container"
             app:layout_constraintStart_toStartOf="@id/content_container"
             app:layout_constraintTop_toTopOf="@id/content_container">
@@ -31,6 +31,16 @@
                 tools:background="@color/blue" />
 
         </FrameLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/back"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_margin="@dimen/normal_margin"
+            android:tint="@color/yellow_80"
+            app:srcCompat="@drawable/ic_round_share_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/book_title"
@@ -97,7 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/normal_margin"
             android:textStyle="bold"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             app:layout_constraintBottom_toBottomOf="@+id/book_rating_bar"
             app:layout_constraintStart_toEndOf="@+id/book_rating_bar"
             app:layout_constraintTop_toTopOf="@+id/book_rating_bar"
@@ -131,25 +141,35 @@
             android:id="@+id/book_memory_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/normal_margin"
+            android:layout_marginTop="@dimen/small_margin"
             android:textAllCaps="false"
             android:textColor="@color/gray"
             android:textAppearance="@style/TextAppearance.AppCompat.Button"
-            app:layout_constraintTop_toTopOf="@+id/total_duration"
-            app:layout_constraintBottom_toBottomOf="@+id/total_duration"
-            app:layout_constraintStart_toEndOf="@+id/total_duration"
+            app:layout_constraintTop_toBottomOf="@+id/total_duration"
+            app:layout_constraintStart_toStartOf="@+id/total_duration"
             tools:text="15 MB" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/listen"
-            android:layout_width="360dp"
+            android:layout_width="290dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/big_margin"
-            android:background="@color/pink_red"
+            android:background="@drawable/round_details_background"
             android:textAllCaps="false"
             android:text="@string/listen"
-            app:layout_constraintStart_toStartOf="@+id/total_duration"
-            app:layout_constraintTop_toBottomOf="@+id/total_duration" />
+            app:layout_constraintStart_toStartOf="@+id/book_memory_size"
+            app:layout_constraintTop_toBottomOf="@+id/book_memory_size" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/round_details_background"
+            android:padding="8dp"
+            app:srcCompat="@drawable/ic_round_library_add_24"
+            app:layout_constraintBottom_toBottomOf="@+id/listen"
+            app:layout_constraintStart_toEndOf="@+id/listen"
+            app:layout_constraintTop_toTopOf="@+id/listen" />
 
         <TextView
             android:id="@+id/about"
@@ -162,16 +182,41 @@
             app:layout_constraintTop_toBottomOf="@+id/listen"
             app:layout_constraintStart_toStartOf="@+id/listen" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/chip1"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginTop="@dimen/normal_margin"
+            android:textAllCaps="false"
+            android:paddingHorizontal="@dimen/normal_margin"
+            android:text="Alternative rock"
+            android:background="@drawable/rounded_outlined_background"
+            app:layout_constraintStart_toStartOf="@+id/about"
+            app:layout_constraintTop_toBottomOf="@id/about" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/chip2"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:textAllCaps="false"
+            android:paddingHorizontal="@dimen/normal_margin"
+            android:text="Funk rock"
+            android:background="@drawable/rounded_outlined_background"
+            app:layout_constraintStart_toEndOf="@+id/chip1"
+            app:layout_constraintTop_toTopOf="@id/chip1"
+            app:layout_constraintBottom_toBottomOf="@id/chip1" />
+
         <TextView
             android:id="@+id/book_description"
             android:layout_width="360dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginTop="@dimen/normal_margin"
             android:maxLines="5"
             android:ellipsize="end"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            app:layout_constraintStart_toStartOf="@id/about"
-            app:layout_constraintTop_toBottomOf="@+id/about"
+            app:layout_constraintStart_toStartOf="@id/chip1"
+            app:layout_constraintTop_toBottomOf="@+id/chip1"
             tools:text="Take in on the Otherside, take it on, take it on...Take in on the Otherside, take it on, take it on...Take in on the Otherside, take it on, take it on..." />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

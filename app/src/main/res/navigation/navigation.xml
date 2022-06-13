@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_motion" />
 
     <fragment
+        android:id="@+id/favorites_dest"
+        android:name="io.obolonsky.podcaster.ui.LibraryFragment"
+        android:label="Library"
+        tools:layout="@layout/fragment_library" />
+
+    <fragment
         android:id="@+id/search_dest"
         android:name="io.obolonsky.podcaster.ui.SearchFragment"
         android:label="@string/search"

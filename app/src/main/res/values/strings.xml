@@ -29,4 +29,6 @@
     <string name="subscribers">Subscribers: %d</string>
     <string name="subscriptions">Subscriptions</string>
     <string name="publications">Publications</string>
+    <string name="results">Results</string>
+    <string name="genres">Genres</string>
 </resources>

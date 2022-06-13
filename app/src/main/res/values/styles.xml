@@ -7,4 +7,10 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <style name="Theme.AppTheme.PopUp" parent="Theme.MaterialComponents.Dialog.Alert">
+        <item name="dialogCornerRadius">8dp</item>
+        <item name="android:colorBackground">@color/beige</item>
+        <item name="android:textColor">@color/black_80</item>
+    </style>
+
 </resources>

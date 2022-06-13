@@ -10,10 +10,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.data.room.entities.Book
 import io.obolonsky.podcaster.databinding.FragmentBookFeedBinding
+import io.obolonsky.podcaster.misc.launchWhenStarted
 import io.obolonsky.podcaster.ui.adapters.BookFeedPagingAdapter
 import io.obolonsky.podcaster.ui.adapters.OffsetItemDecorator
 import io.obolonsky.podcaster.viewmodels.SongsViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
@@ -25,14 +25,12 @@ class BookFeedFragment : AbsFragment(R.layout.fragment_book_feed) {
     private val binding: FragmentBookFeedBinding by viewBinding()
 
     override fun initViewModels() {
-        lifecycleScope.launchWhenStarted {
-            songsViewModel.books
-                .onEach {
-                    (binding.recyclerFeed.adapter as? BookFeedPagingAdapter)
-                        ?.apply { submitData(lifecycle, it) }
-                }
-                .collect()
-        }
+        songsViewModel.books
+            .onEach {
+                (binding.recyclerFeed.adapter as? BookFeedPagingAdapter)
+                    ?.apply { submitData(lifecycle, it) }
+            }
+            .launchWhenStarted(lifecycleScope)
     }
 
     override fun initViews(savedInstanceState: Bundle?) {

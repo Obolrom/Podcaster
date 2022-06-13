@@ -14,8 +14,8 @@ import io.obolonsky.podcaster.data.room.StatefulData
 import io.obolonsky.podcaster.data.room.entities.Book
 import io.obolonsky.podcaster.databinding.FragmentBookDetailsBinding
 import io.obolonsky.podcaster.misc.NetworkBroadcastReceiver
+import io.obolonsky.podcaster.misc.launchWhenStarted
 import io.obolonsky.podcaster.viewmodels.SongsViewModel
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.util.concurrent.TimeUnit
 
@@ -53,7 +53,7 @@ class BookDetailsFragment : AbsFragment(R.layout.fragment_book_details) {
                     }
                 }
             }
-            .launchIn(lifecycleScope)
+            .launchWhenStarted(lifecycleScope)
     }
 
     override fun initViews(savedInstanceState: Bundle?) {

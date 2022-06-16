@@ -1,14 +1,20 @@
 package io.obolonsky.podcaster.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.coreui.bottomNavigationSmoothVisibilityChanger
 import io.obolonsky.podcaster.R
+import io.obolonsky.podcaster.background.StudyService
 import io.obolonsky.podcaster.databinding.ActivityMainBinding
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

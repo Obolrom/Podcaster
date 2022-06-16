@@ -42,8 +42,13 @@ android {
     }
 
     buildFeatures {
+        compose = true
         viewBinding = true
         dataBinding = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.1.1"
     }
 }
 
@@ -97,6 +102,14 @@ dependencies {
     //Hilt
     implementation("com.google.dagger:hilt-android:2.38.1")
     kapt("com.google.dagger:hilt-android-compiler:2.38.1")
+
+    // Compose
+    implementation("androidx.activity:activity-compose:1.4.0")
+    implementation("androidx.compose.material:material:1.1.1")
+    implementation("androidx.compose.animation:animation:1.1.1")
+    implementation("androidx.compose.ui:ui-tooling:1.1.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.1.1")
 
     //Navigation component
     implementation("androidx.navigation:navigation-fragment-ktx:2.4.2")

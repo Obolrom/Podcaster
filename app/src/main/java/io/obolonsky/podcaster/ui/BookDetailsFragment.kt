@@ -1,5 +1,7 @@
 package io.obolonsky.podcaster.ui
 
+import android.app.PendingIntent
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -9,6 +11,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.R
+import io.obolonsky.podcaster.background.StudyService
 import io.obolonsky.podcaster.data.misc.toaster
 import io.obolonsky.podcaster.data.room.StatefulData
 import io.obolonsky.podcaster.data.room.entities.Book
@@ -17,6 +20,7 @@ import io.obolonsky.podcaster.misc.NetworkBroadcastReceiver
 import io.obolonsky.podcaster.misc.launchWhenStarted
 import io.obolonsky.podcaster.viewmodels.SongsViewModel
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
@@ -58,6 +62,10 @@ class BookDetailsFragment : AbsFragment(R.layout.fragment_book_details) {
 
     override fun initViews(savedInstanceState: Bundle?) {
         songsViewModel.loadBook(args.detailsBookId)
+
+        context?.startService(Intent(requireContext(), StudyService::class.java)).also {
+            Timber.d("studyService startService ${it?.shortClassName}")
+        }
 
         binding.listen.setOnClickListener {
             findNavController()

@@ -103,6 +103,8 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.38.1")
     kapt("com.google.dagger:hilt-android-compiler:2.38.1")
 
+    implementation("androidx.work:work-runtime-ktx:2.7.1")
+
     // Compose
     implementation("androidx.activity:activity-compose:1.4.0")
     implementation("androidx.compose.material:material:1.1.1")

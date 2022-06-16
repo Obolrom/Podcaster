@@ -46,8 +46,7 @@ class BookFeedFragment : AbsFragment(R.layout.fragment_book_feed) {
     }
 
     override fun initViews(savedInstanceState: Bundle?) {
-        lifecycleScope.launchWhenStarted {
-            delay(3000L)
+     /*   lifecycleScope.launchWhenStarted {
             withContext(Dispatchers.Main) {
                 activity?.bindService(
                     Intent(requireContext(), StudyService::class.java),
@@ -72,7 +71,7 @@ class BookFeedFragment : AbsFragment(R.layout.fragment_book_feed) {
                     0
                 )
             }
-        }
+        }*/
         binding.recyclerFeed.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = BookFeedPagingAdapter(onClick = ::onBookClicked)

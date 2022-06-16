@@ -2,6 +2,7 @@ package io.obolonsky.podcaster.ui
 
 import android.app.PendingIntent
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -63,8 +64,13 @@ class BookDetailsFragment : AbsFragment(R.layout.fragment_book_details) {
     override fun initViews(savedInstanceState: Bundle?) {
         songsViewModel.loadBook(args.detailsBookId)
 
-        context?.startService(Intent(requireContext(), StudyService::class.java)).also {
-            Timber.d("studyService startService ${it?.shortClassName}")
+        val serviceIntent = Intent(requireContext(), StudyService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context?.startForegroundService(serviceIntent).also {
+                Timber.d("studyService startService ${it?.shortClassName}")
+            }
+        } else {
+            context?.startService(serviceIntent)
         }
 
         binding.listen.setOnClickListener {

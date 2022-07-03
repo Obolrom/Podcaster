@@ -11,6 +11,7 @@ import io.obolonsky.podcaster.player.MusicServiceConnection
     WebServiceModule::class,
     PlayerModule::class,
     BinderModule::class,
+    WorkerBindingModule::class,
 ])
 class AppModule {
 

@@ -4,8 +4,11 @@ import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.obolonsky.podcaster.R
+import io.obolonsky.podcaster.background.TestDiWorker
 import io.obolonsky.podcaster.data.room.entities.Book
 import io.obolonsky.podcaster.databinding.FragmentBookFeedBinding
 import io.obolonsky.podcaster.misc.appComponent
@@ -44,6 +47,12 @@ class BookFeedFragment : AbsFragment(R.layout.fragment_book_feed) {
             )
         }
         songsViewModel.loadBooks()
+
+        WorkManager.getInstance(requireActivity().applicationContext)
+            .enqueue(
+                OneTimeWorkRequestBuilder<TestDiWorker>()
+                    .build()
+            )
     }
 
     private fun onBookClicked(book: Book) {

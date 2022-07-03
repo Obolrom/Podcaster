@@ -16,7 +16,6 @@ class TestDiWorker @AssistedInject constructor(
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
-        val resp = bookApi.getUserProfile()
         return Result.success()
     }
 }

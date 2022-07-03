@@ -8,6 +8,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.obolonsky.podcaster.R
+import io.obolonsky.podcaster.background.AnotherOneWorker
 import io.obolonsky.podcaster.background.TestDiWorker
 import io.obolonsky.podcaster.data.room.entities.Book
 import io.obolonsky.podcaster.databinding.FragmentBookFeedBinding
@@ -49,10 +50,12 @@ class BookFeedFragment : AbsFragment(R.layout.fragment_book_feed) {
         songsViewModel.loadBooks()
 
         WorkManager.getInstance(requireActivity().applicationContext)
-            .enqueue(
+            .beginWith(
                 OneTimeWorkRequestBuilder<TestDiWorker>()
                     .build()
             )
+            .then(OneTimeWorkRequestBuilder<AnotherOneWorker>().build())
+            .enqueue()
     }
 
     private fun onBookClicked(book: Book) {

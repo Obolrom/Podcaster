@@ -20,4 +20,5 @@ interface WorkerBindingModule {
     @IntoMap
     @WorkerKey(AnotherOneWorker::class)
     fun bindAnotherOneWorker(factory: AnotherOneWorker.Factory): ChildWorkerFactory
+
 }

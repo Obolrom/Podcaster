@@ -3,13 +3,14 @@ package io.obolonsky.podcaster.viewmodels
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 import io.obolonsky.podcaster.data.repositories.SongsRepository
 import io.obolonsky.podcaster.data.room.entities.Song
-import io.obolonsky.podcaster.player.*
+import io.obolonsky.podcaster.player.MusicServiceConnection
+import io.obolonsky.podcaster.player.isPlayEnabled
+import io.obolonsky.podcaster.player.isPlaying
+import io.obolonsky.podcaster.player.isPrepared
 import javax.inject.Inject
 
-@HiltViewModel
 class PlayerViewModel @Inject constructor(
     private val musicServiceConnection: MusicServiceConnection,
     private val songsRepository: SongsRepository,

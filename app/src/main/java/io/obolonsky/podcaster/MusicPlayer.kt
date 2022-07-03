@@ -2,11 +2,9 @@ package io.obolonsky.podcaster
 
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.source.MediaSource
-import dagger.hilt.android.scopes.ServiceScoped
 import timber.log.Timber
 import javax.inject.Inject
 
-@ServiceScoped
 class MusicPlayer @Inject constructor(
     private val exoPlayer: SimpleExoPlayer,
 ) : ExoPlayerController {

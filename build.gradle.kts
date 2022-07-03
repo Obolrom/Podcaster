@@ -22,6 +22,22 @@ buildscript {
     }
 }
 
+allprojects {
+    tasks.withType(JavaCompile::class).all {
+        options.compilerArgs = listOf(
+            "-Adagger.formatGeneratedSource=disabled",
+            "-Adagger.gradle.incremental=enabled",
+        )
+    }
+
+    afterEvaluate {
+        extensions.findByType(org.jetbrains.kotlin.gradle.plugin.KaptExtension::class.java)?.arguments {
+            arg("gadder.formatGeneratedSource", "disabled")
+            arg("gadder.gradle.incremental", "enabled")
+        }
+    }
+}
+
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }

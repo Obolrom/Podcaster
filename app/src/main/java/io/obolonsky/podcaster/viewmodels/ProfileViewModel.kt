@@ -2,7 +2,6 @@ package io.obolonsky.podcaster.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import io.obolonsky.podcaster.data.repositories.SongsRepository
 import io.obolonsky.podcaster.data.room.StatefulData
 import io.obolonsky.podcaster.data.room.entities.UserProfile
@@ -14,7 +13,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val songsRepository: SongsRepository,
     private val dispatchers: CoroutineSchedulers,

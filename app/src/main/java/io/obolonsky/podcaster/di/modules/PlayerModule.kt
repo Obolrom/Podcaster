@@ -10,19 +10,16 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ServiceComponent
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.android.scopes.ServiceScoped
+import io.obolonsky.podcaster.di.scopes.ApplicationScope
 
 @Module
-@InstallIn(ServiceComponent::class)
 class PlayerModule {
 
-    @ServiceScoped
+    // TODO: USE SERVICE_SCOPE INSTEAD OF APP SCOPE
+    @ApplicationScope
     @Provides
     fun provideDefaultTrackSelector(
-        @ApplicationContext applicationContext: Context
+        applicationContext: Context
     ): DefaultTrackSelector {
         val trackSelector = DefaultTrackSelector(applicationContext)
         val parameters = DefaultTrackSelector.ParametersBuilder(applicationContext)
@@ -33,14 +30,14 @@ class PlayerModule {
         return trackSelector
     }
 
-    @ServiceScoped
+    @ApplicationScope
     @Provides
     fun provideLoadControl(): DefaultLoadControl {
         return DefaultLoadControl.Builder()
             .build()
     }
 
-    @ServiceScoped
+    @ApplicationScope
     @Provides
     fun provideAudioAttributes(): AudioAttributes {
         return AudioAttributes.Builder()
@@ -49,10 +46,10 @@ class PlayerModule {
             .build()
     }
 
-    @ServiceScoped
+    @ApplicationScope
     @Provides
     fun provideSimpleExoPlayer(
-        @ApplicationContext applicationContext: Context,
+        applicationContext: Context,
         trackSelector: DefaultTrackSelector,
         loadControl: DefaultLoadControl,
         audioAttributes: AudioAttributes,
@@ -64,9 +61,9 @@ class PlayerModule {
             .build()
     }
 
-    @ServiceScoped
+    @ApplicationScope
     @Provides
     fun provideDataSourceFactory(
-        @ApplicationContext context: Context
+        context: Context
     ) = DefaultDataSourceFactory(context, Util.getUserAgent(context, "Podcaster"))
 }

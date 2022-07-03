@@ -13,7 +13,6 @@ import coil.load
 import com.google.android.exoplayer2.MediaMetadata
 import com.google.android.exoplayer2.PlaybackParameters
 import com.google.android.exoplayer2.Player
-import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.MusicPlayer
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.databinding.FragmentPlayerBinding
@@ -24,7 +23,6 @@ import io.obolonsky.podcaster.player.PlayerService.Companion.MUSIC_SERVICE_BINDE
 import io.obolonsky.podcaster.viewmodels.PlayerViewModel
 import java.util.concurrent.TimeUnit
 
-@AndroidEntryPoint
 class NewPlayerFragment : AbsFragment(R.layout.fragment_player) {
 
     private val rewindTime by lazy {

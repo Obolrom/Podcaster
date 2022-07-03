@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
-import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.data.room.entities.Book
 import io.obolonsky.podcaster.databinding.FragmentSearchBinding
@@ -20,7 +19,6 @@ import io.obolonsky.podcaster.ui.adapters.GridItemDecoration
 import io.obolonsky.podcaster.viewmodels.SearchViewModel
 import kotlinx.coroutines.flow.onEach
 
-@AndroidEntryPoint
 class SearchFragment : AbsFragment(R.layout.fragment_search) {
 
     private val searchViewModel by viewModels<SearchViewModel>()

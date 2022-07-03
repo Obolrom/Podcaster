@@ -12,13 +12,12 @@ import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.media.MediaBrowserServiceCompat
 import com.google.android.exoplayer2.ControlDispatcher
-import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.MusicPlayer
+import io.obolonsky.podcaster.PodcasterApp
 import io.obolonsky.podcaster.data.repositories.SongsRepository
 import io.obolonsky.podcaster.di.modules.CoroutineSchedulers
 import io.obolonsky.podcaster.player.Constants.MEDIA_ROOT_ID
@@ -26,7 +25,6 @@ import io.obolonsky.podcaster.player.Constants.NETWORK_ERROR
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
-@AndroidEntryPoint
 class PlayerService : MediaBrowserServiceCompat() {
 
     @Inject
@@ -58,7 +56,9 @@ class PlayerService : MediaBrowserServiceCompat() {
     private val playerCommandReceiver by lazy { GetPlayerCommandReceiver() }
 
     override fun onCreate() {
+        (application as PodcasterApp).appComponent.inject(this)
         super.onCreate()
+
         serviceScope.launch(dispatchers.io) {
             musicDataSource.fetch()
         }

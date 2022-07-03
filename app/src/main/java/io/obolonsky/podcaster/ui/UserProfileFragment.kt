@@ -6,8 +6,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
-import coil.util.CoilUtils
-import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.data.room.StatefulData
 import io.obolonsky.podcaster.data.room.entities.UserProfile
@@ -16,7 +14,6 @@ import io.obolonsky.podcaster.misc.launchWhenStarted
 import io.obolonsky.podcaster.viewmodels.ProfileViewModel
 import kotlinx.coroutines.flow.onEach
 
-@AndroidEntryPoint
 class UserProfileFragment : AbsFragment(R.layout.fragment_profile) {
 
     private val binding by viewBinding<FragmentProfileBinding>()

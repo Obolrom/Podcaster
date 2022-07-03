@@ -4,27 +4,23 @@ import android.content.Context
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
 import io.obolonsky.podcaster.data.room.PodcasterDatabase
 import io.obolonsky.podcaster.data.room.daos.SongDao
-import javax.inject.Singleton
+import io.obolonsky.podcaster.di.scopes.ApplicationScope
 
 @Module
-@InstallIn(SingletonComponent::class)
 class DatabaseModule {
 
-    @Singleton
+    @ApplicationScope
     @Provides
-    fun provideDb(@ApplicationContext applicationContext: Context): PodcasterDatabase {
+    fun provideDb(appCtx: Context): PodcasterDatabase {
         return Room.databaseBuilder(
-            applicationContext,
+            appCtx,
             PodcasterDatabase::class.java, DATABASE_NAME
         ).fallbackToDestructiveMigration().build()
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideSongDao(db: PodcasterDatabase): SongDao = db.getSongDao()
 

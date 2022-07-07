@@ -3,21 +3,18 @@ package io.obolonsky.podcaster.di.modules
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import io.obolonsky.podcaster.BuildConfig
 import io.obolonsky.podcaster.api.BookApi
+import io.obolonsky.podcaster.di.scopes.ApplicationScope
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
 class WebServiceModule {
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().apply {
@@ -27,7 +24,7 @@ class WebServiceModule {
         }
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
@@ -37,13 +34,13 @@ class WebServiceModule {
             .build()
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideGsonConverterFactory(): GsonConverterFactory {
         return GsonConverterFactory.create()
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideRetrofit(
         client: OkHttpClient,
@@ -57,7 +54,7 @@ class WebServiceModule {
             .build()
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideBookApi(
         retrofit: Retrofit

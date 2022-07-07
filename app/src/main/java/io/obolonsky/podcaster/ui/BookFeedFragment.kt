@@ -1,26 +1,31 @@
 package io.obolonsky.podcaster.ui
 
 import android.os.Bundle
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import by.kirich1409.viewbindingdelegate.viewBinding
-import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.R
+import io.obolonsky.podcaster.background.AnotherOneWorker
+import io.obolonsky.podcaster.background.TestDiWorker
 import io.obolonsky.podcaster.data.room.entities.Book
 import io.obolonsky.podcaster.databinding.FragmentBookFeedBinding
+import io.obolonsky.podcaster.misc.appComponent
 import io.obolonsky.podcaster.misc.launchWhenStarted
 import io.obolonsky.podcaster.ui.adapters.BookFeedPagingAdapter
 import io.obolonsky.podcaster.ui.adapters.OffsetItemDecorator
 import io.obolonsky.podcaster.viewmodels.SongsViewModel
+import io.obolonsky.podcaster.viewmodels.lazyViewModel
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
-@AndroidEntryPoint
 class BookFeedFragment : AbsFragment(R.layout.fragment_book_feed) {
 
-    private val songsViewModel: SongsViewModel by viewModels()
+    private val songsViewModel: SongsViewModel by lazyViewModel {
+        appComponent.songsViewModel().create(it)
+    }
 
     private val binding: FragmentBookFeedBinding by viewBinding()
 
@@ -43,6 +48,14 @@ class BookFeedFragment : AbsFragment(R.layout.fragment_book_feed) {
             )
         }
         songsViewModel.loadBooks()
+
+        WorkManager.getInstance(requireActivity().applicationContext)
+            .beginWith(
+                OneTimeWorkRequestBuilder<TestDiWorker>()
+                    .build()
+            )
+            .then(OneTimeWorkRequestBuilder<AnotherOneWorker>().build())
+            .enqueue()
     }
 
     private fun onBookClicked(book: Book) {

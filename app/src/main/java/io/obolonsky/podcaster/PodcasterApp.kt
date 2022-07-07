@@ -1,26 +1,35 @@
 package io.obolonsky.podcaster
 
 import android.app.Application
-import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import dagger.hilt.android.HiltAndroidApp
+import androidx.work.WorkManager
+import io.obolonsky.podcaster.background.PodcasterWorkerFactory
+import io.obolonsky.podcaster.di.components.DaggerAppComponent
 import timber.log.Timber
 import javax.inject.Inject
 
-@HiltAndroidApp
-class PodcasterApp : Application(), Configuration.Provider {
+class PodcasterApp : Application() {
 
     @Inject
-    lateinit var hiltWorkerFactory: HiltWorkerFactory
+    lateinit var workerFactory: PodcasterWorkerFactory
 
-    override fun getWorkManagerConfiguration(): Configuration {
-        return Configuration.Builder()
-            .setWorkerFactory(hiltWorkerFactory)
+    val appComponent by lazy {
+        DaggerAppComponent.builder()
+            .context(this)
+            .build()
+    }
+
+    private val workManagerConfiguration by lazy {
+        Configuration.Builder()
+            .setWorkerFactory(workerFactory)
             .build()
     }
 
     override fun onCreate() {
         super.onCreate()
+        appComponent.inject(this)
+
+        WorkManager.initialize(this, workManagerConfiguration)
 
         initTimber()
     }

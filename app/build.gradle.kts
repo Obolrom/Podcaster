@@ -4,7 +4,6 @@ plugins {
     id("com.google.firebase.crashlytics")
     id("kotlin-android")
     id("androidx.navigation.safeargs.kotlin")
-    id("dagger.hilt.android.plugin")
     id("kotlin-kapt")
 }
 
@@ -94,13 +93,15 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
     implementation("com.github.haroldadmin:NetworkResponseAdapter:5.0.0")
 
-    //Hilt
-    implementation("com.google.dagger:hilt-android:2.38.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.38.1")
+    //Hilt - remove this crap
+//    implementation("com.google.dagger:hilt-android:2.38.1")
+//    kapt("com.google.dagger:hilt-android-compiler:2.38.1")
+
+    // Dagger 2
+    implementation("com.google.dagger:dagger:2.40.5")
+    kapt("com.google.dagger:dagger-compiler:2.40.5")
 
     implementation("androidx.work:work-runtime-ktx:2.7.1")
-    implementation("androidx.hilt:hilt-work:1.0.0")
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
 
     //Navigation component
     implementation("androidx.navigation:navigation-fragment-ktx:2.4.2")

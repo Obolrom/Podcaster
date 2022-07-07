@@ -1,11 +1,14 @@
 package io.obolonsky.podcaster.viewmodels
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import io.obolonsky.podcaster.data.repositories.SongsRepository
 import io.obolonsky.podcaster.data.room.StatefulData
 import io.obolonsky.podcaster.data.room.entities.Book
@@ -15,8 +18,8 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class SongsViewModel @Inject constructor(
+class SongsViewModel @AssistedInject constructor(
+    @Assisted private val savedStateHandle: SavedStateHandle,
     private val songsRepository: SongsRepository,
     private val dispatchers: CoroutineSchedulers,
 ) : ViewModel() {
@@ -47,5 +50,10 @@ class SongsViewModel @Inject constructor(
             _book.emit(StatefulData.Loading())
             _book.emit(songsRepository.loadBook(id))
         }
+    }
+
+    @AssistedFactory
+    interface Factory {
+        fun create(savedStateHandle: SavedStateHandle): SongsViewModel
     }
 }

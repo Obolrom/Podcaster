@@ -7,7 +7,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
-import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.data.misc.toaster
 import io.obolonsky.podcaster.data.room.StatefulData
@@ -19,7 +18,6 @@ import io.obolonsky.podcaster.viewmodels.SongsViewModel
 import kotlinx.coroutines.flow.onEach
 import java.util.concurrent.TimeUnit
 
-@AndroidEntryPoint
 class BookDetailsFragment : AbsFragment(R.layout.fragment_book_details) {
 
     private val songsViewModel: SongsViewModel by activityViewModels()

@@ -5,12 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
-import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.coreui.bottomNavigationSmoothVisibilityChanger
+import io.obolonsky.podcaster.PodcasterApp
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.databinding.ActivityMainBinding
 
-@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val navHostFragment by lazy {
@@ -26,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     private val visibilityChanger by bottomNavigationSmoothVisibilityChanger()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as PodcasterApp).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 

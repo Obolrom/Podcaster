@@ -7,7 +7,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.filter
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
-import dagger.hilt.android.AndroidEntryPoint
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.data.room.entities.Book
 import io.obolonsky.podcaster.databinding.FragmentLibraryBinding
@@ -16,10 +15,8 @@ import io.obolonsky.podcaster.ui.adapters.BookFeedPagingAdapter
 import io.obolonsky.podcaster.ui.adapters.OffsetItemDecorator
 import io.obolonsky.podcaster.viewmodels.SongsViewModel
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.take
 import timber.log.Timber
 
-@AndroidEntryPoint
 class LibraryFragment : AbsFragment(R.layout.fragment_library) {
 
     private val binding by viewBinding<FragmentLibraryBinding>()

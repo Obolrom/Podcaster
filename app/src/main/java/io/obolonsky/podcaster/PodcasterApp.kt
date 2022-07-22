@@ -13,11 +13,7 @@ class PodcasterApp : Application() {
     @Inject
     lateinit var workerFactory: PodcasterWorkerFactory
 
-    val appComponent by lazy {
-        DaggerAppComponent.builder()
-            .context(this)
-            .build()
-    }
+    val appComponent by lazy { DaggerAppComponent.factory().create(this) }
 
     private val workManagerConfiguration by lazy {
         Configuration.Builder()

@@ -6,7 +6,6 @@ import dagger.Component
 import io.obolonsky.podcaster.PodcasterApp
 import io.obolonsky.podcaster.di.modules.AppModule
 import io.obolonsky.podcaster.di.scopes.ApplicationScope
-import io.obolonsky.podcaster.player.PlayerService
 import io.obolonsky.podcaster.ui.MainActivity
 import io.obolonsky.podcaster.viewmodels.SongsViewModel
 
@@ -14,17 +13,15 @@ import io.obolonsky.podcaster.viewmodels.SongsViewModel
 @Component(modules = [AppModule::class])
 interface AppComponent {
 
-    @Component.Builder
-    interface Builder {
+    @Component.Factory
+    interface Factory {
 
-        fun context(@BindsInstance appCtx: Context): Builder
-
-        fun build(): AppComponent
+        fun create(
+            @BindsInstance appCtx: Context
+        ): AppComponent
     }
 
     fun inject(target: PodcasterApp)
-
-    fun inject(target: PlayerService)
 
     fun inject(target: MainActivity)
 

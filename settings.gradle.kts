@@ -10,5 +10,9 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Podcaster"
-include(":app")
-include(":CoreUi")
+
+include(
+    ":app",
+    ":core_ui",
+    ":core"
+)

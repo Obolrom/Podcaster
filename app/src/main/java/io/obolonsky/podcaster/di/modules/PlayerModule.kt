@@ -34,6 +34,15 @@ class PlayerModule {
     @Provides
     fun provideLoadControl(): DefaultLoadControl {
         return DefaultLoadControl.Builder()
+            .setBufferDurationsMs(
+                /* minBufferMs */ 45_000,
+                /* maxBufferMs */ 50_000,
+                /* bufferForPlaybackMs */ 15_000,
+                /* bufferForPlaybackAfterRebufferMs */ 30_000,
+            )
+            .setBackBuffer(
+                /* backBufferDurationMs */ 90_000,
+                /* retainBackBufferFromKeyframe */true)
             .build()
     }
 
@@ -57,6 +66,7 @@ class PlayerModule {
         return SimpleExoPlayer.Builder(applicationContext)
             .setTrackSelector(trackSelector)
             .setAudioAttributes(audioAttributes, true)
+            .setHandleAudioBecomingNoisy(true)
             .setLoadControl(loadControl)
             .build()
     }

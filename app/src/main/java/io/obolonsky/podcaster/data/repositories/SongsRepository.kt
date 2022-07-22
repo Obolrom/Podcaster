@@ -36,6 +36,28 @@ class SongsRepository @Inject constructor(
 ) {
 
     val chapters = mutableListOf<Chapter>()
+        .apply {
+            addAll(listOf(
+                Chapter(
+                    id = "OthersideID",
+                    bookId = "1",
+                    title = "Otherside",
+                    imageUrl = "",
+                    mediaUrl = "https://github.com/Obolrom/MusicLibrary/blob/master/rhcp_californication/red-hot-chili-peppers-otherside.mp3?raw=true",
+                    duration = 4000,
+                    lastTimeStamp = null,
+                ),
+                Chapter(
+                    id = "OthersideID",
+                    bookId = "1",
+                    title = "Californication",
+                    imageUrl = "",
+                    mediaUrl = "https://github.com/Obolrom/MusicLibrary/blob/master/rhcp_californication/red-hot-chili-peppers-californication.mp3?raw=true",
+                    duration = 5000,
+                    lastTimeStamp = null,
+                ),
+            ))
+        }
 
     init {
         CoroutineScope(Dispatchers.IO).launch {

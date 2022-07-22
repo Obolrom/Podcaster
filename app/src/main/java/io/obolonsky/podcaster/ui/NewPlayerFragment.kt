@@ -1,13 +1,16 @@
 package io.obolonsky.podcaster.ui
 
 import android.content.ComponentName
+import android.media.AudioManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import com.google.android.exoplayer2.MediaMetadata
@@ -21,6 +24,7 @@ import io.obolonsky.podcaster.player.PlayerService
 import io.obolonsky.podcaster.player.PlayerService.Companion.GET_PLAYER_COMMAND
 import io.obolonsky.podcaster.player.PlayerService.Companion.MUSIC_SERVICE_BINDER_KEY
 import io.obolonsky.podcaster.viewmodels.PlayerViewModel
+import kotlinx.coroutines.delay
 import java.util.concurrent.TimeUnit
 
 class NewPlayerFragment : AbsFragment(R.layout.fragment_player) {
@@ -40,6 +44,10 @@ class NewPlayerFragment : AbsFragment(R.layout.fragment_player) {
             2.0f,
             0.8f,
         )
+    }
+
+    private val audioManager by lazy {
+        getSystemService(requireContext(), AudioManager::class.java) as AudioManager
     }
 
     private var currentSpeedPosition = 0
@@ -87,6 +95,7 @@ class NewPlayerFragment : AbsFragment(R.layout.fragment_player) {
     override fun initViewModels() { }
 
     override fun initViews(savedInstanceState: Bundle?) {
+        audioManager
         mediaBrowser = MediaBrowserCompat(
             requireContext(),
             ComponentName(requireContext(), PlayerService::class.java),
@@ -115,8 +124,24 @@ class NewPlayerFragment : AbsFragment(R.layout.fragment_player) {
 
         playerNavBinding.exoPlayPause.setOnClickListener {
             musicPlayer?.apply {
-                if (isPlaying) pause()
-                else resume()
+                if (isPlaying) {
+                    viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                        repeat(5) {
+                            delay(75L)
+                            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 4 - it, 0)
+                        }
+                        pause()
+                    }
+                }
+                else {
+                    viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                        resume()
+                        repeat(5) {
+                            delay(75L)
+                            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, it, 0)
+                        }
+                    }
+                }
             }
         }
 

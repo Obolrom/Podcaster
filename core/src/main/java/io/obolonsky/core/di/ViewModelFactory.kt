@@ -1,4 +1,4 @@
-package io.obolonsky.podcaster.viewmodels
+package io.obolonsky.core.di
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels

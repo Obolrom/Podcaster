@@ -15,4 +15,8 @@ object Dependencies {
         const val playerUi = "com.google.android.exoplayer:exoplayer-ui:$version"
         const val mediaSession = "com.google.android.exoplayer:extension-mediasession:$version"
     }
+
+    object Media3 {
+        const val version = "1.0.0-beta02"
+    }
 }

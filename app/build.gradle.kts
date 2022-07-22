@@ -50,6 +50,7 @@ dependencies {
 
     implementation(project(":core_ui"))
     implementation(project(":core"))
+    implementation(project(":player_feature"))
 
     implementation("com.google.android.material:material:1.5.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
@@ -103,7 +104,6 @@ dependencies {
     //Navigation component
     implementation("androidx.navigation:navigation-fragment-ktx:2.4.2")
     implementation("androidx.navigation:navigation-ui-ktx:2.4.2")
-//    implementation "androidx.navigation:navigation-safe-args-gradle-plugin:2.4.2"
 
     // Player
     implementation(Dependencies.ExoPlayer.player)

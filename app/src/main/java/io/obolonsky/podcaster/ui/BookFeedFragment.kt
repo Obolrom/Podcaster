@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.background.AnotherOneWorker
 import io.obolonsky.podcaster.background.TestDiWorker
@@ -17,7 +18,6 @@ import io.obolonsky.podcaster.misc.launchWhenStarted
 import io.obolonsky.podcaster.ui.adapters.BookFeedPagingAdapter
 import io.obolonsky.podcaster.ui.adapters.OffsetItemDecorator
 import io.obolonsky.podcaster.viewmodels.SongsViewModel
-import io.obolonsky.podcaster.viewmodels.lazyViewModel
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 

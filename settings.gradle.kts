@@ -16,3 +16,4 @@ include(
     ":core_ui",
     ":core"
 )
+include(":player_feature")

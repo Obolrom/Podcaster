@@ -1,6 +1,6 @@
 package io.obolonsky.podcaster.di.modules
 
-import io.obolonsky.podcaster.di.scopes.ApplicationScope
+import io.obolonsky.core.di.scopes.ApplicationScope
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject

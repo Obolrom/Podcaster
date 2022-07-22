@@ -10,7 +10,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import dagger.Module
 import dagger.Provides
-import io.obolonsky.podcaster.di.scopes.ApplicationScope
+import io.obolonsky.core.di.scopes.ApplicationScope
 
 @Module
 class PlayerModule {

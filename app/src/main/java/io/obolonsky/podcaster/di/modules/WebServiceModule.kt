@@ -5,7 +5,7 @@ import dagger.Module
 import dagger.Provides
 import io.obolonsky.podcaster.BuildConfig
 import io.obolonsky.podcaster.api.BookApi
-import io.obolonsky.podcaster.di.scopes.ApplicationScope
+import io.obolonsky.core.di.scopes.ApplicationScope
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

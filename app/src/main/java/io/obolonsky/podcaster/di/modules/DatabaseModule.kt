@@ -6,7 +6,7 @@ import dagger.Module
 import dagger.Provides
 import io.obolonsky.podcaster.data.room.PodcasterDatabase
 import io.obolonsky.podcaster.data.room.daos.SongDao
-import io.obolonsky.podcaster.di.scopes.ApplicationScope
+import io.obolonsky.core.di.scopes.ApplicationScope
 
 @Module
 class DatabaseModule {

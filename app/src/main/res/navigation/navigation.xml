@@ -58,8 +58,7 @@
     <fragment
         android:id="@+id/newPlayerFragment"
         android:name="io.obolonsky.podcaster.ui.NewPlayerFragment"
-        android:label="NewPlayerFragment"
-        tools:layout="@layout/fragment_player_navigation" />
+        android:label="NewPlayerFragment" />
 
     <fragment
         android:id="@+id/discover_dest"

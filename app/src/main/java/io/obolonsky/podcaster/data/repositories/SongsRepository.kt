@@ -15,7 +15,7 @@ import io.obolonsky.podcaster.data.room.daos.SongDao
 import io.obolonsky.podcaster.data.room.entities.Book
 import io.obolonsky.podcaster.data.room.entities.Chapter
 import io.obolonsky.podcaster.di.modules.CoroutineSchedulers
-import io.obolonsky.podcaster.di.scopes.ApplicationScope
+import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.podcaster.paging.BookPagingSource
 import io.obolonsky.podcaster.paging.BookSearchPagingSource
 import kotlinx.coroutines.CoroutineScope
@@ -25,7 +25,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @ApplicationScope
 class SongsRepository @Inject constructor(

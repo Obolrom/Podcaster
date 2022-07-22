@@ -1,4 +1,4 @@
-package io.obolonsky.podcaster.di.scopes
+package io.obolonsky.core.di.scopes
 
 import javax.inject.Scope
 

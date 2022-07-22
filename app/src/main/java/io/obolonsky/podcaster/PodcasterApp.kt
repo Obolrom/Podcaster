@@ -3,12 +3,14 @@ package io.obolonsky.podcaster
 import android.app.Application
 import androidx.work.Configuration
 import androidx.work.WorkManager
+import io.obolonsky.core.di.depsproviders.App
+import io.obolonsky.core.di.depsproviders.ApplicationProvider
 import io.obolonsky.podcaster.background.PodcasterWorkerFactory
 import io.obolonsky.podcaster.di.components.DaggerAppComponent
 import timber.log.Timber
 import javax.inject.Inject
 
-class PodcasterApp : Application() {
+class PodcasterApp : Application(), App {
 
     @Inject
     lateinit var workerFactory: PodcasterWorkerFactory
@@ -29,6 +31,8 @@ class PodcasterApp : Application() {
 
         initTimber()
     }
+
+    override fun getAppComponent(): ApplicationProvider = appComponent
 
     private fun initTimber() {
         if (BuildConfig.DEBUG) {

@@ -10,6 +10,7 @@ import dagger.Provides
 class PlayerModule {
 
     @Provides
+    @FeatureScope
     fun providePlayer(
         context: Context
     ): ExoPlayer {

@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/chapters"
+        android:id="@+id/exo_settings"
         android:layout_width="@dimen/clear_icon_size"
         android:layout_height="@dimen/clear_icon_size"
         android:layout_margin="@dimen/big_margin"
@@ -116,12 +116,12 @@
         app:tint="@color/blue_magenta_dark"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/exo_rewind"
-        app:layout_constraintEnd_toStartOf="@+id/exo_rewind"
-        app:layout_constraintTop_toTopOf="@+id/exo_rewind" />
+        app:layout_constraintBottom_toBottomOf="@+id/exo_rew"
+        app:layout_constraintEnd_toStartOf="@+id/exo_rew"
+        app:layout_constraintTop_toTopOf="@+id/exo_rew" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/exo_rewind"
+        android:id="@+id/exo_rew"
         android:layout_width="@dimen/exo_forward_rewind_icon_width"
         android:layout_height="@dimen/exo_forward_rewind_icon_width"
         android:layout_marginHorizontal="@dimen/small_margin"
@@ -143,12 +143,12 @@
         app:tint="@color/blue_magenta_dark"
         app:layout_constraintVertical_bias="0.55"
         app:layout_constraintBottom_toTopOf="@+id/exo_playback_speed"
-        app:layout_constraintStart_toEndOf="@+id/exo_rewind"
-        app:layout_constraintEnd_toStartOf="@+id/exo_forward"
+        app:layout_constraintStart_toEndOf="@+id/exo_rew"
+        app:layout_constraintEnd_toStartOf="@+id/exo_ffwd"
         app:layout_constraintTop_toBottomOf="@+id/exo_progress" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/exo_forward"
+        android:id="@+id/exo_ffwd"
         android:layout_width="@dimen/exo_forward_rewind_icon_width"
         android:layout_height="@dimen/exo_forward_rewind_icon_width"
         android:layout_marginHorizontal="@dimen/small_margin"
@@ -167,10 +167,10 @@
         android:contentDescription="@string/image_view_description"
         app:srcCompat="@drawable/ic_round_skip_next"
         app:tint="@color/blue_magenta_dark"
-        app:layout_constraintBottom_toBottomOf="@+id/exo_forward"
+        app:layout_constraintBottom_toBottomOf="@+id/exo_ffwd"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/exo_forward"
-        app:layout_constraintTop_toTopOf="@+id/exo_forward" />
+        app:layout_constraintStart_toEndOf="@+id/exo_ffwd"
+        app:layout_constraintTop_toTopOf="@+id/exo_ffwd" />
 
     <io.obolonsky.player_feature.widgets.SpeedView
         android:id="@+id/exo_playback_speed"

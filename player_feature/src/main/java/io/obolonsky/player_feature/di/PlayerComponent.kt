@@ -2,8 +2,9 @@ package io.obolonsky.player_feature.di
 
 import dagger.Component
 import io.obolonsky.core.di.depsproviders.ApplicationContextProvider
-import io.obolonsky.player_feature.PlayerFragment
+import io.obolonsky.player_feature.player.PodcasterPlaybackService
 
+@FeatureScope
 @Component(
     dependencies = [
         ApplicationContextProvider::class,
@@ -22,5 +23,5 @@ interface PlayerComponent {
         ): PlayerComponent
     }
 
-    fun inject(target: PlayerFragment)
+    fun inject(target: PodcasterPlaybackService)
 }

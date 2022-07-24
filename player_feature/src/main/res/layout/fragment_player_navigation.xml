@@ -107,12 +107,12 @@
         app:layout_constraintEnd_toEndOf="@+id/exo_progress"
         tools:text="04:15" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/exo_prev"
         android:layout_width="@dimen/exo_forward_rewind_icon_width"
         android:layout_height="@dimen/exo_forward_rewind_icon_width"
         android:contentDescription="@string/image_view_description"
-        android:src="@drawable/ic_round_skip_previous"
+        app:srcCompat="@drawable/ic_round_skip_previous"
         app:tint="@color/blue_magenta_dark"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
@@ -120,67 +120,67 @@
         app:layout_constraintEnd_toStartOf="@+id/exo_rewind"
         app:layout_constraintTop_toTopOf="@+id/exo_rewind" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/exo_rewind"
         android:layout_width="@dimen/exo_forward_rewind_icon_width"
         android:layout_height="@dimen/exo_forward_rewind_icon_width"
         android:layout_marginHorizontal="@dimen/small_margin"
         android:contentDescription="@string/image_view_description"
-        android:src="@drawable/ic_round_replay_30"
+        app:srcCompat="@drawable/ic_round_replay_30"
         app:tint="@color/blue_magenta_dark"
         app:layout_constraintBottom_toBottomOf="@+id/exo_play_pause"
         app:layout_constraintStart_toEndOf="@+id/exo_prev"
         app:layout_constraintEnd_toStartOf="@+id/exo_play_pause"
         app:layout_constraintTop_toTopOf="@+id/exo_play_pause" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/exo_play_pause"
         android:layout_width="@dimen/exo_play_pause_icon_width"
         android:layout_height="@dimen/exo_play_pause_icon_width"
         android:layout_marginHorizontal="@dimen/small_margin"
         android:contentDescription="@string/image_view_description"
-        android:src="@drawable/ic_round_play_arrow"
+        app:srcCompat="@drawable/ic_round_play_arrow"
         app:tint="@color/blue_magenta_dark"
-        app:layout_constraintVertical_bias="0.35"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.55"
+        app:layout_constraintBottom_toTopOf="@+id/exo_playback_speed"
         app:layout_constraintStart_toEndOf="@+id/exo_rewind"
         app:layout_constraintEnd_toStartOf="@+id/exo_forward"
         app:layout_constraintTop_toBottomOf="@+id/exo_progress" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/exo_forward"
         android:layout_width="@dimen/exo_forward_rewind_icon_width"
         android:layout_height="@dimen/exo_forward_rewind_icon_width"
         android:layout_marginHorizontal="@dimen/small_margin"
         android:contentDescription="@string/image_view_description"
-        android:src="@drawable/ic_round_forward_30"
+        app:srcCompat="@drawable/ic_round_forward_30"
         app:tint="@color/blue_magenta_dark"
         app:layout_constraintEnd_toStartOf="@+id/exo_next"
         app:layout_constraintBottom_toBottomOf="@+id/exo_play_pause"
         app:layout_constraintStart_toEndOf="@+id/exo_play_pause"
         app:layout_constraintTop_toTopOf="@+id/exo_play_pause" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/exo_next"
         android:layout_width="@dimen/exo_forward_rewind_icon_width"
         android:layout_height="@dimen/exo_forward_rewind_icon_width"
         android:contentDescription="@string/image_view_description"
-        android:src="@drawable/ic_round_skip_next"
+        app:srcCompat="@drawable/ic_round_skip_next"
         app:tint="@color/blue_magenta_dark"
         app:layout_constraintBottom_toBottomOf="@+id/exo_forward"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/exo_forward"
         app:layout_constraintTop_toTopOf="@+id/exo_forward" />
 
-<!--    <io.obolonsky.podcaster.ui.widgets.SpeedView-->
-<!--        android:id="@+id/exo_playback_speed"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="40dp"-->
-<!--        android:layout_marginBottom="28dp"-->
-<!--        android:background="@drawable/round_background"-->
-<!--        app:speed_text="1.0x"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
+    <io.obolonsky.player_feature.widgets.SpeedView
+        android:id="@+id/exo_playback_speed"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/round_background"
+        app:speed_text="1.0x"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

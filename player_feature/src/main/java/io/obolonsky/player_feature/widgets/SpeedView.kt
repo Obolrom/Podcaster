@@ -1,12 +1,12 @@
-package io.obolonsky.podcaster.ui.widgets
+package io.obolonsky.player_feature.widgets
 
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.LinearLayoutCompat
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
-import io.obolonsky.podcaster.R
-import io.obolonsky.podcaster.databinding.SpeedItemLayoutBinding
+import io.obolonsky.player_feature.R
+import io.obolonsky.player_feature.databinding.SpeedItemLayoutBinding
 
 class SpeedView @JvmOverloads constructor(
     context: Context,

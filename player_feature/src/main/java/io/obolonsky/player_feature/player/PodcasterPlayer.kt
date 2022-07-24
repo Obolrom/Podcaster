@@ -25,6 +25,10 @@ class PodcasterPlayer @Inject constructor(
         player.prepare()
     }
 
+    fun pause() {
+        player.pause()
+    }
+
     fun release() {
         player.release()
     }

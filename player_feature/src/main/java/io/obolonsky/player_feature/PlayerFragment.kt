@@ -57,6 +57,7 @@ class PlayerFragment : BaseFragment(R.layout.fragment_player) {
         controllerFuture = MediaController.Builder(requireContext(), sessionToken)
             .buildAsync()
         controllerFuture?.addListener({
+            // TODO: wrap with a try catch, see docs
             val player = controllerFuture?.get()
             binding.playerView.player = player
             player?.addListener(playerListener)

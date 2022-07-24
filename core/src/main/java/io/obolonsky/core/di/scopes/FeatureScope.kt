@@ -1,4 +1,4 @@
-package io.obolonsky.player_feature.di
+package io.obolonsky.core.di.scopes
 
 import javax.inject.Scope
 

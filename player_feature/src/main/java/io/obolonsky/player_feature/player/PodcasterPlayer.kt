@@ -3,7 +3,7 @@ package io.obolonsky.player_feature.player
 import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
-import io.obolonsky.player_feature.di.FeatureScope
+import io.obolonsky.core.di.scopes.FeatureScope
 import javax.inject.Inject
 
 @FeatureScope

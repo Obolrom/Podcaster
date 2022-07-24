@@ -32,10 +32,7 @@ class PlayerFragment : BaseFragment(R.layout.fragment_player) {
         object : Player.Listener {
 
             override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
-                val trackTitle = mediaMetadata.displayTitle
-                    ?: mediaMetadata.title
-                    ?: mediaMetadata.albumTitle
-                playerNavBinding.audioTrackTitle.text = trackTitle
+                onMediaMetadata(mediaMetadata)
             }
         }
     }
@@ -61,6 +58,7 @@ class PlayerFragment : BaseFragment(R.layout.fragment_player) {
             val player = controllerFuture?.get()
             binding.playerView.player = player
             player?.addListener(playerListener)
+            player?.mediaMetadata?.let(::onMediaMetadata)
         }, MoreExecutors.directExecutor())
     }
 
@@ -68,5 +66,12 @@ class PlayerFragment : BaseFragment(R.layout.fragment_player) {
         super.onStop()
         controllerFuture?.let(MediaController::releaseFuture)
         binding.playerView.player?.removeListener(playerListener)
+    }
+
+    private fun onMediaMetadata(mediaMetadata: MediaMetadata) {
+        val trackTitle = mediaMetadata.displayTitle
+            ?: mediaMetadata.title
+            ?: mediaMetadata.albumTitle
+        playerNavBinding.audioTrackTitle.text = trackTitle
     }
 }

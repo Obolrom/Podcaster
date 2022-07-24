@@ -1,30 +1,74 @@
 package io.obolonsky.player_feature.di
 
 import android.content.Context
+import androidx.media3.common.AudioAttributes
+import androidx.media3.common.C
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
+import androidx.media3.exoplayer.trackselection.TrackSelector
 import androidx.media3.session.MediaSession
 import dagger.Module
 import dagger.Provides
+import io.obolonsky.core.di.scopes.FeatureScope
+import io.obolonsky.player_feature.R
+import io.obolonsky.player_feature.player.MediaSessionCallback
+import java.util.concurrent.TimeUnit
 
 @Module
 class PlayerModule {
 
     @Provides
     @FeatureScope
-    fun providePlayer(
-        context: Context
-    ): ExoPlayer {
-        return ExoPlayer.Builder(context)
+    fun provideTrackSelector(
+        context: Context,
+    ): TrackSelector {
+        return DefaultTrackSelector(context)
+    }
+
+    @Provides
+    @FeatureScope
+    fun provideAudioAttributes(): AudioAttributes {
+        return AudioAttributes.Builder()
+            .setUsage(C.USAGE_MEDIA)
+            .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
             .build()
     }
 
     @Provides
-    fun provideMediaSession(
+    @FeatureScope
+    fun provideRewindTimeMs(context: Context): Long {
+        return context.resources
+            .getInteger(R.integer.player_rewind_time) * TimeUnit.SECONDS.toMillis(1)
+    }
+
+    @Provides
+    @FeatureScope
+    fun providePlayer(
         context: Context,
-        exoPlayer: ExoPlayer,
-    ): MediaSession {
-        return MediaSession.Builder(context, exoPlayer)
+        audioAttributes: AudioAttributes,
+        trackSelector: TrackSelector,
+        rewindTimeMs: Long
+    ): ExoPlayer {
+        return ExoPlayer.Builder(context)
+            .setAudioAttributes(audioAttributes, true)
+            .apply {
+                setSeekBackIncrementMs(rewindTimeMs)
+                setSeekForwardIncrementMs(rewindTimeMs)
+            }
+            .setHandleAudioBecomingNoisy(true)
+            .setTrackSelector(trackSelector)
             .build()
     }
 
+    @Provides
+    @FeatureScope
+    fun provideMediaSession(
+        context: Context,
+        exoPlayer: ExoPlayer,
+        mediaSessionCallback: MediaSessionCallback,
+    ): MediaSession {
+        return MediaSession.Builder(context, exoPlayer)
+            .setCallback(mediaSessionCallback)
+            .build()
+    }
 }

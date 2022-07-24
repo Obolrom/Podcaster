@@ -8,8 +8,9 @@ import androidx.media3.session.SessionCommand
 import androidx.media3.session.SessionResult
 import com.google.common.util.concurrent.ListenableFuture
 import timber.log.Timber
+import javax.inject.Inject
 
-class MediaSessionCallback : MediaSession.Callback {
+class MediaSessionCallback @Inject constructor() : MediaSession.Callback {
 
     override fun onConnect(
         session: MediaSession,

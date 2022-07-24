@@ -28,4 +28,13 @@ class PodcasterPlaybackService : MediaSessionService() {
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? {
         return mediaSession
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaSession?.apply {
+            release()
+            mediaSession = null
+        }
+        podcasterPlayer.release()
+    }
 }

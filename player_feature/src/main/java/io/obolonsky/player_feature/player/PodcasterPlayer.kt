@@ -24,4 +24,8 @@ class PodcasterPlayer @Inject constructor(
     fun play() {
         player.prepare()
     }
+
+    fun release() {
+        player.release()
+    }
 }

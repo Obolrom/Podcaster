@@ -25,14 +25,10 @@ class PodcasterPlaybackService : MediaSessionService() {
         return mediaSession
     }
 
-    override fun onUpdateNotification(session: MediaSession) {
-        super.onUpdateNotification(session)
-    }
-
     override fun onDestroy() {
         super.onDestroy()
-        mediaSession.release()
         podcasterPlayer.release()
+        mediaSession.release()
     }
 
     private fun inject() {

@@ -5,8 +5,7 @@ import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
-import androidx.media3.session.MediaController
-import androidx.media3.session.SessionToken
+import androidx.media3.session.*
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
@@ -14,6 +13,8 @@ import io.obolonsky.coreui.BaseFragment
 import io.obolonsky.player_feature.databinding.FragmentPlayerBinding
 import io.obolonsky.player_feature.databinding.FragmentPlayerNavigationBinding
 import io.obolonsky.player_feature.player.PodcasterPlaybackService
+import timber.log.Timber
+import java.util.concurrent.ExecutionException
 
 class PlayerFragment : BaseFragment(R.layout.fragment_player) {
 
@@ -52,13 +53,27 @@ class PlayerFragment : BaseFragment(R.layout.fragment_player) {
     override fun onStart() {
         super.onStart()
         controllerFuture = MediaController.Builder(requireContext(), sessionToken)
+            .setListener(MediaControllerListener())
             .buildAsync()
+
         controllerFuture?.addListener({
-            // TODO: wrap with a try catch, see docs
-            val player = controllerFuture?.get()
-            binding.playerView.player = player
-            player?.addListener(playerListener)
-            player?.mediaMetadata?.let(::onMediaMetadata)
+            try {
+                val player = controllerFuture?.get()
+                binding.playerView.player = player
+                player?.addListener(playerListener)
+             /*   player?.sendCustomCommand(
+                    SessionCommand(MediaSessionCallback.REWIND_30, Bundle.EMPTY),
+                    Bundle.EMPTY
+                )*/
+                player?.mediaMetadata?.let(::onMediaMetadata)
+            } catch (e: ExecutionException) {
+                e.printStackTrace()
+                Timber.e(e)
+                if (e.cause is SecurityException) {
+                    Timber.e("SecurityException at controllerFuture.addListener ${e.cause}")
+                    // The session rejected the connection.
+                }
+            }
         }, MoreExecutors.directExecutor())
     }
 
@@ -73,5 +88,43 @@ class PlayerFragment : BaseFragment(R.layout.fragment_player) {
             ?: mediaMetadata.title
             ?: mediaMetadata.albumTitle
         playerNavBinding.audioTrackTitle.text = trackTitle
+    }
+
+    inner class MediaControllerListener : MediaController.Listener {
+
+        override fun onDisconnected(controller: MediaController) {
+            Timber.d("MediaControllerListener onDisconnected")
+            super.onDisconnected(controller)
+        }
+
+        override fun onSetCustomLayout(
+            controller: MediaController,
+            layout: MutableList<CommandButton>
+        ): ListenableFuture<SessionResult> {
+            Timber.d("MediaControllerListener onSetCustomLayout")
+            return super.onSetCustomLayout(controller, layout)
+        }
+
+        override fun onAvailableSessionCommandsChanged(
+            controller: MediaController,
+            commands: SessionCommands
+        ) {
+            Timber.d("MediaControllerListener onAvailableSessionCommandsChanged")
+            super.onAvailableSessionCommandsChanged(controller, commands)
+        }
+
+        override fun onCustomCommand(
+            controller: MediaController,
+            command: SessionCommand,
+            args: Bundle
+        ): ListenableFuture<SessionResult> {
+            Timber.d("MediaControllerListener onCustomCommand")
+            return super.onCustomCommand(controller, command, args)
+        }
+
+        override fun onExtrasChanged(controller: MediaController, extras: Bundle) {
+            Timber.d("MediaControllerListener onExtrasChanged")
+            super.onExtrasChanged(controller, extras)
+        }
     }
 }

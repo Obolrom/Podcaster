@@ -17,7 +17,17 @@ class MediaSessionCallback @Inject constructor() : MediaSession.Callback {
         controller: MediaSession.ControllerInfo
     ): MediaSession.ConnectionResult {
         Timber.d("MediaSessionCallback onConnect")
-        return super.onConnect(session, controller)
+        val connectionResult = super.onConnect(session, controller)
+        val sessionCommands = connectionResult.availableSessionCommands
+            .buildUpon()
+            .add(SessionCommand(REWIND_30, Bundle()))
+            .add(SessionCommand(FAST_FW_30, Bundle()))
+            .build()
+
+        return MediaSession.ConnectionResult.accept(
+            sessionCommands,
+            connectionResult.availablePlayerCommands
+        )
     }
 
     override fun onPostConnect(session: MediaSession, controller: MediaSession.ControllerInfo) {
@@ -75,5 +85,10 @@ class MediaSessionCallback @Inject constructor() : MediaSession.Callback {
     ): ListenableFuture<MutableList<MediaItem>> {
         Timber.d("MediaSessionCallback onAddMediaItems")
         return super.onAddMediaItems(mediaSession, controller, mediaItems)
+    }
+
+    companion object {
+        const val REWIND_30 = "REWIND_30"
+        const val FAST_FW_30 = "FAST_FW_30"
     }
 }

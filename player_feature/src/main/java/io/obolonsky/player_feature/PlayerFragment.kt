@@ -61,10 +61,6 @@ class PlayerFragment : BaseFragment(R.layout.fragment_player) {
                 val player = controllerFuture?.get()
                 binding.playerView.player = player
                 player?.addListener(playerListener)
-             /*   player?.sendCustomCommand(
-                    SessionCommand(MediaSessionCallback.REWIND_30, Bundle.EMPTY),
-                    Bundle.EMPTY
-                )*/
                 player?.mediaMetadata?.let(::onMediaMetadata)
             } catch (e: ExecutionException) {
                 e.printStackTrace()

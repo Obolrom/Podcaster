@@ -54,6 +54,10 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
+    // KTX
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.0-alpha01")
+
     // Dagger 2
     implementation("com.google.dagger:dagger:2.40.5")
     kapt("com.google.dagger:dagger-compiler:2.40.5")

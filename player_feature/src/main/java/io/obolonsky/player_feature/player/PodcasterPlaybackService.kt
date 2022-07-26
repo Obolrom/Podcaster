@@ -37,6 +37,7 @@ class PodcasterPlaybackService : MediaSessionService() {
         super.onCreate()
 
         customLayout = ImmutableList.of(customCommands[0], customCommands[1])
+//        setMediaNotificationProvider()
 
         podcasterPlayer.play()
     }

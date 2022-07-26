@@ -25,6 +25,14 @@ class PodcasterPlayer @Inject constructor(
         player.prepare()
     }
 
+    fun forward() {
+        player.seekForward()
+    }
+
+    fun rewind() {
+        player.seekBack()
+    }
+
     fun pause() {
         player.pause()
     }

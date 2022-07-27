@@ -22,3 +22,6 @@ project(":core").projectDir = File(rootDir, "core")
 
 include(":player_feature")
 project(":player_feature").projectDir = File(rootDir, "player_feature")
+
+include(":shazam_feature")
+project(":shazam_feature").projectDir = File(rootDir, "shazam_feature")

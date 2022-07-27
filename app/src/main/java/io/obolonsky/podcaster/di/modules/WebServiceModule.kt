@@ -6,10 +6,12 @@ import dagger.Provides
 import io.obolonsky.podcaster.BuildConfig
 import io.obolonsky.podcaster.api.BookApi
 import io.obolonsky.core.di.scopes.ApplicationScope
+import io.obolonsky.shazam_feature.ShazamApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Qualifier
 
 @Module
 class WebServiceModule {
@@ -55,6 +57,29 @@ class WebServiceModule {
     }
 
     @ApplicationScope
+    @Shazam
+    @Provides
+    fun provideShazamRetrofit(
+        client: OkHttpClient,
+        converter: GsonConverterFactory,
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://shazam.p.rapidapi.com/")
+            .client(client)
+            .addCallAdapterFactory(NetworkResponseAdapterFactory())
+            .addConverterFactory(converter)
+            .build()
+    }
+
+    @ApplicationScope
+    @Provides
+    fun provideShazamApi(
+        @Shazam retrofit: Retrofit
+    ): ShazamApi {
+        return retrofit.create(ShazamApi::class.java)
+    }
+
+    @ApplicationScope
     @Provides
     fun provideBookApi(
         retrofit: Retrofit
@@ -62,3 +87,8 @@ class WebServiceModule {
         return retrofit.create(BookApi::class.java)
     }
 }
+
+@Qualifier
+@MustBeDocumented
+@Retention(value = AnnotationRetention.RUNTIME)
+annotation class Shazam

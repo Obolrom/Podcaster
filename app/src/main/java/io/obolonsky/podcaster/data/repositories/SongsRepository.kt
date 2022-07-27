@@ -18,6 +18,7 @@ import io.obolonsky.podcaster.di.modules.CoroutineSchedulers
 import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.podcaster.paging.BookPagingSource
 import io.obolonsky.podcaster.paging.BookSearchPagingSource
+import io.obolonsky.shazam_feature.ShazamApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -29,6 +30,7 @@ import javax.inject.Inject
 @ApplicationScope
 class SongsRepository @Inject constructor(
     private val bookApi: BookApi,
+    private val shazamApi: ShazamApi,
     private val database: PodcasterDatabase,
     private val songsDao: SongDao,
     private val dispatchers: CoroutineSchedulers,
@@ -68,6 +70,16 @@ class SongsRepository @Inject constructor(
                     Timber.d("asdgnnflskjfs lib error: ${shit.error}")
                 }
             }
+
+//            when (val shazamSearch = shazamApi.searchByQuery()) {
+//                is NetworkResponse.Success -> {
+//                    Timber.d("shazamApi success ${shazamSearch.body}")
+//                }
+//
+//                is NetworkResponse.Error -> {
+//                    Timber.d("shazamApi error ${shazamSearch.error}")
+//                }
+//            }
         }
     }
 

@@ -1,12 +1,11 @@
 package io.obolonsky.podcaster.data.repositories
 
-import android.content.Context
+import android.util.Base64
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.haroldadmin.cnradapter.NetworkResponse
 import io.obolonsky.core.di.scopes.ApplicationScope
-import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.api.BookApi
 import io.obolonsky.podcaster.data.misc.BookMapper
 import io.obolonsky.podcaster.data.misc.BookPagingMapper
@@ -27,16 +26,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import timber.log.Timber
-import java.io.BufferedReader
 import java.io.File
 import javax.inject.Inject
 
 @ApplicationScope
 class SongsRepository @Inject constructor(
-    private val context: Context,
     private val bookApi: BookApi,
     private val shazamApi: ShazamApi,
     private val database: PodcasterDatabase,
@@ -88,24 +84,27 @@ class SongsRepository @Inject constructor(
 //                    Timber.d("shazamApi error ${shazamSearch.error}")
 //                }
 //            }
-
-            val input = context.resources.openRawResource(R.raw.clinteastwood_portion_mono)
-                .bufferedReader()
-                .use(BufferedReader::readText)
-            val rawAudio = input.toRequestBody("text/plain".toMediaTypeOrNull())
-            when (val shazamDetect = shazamApi.detect(rawAudio)) {
-                is NetworkResponse.Success -> {
-                    Timber.d("shazamApi success ${shazamDetect.body}")
-                }
-
-                is NetworkResponse.Error -> {
-                    Timber.d("shazamApi error ${shazamDetect.error}")
-                }
-            }
         }
     }
 
+    suspend fun detect(audioFile: File) {
+        val sourceRawAudio = audioFile.readBytes()
+        val encodedSource = Base64.encodeToString(
+            sourceRawAudio,
+            Base64.NO_WRAP
+        )
 
+        val rawAudio = encodedSource.toRequestBody("text/plain".toMediaTypeOrNull())
+//        when (val shazamDetect = shazamApi.detect(rawAudio)) {
+//            is NetworkResponse.Success -> {
+//                Timber.d("shazamApi success ${shazamDetect.body}")
+//            }
+//
+//            is NetworkResponse.Error -> {
+//                Timber.d("shazamApi error ${shazamDetect.error}")
+//            }
+//        }
+    }
 
     suspend fun saveAuditionProgress(
         bookId: String,

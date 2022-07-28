@@ -13,10 +13,12 @@ import io.obolonsky.podcaster.data.repositories.SongsRepository
 import io.obolonsky.podcaster.data.room.StatefulData
 import io.obolonsky.podcaster.data.room.entities.Book
 import io.obolonsky.podcaster.di.modules.CoroutineSchedulers
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import kotlinx.coroutines.withContext
+import java.io.File
 
 class SongsViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
@@ -50,6 +52,10 @@ class SongsViewModel @AssistedInject constructor(
             _book.emit(StatefulData.Loading())
             _book.emit(songsRepository.loadBook(id))
         }
+    }
+
+    suspend fun detect(file: File) = withContext(Dispatchers.Default) {
+        songsRepository.detect(file)
     }
 
     @AssistedFactory

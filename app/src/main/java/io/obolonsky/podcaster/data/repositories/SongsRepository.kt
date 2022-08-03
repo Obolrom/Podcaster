@@ -1,5 +1,6 @@
 package io.obolonsky.podcaster.data.repositories
 
+import android.content.Context
 import android.util.Base64
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -20,12 +21,15 @@ import io.obolonsky.podcaster.di.modules.CoroutineSchedulers
 import io.obolonsky.podcaster.paging.BookPagingSource
 import io.obolonsky.podcaster.paging.BookSearchPagingSource
 import io.obolonsky.shazam_feature.ShazamApi
+import io.obolonsky.shazam_feature.ShazamCoreApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import timber.log.Timber
 import java.io.File
@@ -33,8 +37,10 @@ import javax.inject.Inject
 
 @ApplicationScope
 class SongsRepository @Inject constructor(
+    private val context: Context,
     private val bookApi: BookApi,
     private val shazamApi: ShazamApi,
+    private val shazamCoreApi: ShazamCoreApi,
     private val database: PodcasterDatabase,
     private val songsDao: SongDao,
     private val dispatchers: CoroutineSchedulers,
@@ -66,24 +72,44 @@ class SongsRepository @Inject constructor(
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
-            when (val shit = bookApi.getUserBookLibrary()) {
-                is NetworkResponse.Success -> {
-                    Timber.d("asdgnnflskjfs lib is working: ${shit.body}")
-                }
-                is NetworkResponse.Error -> {
-                    Timber.d("asdgnnflskjfs lib error: ${shit.error}")
-                }
-            }
-
-//            when (val shazamSearch = shazamApi.searchByQuery("look")) {
+//            when (val shit = bookApi.getUserBookLibrary()) {
 //                is NetworkResponse.Success -> {
-//                    Timber.d("shazamApi success ${shazamSearch.body}")
+//                    Timber.d("asdgnnflskjfs lib is working: ${shit.body}")
 //                }
-//
 //                is NetworkResponse.Error -> {
-//                    Timber.d("shazamApi error ${shazamSearch.error}")
+//                    Timber.d("asdgnnflskjfs lib error: ${shit.error}")
 //                }
 //            }
+
+//            when (val fuck = shazamCoreApi.getTotalShazams()) {
+//                is NetworkResponse.Success -> {
+//                    Timber.d("asdgnnflskjfs lib is working: ${fuck.body}")
+//                }
+//                is NetworkResponse.Error -> {
+//                    Timber.d("asdgnnflskjfs lib error: ${fuck.error}")
+//                }
+//            }
+        }
+    }
+
+    suspend fun recognize(audioFile: File) {
+        val body = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart(
+                name = "file",
+                filename = audioFile.name,
+                body = audioFile.asRequestBody()
+            )
+            .build()
+
+        when (val shazamRecognize = shazamCoreApi.recognize(body)) {
+            is NetworkResponse.Success -> {
+                Timber.d("shazamApi success ${shazamRecognize.body}")
+            }
+
+            is NetworkResponse.Error -> {
+                Timber.d("shazamApi error ${shazamRecognize.error}")
+            }
         }
     }
 
@@ -95,15 +121,15 @@ class SongsRepository @Inject constructor(
         )
 
         val rawAudio = encodedSource.toRequestBody("text/plain".toMediaTypeOrNull())
-//        when (val shazamDetect = shazamApi.detect(rawAudio)) {
-//            is NetworkResponse.Success -> {
-//                Timber.d("shazamApi success ${shazamDetect.body}")
-//            }
-//
-//            is NetworkResponse.Error -> {
-//                Timber.d("shazamApi error ${shazamDetect.error}")
-//            }
-//        }
+        when (val shazamDetect = shazamApi.detect(rawAudio)) {
+            is NetworkResponse.Success -> {
+                Timber.d("shazamApi success ${shazamDetect.body}")
+            }
+
+            is NetworkResponse.Error -> {
+                Timber.d("shazamApi error ${shazamDetect.error}")
+            }
+        }
     }
 
     suspend fun saveAuditionProgress(

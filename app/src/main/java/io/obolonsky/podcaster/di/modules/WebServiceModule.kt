@@ -3,10 +3,11 @@ package io.obolonsky.podcaster.di.modules
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import dagger.Module
 import dagger.Provides
+import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.podcaster.BuildConfig
 import io.obolonsky.podcaster.api.BookApi
-import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.shazam_feature.ShazamApi
+import io.obolonsky.shazam_feature.ShazamCoreApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -72,11 +73,34 @@ class WebServiceModule {
     }
 
     @ApplicationScope
+    @ShazamCore
+    @Provides
+    fun provideShazamCoreRetrofit(
+        client: OkHttpClient,
+        converter: GsonConverterFactory,
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://shazam-core.p.rapidapi.com/v1/")
+            .client(client)
+            .addCallAdapterFactory(NetworkResponseAdapterFactory())
+            .addConverterFactory(converter)
+            .build()
+    }
+
+    @ApplicationScope
     @Provides
     fun provideShazamApi(
         @Shazam retrofit: Retrofit
     ): ShazamApi {
         return retrofit.create(ShazamApi::class.java)
+    }
+
+    @ApplicationScope
+    @Provides
+    fun provideShazamCoreApi(
+        @ShazamCore retrofit: Retrofit,
+    ): ShazamCoreApi {
+        return retrofit.create(ShazamCoreApi::class.java)
     }
 
     @ApplicationScope
@@ -92,3 +116,8 @@ class WebServiceModule {
 @MustBeDocumented
 @Retention(value = AnnotationRetention.RUNTIME)
 annotation class Shazam
+
+@Qualifier
+@MustBeDocumented
+@Retention(value = AnnotationRetention.RUNTIME)
+annotation class ShazamCore

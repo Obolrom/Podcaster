@@ -58,6 +58,10 @@ class SongsViewModel @AssistedInject constructor(
         songsRepository.detect(file)
     }
 
+    suspend fun recognize(file: File) = withContext(Dispatchers.Default) {
+        songsRepository.recognize(file)
+    }
+
     @AssistedFactory
     interface Factory {
         fun create(savedStateHandle: SavedStateHandle): SongsViewModel

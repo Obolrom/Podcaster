@@ -116,3 +116,15 @@ dependencies {
     implementation("io.coil-kt:coil:2.0.0-rc03")
     implementation("com.github.kirich1409:viewbindingpropertydelegate:1.5.3")
 }
+
+tasks.register<tasks.GreetingTask>("greet")
+
+tasks.register<tasks.GreetingTask>("heyHo") {
+    this.greeting.set("fuck you")
+}
+
+tasks.register<tasks.IncrementalReverseTask>("incrementalReverse") {
+    inputDir.set(file("inputs"))
+    outputDir.set(file("$buildDir/outputs"))
+    inputProperty.set(project.findProperty("taskInputProperty") as String? ?: "original")
+}

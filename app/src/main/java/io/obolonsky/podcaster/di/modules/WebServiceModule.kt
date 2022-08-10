@@ -7,7 +7,7 @@ import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.podcaster.BuildConfig
 import io.obolonsky.podcaster.api.BookApi
 import io.obolonsky.shazam_feature.ShazamApi
-import io.obolonsky.shazam_feature.ShazamCoreApi
+import io.obolonsky.shazam_feature.SongRecognitionApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -99,8 +99,8 @@ class WebServiceModule {
     @Provides
     fun provideShazamCoreApi(
         @ShazamCore retrofit: Retrofit,
-    ): ShazamCoreApi {
-        return retrofit.create(ShazamCoreApi::class.java)
+    ): SongRecognitionApi {
+        return retrofit.create(SongRecognitionApi::class.java)
     }
 
     @ApplicationScope

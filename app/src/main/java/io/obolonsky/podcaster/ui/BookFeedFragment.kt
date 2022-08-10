@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.MediaStore
-import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -54,6 +53,16 @@ class BookFeedFragment : AbsFragment(R.layout.fragment_book_feed) {
                     ?.apply { submitData(lifecycle, it) }
             }
             .launchWhenStarted(lifecycleScope)
+
+        songsViewModel.shazamDetect
+            .onEach {
+                player.prepare()
+                player.playWhenReady = true
+                it.track?.audioUri?.let { audioUri ->
+                    player.setMediaItem(MediaItem.fromUri(audioUri))
+                }
+            }
+            .launchWhenStarted(lifecycleScope)
     }
 
     override fun initViews(savedInstanceState: Bundle?) {
@@ -78,13 +87,6 @@ class BookFeedFragment : AbsFragment(R.layout.fragment_book_feed) {
         binding.stopRecording.setOnClickListener {
             val recordIntent = Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION)
             startActivityForResult(recordIntent, 0)
-
-//            player.prepare()
-//            player.playWhenReady = true
-//            player.setMediaItem(MediaItem.fromUri(
-//            "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/e8/cd/a3/e8cda390-5dbb-45c6-e1ca-aa0afe8ebfa3/mzaf_2680415283105878213.plus.aac.ep.m4a"
-//                .toUri()
-//            ))
         }
     }
 

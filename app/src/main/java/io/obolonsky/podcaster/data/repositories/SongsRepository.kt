@@ -6,8 +6,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.haroldadmin.cnradapter.NetworkResponse
+import io.obolonsky.core.di.data.ShazamDetect
 import io.obolonsky.core.di.scopes.ApplicationScope
-import io.obolonsky.podcaster.BuildConfig
 import io.obolonsky.podcaster.api.BookApi
 import io.obolonsky.podcaster.data.misc.BookMapper
 import io.obolonsky.podcaster.data.misc.BookPagingMapper
@@ -22,22 +22,19 @@ import io.obolonsky.podcaster.di.modules.CoroutineSchedulers
 import io.obolonsky.podcaster.paging.BookPagingSource
 import io.obolonsky.podcaster.paging.BookSearchPagingSource
 import io.obolonsky.shazam_feature.ShazamApi
-import io.obolonsky.shazam_feature.ShazamCoreApi
+import io.obolonsky.shazam_feature.SongRecognitionApi
+import io.obolonsky.shazam_feature.SongRecognizeResponseToShazamDetectMapper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.*
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
 import java.io.*
-import java.net.HttpURLConnection
-import java.net.URL
 import javax.inject.Inject
 
 @ApplicationScope
@@ -45,7 +42,7 @@ class SongsRepository @Inject constructor(
     private val context: Context,
     private val bookApi: BookApi,
     private val shazamApi: ShazamApi,
-    private val shazamCoreApi: ShazamCoreApi,
+    private val shazamCoreApi: SongRecognitionApi,
     private val database: PodcasterDatabase,
     private val songsDao: SongDao,
     private val dispatchers: CoroutineSchedulers,
@@ -97,7 +94,7 @@ class SongsRepository @Inject constructor(
         }
     }
 
-    suspend fun audioDetect(audioFile: File) {
+    suspend fun audioDetect(audioFile: File): ShazamDetect? {
         val body = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
             .addFormDataPart(
@@ -107,15 +104,23 @@ class SongsRepository @Inject constructor(
             )
             .build()
 
-        when (val shazamRecognize = shazamCoreApi.detect(body)) {
+        val shazamDetect = withContext(dispatchers.io) {
+            shazamCoreApi.detect(body)
+        }
+        when (shazamDetect) {
             is NetworkResponse.Success -> {
-                Timber.d("shazamApi success ${shazamRecognize.body}")
+                val detected = SongRecognizeResponseToShazamDetectMapper.map(shazamDetect.body)
+                Timber.d("shazamApi success ${shazamDetect.body}")
+
+                return detected
             }
 
             is NetworkResponse.Error -> {
-                Timber.d("shazamApi error ${shazamRecognize.error}")
+                Timber.d("shazamApi error ${shazamDetect.error}")
             }
         }
+
+        return null
     }
 
     suspend fun detect(audioFile: File) {

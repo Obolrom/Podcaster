@@ -1,6 +1,5 @@
 package io.obolonsky.podcaster.viewmodels
 
-import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,15 +9,14 @@ import androidx.paging.cachedIn
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import io.obolonsky.core.di.data.ShazamDetect
 import io.obolonsky.podcaster.data.repositories.SongsRepository
 import io.obolonsky.podcaster.data.room.StatefulData
 import io.obolonsky.podcaster.data.room.entities.Book
 import io.obolonsky.podcaster.di.modules.CoroutineSchedulers
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
 
 class SongsViewModel @AssistedInject constructor(
@@ -34,6 +32,14 @@ class SongsViewModel @AssistedInject constructor(
         )
     }
     val books: SharedFlow<PagingData<Book>> get() = _books.asSharedFlow()
+
+    private val _shazamDetect by lazy {
+        MutableSharedFlow<ShazamDetect>(
+            replay = 1,
+            onBufferOverflow = BufferOverflow.DROP_OLDEST,
+        )
+    }
+    val shazamDetect: SharedFlow<ShazamDetect> get() = _shazamDetect.asSharedFlow()
 
     private val _book by lazy { MutableSharedFlow<StatefulData<Book>>() }
     val book: SharedFlow<StatefulData<Book>> get() = _book.asSharedFlow()
@@ -55,12 +61,11 @@ class SongsViewModel @AssistedInject constructor(
         }
     }
 
-    suspend fun detect(file: File) = withContext(Dispatchers.Default) {
-        songsRepository.detect(file)
-    }
-
-    suspend fun audioDetect(audioFile: File) = withContext(Dispatchers.Default) {
-        songsRepository.audioDetect(audioFile)
+    fun audioDetect(audioFile: File) {
+        viewModelScope.launch(dispatchers.computation) {
+            val shazamDetect = songsRepository.audioDetect(audioFile)
+            shazamDetect?.let { _shazamDetect.emit(it) }
+        }
     }
 
     @AssistedFactory

@@ -4,7 +4,7 @@ import com.haroldadmin.cnradapter.NetworkResponse
 import okhttp3.RequestBody
 import retrofit2.http.*
 
-interface ShazamCoreApi {
+interface SongRecognitionApi {
 
     @Headers(
         "X-RapidAPI-Key: a8a51e0479mshf32be59d72d04c9p1b52cdjsn5c4ad265ea7f",
@@ -13,5 +13,5 @@ interface ShazamCoreApi {
     @POST("song/detect")
     suspend fun detect(
         @Body body: RequestBody
-    ): NetworkResponse<ShazamCoreRecognizeResponse, Unit>
+    ): NetworkResponse<SongRecognizeResponse, Unit>
 }

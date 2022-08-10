@@ -2,7 +2,7 @@ package io.obolonsky.shazam_feature
 
 import com.google.gson.annotations.SerializedName
 
-data class ShazamCoreRecognizeResponse(
+data class SongRecognizeResponse(
     @SerializedName("tagid") val tagId: String?,
     @SerializedName("timestamp") val timestamp: Long?,
     @SerializedName("track") val track: TrackResponse?,

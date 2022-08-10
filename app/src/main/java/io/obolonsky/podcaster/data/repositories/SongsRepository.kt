@@ -7,6 +7,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.haroldadmin.cnradapter.NetworkResponse
 import io.obolonsky.core.di.scopes.ApplicationScope
+import io.obolonsky.podcaster.BuildConfig
 import io.obolonsky.podcaster.api.BookApi
 import io.obolonsky.podcaster.data.misc.BookMapper
 import io.obolonsky.podcaster.data.misc.BookPagingMapper
@@ -27,12 +28,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
-import java.io.File
+import java.io.*
+import java.net.HttpURLConnection
+import java.net.URL
 import javax.inject.Inject
 
 @ApplicationScope
@@ -92,7 +97,7 @@ class SongsRepository @Inject constructor(
         }
     }
 
-    suspend fun recognize(audioFile: File) {
+    suspend fun audioDetect(audioFile: File) {
         val body = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
             .addFormDataPart(
@@ -102,7 +107,7 @@ class SongsRepository @Inject constructor(
             )
             .build()
 
-        when (val shazamRecognize = shazamCoreApi.recognize(body)) {
+        when (val shazamRecognize = shazamCoreApi.detect(body)) {
             is NetworkResponse.Success -> {
                 Timber.d("shazamApi success ${shazamRecognize.body}")
             }

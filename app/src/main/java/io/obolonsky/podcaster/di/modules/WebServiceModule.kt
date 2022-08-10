@@ -80,7 +80,7 @@ class WebServiceModule {
         converter: GsonConverterFactory,
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://shazam-core.p.rapidapi.com/v1/")
+            .baseUrl("https://song-recognition.p.rapidapi.com/")
             .client(client)
             .addCallAdapterFactory(NetworkResponseAdapterFactory())
             .addConverterFactory(converter)

@@ -1,5 +1,6 @@
 package io.obolonsky.podcaster.viewmodels
 
+import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -58,8 +59,8 @@ class SongsViewModel @AssistedInject constructor(
         songsRepository.detect(file)
     }
 
-    suspend fun recognize(file: File) = withContext(Dispatchers.Default) {
-        songsRepository.recognize(file)
+    suspend fun audioDetect(audioFile: File) = withContext(Dispatchers.Default) {
+        songsRepository.audioDetect(audioFile)
     }
 
     @AssistedFactory

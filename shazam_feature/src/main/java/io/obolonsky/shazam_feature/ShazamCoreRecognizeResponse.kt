@@ -12,14 +12,14 @@ data class ShazamCoreRecognizeResponse(
     data class TrackResponse(
         @SerializedName("subtitle") val subtitle: String?,
         @SerializedName("title") val title: String?,
-        @SerializedName("highlightsurls") val highlightsUrl: HighlightsUrlResponse?,
+        @SerializedName("highlightsurls") val highlightsUrl: HighlightsUrlResponse?, // <-- this link has a lot of interesting stuff
         @SerializedName("type") val type: String?,
         @SerializedName("hub") val hub: HubResponse?,
     ) {
 
         data class HighlightsUrlResponse(
-            @SerializedName("artisthighlightsurl") val artisthighlightsurl: String?,
-            @SerializedName("relatedtracksurl") val relatedTracksUrl: String?,
+            @SerializedName("artisthighlightsurl") val artistHighlightsUrl: String?,
+            @SerializedName("relatedtracksurl") val relatedTracksUrl: String?, // <-- this link has a lot of interesting stuff
         )
 
         data class HubResponse(

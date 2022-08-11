@@ -1,5 +1,6 @@
 package io.obolonsky.podcaster.misc
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleCoroutineScope
 import io.obolonsky.podcaster.PodcasterApp
@@ -34,3 +35,6 @@ fun Flow<*>.launchWhenStarted(
 
 val Fragment.appComponent: AppComponent
     get() = (requireActivity().application as PodcasterApp).appComponent
+
+val AppCompatActivity.appComponent: AppComponent
+    get() = (application as PodcasterApp).appComponent

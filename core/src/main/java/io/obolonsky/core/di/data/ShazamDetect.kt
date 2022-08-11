@@ -7,4 +7,7 @@ data class ShazamDetect(
 
 data class Track(
     val audioUri: String?,
+    val subtitle: String?,
+    val title: String?,
+    val imageUrls: List<String>,
 )

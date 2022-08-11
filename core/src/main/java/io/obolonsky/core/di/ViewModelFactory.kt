@@ -1,5 +1,7 @@
 package io.obolonsky.core.di
 
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.AbstractSavedStateViewModelFactory
@@ -23,6 +25,12 @@ class ViewModelFactory<T : ViewModel>(
 }
 
 inline fun <reified T : ViewModel> Fragment.lazyViewModel(
+    noinline create: (savedStateHandle: SavedStateHandle) -> T,
+) = viewModels<T> {
+    ViewModelFactory(this, create)
+}
+
+inline fun <reified T : ViewModel> AppCompatActivity.lazyViewModel(
     noinline create: (savedStateHandle: SavedStateHandle) -> T,
 ) = viewModels<T> {
     ViewModelFactory(this, create)

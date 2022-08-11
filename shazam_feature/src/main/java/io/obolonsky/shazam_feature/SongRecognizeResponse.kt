@@ -15,7 +15,15 @@ data class SongRecognizeResponse(
         @SerializedName("highlightsurls") val highlightsUrl: HighlightsUrlResponse?, // <-- this link has a lot of interesting stuff
         @SerializedName("type") val type: String?,
         @SerializedName("hub") val hub: HubResponse?,
+        @SerializedName("images") val images: ImagesResponse?,
     ) {
+
+        data class ImagesResponse(
+            @SerializedName("background") val backgroundUrl: String?,
+            @SerializedName("coverart") val coverArtUrl: String?,
+            @SerializedName("coverarthq") val coverArtHqUrl: String?,
+            @SerializedName("joecolor") val joecolorUrl: String?,
+        )
 
         data class HighlightsUrlResponse(
             @SerializedName("artisthighlightsurl") val artistHighlightsUrl: String?,

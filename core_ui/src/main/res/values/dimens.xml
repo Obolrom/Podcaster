@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="exo_play_pause_icon_width">56dp</dimen>
+    <dimen name="exo_forward_rewind_icon_width">48dp</dimen>
+
+    <dimen name="clear_icon_size">28dp</dimen>
+
+    <dimen name="small_margin">4dp</dimen>
+    <dimen name="normal_margin">8dp</dimen>
+    <dimen name="big_margin">16dp</dimen>
+    <dimen name="biggest_margin">32dp</dimen>
+
+</resources>

@@ -1,13 +1,11 @@
 package io.obolonsky.podcaster.viewmodels
 
 import androidx.lifecycle.ViewModel
-import io.obolonsky.podcaster.ExoPlayerController
-import io.obolonsky.podcaster.MusicPlayer
+import io.obolonsky.podcaster.data.repositories.SongsRepository
 import javax.inject.Inject
 
 class PlayerViewModel @Inject constructor(
-    val player: MusicPlayer,
-) : ViewModel(), ExoPlayerController by player {
-
+    private val songsRepository: SongsRepository,
+) : ViewModel()/*, ExoPlayerController by player*/ {
 
 }

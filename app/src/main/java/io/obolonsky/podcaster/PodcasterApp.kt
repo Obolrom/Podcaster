@@ -1,39 +1,42 @@
 package io.obolonsky.podcaster
 
 import android.app.Application
-import android.content.Context
-import androidx.lifecycle.*
-import io.obolonsky.podcaster.di.AppComponent
-import io.obolonsky.podcaster.di.injectors.AppInjector
+import androidx.work.Configuration
+import androidx.work.WorkManager
+import io.obolonsky.core.di.depsproviders.App
+import io.obolonsky.core.di.depsproviders.ApplicationProvider
+import io.obolonsky.podcaster.background.PodcasterWorkerFactory
+import io.obolonsky.podcaster.di.components.DaggerAppComponent
 import timber.log.Timber
+import javax.inject.Inject
 
-class PodcasterApp : Application(), ViewModelStoreOwner, LifecycleObserver {
+class PodcasterApp : Application(), App {
 
-    lateinit var appComponent: AppComponent
+    @Inject
+    lateinit var workerFactory: PodcasterWorkerFactory
+
+    val appComponent by lazy { DaggerAppComponent.factory().create(this) }
+
+    private val workManagerConfiguration by lazy {
+        Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
+    }
 
     override fun onCreate() {
         super.onCreate()
+        appComponent.inject(this)
 
-        AppInjector.init(this)
-
-        appComponent = AppInjector.appComponent
+        WorkManager.initialize(this, workManagerConfiguration)
 
         initTimber()
-
-        ProcessLifecycleOwner.get().lifecycle.addObserver(this)
     }
+
+    override fun getAppComponent(): ApplicationProvider = appComponent
 
     private fun initTimber() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
     }
-
-    override fun getViewModelStore(): ViewModelStore = ViewModelStore()
 }
-
-val Context.appComponent: AppComponent
-    get() = when (this) {
-        is PodcasterApp -> appComponent
-        else -> applicationContext.appComponent
-    }

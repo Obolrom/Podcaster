@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/favorites_dest"
+        android:title="@string/favorites"
+        android:enabled="true"
+        android:icon="@drawable/ic_round_library_add_check_24" />
+
+    <item
+        android:id="@+id/search_dest"
+        android:title="@string/search"
+        android:enabled="true"
+        android:icon="@drawable/ic_round_search" />
+
+    <item
+        android:id="@+id/discover_dest"
+        android:title="@string/discover"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_lightbulb" />
+
+    <item
+        android:id="@+id/profile_dest"
+        android:title="@string/profile"
+        android:enabled="true"
+        android:icon="@drawable/ic_round_profile" />
+
+</menu>

@@ -5,7 +5,6 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import io.obolonsky.podcaster.data.responses.MusicItem
 
 abstract class BaseAdapter<T>(
     diffCallback: DiffUtil.ItemCallback<T>,
@@ -18,8 +17,7 @@ abstract class BaseAdapter<T>(
         fun onItemClick(item: T)
     }
 
-    abstract class BaseViewHolder<T>(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+    abstract class BaseViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(itemView) {
         abstract fun bind(item: T)
     }
 

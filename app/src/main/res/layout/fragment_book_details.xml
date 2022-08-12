@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/beige"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/image_container"
+            android:layout_width="0dp"
+            android:layout_height="220dp"
+            android:foreground="@color/black_70"
+            app:layout_constraintEnd_toEndOf="@id/content_container"
+            app:layout_constraintStart_toStartOf="@id/content_container"
+            app:layout_constraintTop_toTopOf="@id/content_container">
+
+            <ImageView
+                android:id="@+id/book_banner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/image_view_description"
+                tools:background="@color/blue" />
+
+        </FrameLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/back"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_margin="@dimen/normal_margin"
+            android:tint="@color/yellow_80"
+            app:srcCompat="@drawable/ic_round_share_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/book_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/big_margin"
+            android:textColor="@color/beige"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            app:layout_constraintStart_toStartOf="@+id/image_container"
+            app:layout_constraintBottom_toTopOf="@+id/author_container"
+            app:layout_constraintTop_toTopOf="@+id/image_container"
+            tools:text="Otherside" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/author_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/big_margin"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@id/image_container"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/book_title">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/beige"
+                android:textAllCaps="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+                android:text="@string/author" />
+
+            <TextView
+                android:id="@+id/book_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/yellow"
+                android:textAllCaps="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                tools:text="Red Hot Chilly Peppers" />
+            
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/book_rating_bar"
+            style="?android:attr/ratingBarStyleIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/big_margin"
+            android:layout_marginStart="@dimen/big_margin"
+            android:isIndicator="true"
+            android:progressTint="@color/yellow"
+            android:stepSize="0.05"
+            android:numStars="5"
+            tools:rating="4.4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_container" />
+
+        <TextView
+            android:id="@+id/book_rating_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            app:layout_constraintBottom_toBottomOf="@+id/book_rating_bar"
+            app:layout_constraintStart_toEndOf="@+id/book_rating_bar"
+            app:layout_constraintTop_toTopOf="@+id/book_rating_bar"
+            tools:text="4.4" />
+
+        <TextView
+            android:id="@+id/book_rated_by_users"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_margin"
+            android:textAllCaps="false"
+            android:textColor="@color/gray"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            app:layout_constraintStart_toStartOf="@id/book_rating_bar"
+            app:layout_constraintTop_toBottomOf="@+id/book_rating_bar"
+            tools:text="Rated by 228 users" />
+
+        <TextView
+            android:id="@+id/total_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:textAllCaps="false"
+            android:textColor="@color/gray"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            app:layout_constraintStart_toStartOf="@id/book_rated_by_users"
+            app:layout_constraintTop_toBottomOf="@+id/book_rated_by_users"
+            tools:text="16 minutes" />
+
+        <TextView
+            android:id="@+id/book_memory_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:textAllCaps="false"
+            android:textColor="@color/gray"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            app:layout_constraintTop_toBottomOf="@+id/total_duration"
+            app:layout_constraintStart_toStartOf="@+id/total_duration"
+            tools:text="15 MB" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/listen"
+            android:layout_width="290dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/big_margin"
+            android:background="@drawable/round_details_background"
+            android:textAllCaps="false"
+            android:text="@string/listen"
+            app:layout_constraintStart_toStartOf="@+id/book_memory_size"
+            app:layout_constraintTop_toBottomOf="@+id/book_memory_size" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/round_details_background"
+            android:padding="8dp"
+            app:srcCompat="@drawable/ic_round_library_add_24"
+            app:layout_constraintBottom_toBottomOf="@+id/listen"
+            app:layout_constraintStart_toEndOf="@+id/listen"
+            app:layout_constraintTop_toTopOf="@+id/listen" />
+
+        <TextView
+            android:id="@+id/about"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/big_margin"
+            android:text="@string/about"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            app:layout_constraintTop_toBottomOf="@+id/listen"
+            app:layout_constraintStart_toStartOf="@+id/listen" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/chip1"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginTop="@dimen/normal_margin"
+            android:textAllCaps="false"
+            android:paddingHorizontal="@dimen/normal_margin"
+            android:text="Alternative rock"
+            android:background="@drawable/rounded_outlined_background"
+            app:layout_constraintStart_toStartOf="@+id/about"
+            app:layout_constraintTop_toBottomOf="@id/about" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/chip2"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:textAllCaps="false"
+            android:paddingHorizontal="@dimen/normal_margin"
+            android:text="Funk rock"
+            android:background="@drawable/rounded_outlined_background"
+            app:layout_constraintStart_toEndOf="@+id/chip1"
+            app:layout_constraintTop_toTopOf="@id/chip1"
+            app:layout_constraintBottom_toBottomOf="@id/chip1" />
+
+        <TextView
+            android:id="@+id/book_description"
+            android:layout_width="360dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_margin"
+            android:maxLines="5"
+            android:ellipsize="end"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintStart_toStartOf="@id/chip1"
+            app:layout_constraintTop_toBottomOf="@+id/chip1"
+            tools:text="Take in on the Otherside, take it on, take it on...Take in on the Otherside, take it on, take it on...Take in on the Otherside, take it on, take it on..." />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

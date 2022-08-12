@@ -1,9 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <!-- Base application theme. -->
-    <style name="Theme.Podcaster" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Base.Theme.MaterialThemeBuilder" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:fontFamily">@font/product_sans_regular</item>
+        <item name="android:splitMotionEvents">false</item>
+    </style>
+
+    <style name="Theme.Podcaster" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/pink_red</item>
+        <item name="colorPrimaryVariant">@color/blue_magenta</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -12,5 +20,23 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+<!--        <item name="android:navigationBarColor">@color/pink_red</item>-->
     </style>
+
+    <!--Dialog themes-->
+    <style name="Theme.PodcasterTheme.FullscreenDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowNoTitle">true</item>
+
+        <!-- Set this to true if you want Full Screen without status bar -->
+        <item name="android:windowFullscreen">false</item>
+
+        <item name="android:windowIsFloating">false</item>
+
+        <!-- This is important! Don't forget to set window background -->
+        <item name="android:windowBackground">@color/black_50</item>
+        <item name="colorAccent">@color/blue_magenta</item>
+
+        <item name="android:navigationBarColor">@color/black</item>
+    </style>
+
 </resources>

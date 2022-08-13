@@ -2,6 +2,7 @@ package io.obolonsky.podcaster.ui
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
@@ -13,12 +14,14 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.podcaster.PodcasterApp
 import io.obolonsky.podcaster.R
+import io.obolonsky.podcaster.data.misc.toaster
 import io.obolonsky.podcaster.databinding.ActivityShazamBinding
 import io.obolonsky.podcaster.misc.appComponent
 import io.obolonsky.podcaster.misc.launchWhenStarted
 import io.obolonsky.podcaster.viewmodels.SongsViewModel
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
@@ -34,10 +37,20 @@ class ShazamActivity : AppCompatActivity() {
 
     private val binding: ActivityShazamBinding by viewBinding()
 
+    private val toaster by toaster()
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+        intent?.handleIntent()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as PodcasterApp).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shazam)
+
+        intent?.handleIntent()
 
         initViewModel()
         initViews()
@@ -62,6 +75,21 @@ class ShazamActivity : AppCompatActivity() {
                     detected.track?.subtitle?.let { binding.subtitle.text = it }
                 }
                 .launchWhenStarted(lifecycleScope)
+        }
+    }
+
+    private fun Intent.handleIntent() {
+        when (action) {
+            // When the BII is matched, Intent.Action_VIEW will be used
+            Intent.ACTION_VIEW -> {
+                toaster.showToast(this@ShazamActivity, "handle intent")
+                Timber.d("fuckingAssistant data: $data, extras: ${extras?.getString("shazamKey")}")
+            }
+
+            // Otherwise start the app as you would normally do.
+            else -> {
+                toaster.showToast(this@ShazamActivity, "intent not handled")
+            }
         }
     }
 

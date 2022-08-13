@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="activity_shazam">Shazam</string>
+
+    <string-array name="shazam_synonyms">
+        <item>shazam</item>
+        <item>gelly</item>
+        <item>audio</item>
+        <item>music</item>
+        <item>detect</item>
+        <item>detection</item>
+    </string-array>
+
+</resources>

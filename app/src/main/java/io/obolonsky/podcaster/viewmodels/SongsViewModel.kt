@@ -13,6 +13,7 @@ import io.obolonsky.core.di.data.ShazamDetect
 import io.obolonsky.podcaster.data.repositories.SongsRepository
 import io.obolonsky.podcaster.data.room.StatefulData
 import io.obolonsky.podcaster.data.room.entities.Book
+import io.obolonsky.podcaster.data.usecases.AudioDetectionUseCase
 import io.obolonsky.podcaster.di.modules.CoroutineSchedulers
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
@@ -22,6 +23,7 @@ import java.io.File
 class SongsViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
     private val songsRepository: SongsRepository,
+    private val audioDetectionUseCase: AudioDetectionUseCase,
     private val dispatchers: CoroutineSchedulers,
 ) : ViewModel() {
 
@@ -63,7 +65,7 @@ class SongsViewModel @AssistedInject constructor(
 
     fun audioDetect(audioFile: File) {
         viewModelScope.launch(dispatchers.computation) {
-            val shazamDetect = songsRepository.audioDetect(audioFile)
+            val shazamDetect = audioDetectionUseCase(audioFile)
             shazamDetect?.let { _shazamDetect.emit(it) }
         }
     }

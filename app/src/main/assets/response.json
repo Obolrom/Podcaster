@@ -1,0 +1,195 @@
+{
+  "location": {
+    "accuracy": 0.01,
+    "altitude": 300.0,
+    "latitude": 45.0,
+    "longitude": 2.0
+  },
+  "matches": [
+    {
+      "frequencyskew": 0.005978346,
+      "id": "524975684",
+      "offset": 84.054171875,
+      "timeskew": 0.012645602
+    }
+  ],
+  "tagid": "fab45fb5-bdac-4831-8459-cb19d35d858d",
+  "timestamp": 2619991142,
+  "timezone": "Europe/Paris",
+  "track": {
+    "albumadamid": "1517273068",
+    "artists": [
+      {
+        "adamid": "1512565609",
+        "id": "42"
+      }
+    ],
+    "genres": {
+      "primary": "Instrumental"
+    },
+    "highlightsurls": {
+      "artisthighlightsurl": "https://cdn.shazam.com/video/v3/en/US/android/1512565609/highlights?affiliate=mttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+    },
+    "hub": {
+      "actions": [
+        {
+          "id": "1517273069",
+          "name": "apple",
+          "type": "applemusicplay"
+        },
+        {
+          "name": "apple",
+          "type": "uri",
+          "uri": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview123/v4/a9/a7/a3/a9a7a3dc-9c81-9136-4af9-db151768987f/mzaf_2782675308991630591.plus.aac.ep.m4a"
+        }
+      ],
+      "displayname": "APPLE MUSIC",
+      "explicit": false,
+      "image": "https://images.shazam.com/static/icons/hub/android/v5/applemusic_{scalefactor}.png",
+      "options": [
+        {
+          "actions": [
+            {
+              "name": "hub:applemusic:deeplink",
+              "type": "intent",
+              "uri": "intent://music.apple.com/us/album/interstellar/1517273068?i=1517273069&mttnagencyid=s2n&mttnsiteid=125115&mttn3pid=Apple-Shazam&mttnsub1=Shazam_android_am&mttnsub2=5348615A-616D-3235-3830-44754D6D5973&itscg=30201&app=music&itsct=Shazam_android_am#Intent;scheme=http;package=com.apple.android.music;action=android.intent.action.VIEW;end"
+            },
+            {
+              "id": "1517273069",
+              "name": "hub:applemusic:connect",
+              "type": "applemusicconnect",
+              "uri": "https://unsupported.shazam.com"
+            },
+            {
+              "name": "hub:applemusic:androidstore",
+              "type": "uri",
+              "uri": "https://play.google.com/store/apps/details?id=com.apple.android.music&referrer=utm_source=https%3A%2F%2Fmusic.apple.com%2Fsubscribe%3Fmttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+            }
+          ],
+          "beacondata": {
+            "providername": "applemusic",
+            "type": "open"
+          },
+          "caption": "OPEN",
+          "colouroverflowimage": false,
+          "image": "https://images.shazam.com/static/icons/hub/android/v5/overflow-open-option_{scalefactor}.png",
+          "listcaption": "Open in Apple Music",
+          "overflowimage": "https://images.shazam.com/static/icons/hub/android/v5/applemusic-overflow_{scalefactor}.png",
+          "providername": "applemusic",
+          "type": "open"
+        }
+      ],
+      "providers": [
+        {
+          "actions": [
+            {
+              "name": "hub:spotify:searchdeeplink",
+              "type": "uri",
+              "uri": "spotify:search:Interstellar%20Graziano%20Cucinotta"
+            }
+          ],
+          "caption": "Open in Spotify",
+          "images": {
+            "default": "https://images.shazam.com/static/icons/hub/android/v5/spotify_{scalefactor}.png",
+            "overflow": "https://images.shazam.com/static/icons/hub/android/v5/spotify-overflow_{scalefactor}.png"
+          },
+          "type": "SPOTIFY"
+        },
+        {
+          "actions": [
+            {
+              "name": "hub:youtubemusic:androiddeeplink",
+              "type": "uri",
+              "uri": "https://music.youtube.com/search?q=Interstellar+Graziano+Cucinotta&feature=shazam"
+            }
+          ],
+          "caption": "Open in YouTube Music",
+          "images": {
+            "default": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic_{scalefactor}.png",
+            "overflow": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic-overflow_{scalefactor}.png"
+          },
+          "type": "YOUTUBEMUSIC"
+        },
+        {
+          "actions": [
+            {
+              "name": "hub:deezer:searchdeeplink",
+              "type": "uri",
+              "uri": "deezer-query://www.deezer.com/play?query=%7Btrack%3A%27Interstellar%27%20artist%3A%27Graziano+Cucinotta%27%7D"
+            }
+          ],
+          "caption": "Open in Deezer",
+          "images": {
+            "default": "https://images.shazam.com/static/icons/hub/android/v5/deezer_{scalefactor}.png",
+            "overflow": "https://images.shazam.com/static/icons/hub/android/v5/deezer-overflow_{scalefactor}.png"
+          },
+          "type": "DEEZER"
+        }
+      ],
+      "type": "APPLEMUSIC"
+    },
+    "images": {
+      "background": "https://is2-ssl.mzstatic.com/image/thumb/Music123/v4/65/0f/84/650f84c8-3489-cb6f-d7fb-a591c2fe1cce/859739909746_cover.jpg/400x400cc.jpg",
+      "coverart": "https://is2-ssl.mzstatic.com/image/thumb/Music123/v4/65/0f/84/650f84c8-3489-cb6f-d7fb-a591c2fe1cce/859739909746_cover.jpg/400x400cc.jpg",
+      "coverarthq": "https://is2-ssl.mzstatic.com/image/thumb/Music123/v4/65/0f/84/650f84c8-3489-cb6f-d7fb-a591c2fe1cce/859739909746_cover.jpg/400x400cc.jpg",
+      "joecolor": "b:12212ep:f8f8f6s:eab395t:cacdceq:bf9680"
+    },
+    "isrc": "TCAEX2099364",
+    "key": "524975684",
+    "layout": "5",
+    "relatedtracksurl": "https://cdn.shazam.com/shazam/v3/en/US/android/-/tracks/track-similarities-id-524975684?startFrom=0&pageSize=20&connected=",
+    "sections": [
+      {
+        "metadata": [
+          {
+            "text": "Interstellar - Single",
+            "title": "Album"
+          },
+          {
+            "text": "Graziano Cucinotta",
+            "title": "Label"
+          },
+          {
+            "text": "2020",
+            "title": "Released"
+          }
+        ],
+        "metapages": [
+          {
+            "caption": "Interstellar",
+            "image": "https://is2-ssl.mzstatic.com/image/thumb/Music123/v4/65/0f/84/650f84c8-3489-cb6f-d7fb-a591c2fe1cce/859739909746_cover.jpg/400x400cc.jpg"
+          }
+        ],
+        "tabname": "Song",
+        "type": "SONG"
+      },
+      {
+        "tabname": "Video",
+        "type": "VIDEO",
+        "youtubeurl": "https://cdn.shazam.com/video/v3/-/US/android/524975684/youtube/video?q=Graziano+Cucinotta+%22Interstellar%22"
+      },
+      {
+        "tabname": "Related",
+        "type": "RELATED",
+        "url": "https://cdn.shazam.com/shazam/v3/en/US/android/-/tracks/track-similarities-id-524975684?startFrom=0&pageSize=20&connected="
+      }
+    ],
+    "share": {
+      "href": "https://www.shazam.com/track/524975684/interstellar",
+      "html": "https://www.shazam.com/snippets/email-share/524975684?lang=en&country=US",
+      "image": "https://is2-ssl.mzstatic.com/image/thumb/Music123/v4/65/0f/84/650f84c8-3489-cb6f-d7fb-a591c2fe1cce/859739909746_cover.jpg/400x400cc.jpg",
+      "snapchat": "https://www.shazam.com/partner/sc/track/524975684",
+      "subject": "Interstellar - Graziano Cucinotta",
+      "text": "I used Shazam to discover Interstellar by Graziano Cucinotta.",
+      "twitter": "I used @Shazam to discover Interstellar by Graziano Cucinotta."
+    },
+    "subtitle": "Graziano Cucinotta",
+    "title": "Interstellar",
+    "type": "MUSIC",
+    "url": "https://www.shazam.com/track/524975684/interstellar",
+    "urlparams": {
+      "{trackartist}": "Graziano+Cucinotta",
+      "{tracktitle}": "Interstellar"
+    }
+  }
+}

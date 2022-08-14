@@ -1,50 +1,38 @@
 package io.obolonsky.podcaster.data.repositories
 
-import android.content.Context
 import android.util.Base64
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.haroldadmin.cnradapter.NetworkResponse
-import io.obolonsky.core.di.data.ShazamDetect
 import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.podcaster.api.BookApi
 import io.obolonsky.podcaster.data.misc.BookMapper
 import io.obolonsky.podcaster.data.misc.BookPagingMapper
 import io.obolonsky.podcaster.data.misc.UserProfileMapper
 import io.obolonsky.podcaster.data.responses.BookProgressRequest
-import io.obolonsky.podcaster.data.room.PodcasterDatabase
 import io.obolonsky.podcaster.data.room.StatefulData
-import io.obolonsky.podcaster.data.room.daos.SongDao
 import io.obolonsky.podcaster.data.room.entities.Book
 import io.obolonsky.podcaster.data.room.entities.Chapter
 import io.obolonsky.podcaster.di.modules.CoroutineSchedulers
 import io.obolonsky.podcaster.paging.BookPagingSource
 import io.obolonsky.podcaster.paging.BookSearchPagingSource
 import io.obolonsky.shazam_feature.ShazamApi
-import io.obolonsky.shazam_feature.SongRecognitionApi
-import io.obolonsky.shazam_feature.SongRecognizeResponseToShazamDetectMapper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import timber.log.Timber
-import java.io.*
+import java.io.File
 import javax.inject.Inject
 
 @ApplicationScope
 class SongsRepository @Inject constructor(
-    private val context: Context,
     private val bookApi: BookApi,
     private val shazamApi: ShazamApi,
-    private val shazamCoreApi: SongRecognitionApi,
-    private val database: PodcasterDatabase,
-    private val songsDao: SongDao,
     private val dispatchers: CoroutineSchedulers,
 ) {
 
@@ -92,35 +80,6 @@ class SongsRepository @Inject constructor(
 //                }
 //            }
         }
-    }
-
-    suspend fun audioDetect(audioFile: File): ShazamDetect? {
-        val body = MultipartBody.Builder()
-            .setType(MultipartBody.FORM)
-            .addFormDataPart(
-                name = "file",
-                filename = audioFile.name,
-                body = audioFile.asRequestBody()
-            )
-            .build()
-
-        val shazamDetect = withContext(dispatchers.io) {
-            shazamCoreApi.detect(body)
-        }
-        when (shazamDetect) {
-            is NetworkResponse.Success -> {
-                val detected = SongRecognizeResponseToShazamDetectMapper.map(shazamDetect.body)
-                Timber.d("shazamApi success ${shazamDetect.body}")
-
-                return detected
-            }
-
-            is NetworkResponse.Error -> {
-                Timber.d("shazamApi error ${shazamDetect.error}")
-            }
-        }
-
-        return null
     }
 
     suspend fun detect(audioFile: File) {

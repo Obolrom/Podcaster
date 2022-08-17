@@ -1,7 +1,6 @@
 package io.obolonsky.podcaster.ui
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -29,6 +28,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 class ShazamActivity : AppCompatActivity() {
 
@@ -38,12 +38,21 @@ class ShazamActivity : AppCompatActivity() {
 
     private val binding: ActivityShazamBinding by viewBinding()
 
-    private val defaultMediaRecorder = DefaultMediaRecorder(
+    private val toaster by toaster()
+
+    private val recordPermission = MediaRecorderPermission(
         activityResultRegistry = activityResultRegistry,
-        onAudioUriCallback = ::onAudioUri
+        onPermissionGranted = ::onRecordPermissionGranted,
     )
 
-    private val toaster by toaster()
+    private val mediaRecorder by lazy {
+        MediaRecorder(
+            outputFile = File(filesDir, RECORDED_AUDIO_FILENAME),
+            recordDurationMs = TimeUnit.SECONDS.toMillis(7),
+            lifecycleScope = lifecycleScope,
+            onMediaRecorded = ::onMediaRecorded,
+        )
+    }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
@@ -96,6 +105,8 @@ class ShazamActivity : AppCompatActivity() {
                     track.subtitle?.let { binding.subtitle.text = it }
                 }
                 .launchWhenStarted(lifecycleScope)
+//                .flowWithLifecycle(lifecycle)
+//                .collect()
         }
     }
 
@@ -151,20 +162,19 @@ class ShazamActivity : AppCompatActivity() {
 
     private fun initViews() {
         binding.shazam.setOnClickListener {
-            defaultMediaRecorder.recordAudio()
+            it.isEnabled = false
+            recordPermission.requestRecordPermission()
         }
     }
 
-    private fun onAudioUri(audioUri: Uri) {
-        @Suppress("BlockingMethodInNonBlockingContext")
-        val bytes = contentResolver
-            ?.openInputStream(audioUri)
-            ?.readBytes()
+    private fun onRecordPermissionGranted() {
+        mediaRecorder.startRecording()
+    }
 
-        bytes?.let(File(filesDir, RECORDED_AUDIO_FILENAME)::writeBytes)
+    private fun onMediaRecorded() {
+        binding.shazam.isEnabled = true
         val file = File(filesDir, RECORDED_AUDIO_FILENAME)
         shazamViewModel.audioDetect(file)
-        binding.image.load(audioUri)
     }
 
     private companion object {

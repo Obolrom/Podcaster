@@ -7,9 +7,11 @@ object AudioSource {
     private val internalMediaItems = mutableListOf<MediaItem>()
     val mediaItems: List<MediaItem> get() = internalMediaItems
 
-    fun setMediaUri(audioUri: String) {
-        internalMediaItems.add(
-            MediaItem.fromUri(audioUri)
-        )
+    fun addMediaItem(mediaItem: MediaItem) {
+        internalMediaItems.add(mediaItem)
+    }
+
+    fun clear() {
+        internalMediaItems.clear()
     }
 }

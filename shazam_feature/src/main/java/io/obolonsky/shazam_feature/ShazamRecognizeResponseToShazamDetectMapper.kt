@@ -38,7 +38,9 @@ object TrackResponseToTrackMapper : Mapper<SongRecognizeResponse.TrackResponse, 
             audioUri = audioUri,
             subtitle = input.subtitle,
             title = input.title,
-            imageUrls = imageUrls.toImmutableList()
+            imageUrls = imageUrls.toImmutableList(),
+            relatedTracksUrl = input.relatedTracksUrl,
+            relatedTracks = emptyList()
         )
     }
 }

@@ -4,6 +4,7 @@ import dagger.Binds
 import dagger.Module
 
 @Module
+@Suppress("unused")
 interface BinderModule {
 
     @Binds

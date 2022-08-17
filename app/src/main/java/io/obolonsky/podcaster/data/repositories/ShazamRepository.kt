@@ -4,12 +4,10 @@ import android.content.Context
 import com.google.gson.Gson
 import com.haroldadmin.cnradapter.NetworkResponse
 import io.obolonsky.core.di.data.ShazamDetect
+import io.obolonsky.core.di.data.Track
 import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.podcaster.di.modules.CoroutineSchedulers
-import io.obolonsky.shazam_feature.ShazamDetectResponse
-import io.obolonsky.shazam_feature.SongRecognitionApi
-import io.obolonsky.shazam_feature.SongRecognizeResponse
-import io.obolonsky.shazam_feature.SongRecognizeResponseToShazamDetectMapper
+import io.obolonsky.shazam_feature.*
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -22,6 +20,7 @@ import javax.inject.Inject
 class ShazamRepository @Inject constructor(
     private val context: Context,
     private val songRecognitionApi: SongRecognitionApi,
+    private val plainShazamApi: PlainShazamApi,
     private val dispatchers: CoroutineSchedulers,
 ) {
 
@@ -58,6 +57,19 @@ class ShazamRepository @Inject constructor(
         }
 
         return null
+    }
+
+    suspend fun getRelatedTracks(url: String): List<Track> {
+
+        when (val response = plainShazamApi.getRelatedTracks(url)) {
+            is NetworkResponse.Success -> {
+                return response.body.tracks.map(TrackResponseToTrackMapper::map)
+            }
+
+            is NetworkResponse.Error -> { }
+        }
+
+        return emptyList()
     }
 
     private companion object {

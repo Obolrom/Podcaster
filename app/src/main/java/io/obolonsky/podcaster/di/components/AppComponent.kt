@@ -10,6 +10,7 @@ import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.podcaster.ui.BookFeedFragment
 import io.obolonsky.podcaster.ui.MainActivity
 import io.obolonsky.podcaster.ui.ShazamActivity
+import io.obolonsky.podcaster.viewmodels.ShazamViewModel
 import io.obolonsky.podcaster.viewmodels.SongsViewModel
 
 @ApplicationScope
@@ -33,4 +34,6 @@ interface AppComponent : ApplicationProvider {
     fun inject(target: BookFeedFragment)
 
     fun songsViewModel(): SongsViewModel.Factory
+
+    fun shazamViewModel(): ShazamViewModel.Factory
 }

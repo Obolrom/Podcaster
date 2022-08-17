@@ -1,3 +1,6 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import Dependencies.Media3
+
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
@@ -16,6 +19,13 @@ android {
         targetSdk = 31
         versionCode = 1
         versionName = "1.0"
+
+        buildConfigField(
+            type = "String",
+            name = Constants.SHAZAM_DETECT_API_KEY_NAME,
+            value = gradleLocalProperties(rootDir)
+                .getProperty(Constants.SHAZAM_DETECT_API_PROPERTY_NAME)
+        )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -93,6 +103,7 @@ dependencies {
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
     implementation("com.github.haroldadmin:NetworkResponseAdapter:5.0.0")
 
@@ -110,6 +121,8 @@ dependencies {
     implementation(Dependencies.ExoPlayer.player)
     implementation(Dependencies.ExoPlayer.playerUi)
     implementation(Dependencies.ExoPlayer.mediaSession)
+
+    implementation("androidx.media3:media3-exoplayer:${Media3.version}")
 
     // Utilities
     implementation("com.jakewharton.timber:timber:5.0.1")

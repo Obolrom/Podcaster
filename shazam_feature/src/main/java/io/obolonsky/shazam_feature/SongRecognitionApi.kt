@@ -7,7 +7,7 @@ import retrofit2.http.*
 interface SongRecognitionApi {
 
     @Headers(
-        "X-RapidAPI-Key: a8a51e0479mshf32be59d72d04c9p1b52cdjsn5c4ad265ea7f",
+        "X-RapidAPI-Key: ${BuildConfig.SHAZAM_API_KEY}",
         "X-RapidAPI-Host: song-recognition.p.rapidapi.com",
     )
     @POST("song/detect")

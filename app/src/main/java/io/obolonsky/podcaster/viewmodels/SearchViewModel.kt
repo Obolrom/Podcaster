@@ -2,9 +2,9 @@ package io.obolonsky.podcaster.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.podcaster.data.repositories.SongsRepository
 import io.obolonsky.podcaster.data.room.entities.Book
-import io.obolonsky.podcaster.di.modules.CoroutineSchedulers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.BufferOverflow

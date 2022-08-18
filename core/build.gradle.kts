@@ -1,3 +1,5 @@
+import Dependencies.Media3
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -43,6 +45,8 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+
+    implementation("androidx.media3:media3-exoplayer:${Media3.version}")
 
     // Dagger 2
     implementation("com.google.dagger:dagger:2.40.5")

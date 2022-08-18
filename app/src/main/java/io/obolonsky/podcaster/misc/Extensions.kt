@@ -27,6 +27,7 @@ fun InputStream.getMegaBytes(): String {
     return "${megaBytes.round(2)} mb"
 }
 
+// TODO: remove
 fun Flow<*>.launchWhenStarted(
     lifecycleScope: LifecycleCoroutineScope
 ) = lifecycleScope.launchWhenStarted {

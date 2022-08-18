@@ -1,44 +1,44 @@
-package io.obolonsky.podcaster.ui
+package io.obolonsky.shazam_feature.ui
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
-import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
+import io.obolonsky.core.di.actions.ShowPlayer
+import io.obolonsky.core.di.common.AudioSource
+import io.obolonsky.core.di.common.launchWhenStarted
 import io.obolonsky.core.di.data.Track
 import io.obolonsky.core.di.lazyViewModel
-import io.obolonsky.player_feature.AudioSource
-import io.obolonsky.player_feature.PlayerFragment
-import io.obolonsky.player_feature.player.PodcasterPlaybackService
-import io.obolonsky.podcaster.PodcasterApp
-import io.obolonsky.podcaster.R
-import io.obolonsky.podcaster.data.misc.toaster
-import io.obolonsky.podcaster.databinding.ActivityShazamBinding
-import io.obolonsky.podcaster.misc.appComponent
-import io.obolonsky.podcaster.misc.launchWhenStarted
-import io.obolonsky.podcaster.viewmodels.ShazamViewModel
+import io.obolonsky.shazam_feature.R
+import io.obolonsky.shazam_feature.databinding.ActivityShazamBinding
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 class ShazamActivity : AppCompatActivity() {
 
+    private val componentViewModel by viewModels<ComponentViewModel>()
+
     private val shazamViewModel: ShazamViewModel by lazyViewModel {
-        appComponent.shazamViewModel().create(it)
+        componentViewModel.shazamComponent
+            .shazamViewModel()
+            .create(it)
     }
 
     private val binding: ActivityShazamBinding by viewBinding()
 
-    private val toaster by toaster()
+//    private val toaster by toaster()
 
     private val recordPermission = MediaRecorderPermission(
         activityResultRegistry = activityResultRegistry,
@@ -54,6 +54,9 @@ class ShazamActivity : AppCompatActivity() {
         )
     }
 
+//    @Inject
+//    lateinit var showPlayerAction: ShowPlayer
+
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
 
@@ -61,7 +64,7 @@ class ShazamActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as PodcasterApp).appComponent.inject(this)
+        componentViewModel.shazamComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shazam)
 
@@ -122,7 +125,7 @@ class ShazamActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStackImmediate()
-            stopService(Intent(this, PodcasterPlaybackService::class.java))
+//            stopService(Intent(this, PodcasterPlaybackService::class.java))
             isPlayerShown = false
             binding.shazam.visibility = View.VISIBLE
             AudioSource.clear()
@@ -139,17 +142,15 @@ class ShazamActivity : AppCompatActivity() {
 
         binding.shazam.visibility = View.GONE
 
-        supportFragmentManager.commit {
-            addToBackStack(null)
-            add(R.id.container, PlayerFragment())
-        }
+        // TODO: add action
+//        showPlayerAction.showPlayer(supportFragmentManager)
     }
 
     private fun Intent.handleIntent() {
         when (action) {
             // When the BII is matched, Intent.Action_VIEW will be used
             Intent.ACTION_VIEW -> {
-                toaster.showToast(this@ShazamActivity, "handle intent")
+//                toaster.showToast(this@ShazamActivity, "handle intent")
                 Timber.d("fuckingAssistant data: $data, extras: ${extras?.getString("shazamKey")}")
             }
 

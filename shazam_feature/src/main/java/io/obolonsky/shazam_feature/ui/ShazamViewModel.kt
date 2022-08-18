@@ -1,4 +1,4 @@
-package io.obolonsky.podcaster.viewmodels
+package io.obolonsky.shazam_feature.ui
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -7,9 +7,9 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import io.obolonsky.core.di.data.ShazamDetect
-import io.obolonsky.podcaster.data.repositories.ShazamRepository
-import io.obolonsky.podcaster.data.usecases.AudioDetectionUseCase
-import io.obolonsky.podcaster.di.modules.CoroutineSchedulers
+import io.obolonsky.core.di.utils.CoroutineSchedulers
+import io.obolonsky.shazam_feature.AudioDetectionUseCase
+import io.obolonsky.shazam_feature.ShazamRepository
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow

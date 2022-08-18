@@ -1,11 +1,11 @@
 package io.obolonsky.podcaster.data.repositories
 
-import android.util.Base64
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.haroldadmin.cnradapter.NetworkResponse
 import io.obolonsky.core.di.scopes.ApplicationScope
+import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.podcaster.api.BookApi
 import io.obolonsky.podcaster.data.misc.BookMapper
 import io.obolonsky.podcaster.data.misc.BookPagingMapper
@@ -14,25 +14,19 @@ import io.obolonsky.podcaster.data.responses.BookProgressRequest
 import io.obolonsky.podcaster.data.room.StatefulData
 import io.obolonsky.podcaster.data.room.entities.Book
 import io.obolonsky.podcaster.data.room.entities.Chapter
-import io.obolonsky.podcaster.di.modules.CoroutineSchedulers
 import io.obolonsky.podcaster.paging.BookPagingSource
 import io.obolonsky.podcaster.paging.BookSearchPagingSource
-import io.obolonsky.shazam_feature.ShazamApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody.Companion.toRequestBody
 import timber.log.Timber
-import java.io.File
 import javax.inject.Inject
 
 @ApplicationScope
 class SongsRepository @Inject constructor(
     private val bookApi: BookApi,
-    private val shazamApi: ShazamApi,
     private val dispatchers: CoroutineSchedulers,
 ) {
 
@@ -79,25 +73,6 @@ class SongsRepository @Inject constructor(
 //                    Timber.d("asdgnnflskjfs lib error: ${fuck.error}")
 //                }
 //            }
-        }
-    }
-
-    suspend fun detect(audioFile: File) {
-        val sourceRawAudio = audioFile.readBytes()
-        val encodedSource = Base64.encodeToString(
-            sourceRawAudio,
-            Base64.NO_WRAP
-        )
-
-        val rawAudio = encodedSource.toRequestBody("text/plain".toMediaTypeOrNull())
-        when (val shazamDetect = shazamApi.detect(rawAudio)) {
-            is NetworkResponse.Success -> {
-                Timber.d("shazamApi success ${shazamDetect.body}")
-            }
-
-            is NetworkResponse.Error -> {
-                Timber.d("shazamApi error ${shazamDetect.error}")
-            }
         }
     }
 

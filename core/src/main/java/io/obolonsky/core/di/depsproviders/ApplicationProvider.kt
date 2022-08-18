@@ -1,3 +1,4 @@
 package io.obolonsky.core.di.depsproviders
 
-interface ApplicationProvider : ApplicationContextProvider
+interface ApplicationProvider : ApplicationContextProvider,
+    CoroutineSchedulersProvider

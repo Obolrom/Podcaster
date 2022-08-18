@@ -57,6 +57,7 @@ dependencies {
     // KTX
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
+    implementation("androidx.fragment:fragment-ktx:1.4.1")
 
     // Dagger 2
     implementation("com.google.dagger:dagger:2.40.5")

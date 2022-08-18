@@ -1,13 +1,14 @@
-package io.obolonsky.podcaster.data.repositories
+package io.obolonsky.shazam_feature
 
 import android.content.Context
 import com.google.gson.Gson
 import com.haroldadmin.cnradapter.NetworkResponse
 import io.obolonsky.core.di.data.ShazamDetect
 import io.obolonsky.core.di.data.Track
-import io.obolonsky.core.di.scopes.ApplicationScope
-import io.obolonsky.podcaster.di.modules.CoroutineSchedulers
-import io.obolonsky.shazam_feature.*
+import io.obolonsky.core.di.scopes.FeatureScope
+import io.obolonsky.core.di.utils.CoroutineSchedulers
+import io.obolonsky.shazam_feature.di.ShazamModuleFeature
+import io.obolonsky.shazam_feature.di.ShazamModulePlainFeature
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -16,11 +17,11 @@ import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
-@ApplicationScope
+@FeatureScope
 class ShazamRepository @Inject constructor(
     private val context: Context,
-    private val songRecognitionApi: SongRecognitionApi,
-    private val plainShazamApi: PlainShazamApi,
+    @ShazamModuleFeature private val songRecognitionApi: SongRecognitionApi,
+    @ShazamModulePlainFeature private val plainShazamApi: PlainShazamApi,
     private val dispatchers: CoroutineSchedulers,
 ) {
 

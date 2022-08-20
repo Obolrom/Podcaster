@@ -1,13 +1,16 @@
-package io.obolonsky.shazam_feature
+package io.obolonsky.shazam_feature.data
 
 import com.haroldadmin.cnradapter.NetworkResponse
+import io.obolonsky.shazam_feature.BuildConfig
+import io.obolonsky.shazam_feature.data.responses.ShazamDetectResponse
+import io.obolonsky.shazam_feature.data.responses.ShazamSearchResponse
 import okhttp3.RequestBody
 import retrofit2.http.*
 
 interface ShazamApi {
 
     @Headers(
-        "X-RapidAPI-Key: a8a51e0479mshf32be59d72d04c9p1b52cdjsn5c4ad265ea7f",
+        "X-RapidAPI-Key: ${BuildConfig.SHAZAM_API_KEY}",
         "X-RapidAPI-Host: shazam.p.rapidapi.com"
     )
     @GET("search?locale=en-US&offset=0&limit=5")
@@ -16,7 +19,7 @@ interface ShazamApi {
     ): NetworkResponse<ShazamSearchResponse, Unit>
 
     @Headers(
-        "X-RapidAPI-Key: a8a51e0479mshf32be59d72d04c9p1b52cdjsn5c4ad265ea7f",
+        "X-RapidAPI-Key: ${BuildConfig.SHAZAM_API_KEY}",
         "X-RapidAPI-Host: shazam.p.rapidapi.com",
         "content-type: text/plain"
     )

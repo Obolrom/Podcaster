@@ -1,4 +1,4 @@
-package io.obolonsky.podcaster.data.misc
+package io.obolonsky.core.di
 
 import android.content.Context
 import android.widget.Toast
@@ -7,15 +7,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import io.obolonsky.core.di.utils.ToastUtil
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
-
-interface ToastUtil {
-
-    fun showToast(context: Context, message: String)
-
-    fun clear()
-}
 
 interface ToasterProperty<in R : Any, out T : Any> : ReadOnlyProperty<R, T>, ToastUtil
 

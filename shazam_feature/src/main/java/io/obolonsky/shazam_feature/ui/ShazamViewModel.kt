@@ -8,8 +8,8 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import io.obolonsky.core.di.data.ShazamDetect
 import io.obolonsky.core.di.utils.CoroutineSchedulers
-import io.obolonsky.shazam_feature.AudioDetectionUseCase
-import io.obolonsky.shazam_feature.ShazamRepository
+import io.obolonsky.shazam_feature.data.usecases.AudioDetectionUseCase
+import io.obolonsky.shazam_feature.data.repositories.ShazamRepository
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow

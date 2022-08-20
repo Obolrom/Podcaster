@@ -1,24 +1,11 @@
-package io.obolonsky.shazam_feature
+package io.obolonsky.shazam_feature.data.mappers
 
-import io.obolonsky.core.di.data.ShazamDetect
 import io.obolonsky.core.di.data.Track
 import io.obolonsky.core.di.utils.Mapper
+import io.obolonsky.shazam_feature.data.responses.SongRecognizeResponse
 import okhttp3.internal.toImmutableList
 
-const val NO_ID = "NO_ID"
-const val AUDIO_TRACK_HUB_LINK_INDEX = 1
-
-object SongRecognizeResponseToShazamDetectMapper : Mapper<SongRecognizeResponse, ShazamDetect> {
-
-    override fun map(input: SongRecognizeResponse): ShazamDetect {
-        return ShazamDetect(
-            tagId = input.tagId ?: NO_ID,
-            track = input.track?.let(TrackResponseToTrackMapper::map)
-        )
-    }
-}
-
-object TrackResponseToTrackMapper : Mapper<SongRecognizeResponse.TrackResponse, Track> {
+internal object TrackResponseToTrackMapper : Mapper<SongRecognizeResponse.TrackResponse, Track> {
 
     override fun map(input: SongRecognizeResponse.TrackResponse): Track {
         val audioUri = input.hub

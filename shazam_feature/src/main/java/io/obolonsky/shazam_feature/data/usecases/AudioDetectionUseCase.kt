@@ -1,6 +1,7 @@
-package io.obolonsky.shazam_feature
+package io.obolonsky.shazam_feature.data.usecases
 
 import io.obolonsky.core.di.data.ShazamDetect
+import io.obolonsky.shazam_feature.data.repositories.ShazamRepository
 import java.io.File
 import javax.inject.Inject
 

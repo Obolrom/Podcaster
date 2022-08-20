@@ -1,5 +1,4 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import Dependencies.Media3
 
 plugins {
     id("com.android.application")
@@ -62,6 +61,7 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":player_feature"))
     implementation(project(":shazam_feature"))
+    implementation(project(":downloads_feature"))
 
     implementation("com.google.android.material:material:1.5.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
@@ -116,13 +116,6 @@ dependencies {
     //Navigation component
     implementation("androidx.navigation:navigation-fragment-ktx:2.4.2")
     implementation("androidx.navigation:navigation-ui-ktx:2.4.2")
-
-    // Player
-    implementation(Dependencies.ExoPlayer.player)
-    implementation(Dependencies.ExoPlayer.playerUi)
-    implementation(Dependencies.ExoPlayer.mediaSession)
-
-    implementation("androidx.media3:media3-exoplayer:${Media3.version}")
 
     // Utilities
     implementation("com.jakewharton.timber:timber:5.0.1")

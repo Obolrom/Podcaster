@@ -1,4 +1,4 @@
-package io.obolonsky.podcaster.di.modules
+package io.obolonsky.downloads_feature.di
 
 import android.content.Context
 import com.google.android.exoplayer2.C
@@ -16,7 +16,6 @@ import io.obolonsky.core.di.scopes.ApplicationScope
 class PlayerModule {
 
     // TODO: USE SERVICE_SCOPE INSTEAD OF APP SCOPE
-    @ApplicationScope
     @Provides
     fun provideDefaultTrackSelector(
         applicationContext: Context
@@ -30,7 +29,6 @@ class PlayerModule {
         return trackSelector
     }
 
-    @ApplicationScope
     @Provides
     fun provideLoadControl(): DefaultLoadControl {
         return DefaultLoadControl.Builder()
@@ -46,7 +44,6 @@ class PlayerModule {
             .build()
     }
 
-    @ApplicationScope
     @Provides
     fun provideAudioAttributes(): AudioAttributes {
         return AudioAttributes.Builder()
@@ -55,7 +52,6 @@ class PlayerModule {
             .build()
     }
 
-    @ApplicationScope
     @Provides
     fun provideSimpleExoPlayer(
         applicationContext: Context,

@@ -73,7 +73,7 @@
         </activity>
 
         <activity
-            android:name=".ui.PlayerActivity"
+            android:name="io.obolonsky.downloads_feature.PlayerActivity"
             android:screenOrientation="portrait"
             android:exported="true">
 <!--            <intent-filter>-->

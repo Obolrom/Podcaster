@@ -1,8 +1,8 @@
 package io.obolonsky.player_feature.player
 
 import androidx.media3.exoplayer.ExoPlayer
+import io.obolonsky.core.di.common.AudioSource
 import io.obolonsky.core.di.scopes.FeatureScope
-import io.obolonsky.player_feature.AudioSource
 import javax.inject.Inject
 
 @FeatureScope

@@ -11,17 +11,19 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
+import io.obolonsky.core.di.actions.NavigateToExoPlayerAction
 import io.obolonsky.core.di.actions.ShowPlayer
+import io.obolonsky.core.di.actions.StopPlayerService
 import io.obolonsky.core.di.common.AudioSource
 import io.obolonsky.core.di.common.launchWhenStarted
 import io.obolonsky.core.di.data.Track
 import io.obolonsky.core.di.lazyViewModel
+import io.obolonsky.core.di.toaster
 import io.obolonsky.shazam_feature.R
 import io.obolonsky.shazam_feature.databinding.ActivityShazamBinding
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -36,9 +38,12 @@ class ShazamActivity : AppCompatActivity() {
             .create(it)
     }
 
+    @Inject
+    lateinit var navigateToExoPlayerAction: NavigateToExoPlayerAction
+
     private val binding: ActivityShazamBinding by viewBinding()
 
-//    private val toaster by toaster()
+    private val toaster by toaster()
 
     private val recordPermission = MediaRecorderPermission(
         activityResultRegistry = activityResultRegistry,
@@ -54,8 +59,11 @@ class ShazamActivity : AppCompatActivity() {
         )
     }
 
-//    @Inject
-//    lateinit var showPlayerAction: ShowPlayer
+    @Inject
+    internal lateinit var showPlayerAction: ShowPlayer
+
+    @Inject
+    internal lateinit var stopPlayerServiceAction: StopPlayerService
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
@@ -125,7 +133,7 @@ class ShazamActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStackImmediate()
-//            stopService(Intent(this, PodcasterPlaybackService::class.java))
+            stopPlayerServiceAction.stop(this)
             isPlayerShown = false
             binding.shazam.visibility = View.VISIBLE
             AudioSource.clear()
@@ -142,16 +150,14 @@ class ShazamActivity : AppCompatActivity() {
 
         binding.shazam.visibility = View.GONE
 
-        // TODO: add action
-//        showPlayerAction.showPlayer(supportFragmentManager)
+        showPlayerAction.showPlayer(supportFragmentManager)
     }
 
     private fun Intent.handleIntent() {
         when (action) {
             // When the BII is matched, Intent.Action_VIEW will be used
             Intent.ACTION_VIEW -> {
-//                toaster.showToast(this@ShazamActivity, "handle intent")
-                Timber.d("fuckingAssistant data: $data, extras: ${extras?.getString("shazamKey")}")
+                toaster.showToast(this@ShazamActivity, "handle intent")
             }
 
             // Otherwise start the app as you would normally do.
@@ -163,6 +169,8 @@ class ShazamActivity : AppCompatActivity() {
 
     private fun initViews() {
         binding.shazam.setOnClickListener {
+//            navigateToExoPlayerAction.navigate(this)
+
             it.isEnabled = false
             recordPermission.requestRecordPermission()
         }

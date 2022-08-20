@@ -1,9 +1,10 @@
-import Dependencies.Media3
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -26,18 +27,19 @@ android {
             )
         }
     }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-
     kotlinOptions {
         jvmTarget = "1.8"
     }
 }
 
 dependencies {
+
+    implementation(project(":core_ui"))
+    implementation(project(":core"))
 
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.4.2")
@@ -46,12 +48,18 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
-    implementation("androidx.media3:media3-exoplayer:${Media3.version}")
-
     // Dagger 2
     implementation("com.google.dagger:dagger:2.40.5")
+    kapt("com.google.dagger:dagger-compiler:2.40.5")
 
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
+    // Player
+    implementation(Dependencies.ExoPlayer.player)
+    implementation(Dependencies.ExoPlayer.playerUi)
+    implementation(Dependencies.ExoPlayer.mediaSession)
+
+    // KTX
+    implementation("androidx.core:core-ktx:1.7.0")
+    implementation("androidx.activity:activity-ktx:1.4.0")
     implementation("androidx.fragment:fragment-ktx:1.4.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
 }

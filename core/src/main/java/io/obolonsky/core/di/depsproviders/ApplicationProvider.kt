@@ -1,4 +1,6 @@
 package io.obolonsky.core.di.depsproviders
 
 interface ApplicationProvider : ApplicationContextProvider,
-    CoroutineSchedulersProvider
+    CoroutineSchedulersProvider,
+    ActionProvider,
+    NavigateToExoPlayerActionProvider

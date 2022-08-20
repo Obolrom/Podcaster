@@ -1,4 +1,4 @@
-package io.obolonsky.shazam_feature
+package io.obolonsky.shazam_feature.data.responses
 
 import com.google.gson.annotations.SerializedName
 

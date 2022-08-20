@@ -1,11 +1,13 @@
-package io.obolonsky.player_feature
+package io.obolonsky.podcaster.actions
 
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import io.obolonsky.core.di.actions.ShowPlayer
+import io.obolonsky.player_feature.PlayerFragment
+import io.obolonsky.player_feature.R
 import javax.inject.Inject
 
-class ShowPlayerFragmentAction : ShowPlayer {
+class GoToPlayerAction @Inject constructor() : ShowPlayer {
 
     override fun showPlayer(fragmentManager: FragmentManager) {
         fragmentManager.commit {

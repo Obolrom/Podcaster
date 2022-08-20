@@ -7,8 +7,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
+import io.obolonsky.core.di.toaster
 import io.obolonsky.podcaster.R
-import io.obolonsky.podcaster.data.misc.toaster
 import io.obolonsky.podcaster.data.room.StatefulData
 import io.obolonsky.podcaster.data.room.entities.Book
 import io.obolonsky.podcaster.databinding.FragmentBookDetailsBinding

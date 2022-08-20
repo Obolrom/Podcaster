@@ -12,7 +12,6 @@ import io.obolonsky.player_feature.player.PodcasterPlaybackService
     ],
     modules = [
         PlayerModule::class,
-        ActionsModule::class,
     ]
 )
 interface PlayerComponent {

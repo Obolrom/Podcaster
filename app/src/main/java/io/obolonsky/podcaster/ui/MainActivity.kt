@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
-import io.obolonsky.coreui.bottomNavigationSmoothVisibilityChanger
 import io.obolonsky.podcaster.PodcasterApp
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.databinding.ActivityMainBinding
@@ -22,27 +21,12 @@ class MainActivity : AppCompatActivity() {
 
     private val binding: ActivityMainBinding by viewBinding()
 
-    private val visibilityChanger by bottomNavigationSmoothVisibilityChanger()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as PodcasterApp).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         binding.bottomBar.setupWithNavController(navController)
-
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.bookDetailsFragment,
-                R.id.newPlayerFragment -> {
-                    visibilityChanger.hideWithAnimation(binding.bottomBar)
-                }
-
-                else -> {
-                    visibilityChanger.showWithAnimation(binding.bottomBar)
-                }
-            }
-        }
 
         binding.bottomBar.selectedItemId = R.id.discover_dest
     }

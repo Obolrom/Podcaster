@@ -6,7 +6,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.data.ShazamDetect
+import io.obolonsky.core.di.data.Track
 import io.obolonsky.core.di.repositories.ShazamRepo
 import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.shazam_feature.data.usecases.AudioDetectionUseCase
@@ -15,6 +17,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.io.File
 
 class ShazamViewModel @AssistedInject constructor(
@@ -34,15 +37,33 @@ class ShazamViewModel @AssistedInject constructor(
 
     fun audioDetect(audioFile: File) {
         viewModelScope.launch(dispatchers.computation) {
-            val shazamDetect = audioDetectionUseCase(audioFile)
-            shazamDetect?.let { detected ->
-                val relatedTracks = detected.track
-                    ?.relatedTracksUrl
-                    ?.let { shazamRepository.getRelatedTracks(it) }
-                    ?: emptyList()
-                val full = detected.track?.copy(relatedTracks = relatedTracks)
+            when (val shazamDetect = audioDetectionUseCase(audioFile)) {
+                is Reaction.Success -> {
+                    val detected = shazamDetect.data
+                    val relatedTracks = detected.track
+                        ?.relatedTracksUrl
+                        ?.let { getRelatedTracks(it) }
+                        ?: emptyList()
+                    val full = detected.track?.copy(relatedTracks = relatedTracks)
 
-                _shazamDetect.emit(detected.copy(track = full))
+                    _shazamDetect.emit(detected.copy(track = full))
+                }
+
+                is Reaction.Fail -> {
+                    Timber.d(shazamDetect.error.toString())
+                }
+            }
+        }
+    }
+
+    private suspend fun getRelatedTracks(url: String): List<Track> {
+        return when (val response = shazamRepository.getRelatedTracks(url)) {
+            is Reaction.Success -> {
+                response.data
+            }
+
+            is Reaction.Fail -> {
+                emptyList()
             }
         }
     }

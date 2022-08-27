@@ -30,7 +30,8 @@ interface RepoComponent : RepositoryProvider {
     companion object {
 
         fun create(toolsProvider: ToolsProvider): RepoComponent {
-            val networkComponent = DaggerNetworkComponent.create()
+            val networkComponent = DaggerNetworkComponent.factory()
+                .create(toolsProvider)
 
             return DaggerRepoComponent.factory()
                 .create(

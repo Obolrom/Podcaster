@@ -1,6 +1,9 @@
 package io.obolonsky.core.di.depsproviders
 
-interface ApplicationProvider : ApplicationContextProvider,
-    CoroutineSchedulersProvider,
+import io.obolonsky.core.di.repositories.providers.RepositoryProvider
+
+interface ApplicationProvider :
+    ToolsProvider,
     ActionProvider,
-    NavigateToExoPlayerActionProvider
+    NavigateToExoPlayerActionProvider,
+    RepositoryProvider

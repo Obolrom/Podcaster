@@ -6,7 +6,7 @@ import androidx.work.WorkManager
 import io.obolonsky.core.di.depsproviders.App
 import io.obolonsky.core.di.depsproviders.ApplicationProvider
 import io.obolonsky.podcaster.background.PodcasterWorkerFactory
-import io.obolonsky.podcaster.di.components.DaggerAppComponent
+import io.obolonsky.podcaster.di.components.AppComponent
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -15,7 +15,9 @@ class PodcasterApp : Application(), App {
     @Inject
     lateinit var workerFactory: PodcasterWorkerFactory
 
-    val appComponent by lazy { DaggerAppComponent.factory().create(this) }
+    val appComponent by lazy {
+        AppComponent.create(this)
+    }
 
     private val workManagerConfiguration by lazy {
         Configuration.Builder()

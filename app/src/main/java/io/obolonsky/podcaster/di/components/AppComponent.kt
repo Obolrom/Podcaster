@@ -1,27 +1,49 @@
 package io.obolonsky.podcaster.di.components
 
 import android.content.Context
-import dagger.BindsInstance
 import dagger.Component
 import io.obolonsky.core.di.depsproviders.ApplicationProvider
+import io.obolonsky.core.di.depsproviders.ToolsProvider
+import io.obolonsky.core.di.repositories.providers.RepositoryProvider
 import io.obolonsky.podcaster.PodcasterApp
 import io.obolonsky.podcaster.di.modules.AppModule
 import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.podcaster.ui.MainActivity
+import io.obolonsky.repository.di.RepoComponent
 
 @ApplicationScope
-@Component(modules = [AppModule::class])
+@Component(
+    dependencies = [
+        RepositoryProvider::class,
+        ToolsProvider::class,
+    ],
+    modules = [AppModule::class])
 interface AppComponent : ApplicationProvider {
 
     @Component.Factory
     interface Factory {
 
         fun create(
-            @BindsInstance appCtx: Context
+            repositoryProvider: RepositoryProvider,
+            toolsProvider: ToolsProvider,
         ): AppComponent
     }
 
     fun inject(target: PodcasterApp)
 
     fun inject(target: MainActivity)
+
+    companion object {
+
+        fun create(appCtx: Context): AppComponent {
+            val toolsComponent = ToolsComponent.create(appCtx)
+            val repoComponent = RepoComponent.create(toolsComponent)
+
+            return DaggerAppComponent.factory()
+                .create(
+                    repositoryProvider = repoComponent,
+                    toolsProvider = toolsComponent,
+                )
+        }
+    }
 }

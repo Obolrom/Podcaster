@@ -59,6 +59,7 @@ dependencies {
 
     implementation(project(":core_ui"))
     implementation(project(":core"))
+    implementation(project(":repository"))
     implementation(project(":player_feature"))
     implementation(project(":shazam_feature"))
     implementation(project(":downloads_feature"))

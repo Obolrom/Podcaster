@@ -1,4 +1,4 @@
-package io.obolonsky.podcaster.actions
+package io.obolonsky.player_feature.actions
 
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit

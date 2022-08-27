@@ -4,6 +4,6 @@ import io.obolonsky.core.di.repositories.providers.RepositoryProvider
 
 interface ApplicationProvider :
     ToolsProvider,
-    ActionProvider,
+    PlayerActionProvider,
     NavigateToExoPlayerActionProvider,
     RepositoryProvider

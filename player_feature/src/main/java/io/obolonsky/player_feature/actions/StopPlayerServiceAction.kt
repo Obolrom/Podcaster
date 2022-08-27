@@ -1,4 +1,4 @@
-package io.obolonsky.podcaster.actions
+package io.obolonsky.player_feature.actions
 
 import android.content.Context
 import android.content.Intent

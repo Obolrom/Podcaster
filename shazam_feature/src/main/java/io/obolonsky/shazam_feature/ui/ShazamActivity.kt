@@ -29,6 +29,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import javax.inject.Provider
 
 class ShazamActivity : AppCompatActivity() {
 
@@ -63,10 +64,10 @@ class ShazamActivity : AppCompatActivity() {
     }
 
     @Inject
-    internal lateinit var showPlayerAction: ShowPlayer
+    internal lateinit var showPlayerAction: Provider<ShowPlayer>
 
     @Inject
-    internal lateinit var stopPlayerServiceAction: StopPlayerService
+    internal lateinit var stopPlayerServiceAction: Provider<StopPlayerService>
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
@@ -140,7 +141,7 @@ class ShazamActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStackImmediate()
-            stopPlayerServiceAction.stop(this)
+            stopPlayerServiceAction.get().stop(this)
             isPlayerShown = false
             binding.shazam.visibility = View.VISIBLE
             AudioSource.clear()
@@ -157,7 +158,7 @@ class ShazamActivity : AppCompatActivity() {
 
         binding.shazam.visibility = View.GONE
 
-        showPlayerAction.showPlayer(supportFragmentManager)
+        showPlayerAction.get().showPlayer(supportFragmentManager)
     }
 
     private fun Intent.handleIntent() {

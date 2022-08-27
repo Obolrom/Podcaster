@@ -9,9 +9,9 @@ import dagger.assisted.AssistedInject
 import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.data.ShazamDetect
 import io.obolonsky.core.di.data.Track
-import io.obolonsky.core.di.repositories.ShazamRepo
 import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.shazam_feature.data.usecases.AudioDetectionUseCase
+import io.obolonsky.shazam_feature.di.ScopedShazamRepo
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -23,9 +23,13 @@ import java.io.File
 class ShazamViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
     private val audioDetectionUseCase: AudioDetectionUseCase,
-    private val shazamRepository: ShazamRepo,
+    private val shazamRepository: ScopedShazamRepo,
     private val dispatchers: CoroutineSchedulers,
 ) : ViewModel() {
+
+    init {
+        Timber.d("ShazamRepoPro VM: ${System.identityHashCode(shazamRepository)}")
+    }
 
     private val _shazamDetect by lazy {
         MutableSharedFlow<ShazamDetect>(

@@ -27,10 +27,6 @@ class ShazamViewModel @AssistedInject constructor(
     private val dispatchers: CoroutineSchedulers,
 ) : ViewModel() {
 
-    init {
-        Timber.d("ShazamRepoPro VM: ${System.identityHashCode(shazamRepository)}")
-    }
-
     private val _shazamDetect by lazy {
         MutableSharedFlow<ShazamDetect>(
             replay = 1,

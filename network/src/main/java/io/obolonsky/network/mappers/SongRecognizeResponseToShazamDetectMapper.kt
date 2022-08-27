@@ -1,10 +1,11 @@
-package io.obolonsky.shazam_feature.data.mappers
+package io.obolonsky.network.mappers
 
 import io.obolonsky.core.di.data.ShazamDetect
 import io.obolonsky.core.di.utils.Mapper
-import io.obolonsky.shazam_feature.data.responses.SongRecognizeResponse
+import io.obolonsky.core.di.utils.NO_ID
+import io.obolonsky.network.responses.SongRecognizeResponse
 
-internal object SongRecognizeResponseToShazamDetectMapper :
+object SongRecognizeResponseToShazamDetectMapper :
     Mapper<SongRecognizeResponse, ShazamDetect> {
 
     override fun map(input: SongRecognizeResponse): ShazamDetect {

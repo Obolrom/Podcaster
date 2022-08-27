@@ -4,9 +4,13 @@ import android.content.Context
 import com.google.gson.Gson
 import com.haroldadmin.cnradapter.NetworkResponse
 import io.obolonsky.core.di.data.ShazamDetect
+import io.obolonsky.core.di.data.Track
 import io.obolonsky.core.di.repositories.ShazamRepo
 import io.obolonsky.core.di.utils.CoroutineSchedulers
+import io.obolonsky.network.api.PlainShazamApi
 import io.obolonsky.network.api.SongRecognitionApi
+import io.obolonsky.network.mappers.SongRecognizeResponseToShazamDetectMapper
+import io.obolonsky.network.mappers.TrackResponseToTrackMapper
 import io.obolonsky.network.responses.SongRecognizeResponse
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
@@ -19,6 +23,7 @@ import javax.inject.Inject
 class ShazamRepository @Inject constructor(
     private val context: Context,
     private val songRecognitionApi: SongRecognitionApi,
+    private val plainShazamApi: PlainShazamApi,
     private val dispatchers: CoroutineSchedulers,
 ) : ShazamRepo {
 
@@ -43,10 +48,10 @@ class ShazamRepository @Inject constructor(
         }
         when (shazamDetect) {
             is NetworkResponse.Success -> {
-//                val detected = SongRecognizeResponseToShazamDetectMapper.map(shazamDetect.body)
-//                Timber.d("shazamApi success ${shazamDetect.body}")
-//
-//                return detected
+                val detected = SongRecognizeResponseToShazamDetectMapper.map(shazamDetect.body)
+                Timber.d("shazamApi success ${shazamDetect.body}")
+
+                return detected
             }
 
             is NetworkResponse.Error -> {
@@ -55,6 +60,19 @@ class ShazamRepository @Inject constructor(
         }
 
         return null
+    }
+
+    override suspend fun getRelatedTracks(url: String): List<Track> {
+
+        when (val response = plainShazamApi.getRelatedTracks(url)) {
+            is NetworkResponse.Success -> {
+                return response.body.tracks.map(TrackResponseToTrackMapper::map)
+            }
+
+            is NetworkResponse.Error -> { }
+        }
+
+        return emptyList()
     }
 
     private companion object {

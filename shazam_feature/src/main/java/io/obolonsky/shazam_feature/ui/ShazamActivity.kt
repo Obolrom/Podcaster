@@ -190,13 +190,7 @@ class ShazamActivity : AppCompatActivity() {
     private fun onMediaRecorded() {
         binding.shazam.isEnabled = true
         val file = File(filesDir, RECORDED_AUDIO_FILENAME)
-        AudioSource.addMediaItem(
-            MediaItem.Builder()
-                .setUri(file.toUri())
-                .build()
-        )
-        showPlayer()
-//        shazamViewModel.audioDetect(file)
+        shazamViewModel.audioDetect(file)
     }
 
     private companion object {

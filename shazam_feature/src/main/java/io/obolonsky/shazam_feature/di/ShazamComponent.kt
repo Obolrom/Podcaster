@@ -8,7 +8,6 @@ import io.obolonsky.shazam_feature.ui.ShazamActivity
 @FeatureScope
 @Component(
     dependencies = [ApplicationProvider::class],
-    modules = [ShazamModule::class]
 )
 internal interface ShazamComponent : AssistedFactoriesModule {
 

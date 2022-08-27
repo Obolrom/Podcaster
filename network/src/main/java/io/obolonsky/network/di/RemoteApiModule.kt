@@ -4,7 +4,9 @@ import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import dagger.Module
 import dagger.Provides
 import io.obolonsky.network.BuildConfig
+import io.obolonsky.network.api.PlainShazamApi
 import io.obolonsky.network.api.SongRecognitionApi
+import io.obolonsky.network.utils.ShazamPlain
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -48,8 +50,27 @@ class RemoteApiModule {
             .build()
     }
 
+    @ShazamPlain
+    @Provides
+    fun providePlainRetrofit(
+        client: OkHttpClient,
+        converter: GsonConverterFactory,
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://localhost")
+            .client(client)
+            .addCallAdapterFactory(NetworkResponseAdapterFactory())
+            .addConverterFactory(converter)
+            .build()
+    }
+
     @Provides
     fun provideSongRecognitionApi(
         retrofit: Retrofit,
     ): SongRecognitionApi = retrofit.create()
+
+    @Provides
+    fun providePlainApi(
+        @ShazamPlain retrofit: Retrofit,
+    ): PlainShazamApi = retrofit.create()
 }

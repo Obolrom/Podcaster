@@ -1,11 +1,12 @@
-package io.obolonsky.shazam_feature.data.mappers
+package io.obolonsky.network.mappers
 
 import io.obolonsky.core.di.data.Track
+import io.obolonsky.core.di.utils.AUDIO_TRACK_HUB_LINK_INDEX
 import io.obolonsky.core.di.utils.Mapper
-import io.obolonsky.shazam_feature.data.responses.SongRecognizeResponse
+import io.obolonsky.network.responses.SongRecognizeResponse
 import okhttp3.internal.toImmutableList
 
-internal object TrackResponseToTrackMapper : Mapper<SongRecognizeResponse.TrackResponse, Track> {
+object TrackResponseToTrackMapper : Mapper<SongRecognizeResponse.TrackResponse, Track> {
 
     override fun map(input: SongRecognizeResponse.TrackResponse): Track {
         val audioUri = input.hub

@@ -1,7 +1,7 @@
-package io.obolonsky.shazam_feature.data
+package io.obolonsky.network.api
 
 import com.haroldadmin.cnradapter.NetworkResponse
-import io.obolonsky.shazam_feature.data.responses.RelatedTracksResponse
+import io.obolonsky.network.responses.RelatedTracksResponse
 import retrofit2.http.GET
 import retrofit2.http.Url
 

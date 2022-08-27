@@ -1,9 +1,9 @@
-package io.obolonsky.shazam_feature.data
+package io.obolonsky.network.api
 
 import com.haroldadmin.cnradapter.NetworkResponse
-import io.obolonsky.shazam_feature.BuildConfig
-import io.obolonsky.shazam_feature.data.responses.ShazamDetectResponse
-import io.obolonsky.shazam_feature.data.responses.ShazamSearchResponse
+import io.obolonsky.network.BuildConfig
+import io.obolonsky.network.responses.ShazamDetectResponse
+import io.obolonsky.network.responses.ShazamSearchResponse
 import okhttp3.RequestBody
 import retrofit2.http.*
 

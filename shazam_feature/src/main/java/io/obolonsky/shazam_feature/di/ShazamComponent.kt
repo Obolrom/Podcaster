@@ -4,14 +4,13 @@ import dagger.Component
 import io.obolonsky.core.di.depsproviders.ApplicationProvider
 import io.obolonsky.core.di.scopes.FeatureScope
 import io.obolonsky.shazam_feature.ui.ShazamActivity
-import io.obolonsky.shazam_feature.ui.ShazamViewModel
 
 @FeatureScope
 @Component(
     dependencies = [ApplicationProvider::class],
     modules = [ShazamModule::class]
 )
-interface ShazamComponent {
+internal interface ShazamComponent : AssistedFactoriesModule {
 
     @Component.Factory
     interface Factory {
@@ -22,6 +21,4 @@ interface ShazamComponent {
     }
 
     fun inject(target: ShazamActivity)
-
-    fun shazamViewModel(): ShazamViewModel.Factory
 }

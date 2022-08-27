@@ -1,4 +1,4 @@
-package io.obolonsky.shazam_feature.ui
+package io.obolonsky.shazam_feature.viewmodels
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

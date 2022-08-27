@@ -63,6 +63,7 @@ dependencies {
     implementation("com.google.dagger:dagger:2.40.5")
     kapt("com.google.dagger:dagger-compiler:2.40.5")
 
+    // Player
     implementation("androidx.media3:media3-ui:${Media3.version}")
     implementation("androidx.media3:media3-exoplayer:${Media3.version}")
     implementation("androidx.media3:media3-session:${Media3.version}")

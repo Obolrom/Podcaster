@@ -21,6 +21,8 @@ import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.core.di.toaster
 import io.obolonsky.shazam_feature.R
 import io.obolonsky.shazam_feature.databinding.ActivityShazamBinding
+import io.obolonsky.shazam_feature.viewmodels.ComponentViewModel
+import io.obolonsky.shazam_feature.viewmodels.ShazamViewModel
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -50,13 +52,14 @@ class ShazamActivity : AppCompatActivity() {
         onPermissionGranted = ::onRecordPermissionGranted,
     )
 
-    private val mediaRecorder by lazy {
-        MediaRecorder(
-            outputFile = File(filesDir, RECORDED_AUDIO_FILENAME),
-            recordDurationMs = TimeUnit.SECONDS.toMillis(7),
-            lifecycleScope = lifecycleScope,
-            onMediaRecorded = ::onMediaRecorded,
-        )
+    private val mediaRecorderViewModel by lazyViewModel {
+        componentViewModel.shazamComponent
+            .recorderViewModel()
+            .create(
+                savedStateHandle = it,
+                outputFile = File(filesDir, RECORDED_AUDIO_FILENAME),
+                recordDurationMs = TimeUnit.SECONDS.toMillis(7),
+            )
     }
 
     @Inject
@@ -84,6 +87,10 @@ class ShazamActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         lifecycleScope.launch {
+            mediaRecorderViewModel.audioRecordingComplete
+                .onEach { onMediaRecorded() }
+                .launchWhenStarted(lifecycleScope)
+
             shazamViewModel.shazamDetect
                 .mapNotNull { it.track }
                 .onEach { track ->
@@ -177,13 +184,19 @@ class ShazamActivity : AppCompatActivity() {
     }
 
     private fun onRecordPermissionGranted() {
-        mediaRecorder.startRecording()
+        mediaRecorderViewModel.record()
     }
 
     private fun onMediaRecorded() {
         binding.shazam.isEnabled = true
         val file = File(filesDir, RECORDED_AUDIO_FILENAME)
-        shazamViewModel.audioDetect(file)
+        AudioSource.addMediaItem(
+            MediaItem.Builder()
+                .setUri(file.toUri())
+                .build()
+        )
+        showPlayer()
+//        shazamViewModel.audioDetect(file)
     }
 
     private companion object {

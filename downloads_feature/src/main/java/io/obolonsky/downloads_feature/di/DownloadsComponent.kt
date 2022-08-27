@@ -8,7 +8,6 @@ import io.obolonsky.downloads_feature.PlayerActivity
 @FeatureScope
 @Component(
     dependencies = [ApplicationProvider::class],
-    modules = [DownloadsModule::class]
 )
 interface DownloadsComponent {
 

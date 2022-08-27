@@ -1,25 +1,37 @@
-package io.obolonsky.shazam_feature.ui
+package io.obolonsky.shazam_feature.recorder
 
 import android.media.MediaRecorder
-import androidx.lifecycle.LifecycleCoroutineScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
 
-class MediaRecorder(
+class ShazamMediaRecorderImpl(
     private val outputFile: File,
     private val recordDurationMs: Long,
-    private val lifecycleScope: LifecycleCoroutineScope,
-    private val onMediaRecorded: () -> Unit,
-) {
+    private val coroutineScope: CoroutineScope,
+    private val onMediaRecordedFlow: MutableSharedFlow<Unit>,
+) : AudioRecorder {
 
     private var recorder: MediaRecorder? = null
 
+    override fun start() {
+        startRecording()
+    }
+
+    override fun stop() {
+        coroutineScope.launch {
+            stopRecording()
+        }
+    }
+
     @Suppress("BlockingMethodInNonBlockingContext")
     fun startRecording() {
-        lifecycleScope.launch {
+        coroutineScope.launch {
             recorder = MediaRecorder().apply {
                 setAudioSource(MediaRecorder.AudioSource.MIC)
                 setOutputFormat(MediaRecorder.OutputFormat.DEFAULT)
@@ -36,18 +48,18 @@ class MediaRecorder(
             }
         }
 
-        lifecycleScope.launch {
+        coroutineScope.launch {
             delay(recordDurationMs)
             stopRecording()
         }
     }
 
-    private fun stopRecording(){
+    private suspend fun stopRecording() = coroutineScope {
         recorder?.apply {
             stop()
             release()
         }
         recorder = null
-        onMediaRecorded()
+        onMediaRecordedFlow.emit(Unit)
     }
 }

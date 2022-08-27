@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+import Dependencies.Media3
 
 plugins {
     id("com.android.library")
@@ -53,9 +53,9 @@ dependencies {
     kapt("com.google.dagger:dagger-compiler:2.40.5")
 
     // Player
-    implementation(Dependencies.ExoPlayer.player)
-    implementation(Dependencies.ExoPlayer.playerUi)
-    implementation(Dependencies.ExoPlayer.mediaSession)
+    implementation("androidx.media3:media3-ui:${Media3.version}")
+    implementation("androidx.media3:media3-exoplayer:${Media3.version}")
+    implementation("androidx.media3:media3-session:${Media3.version}")
 
     // KTX
     implementation("androidx.core:core-ktx:1.7.0")

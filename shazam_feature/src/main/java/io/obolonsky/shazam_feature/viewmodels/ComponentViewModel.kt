@@ -1,4 +1,4 @@
-package io.obolonsky.shazam_feature.ui
+package io.obolonsky.shazam_feature.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

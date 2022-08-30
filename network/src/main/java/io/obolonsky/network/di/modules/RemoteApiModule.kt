@@ -1,4 +1,4 @@
-package io.obolonsky.network.di
+package io.obolonsky.network.di.modules
 
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import dagger.Module

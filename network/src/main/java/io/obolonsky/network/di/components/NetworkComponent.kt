@@ -1,8 +1,10 @@
-package io.obolonsky.network.di
+package io.obolonsky.network.di.components
 
 import dagger.Component
 import io.obolonsky.core.di.depsproviders.CoroutineSchedulersProvider
 import io.obolonsky.core.di.depsproviders.ToolsProvider
+import io.obolonsky.network.di.modules.NetworkModule
+import io.obolonsky.network.di.providers.NetworkClientsProvider
 
 @Component(
     dependencies = [

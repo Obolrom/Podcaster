@@ -3,8 +3,8 @@ package io.obolonsky.repository.di
 import dagger.Component
 import io.obolonsky.core.di.depsproviders.ToolsProvider
 import io.obolonsky.core.di.repositories.providers.RepositoryProvider
-import io.obolonsky.network.di.DaggerNetworkComponent
-import io.obolonsky.network.di.NetworkClientsProvider
+import io.obolonsky.network.di.components.DaggerNetworkComponent
+import io.obolonsky.network.di.providers.NetworkClientsProvider
 import io.obolonsky.repository.di.modules.BinderModule
 
 @Component(

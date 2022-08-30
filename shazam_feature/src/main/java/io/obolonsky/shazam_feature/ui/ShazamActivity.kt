@@ -6,6 +6,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
@@ -33,6 +34,15 @@ import javax.inject.Provider
 
 class ShazamActivity : AppCompatActivity() {
 
+    @Inject
+    internal lateinit var showPlayerAction: Provider<ShowPlayer>
+
+    @Inject
+    internal lateinit var stopPlayerServiceAction: Provider<StopPlayerService>
+
+    @Inject
+    internal lateinit var navigateToExoPlayerAction: NavigateToExoPlayerAction
+
     private val componentViewModel by viewModels<ComponentViewModel>()
 
     private val shazamViewModel: ShazamViewModel by lazyViewModel {
@@ -40,9 +50,6 @@ class ShazamActivity : AppCompatActivity() {
             .shazamViewModel()
             .create(it)
     }
-
-    @Inject
-    lateinit var navigateToExoPlayerAction: NavigateToExoPlayerAction
 
     private val binding: ActivityShazamBinding by viewBinding()
 
@@ -63,11 +70,7 @@ class ShazamActivity : AppCompatActivity() {
             )
     }
 
-    @Inject
-    internal lateinit var showPlayerAction: Provider<ShowPlayer>
-
-    @Inject
-    internal lateinit var stopPlayerServiceAction: Provider<StopPlayerService>
+    private var isPlayerShown = false
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
@@ -77,13 +80,24 @@ class ShazamActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         componentViewModel.shazamComponent.inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shazam)
+
+        savedInstanceState?.getBoolean(PLAYER_IS_PLAYING_KEY)?.let { isPlayerRunning ->
+            isPlayerShown = isPlayerRunning
+            binding.shazam.isVisible = !isPlayerRunning
+        }
 
         intent?.handleIntent()
 
         initViewModel()
         initViews()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean(PLAYER_IS_PLAYING_KEY, isPlayerShown)
+        super.onSaveInstanceState(outState)
     }
 
     private fun initViewModel() {
@@ -94,35 +108,7 @@ class ShazamActivity : AppCompatActivity() {
 
             shazamViewModel.shazamDetect
                 .mapNotNull { it.track }
-                .onEach { track ->
-                    track.audioUri?.let { audioUri ->
-                        AudioSource.addMediaItem(
-                            MediaItem.Builder()
-                                .setUri(audioUri)
-                                .setMediaMetadata(track.metadata())
-                                .build()
-                        )
-                    }
-                    track.relatedTracks.onEach { relatedTrack ->
-                        relatedTrack.audioUri?.let { audioUri ->
-                            AudioSource.addMediaItem(
-                                MediaItem.Builder()
-                                    .setUri(audioUri)
-                                    .setMediaMetadata(relatedTrack.metadata())
-                                    .build()
-                            )
-                        }
-                        showPlayer()
-                    }
-
-                    track.imageUrls.firstOrNull()?.let { imageUrl ->
-                        binding.image.load(imageUrl) {
-                            crossfade(500)
-                        }
-                    }
-                    track.title?.let { binding.title.text = it }
-                    track.subtitle?.let { binding.subtitle.text = it }
-                }
+                .onEach(::onTrackDetected)
                 .launchWhenStarted(lifecycleScope)
 //                .flowWithLifecycle(lifecycle)
 //                .collect()
@@ -150,8 +136,6 @@ class ShazamActivity : AppCompatActivity() {
         }
     }
 
-    private var isPlayerShown = false
-
     private fun showPlayer() {
         if (isPlayerShown) return
         isPlayerShown = true
@@ -177,11 +161,39 @@ class ShazamActivity : AppCompatActivity() {
 
     private fun initViews() {
         binding.shazam.setOnClickListener {
-//            navigateToExoPlayerAction.navigate(this)
-
             it.isEnabled = false
             recordPermission.requestRecordPermission()
         }
+    }
+
+    private fun onTrackDetected(track: Track) {
+        track.audioUri?.let { audioUri ->
+            AudioSource.addMediaItem(
+                MediaItem.Builder()
+                    .setUri(audioUri)
+                    .setMediaMetadata(track.metadata())
+                    .build()
+            )
+        }
+        track.relatedTracks.onEach { relatedTrack ->
+            relatedTrack.audioUri?.let { audioUri ->
+                AudioSource.addMediaItem(
+                    MediaItem.Builder()
+                        .setUri(audioUri)
+                        .setMediaMetadata(relatedTrack.metadata())
+                        .build()
+                )
+            }
+            showPlayer()
+        }
+
+        track.imageUrls.firstOrNull()?.let { imageUrl ->
+            binding.image.load(imageUrl) {
+                crossfade(500)
+            }
+        }
+        track.title?.let { binding.title.text = it }
+        track.subtitle?.let { binding.subtitle.text = it }
     }
 
     private fun onRecordPermissionGranted() {
@@ -195,6 +207,7 @@ class ShazamActivity : AppCompatActivity() {
     }
 
     private companion object {
+        const val PLAYER_IS_PLAYING_KEY = "PLAYER_IS_PLAYING_KEY"
         const val RECORDED_AUDIO_FILENAME = "fileToDetect.mp3"
     }
 }

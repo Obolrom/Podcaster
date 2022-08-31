@@ -10,4 +10,6 @@ data class Track(
     val subtitle: String?,
     val title: String?,
     val imageUrls: List<String>,
+    val relatedTracksUrl: String?,
+    val relatedTracks: List<Track>,
 )

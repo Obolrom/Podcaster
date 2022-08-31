@@ -1,26 +1,35 @@
 package io.obolonsky.podcaster.di.components
 
 import android.content.Context
-import dagger.BindsInstance
 import dagger.Component
 import io.obolonsky.core.di.depsproviders.ApplicationProvider
+import io.obolonsky.core.di.depsproviders.PlayerActionProvider
+import io.obolonsky.core.di.depsproviders.ToolsProvider
+import io.obolonsky.core.di.repositories.providers.RepositoryProvider
 import io.obolonsky.podcaster.PodcasterApp
 import io.obolonsky.podcaster.di.modules.AppModule
 import io.obolonsky.core.di.scopes.ApplicationScope
-import io.obolonsky.podcaster.ui.BookFeedFragment
+import io.obolonsky.player_feature.di.PlayerExportComponent
 import io.obolonsky.podcaster.ui.MainActivity
-import io.obolonsky.podcaster.ui.ShazamActivity
-import io.obolonsky.podcaster.viewmodels.SongsViewModel
+import io.obolonsky.repository.di.RepoComponent
 
 @ApplicationScope
-@Component(modules = [AppModule::class])
+@Component(
+    dependencies = [
+        RepositoryProvider::class,
+        ToolsProvider::class,
+        PlayerActionProvider::class,
+    ],
+    modules = [AppModule::class])
 interface AppComponent : ApplicationProvider {
 
     @Component.Factory
     interface Factory {
 
         fun create(
-            @BindsInstance appCtx: Context
+            repositoryProvider: RepositoryProvider,
+            toolsProvider: ToolsProvider,
+            playerActionProvider: PlayerActionProvider,
         ): AppComponent
     }
 
@@ -28,9 +37,19 @@ interface AppComponent : ApplicationProvider {
 
     fun inject(target: MainActivity)
 
-    fun inject(target: ShazamActivity)
+    companion object {
 
-    fun inject(target: BookFeedFragment)
+        fun create(appCtx: Context): AppComponent {
+            val toolsComponent = ToolsComponent.create(appCtx)
+            val repoComponent = RepoComponent.create(toolsComponent)
+            val playerActionsComponent = PlayerExportComponent.create()
 
-    fun songsViewModel(): SongsViewModel.Factory
+            return DaggerAppComponent.factory()
+                .create(
+                    repositoryProvider = repoComponent,
+                    toolsProvider = toolsComponent,
+                    playerActionProvider = playerActionsComponent
+                )
+        }
+    }
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <capability android:name="actions.intent.OPEN_APP_FEATURE">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="io.obolonsky.podcaster"
+            android:targetClass="io.obolonsky.shazam_feature.ui.ShazamActivity">
+            <parameter
+                android:name="feature"
+                android:key="shazamKey" />
+        </intent>
+    </capability>
+
+    <shortcut
+        android:shortcutId="shazam"
+        android:shortcutShortLabel="@string/activity_shazam">
+        <capability-binding android:key="actions.intent.OPEN_APP_FEATURE">
+            <parameter-binding
+                android:key="feature"
+                android:value="@array/shazam_synonyms"/>
+        </capability-binding>
+    </shortcut>
+
+</shortcuts>

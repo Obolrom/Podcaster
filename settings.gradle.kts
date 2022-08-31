@@ -25,3 +25,12 @@ project(":player_feature").projectDir = File(rootDir, "player_feature")
 
 include(":shazam_feature")
 project(":shazam_feature").projectDir = File(rootDir, "shazam_feature")
+
+include(":downloads_feature")
+project(":downloads_feature").projectDir = File(rootDir, "downloads_feature")
+
+include(":network")
+project(":network").projectDir = File(rootDir, "network")
+
+include(":repository")
+project(":repository").projectDir = File(rootDir, "repository")

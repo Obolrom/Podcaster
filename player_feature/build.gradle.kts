@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    compileSdk = 32
+    compileSdk = 31
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 32
+        targetSdk = 31
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -57,11 +57,13 @@ dependencies {
     // KTX
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
+    implementation("androidx.fragment:fragment-ktx:1.4.1")
 
     // Dagger 2
     implementation("com.google.dagger:dagger:2.40.5")
     kapt("com.google.dagger:dagger-compiler:2.40.5")
 
+    // Player
     implementation("androidx.media3:media3-ui:${Media3.version}")
     implementation("androidx.media3:media3-exoplayer:${Media3.version}")
     implementation("androidx.media3:media3-session:${Media3.version}")

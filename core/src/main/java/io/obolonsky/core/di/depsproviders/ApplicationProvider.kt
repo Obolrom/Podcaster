@@ -1,3 +1,9 @@
 package io.obolonsky.core.di.depsproviders
 
-interface ApplicationProvider : ApplicationContextProvider
+import io.obolonsky.core.di.repositories.providers.RepositoryProvider
+
+interface ApplicationProvider :
+    ToolsProvider,
+    PlayerActionProvider,
+    NavigateToExoPlayerActionProvider,
+    RepositoryProvider

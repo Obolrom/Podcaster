@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
@@ -16,6 +18,13 @@ android {
         targetSdk = 31
         versionCode = 1
         versionName = "1.0"
+
+        buildConfigField(
+            type = "String",
+            name = Constants.SHAZAM_DETECT_API_KEY_NAME,
+            value = gradleLocalProperties(rootDir)
+                .getProperty(Constants.SHAZAM_DETECT_API_PROPERTY_NAME)
+        )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -50,8 +59,10 @@ dependencies {
 
     implementation(project(":core_ui"))
     implementation(project(":core"))
+    implementation(project(":repository"))
     implementation(project(":player_feature"))
     implementation(project(":shazam_feature"))
+    implementation(project(":downloads_feature"))
 
     implementation("com.google.android.material:material:1.5.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
@@ -93,6 +104,7 @@ dependencies {
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
     implementation("com.github.haroldadmin:NetworkResponseAdapter:5.0.0")
 
@@ -105,11 +117,6 @@ dependencies {
     //Navigation component
     implementation("androidx.navigation:navigation-fragment-ktx:2.4.2")
     implementation("androidx.navigation:navigation-ui-ktx:2.4.2")
-
-    // Player
-    implementation(Dependencies.ExoPlayer.player)
-    implementation(Dependencies.ExoPlayer.playerUi)
-    implementation(Dependencies.ExoPlayer.mediaSession)
 
     // Utilities
     implementation("com.jakewharton.timber:timber:5.0.1")

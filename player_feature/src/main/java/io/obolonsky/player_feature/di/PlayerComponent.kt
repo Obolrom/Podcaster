@@ -14,7 +14,7 @@ import io.obolonsky.player_feature.player.PodcasterPlaybackService
         PlayerModule::class,
     ]
 )
-interface PlayerComponent {
+internal interface PlayerComponent {
 
     @Component.Factory
     interface Factory {

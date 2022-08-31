@@ -39,8 +39,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
-        android:layout_width="280dp"
-        android:layout_height="280dp"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="16dp"
         app:layout_constraintBottom_toTopOf="@+id/exo_progress"

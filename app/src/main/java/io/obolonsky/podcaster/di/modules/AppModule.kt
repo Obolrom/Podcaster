@@ -5,7 +5,6 @@ import dagger.Module
 @Module(includes = [
     DatabaseModule::class,
     WebServiceModule::class,
-    PlayerModule::class,
     BinderModule::class,
     WorkerBindingModule::class,
 ])

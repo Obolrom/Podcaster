@@ -7,6 +7,7 @@ import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
 import androidx.media3.session.*
 import by.kirich1409.viewbindingdelegate.viewBinding
+import coil.load
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
 import io.obolonsky.coreui.BaseFragment
@@ -84,6 +85,9 @@ class PlayerFragment : BaseFragment(R.layout.fragment_player) {
             ?: mediaMetadata.title
             ?: mediaMetadata.albumTitle
         playerNavBinding.audioTrackTitle.text = trackTitle
+        playerNavBinding.audioImage.load(mediaMetadata.artworkUri) {
+            crossfade(500)
+        }
     }
 
     inner class MediaControllerListener : MediaController.Listener {

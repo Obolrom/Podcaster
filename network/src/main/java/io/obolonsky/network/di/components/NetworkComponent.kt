@@ -4,7 +4,7 @@ import dagger.Component
 import io.obolonsky.core.di.depsproviders.CoroutineSchedulersProvider
 import io.obolonsky.core.di.depsproviders.ToolsProvider
 import io.obolonsky.network.di.modules.NetworkModule
-import io.obolonsky.network.di.providers.NetworkClientsProvider
+import io.obolonsky.network.di.providers.ApiHelperProviders
 
 @Component(
     dependencies = [
@@ -14,7 +14,8 @@ import io.obolonsky.network.di.providers.NetworkClientsProvider
         NetworkModule::class,
     ]
 )
-interface NetworkComponent : NetworkClientsProvider, CoroutineSchedulersProvider {
+interface NetworkComponent : CoroutineSchedulersProvider,
+    ApiHelperProviders {
 
     @Component.Factory
     interface Factory {

@@ -4,8 +4,10 @@ import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import dagger.Module
 import dagger.Provides
 import io.obolonsky.network.BuildConfig
+import io.obolonsky.network.api.FeatureTogglesApi
 import io.obolonsky.network.api.PlainShazamApi
 import io.obolonsky.network.api.SongRecognitionApi
+import io.obolonsky.network.utils.FeatureToggles
 import io.obolonsky.network.utils.ShazamPlain
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -64,6 +66,20 @@ class RemoteApiModule {
             .build()
     }
 
+    @FeatureToggles
+    @Provides
+    fun provideFeatureTogglesRetrofit(
+        client: OkHttpClient,
+        converter: GsonConverterFactory,
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://raw.githubusercontent.com/Obolrom/PodcasterFeatureToggles/")
+            .client(client)
+            .addCallAdapterFactory(NetworkResponseAdapterFactory())
+            .addConverterFactory(converter)
+            .build()
+    }
+
     @Provides
     fun provideSongRecognitionApi(
         retrofit: Retrofit,
@@ -73,4 +89,9 @@ class RemoteApiModule {
     fun providePlainApi(
         @ShazamPlain retrofit: Retrofit,
     ): PlainShazamApi = retrofit.create()
+
+    @Provides
+    fun provideFeatureTogglesApi(
+        @FeatureToggles retrofit: Retrofit,
+    ): FeatureTogglesApi = retrofit.create()
 }

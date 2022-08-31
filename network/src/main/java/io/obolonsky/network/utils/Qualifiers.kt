@@ -6,3 +6,8 @@ import javax.inject.Qualifier
 @MustBeDocumented
 @Retention(value = AnnotationRetention.RUNTIME)
 annotation class ShazamPlain
+
+@Qualifier
+@MustBeDocumented
+@Retention(value = AnnotationRetention.RUNTIME)
+annotation class FeatureToggles

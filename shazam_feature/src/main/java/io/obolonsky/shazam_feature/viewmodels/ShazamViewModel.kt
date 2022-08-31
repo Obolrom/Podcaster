@@ -7,8 +7,10 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import io.obolonsky.core.di.Reaction
+import io.obolonsky.core.di.data.FeatureToggles
 import io.obolonsky.core.di.data.ShazamDetect
 import io.obolonsky.core.di.data.Track
+import io.obolonsky.core.di.repositories.FeatureTogglesRepo
 import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.shazam_feature.data.usecases.AudioDetectionUseCase
 import io.obolonsky.shazam_feature.di.ScopedShazamRepo
@@ -24,6 +26,7 @@ class ShazamViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
     private val audioDetectionUseCase: AudioDetectionUseCase,
     private val shazamRepository: ScopedShazamRepo,
+    private val featureToggles: FeatureTogglesRepo,
     private val dispatchers: CoroutineSchedulers,
 ) : ViewModel() {
 
@@ -39,6 +42,7 @@ class ShazamViewModel @AssistedInject constructor(
         viewModelScope.launch(dispatchers.computation) {
             when (val shazamDetect = audioDetectionUseCase(audioFile)) {
                 is Reaction.Success -> {
+                    featureToggles.getFeatureToggles().shazam.isWorking
                     val detected = shazamDetect.data
                     val relatedTracks = detected.track
                         ?.relatedTracksUrl

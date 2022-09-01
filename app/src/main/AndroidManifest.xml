@@ -33,7 +33,7 @@
         </activity>
 
         <activity
-            android:name="io.obolonsky.shazam_feature.ui.ShazamActivity"
+            android:name="io.obolonsky.shazam.ui.ShazamActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan">
@@ -72,13 +72,13 @@
         </activity>
 
         <activity
-            android:name="io.obolonsky.downloads_feature.PlayerActivity"
+            android:name="io.obolonsky.downloads.PlayerActivity"
             android:screenOrientation="portrait"
             android:exported="true">
         </activity>
 
         <service
-            android:name="io.obolonsky.player_feature.player.PodcasterPlaybackService"
+            android:name="io.obolonsky.player.player.PodcasterPlaybackService"
             android:foregroundServiceType="mediaPlayback"
             android:exported="true">
             <intent-filter>

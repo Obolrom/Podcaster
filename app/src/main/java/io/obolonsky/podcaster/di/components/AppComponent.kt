@@ -9,7 +9,7 @@ import io.obolonsky.core.di.repositories.providers.RepositoryProvider
 import io.obolonsky.podcaster.PodcasterApp
 import io.obolonsky.podcaster.di.modules.AppModule
 import io.obolonsky.core.di.scopes.ApplicationScope
-import io.obolonsky.player_feature.di.PlayerExportComponent
+import io.obolonsky.player.di.PlayerExportComponent
 import io.obolonsky.podcaster.ui.MainActivity
 import io.obolonsky.repository.di.RepoComponent
 

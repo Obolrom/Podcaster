@@ -20,7 +20,8 @@ import io.obolonsky.repository.di.RepoComponent
         ToolsProvider::class,
         PlayerActionProvider::class,
     ],
-    modules = [AppModule::class])
+    modules = [AppModule::class]
+)
 interface AppComponent : ApplicationProvider {
 
     @Component.Factory

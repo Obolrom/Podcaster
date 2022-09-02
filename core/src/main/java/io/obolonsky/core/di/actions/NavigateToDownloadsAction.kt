@@ -2,7 +2,7 @@ package io.obolonsky.core.di.actions
 
 import android.content.Context
 
-interface NavigateToExoPlayerAction {
+interface NavigateToDownloadsAction {
 
     fun navigate(context: Context)
 }

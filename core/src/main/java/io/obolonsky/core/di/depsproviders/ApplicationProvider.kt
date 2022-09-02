@@ -6,5 +6,5 @@ interface ApplicationProvider :
     ToolsProvider,
     PlayerActionProvider,
     NetworkStatusObservableProvider,
-    NavigateToExoPlayerActionProvider,
+    DownloadsActionProvider,
     RepositoryProvider

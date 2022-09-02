@@ -72,7 +72,7 @@
         </activity>
 
         <activity
-            android:name="io.obolonsky.downloads.PlayerActivity"
+            android:name="io.obolonsky.downloads.DownloadsActivity"
             android:screenOrientation="portrait"
             android:exported="true">
         </activity>

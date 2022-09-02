@@ -12,7 +12,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
-import io.obolonsky.core.di.actions.NavigateToExoPlayerAction
+import io.obolonsky.core.di.actions.NavigateToDownloadsAction
 import io.obolonsky.core.di.actions.ShowPlayer
 import io.obolonsky.core.di.actions.StopPlayerService
 import io.obolonsky.core.di.common.AudioSource
@@ -41,7 +41,7 @@ class ShazamActivity : AppCompatActivity() {
     internal lateinit var stopPlayerServiceAction: Provider<StopPlayerService>
 
     @Inject
-    internal lateinit var navigateToExoPlayerAction: NavigateToExoPlayerAction
+    internal lateinit var navigateToDownloadsAction: NavigateToDownloadsAction
 
     private val componentViewModel by viewModels<ComponentViewModel>()
 

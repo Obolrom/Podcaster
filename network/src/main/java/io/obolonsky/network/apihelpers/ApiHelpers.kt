@@ -9,12 +9,12 @@ import io.obolonsky.core.di.data.FeatureToggles
 import io.obolonsky.core.di.data.ShazamDetect
 import io.obolonsky.core.di.data.Track
 import io.obolonsky.core.di.utils.CoroutineSchedulers
+import io.obolonsky.network.BuildConfig
 import io.obolonsky.network.api.PlainShazamApi
 import io.obolonsky.network.api.SongRecognitionApi
 import io.obolonsky.network.mappers.SongRecognizeResponseToShazamDetectMapper
 import io.obolonsky.network.mappers.TrackResponseToTrackMapper
 import io.obolonsky.network.responses.SongRecognizeResponse
-import io.obolonsky.network.utils.ProductionTypes
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -73,22 +73,22 @@ class ShazamSongRecognitionApiHelper @Inject constructor(
         }
     }
 
-    private suspend fun getShazamFeatureToggle(): FeatureToggles {
-        return when (val shazamFeatureToggle = featureToggleApiHelper.load(ProductionTypes.PROD)) {
-            is Reaction.Success -> {
-                shazamFeatureToggle.data ?: FeatureToggles(
-                    shazam = FeatureToggles.Shazam(
-                        isWorking = false,
-                    )
+    private suspend fun getShazamFeatureToggle(): FeatureToggles = when (
+        val shazamFeatureToggle = featureToggleApiHelper.load(param = BuildConfig.PRODUCTION_TYPE)
+    ) {
+        is Reaction.Success -> {
+            shazamFeatureToggle.data ?: FeatureToggles(
+                shazam = FeatureToggles.Shazam(
+                    isWorking = false,
                 )
-            }
-            is Reaction.Fail -> {
-                FeatureToggles(
-                    shazam = FeatureToggles.Shazam(
-                        isWorking = false,
-                    )
+            )
+        }
+        is Reaction.Fail -> {
+            FeatureToggles(
+                shazam = FeatureToggles.Shazam(
+                    isWorking = false,
                 )
-            }
+            )
         }
     }
 }

@@ -22,6 +22,12 @@ android {
                 .getProperty(Constants.SHAZAM_DETECT_API_PROPERTY_NAME)
         )
 
+        buildConfigField(
+            type = "io.obolonsky.network.utils.ProductionTypes",
+            name = "PRODUCTION_TYPE",
+            value = "io.obolonsky.network.utils.ProductionTypes.PROD"
+        )
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }

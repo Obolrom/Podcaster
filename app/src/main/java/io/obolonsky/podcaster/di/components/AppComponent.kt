@@ -12,6 +12,7 @@ import io.obolonsky.player.di.PlayerExportComponent
 import io.obolonsky.podcaster.ui.MainActivity
 import io.obolonsky.repository.di.RepoComponent
 import io.obolonsky.shazam.di.ShazamExportComponent
+import io.obolonsky.spacex.di.SpaceXExportComponent
 
 @ApplicationScope
 @Component(
@@ -21,6 +22,7 @@ import io.obolonsky.shazam.di.ShazamExportComponent
         PlayerActionProvider::class,
         DownloadsActionProvider::class,
         ShazamActionsProvider::class,
+        SpaceXActionsProvider::class,
     ],
     modules = [AppModule::class]
 )
@@ -35,6 +37,7 @@ interface AppComponent : ApplicationProvider {
             playerActionProvider: PlayerActionProvider,
             downloadsActionProvider: DownloadsActionProvider,
             shazamActionsProvider: ShazamActionsProvider,
+            spaceXActionsProvider: SpaceXActionsProvider,
         ): AppComponent
     }
 
@@ -50,6 +53,7 @@ interface AppComponent : ApplicationProvider {
             val playerActionsProvider = PlayerExportComponent.create()
             val downloadsActionProvider = DownloadsExportComponent.create()
             val shazamActionsProvider = ShazamExportComponent.createActionsProvider()
+            val spaceXActionsProvider = SpaceXExportComponent.createSpaceXActionsProvider()
 
             return DaggerAppComponent.factory()
                 .create(
@@ -58,6 +62,7 @@ interface AppComponent : ApplicationProvider {
                     playerActionProvider = playerActionsProvider,
                     downloadsActionProvider = downloadsActionProvider,
                     shazamActionsProvider = shazamActionsProvider,
+                    spaceXActionsProvider = spaceXActionsProvider
                 )
         }
     }

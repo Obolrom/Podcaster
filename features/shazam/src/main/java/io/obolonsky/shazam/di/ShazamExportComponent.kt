@@ -30,7 +30,7 @@ interface ShazamExportComponent : ShazamActionsProvider {
 
 @Module
 @Suppress
-interface ShazamExportModule {
+internal interface ShazamExportModule {
 
     @Binds
     fun bindGoToShazamAction(action: GoToShazamActionImpl): GoToShazamAction

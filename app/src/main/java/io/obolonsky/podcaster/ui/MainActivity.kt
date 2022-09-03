@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.obolonsky.core.di.actions.GoToShazamAction
+import io.obolonsky.core.di.actions.GoToSpaceXAction
 import io.obolonsky.podcaster.PodcasterApp
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.databinding.ActivityMainFakeBinding
@@ -15,6 +16,9 @@ class MainActivity : AppCompatActivity() {
     @Inject
     internal lateinit var goToShazamAction: Provider<GoToShazamAction>
 
+    @Inject
+    internal lateinit var goToSpaceXAction: Provider<GoToSpaceXAction>
+
     private val binding: ActivityMainFakeBinding by viewBinding()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +28,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.goToShazam.setOnClickListener {
             goToShazamAction.get()?.navigate(this)
+        }
+
+        binding.goToSpaceX.setOnClickListener {
+            goToSpaceXAction.get()?.navigate(this)
         }
     }
 }

@@ -28,7 +28,7 @@ interface DownloadsExportComponent : DownloadsActionProvider {
 
 @Module
 @Suppress
-interface DownloadsExportModule {
+internal interface DownloadsExportModule {
 
     @Binds
     fun bindNavigateToDownloadsAction(

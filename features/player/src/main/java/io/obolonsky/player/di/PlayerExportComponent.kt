@@ -30,7 +30,7 @@ interface PlayerExportComponent : PlayerActionProvider {
 
 @Module
 @Suppress
-interface PlayerExportModule {
+internal interface PlayerExportModule {
 
     @Binds
     fun bindGoToPlayerAction(action: GoToPlayerAction): ShowPlayer

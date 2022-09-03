@@ -9,7 +9,6 @@ import dagger.assisted.AssistedInject
 import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.data.ShazamDetect
 import io.obolonsky.core.di.data.Track
-import io.obolonsky.core.di.repositories.SpaceXRepo
 import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.shazam.data.usecases.AudioDetectionUseCase
 import io.obolonsky.shazam.di.ScopedShazamRepo
@@ -25,8 +24,6 @@ class ShazamViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
     private val audioDetectionUseCase: AudioDetectionUseCase,
     private val shazamRepository: ScopedShazamRepo,
-    // TODO: move to separate feature
-    private val spaceXRepo: SpaceXRepo,
     private val dispatchers: CoroutineSchedulers,
 ) : ViewModel() {
 
@@ -40,7 +37,6 @@ class ShazamViewModel @AssistedInject constructor(
 
     fun audioDetect(audioFile: File) {
         viewModelScope.launch(dispatchers.computation) {
-            spaceXRepo.getNextLaunch()
             when (val shazamDetect = audioDetectionUseCase(audioFile)) {
                 is Reaction.Success -> {
                     val detected = shazamDetect.data

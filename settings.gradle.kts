@@ -34,3 +34,6 @@ project(":network").projectDir = File(rootDir, "network")
 
 include(":repository")
 project(":repository").projectDir = File(rootDir, "repository")
+
+include(":spaceX")
+project(":spaceX").projectDir = File(rootDir, "features/spaceX")

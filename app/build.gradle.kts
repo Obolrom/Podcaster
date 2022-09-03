@@ -60,9 +60,11 @@ dependencies {
     implementation(project(":core_ui"))
     implementation(project(":core"))
     implementation(project(":repository"))
+
     implementation(project(":player"))
     implementation(project(":shazam"))
     implementation(project(":downloads"))
+    implementation(project(":spaceX"))
 
     implementation("com.google.android.material:material:1.5.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")

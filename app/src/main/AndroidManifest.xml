@@ -23,18 +23,6 @@
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-        </activity>
-
-        <activity
-            android:name="io.obolonsky.spacex.ui.SpaceXActivity"
-            android:exported="true"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,16 +32,15 @@
         </activity>
 
         <activity
+            android:name="io.obolonsky.spacex.ui.SpaceXActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
             android:name="io.obolonsky.shazam.ui.ShazamActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan">
-
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
 
             <!-- Required to support search action intents from Google Search -->
             <intent-filter>
@@ -85,8 +72,7 @@
         <activity
             android:name="io.obolonsky.downloads.DownloadsActivity"
             android:screenOrientation="portrait"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
 
         <service
             android:name="io.obolonsky.player.player.PodcasterPlaybackService"

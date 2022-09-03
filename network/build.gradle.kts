@@ -3,6 +3,7 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("com.apollographql.apollo3") version "3.5.0"
     id("kotlin-android")
     id("kotlin-kapt")
 }
@@ -55,10 +56,20 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
     implementation("com.github.haroldadmin:NetworkResponseAdapter:5.0.0")
 
+    // Apollo
+    implementation("com.apollographql.apollo3:apollo-runtime:3.5.0")
+
     // Dagger 2
     implementation("com.google.dagger:dagger:2.40.5")
     kapt("com.google.dagger:dagger-compiler:2.40.5")
 
     // Utilities
     implementation("com.jakewharton.timber:timber:5.0.1")
+}
+
+apollo {
+    schemaFile.set(file("src/main/graphql/schema.graphqls"))
+    srcDir(file("src/main/graphql/"))
+
+    packageName.set("io.obolonsky.network")
 }

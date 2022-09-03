@@ -1,5 +1,7 @@
 package io.obolonsky.network.di.modules
 
+import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.network.okHttpClient
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -94,4 +96,14 @@ class RemoteApiModule {
     fun provideFeatureTogglesApi(
         @FeatureToggles retrofit: Retrofit,
     ): FeatureTogglesApi = retrofit.create()
+
+    @Provides
+    fun provideApolloClient(
+        okHttpClient: OkHttpClient,
+    ): ApolloClient {
+        return ApolloClient.Builder()
+            .serverUrl("https://api.spacex.land/graphql")
+            .okHttpClient(okHttpClient)
+            .build()
+    }
 }

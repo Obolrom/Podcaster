@@ -1,0 +1,36 @@
+query RocketFullDetails($id: ID!){
+    rocket(id: $id) {
+        id
+        name
+        country
+        cost_per_launch
+        company
+        boosters
+        active
+        stages
+        success_rate_pct
+        type
+        wikipedia
+        second_stage {
+            engines
+            fuel_amount_tons
+        }
+        payload_weights {
+            kg
+            name
+            id
+        }
+        description
+        engines {
+            layout
+            engine_loss_max
+            number
+            propellant_1
+            propellant_2
+            thrust_to_weight
+            type
+            version
+        }
+        first_flight
+    }
+}

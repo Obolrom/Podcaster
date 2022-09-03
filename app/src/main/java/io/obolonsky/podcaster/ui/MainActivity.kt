@@ -2,32 +2,36 @@ package io.obolonsky.podcaster.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import io.obolonsky.core.di.actions.GoToShazamAction
+import io.obolonsky.core.di.actions.GoToSpaceXAction
 import io.obolonsky.podcaster.PodcasterApp
 import io.obolonsky.podcaster.R
-import io.obolonsky.podcaster.databinding.ActivityMainBinding
+import io.obolonsky.podcaster.databinding.ActivityMainFakeBinding
+import javax.inject.Inject
+import javax.inject.Provider
 
 class MainActivity : AppCompatActivity() {
 
-    private val navHostFragment by lazy {
-        supportFragmentManager.findFragmentById(
-            R.id.nav_host_fragment
-        ) as NavHostFragment
-    }
+    @Inject
+    internal lateinit var goToShazamAction: Provider<GoToShazamAction>
 
-    private val navController by lazy { navHostFragment.navController }
+    @Inject
+    internal lateinit var goToSpaceXAction: Provider<GoToSpaceXAction>
 
-    private val binding: ActivityMainBinding by viewBinding()
+    private val binding: ActivityMainFakeBinding by viewBinding()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as PodcasterApp).appComponent.inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main_fake)
 
-        binding.bottomBar.setupWithNavController(navController)
+        binding.goToShazam.setOnClickListener {
+            goToShazamAction.get()?.navigate(this)
+        }
 
-        binding.bottomBar.selectedItemId = R.id.discover_dest
+        binding.goToSpaceX.setOnClickListener {
+            goToSpaceXAction.get()?.navigate(this)
+        }
     }
 }

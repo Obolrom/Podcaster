@@ -20,17 +20,20 @@ project(":core_ui").projectDir = File(rootDir, "core_ui")
 include(":core")
 project(":core").projectDir = File(rootDir, "core")
 
-include(":player_feature")
-project(":player_feature").projectDir = File(rootDir, "player_feature")
+include(":player")
+project(":player").projectDir = File(rootDir, "features/player")
 
-include(":shazam_feature")
-project(":shazam_feature").projectDir = File(rootDir, "shazam_feature")
+include(":shazam")
+project(":shazam").projectDir = File(rootDir, "features/shazam")
 
-include(":downloads_feature")
-project(":downloads_feature").projectDir = File(rootDir, "downloads_feature")
+include(":downloads")
+project(":downloads").projectDir = File(rootDir, "features/downloads")
 
 include(":network")
 project(":network").projectDir = File(rootDir, "network")
 
 include(":repository")
 project(":repository").projectDir = File(rootDir, "repository")
+
+include(":spaceX")
+project(":spaceX").projectDir = File(rootDir, "features/spaceX")

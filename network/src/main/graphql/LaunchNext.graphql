@@ -1,0 +1,15 @@
+query LaunchNext {
+    launchNext {
+        id
+        is_tentative
+        launch_date_local
+        links {
+            flickr_images
+            article_link
+            video_link
+        }
+        rocket {
+            rocket_name
+        }
+    }
+}

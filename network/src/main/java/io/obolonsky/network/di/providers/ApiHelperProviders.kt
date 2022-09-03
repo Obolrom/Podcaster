@@ -4,7 +4,7 @@ import io.obolonsky.network.apihelpers.FeatureToggleApiHelper
 import io.obolonsky.network.apihelpers.GetRelatedTracksApiHelper
 import io.obolonsky.network.apihelpers.ShazamSongRecognitionApiHelper
 
-interface ApiHelperProviders {
+interface ApiHelperProviders : SpaceXHelpersProvider {
 
     val shazamSongRecognitionApiHelper: ShazamSongRecognitionApiHelper
 

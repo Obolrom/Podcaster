@@ -28,6 +28,11 @@ android {
                 "proguard-rules.pro",
             )
         }
+
+        debug {
+            applicationIdSuffix = ".debug"
+            isDebuggable = true
+        }
     }
 
     compileOptions {

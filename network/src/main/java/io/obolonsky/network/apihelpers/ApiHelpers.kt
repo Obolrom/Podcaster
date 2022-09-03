@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.haroldadmin.cnradapter.NetworkResponse
 import io.obolonsky.core.di.Error
 import io.obolonsky.core.di.Reaction
+import io.obolonsky.core.di.data.FeatureToggles
 import io.obolonsky.core.di.data.ShazamDetect
 import io.obolonsky.core.di.data.Track
 import io.obolonsky.core.di.utils.CoroutineSchedulers
@@ -13,6 +14,7 @@ import io.obolonsky.network.api.SongRecognitionApi
 import io.obolonsky.network.mappers.SongRecognizeResponseToShazamDetectMapper
 import io.obolonsky.network.mappers.TrackResponseToTrackMapper
 import io.obolonsky.network.responses.SongRecognizeResponse
+import io.obolonsky.network.utils.ProductionTypes
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -30,6 +32,7 @@ interface ApiHelperWithOneParam<D, E : Error, P> {
 class ShazamSongRecognitionApiHelper @Inject constructor(
     private val context: Context,
     private val songRecognitionApi: SongRecognitionApi,
+    private val featureToggleApiHelper: FeatureToggleApiHelper,
     private val dispatchers: CoroutineSchedulers,
 ) : ApiHelperWithOneParam<ShazamDetect, Error, File> {
 
@@ -43,15 +46,19 @@ class ShazamSongRecognitionApiHelper @Inject constructor(
             )
             .build()
 
-        val shazamDetect = withContext(dispatchers.io) {
-//            songRecognitionApi.detect(body)
+        val shazamFeatureToggle = getShazamFeatureToggle().shazam
 
-            val data = String(context.assets.open("response.json").readBytes())
-            val detectSampleResponse = Gson().fromJson(data, SongRecognizeResponse::class.java)
-            NetworkResponse.Success<SongRecognizeResponse, Unit>(
-                detectSampleResponse,
-                Response.success(detectSampleResponse)
-            ) as NetworkResponse<SongRecognizeResponse, Unit>
+        val shazamDetect = withContext(dispatchers.io) {
+            if (shazamFeatureToggle.isWorking) {
+                songRecognitionApi.detect(body)
+            } else {
+                val data = String(context.assets.open("response.json").readBytes())
+                val detectSampleResponse = Gson().fromJson(data, SongRecognizeResponse::class.java)
+                NetworkResponse.Success<SongRecognizeResponse, Unit>(
+                    detectSampleResponse,
+                    Response.success(detectSampleResponse)
+                )
+            }
         }
 
         return when (shazamDetect) {
@@ -62,6 +69,25 @@ class ShazamSongRecognitionApiHelper @Inject constructor(
 
             is NetworkResponse.Error -> {
                 Reaction.Fail(Error.NetworkError())
+            }
+        }
+    }
+
+    private suspend fun getShazamFeatureToggle(): FeatureToggles {
+        return when (val shazamFeatureToggle = featureToggleApiHelper.load(ProductionTypes.PROD)) {
+            is Reaction.Success -> {
+                shazamFeatureToggle.data ?: FeatureToggles(
+                    shazam = FeatureToggles.Shazam(
+                        isWorking = false,
+                    )
+                )
+            }
+            is Reaction.Fail -> {
+                FeatureToggles(
+                    shazam = FeatureToggles.Shazam(
+                        isWorking = false,
+                    )
+                )
             }
         }
     }

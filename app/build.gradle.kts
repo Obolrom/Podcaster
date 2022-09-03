@@ -1,5 +1,3 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
@@ -18,13 +16,6 @@ android {
         targetSdk = 31
         versionCode = 1
         versionName = "1.0"
-
-        buildConfigField(
-            type = "String",
-            name = Constants.SHAZAM_DETECT_API_KEY_NAME,
-            value = gradleLocalProperties(rootDir)
-                .getProperty(Constants.SHAZAM_DETECT_API_PROPERTY_NAME)
-        )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

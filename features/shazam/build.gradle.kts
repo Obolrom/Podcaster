@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import Dependencies.Media3
 
 plugins {
@@ -14,13 +13,6 @@ android {
     defaultConfig {
         minSdk = 21
         targetSdk = 31
-
-        buildConfigField(
-            type = "String",
-            name = Constants.SHAZAM_DETECT_API_KEY_NAME,
-            value = gradleLocalProperties(rootDir)
-                .getProperty(Constants.SHAZAM_DETECT_API_PROPERTY_NAME)
-        )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -58,12 +50,6 @@ dependencies {
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.4.2")
     implementation("com.google.android.material:material:1.6.1")
-
-    // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
-    implementation("com.github.haroldadmin:NetworkResponseAdapter:5.0.0")
 
     implementation("androidx.media3:media3-exoplayer:${Media3.version}")
 

@@ -1,5 +1,3 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -13,13 +11,6 @@ android {
     defaultConfig {
         minSdk = 21
         targetSdk = 31
-
-        buildConfigField(
-            type = "String",
-            name = Constants.SHAZAM_DETECT_API_KEY_NAME,
-            value = gradleLocalProperties(rootDir)
-                .getProperty(Constants.SHAZAM_DETECT_API_PROPERTY_NAME)
-        )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")

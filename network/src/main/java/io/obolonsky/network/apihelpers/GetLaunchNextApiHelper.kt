@@ -1,6 +1,7 @@
 package io.obolonsky.network.apihelpers
 
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.exception.ApolloException
 import io.obolonsky.core.di.Error
 import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.utils.CoroutineSchedulers
@@ -15,12 +16,17 @@ class GetLaunchNextApiHelper @Inject constructor(
 ) : ApiHelper<LaunchNextQuery.Data?, Error> {
 
     override suspend fun load(): Reaction<LaunchNextQuery.Data?, Error> {
-        val fromGraphQl = withContext(dispatchers.io) {
-            apolloClient.query(LaunchNextQuery()).execute()
+        val data = try {
+            withContext(dispatchers.io) {
+                apolloClient.query(LaunchNextQuery())
+                    .execute()
+                    .dataAssertNoErrors
+            }
+        } catch (exc: ApolloException) {
+            Timber.e(exc)
+            return Reaction.Fail(Error.NetworkError(exc))
         }
-        val response = fromGraphQl.data
-        Timber.d("dataFromGraphQl response: $response")
 
-        return Reaction.Success(response)
+        return Reaction.Success(data)
     }
 }

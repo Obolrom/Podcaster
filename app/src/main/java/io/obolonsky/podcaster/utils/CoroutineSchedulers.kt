@@ -1,4 +1,4 @@
-package io.obolonsky.podcaster.di.modules
+package io.obolonsky.podcaster.utils
 
 import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.core.di.utils.CoroutineSchedulers

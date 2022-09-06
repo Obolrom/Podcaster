@@ -24,6 +24,7 @@ import io.obolonsky.shazam.R
 import io.obolonsky.shazam.databinding.ActivityShazamBinding
 import io.obolonsky.shazam.viewmodels.ComponentViewModel
 import io.obolonsky.shazam.viewmodels.ShazamViewModel
+import io.obolonsky.utils.get
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -127,7 +128,9 @@ class ShazamActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStackImmediate()
-            stopPlayerServiceAction.get().stop(this)
+            stopPlayerServiceAction.get {
+                stop(this@ShazamActivity)
+            }
             isPlayerShown = false
             binding.shazam.visibility = View.VISIBLE
             AudioSource.clear()
@@ -142,7 +145,9 @@ class ShazamActivity : AppCompatActivity() {
 
         binding.shazam.visibility = View.GONE
 
-        showPlayerAction.get().showPlayer(supportFragmentManager)
+        showPlayerAction.get {
+            showPlayer(supportFragmentManager)
+        }
     }
 
     private fun Intent.handleIntent() {

@@ -55,6 +55,7 @@ dependencies {
 
     implementation(project(":core_ui"))
     implementation(project(":core"))
+    implementation(project(":utils"))
     implementation(project(":repository"))
 
     implementation(project(":player"))
@@ -99,13 +100,6 @@ dependencies {
     implementation(Dependencies.Room.ktx)
     kapt(Dependencies.Room.kapt)
 
-    // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
-    implementation("com.github.haroldadmin:NetworkResponseAdapter:5.0.0")
-
     // Dagger 2
     implementation("com.google.dagger:dagger:2.40.5")
     kapt("com.google.dagger:dagger-compiler:2.40.5")
@@ -120,16 +114,4 @@ dependencies {
     implementation("com.jakewharton.timber:timber:5.0.1")
     implementation("io.coil-kt:coil:2.0.0-rc03")
     implementation("com.github.kirich1409:viewbindingpropertydelegate:1.5.3")
-}
-
-tasks.register<tasks.GreetingTask>("greet")
-
-tasks.register<tasks.GreetingTask>("heyHo") {
-    this.greeting.set("fuck you")
-}
-
-tasks.register<tasks.IncrementalReverseTask>("incrementalReverse") {
-    inputDir.set(file("inputs"))
-    outputDir.set(file("$buildDir/outputs"))
-    inputProperty.set(project.findProperty("taskInputProperty") as String? ?: "original")
 }

@@ -37,3 +37,6 @@ project(":repository").projectDir = File(rootDir, "repository")
 
 include(":spaceX")
 project(":spaceX").projectDir = File(rootDir, "features/spaceX")
+
+include(":utils")
+project(":utils").projectDir = File(rootDir, "utils")

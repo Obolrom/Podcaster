@@ -3,9 +3,11 @@ package io.obolonsky.repository.di.modules
 import dagger.Binds
 import dagger.Module
 import io.obolonsky.core.di.repositories.FeatureTogglesRepo
+import io.obolonsky.core.di.repositories.NasaRepo
 import io.obolonsky.core.di.repositories.ShazamRepo
 import io.obolonsky.core.di.repositories.SpaceXRepo
 import io.obolonsky.repository.FeatureTogglesRepository
+import io.obolonsky.repository.NasaRepository
 import io.obolonsky.repository.ShazamRepository
 import io.obolonsky.repository.SpaceXRepository
 
@@ -14,7 +16,7 @@ interface BinderModule {
 
     @Binds
     fun bindShazamRepository(
-        shazamRepository: ShazamRepository
+        repo: ShazamRepository
     ): ShazamRepo
 
     @Binds
@@ -26,4 +28,9 @@ interface BinderModule {
     fun bindSpaceXRepository(
         repo: SpaceXRepository
     ): SpaceXRepo
+
+    @Binds
+    fun bindNasaRepository(
+        repo: NasaRepository
+    ): NasaRepo
 }

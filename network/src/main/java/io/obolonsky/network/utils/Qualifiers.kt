@@ -16,3 +16,8 @@ annotation class FeatureToggles
 @MustBeDocumented
 @Retention(value = AnnotationRetention.RUNTIME)
 annotation class MarsPhotos
+
+@Qualifier
+@MustBeDocumented
+@Retention(value = AnnotationRetention.RUNTIME)
+annotation class Apod

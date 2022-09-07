@@ -7,10 +7,8 @@ import dagger.Module
 import dagger.Provides
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import io.obolonsky.network.BuildConfig
-import io.obolonsky.network.api.FeatureTogglesApi
-import io.obolonsky.network.api.MarsPhotosApi
-import io.obolonsky.network.api.PlainShazamApi
-import io.obolonsky.network.api.SongRecognitionApi
+import io.obolonsky.network.api.*
+import io.obolonsky.network.utils.Apod
 import io.obolonsky.network.utils.FeatureToggles
 import io.obolonsky.network.utils.MarsPhotos
 import io.obolonsky.network.utils.ShazamPlain
@@ -99,6 +97,20 @@ class RemoteApiModule {
             .build()
     }
 
+    @Apod
+    @Provides
+    fun provideNasaApodRetrofit(
+        client: OkHttpClient,
+        converter: GsonConverterFactory,
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://api.nasa.gov/planetary/")
+            .client(client)
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .addConverterFactory(converter)
+            .build()
+    }
+
     @Provides
     fun provideSongRecognitionApi(
         retrofit: Retrofit,
@@ -118,6 +130,11 @@ class RemoteApiModule {
     fun provideMarsPhotosApi(
         @MarsPhotos retrofit: Retrofit,
     ): MarsPhotosApi = retrofit.create()
+
+    @Provides
+    fun provideNasaApodApi(
+        @Apod retrofit: Retrofit,
+    ): NasaApodApi = retrofit.create()
 
     @Provides
     fun provideApolloClient(

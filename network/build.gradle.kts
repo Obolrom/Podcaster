@@ -23,6 +23,13 @@ android {
         )
 
         buildConfigField(
+            type = "String",
+            name = Constants.NASA_API_KEY,
+            value = gradleLocalProperties(rootDir)
+                .getProperty(Constants.NASA_API_PROPERTY_NAME)
+        )
+
+        buildConfigField(
             type = "io.obolonsky.network.utils.ProductionTypes",
             name = "PRODUCTION_TYPE",
             value = "io.obolonsky.network.utils.ProductionTypes.PROD"
@@ -61,6 +68,11 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
     implementation("com.github.haroldadmin:NetworkResponseAdapter:5.0.0")
+
+    // RxJava 3
+    implementation("com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0")
+    implementation("io.reactivex.rxjava3:rxjava:3.0.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-rx3:1.6.1")
 
     // Apollo
     implementation("com.apollographql.apollo3:apollo-runtime:3.5.0")

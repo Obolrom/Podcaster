@@ -11,3 +11,8 @@ annotation class ShazamPlain
 @MustBeDocumented
 @Retention(value = AnnotationRetention.RUNTIME)
 annotation class FeatureToggles
+
+@Qualifier
+@MustBeDocumented
+@Retention(value = AnnotationRetention.RUNTIME)
+annotation class MarsPhotos

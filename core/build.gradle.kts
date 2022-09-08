@@ -43,6 +43,9 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.4.2")
     implementation("com.google.android.material:material:1.6.1")
 
+    // Dagger 2
+    implementation("com.google.dagger:dagger:2.40.5")
+
     implementation("androidx.media3:media3-exoplayer:${Media3.version}")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")

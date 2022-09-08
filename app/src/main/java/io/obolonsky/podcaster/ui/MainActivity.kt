@@ -8,6 +8,7 @@ import io.obolonsky.core.di.actions.GoToSpaceXAction
 import io.obolonsky.podcaster.PodcasterApp
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.databinding.ActivityMainFakeBinding
+import io.obolonsky.utils.get
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -27,11 +28,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main_fake)
 
         binding.goToShazam.setOnClickListener {
-            goToShazamAction.get()?.navigate(this)
+            goToShazamAction.get {
+                navigate(this@MainActivity)
+            }
         }
 
         binding.goToSpaceX.setOnClickListener {
-            goToSpaceXAction.get()?.navigate(this)
+            goToSpaceXAction.get {
+                navigate(this@MainActivity)
+            }
         }
     }
 }

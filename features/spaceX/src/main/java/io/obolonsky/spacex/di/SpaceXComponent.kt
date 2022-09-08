@@ -3,6 +3,7 @@ package io.obolonsky.spacex.di
 import dagger.Component
 import io.obolonsky.core.di.depsproviders.ApplicationProvider
 import io.obolonsky.core.di.scopes.FeatureScope
+import io.obolonsky.spacex.ui.SpaceXActivity
 
 @FeatureScope
 @Component(
@@ -17,6 +18,8 @@ internal interface SpaceXComponent : AssistedFactoriesProvider {
 
         fun create(applicationProvider: ApplicationProvider): SpaceXComponent
     }
+
+    fun inject(target: SpaceXActivity)
 
     companion object {
 

@@ -45,6 +45,7 @@ android {
 dependencies {
 
     implementation(project(":core"))
+    implementation(project(":utils"))
     implementation(project(":core_ui"))
 
     implementation("androidx.core:core-ktx:1.7.0")

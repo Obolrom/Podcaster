@@ -8,15 +8,20 @@ import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.obolonsky.core.di.data.spaceX.rocket.Rocket
 import io.obolonsky.core.di.lazyViewModel
-import io.obolonsky.spacex.viewmodels.ComponentViewModel
+import io.obolonsky.core.di.utils.NetworkStatus
+import io.obolonsky.core.di.utils.NetworkStatusObservable
 import io.obolonsky.spacex.R
 import io.obolonsky.spacex.databinding.ActivitySpaceXBinding
-import kotlinx.coroutines.flow.collect
+import io.obolonsky.spacex.viewmodels.ComponentViewModel
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 class SpaceXActivity : AppCompatActivity() {
+
+    @Inject
+    internal lateinit var networkObservable: NetworkStatusObservable
 
     private val componentViewModel by viewModels<ComponentViewModel>()
 
@@ -29,17 +34,26 @@ class SpaceXActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        componentViewModel.component.inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_space_x)
 
-        lifecycleScope.launch {
-            spaceXViewModel.rocketDetails
-                .onEach(::onRocketDetails)
-                .flowWithLifecycle(lifecycle)
-                .collect()
-        }
+        spaceXViewModel.rocketDetails
+            .onEach(::onRocketDetails)
+            .flowWithLifecycle(lifecycle)
+            .launchIn(lifecycleScope)
+
+        networkObservable.statusFlow
+            .onEach(::onNetworkStatusChanged)
+            .flowWithLifecycle(lifecycle)
+            .launchIn(lifecycleScope)
 
         spaceXViewModel.loadRocketDetails("falcon9")
+    }
+
+    private fun onNetworkStatusChanged(status: NetworkStatus) {
+        binding.networkStatus.text = status.name
     }
 
     private fun onRocketDetails(rocket: Rocket?) {

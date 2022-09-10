@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "shazam_tracks")
 data class ShazamTrack(
     @PrimaryKey
-    @ColumnInfo(name = "tag_id") override val id: String,
+    @ColumnInfo(name = "tag_id") override val id: Guid,
     @ColumnInfo(name = "audio_uri") val audioUri: String,
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "subtitle") val subtitle: String,

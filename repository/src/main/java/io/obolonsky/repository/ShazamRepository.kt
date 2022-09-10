@@ -5,10 +5,14 @@ import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.data.ShazamDetect
 import io.obolonsky.core.di.data.Track
 import io.obolonsky.core.di.repositories.ShazamRepo
+import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.network.apihelpers.GetRelatedTracksApiHelper
 import io.obolonsky.network.apihelpers.ShazamSongRecognitionApiHelper
 import io.obolonsky.repository.database.daos.ShazamTrackDao
 import io.obolonsky.repository.database.entities.ShazamTrack
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import java.io.File
 import javax.inject.Inject
 
@@ -16,6 +20,7 @@ class ShazamRepository @Inject constructor(
     private val songRecognitionHelper: ShazamSongRecognitionApiHelper,
     private val shazamTrackDao: ShazamTrackDao,
     private val getRelatedTracksHelper: GetRelatedTracksApiHelper,
+    private val dispatchers: CoroutineSchedulers,
 ) : ShazamRepo {
 
     override suspend fun audioDetect(audioFile: File): Reaction<ShazamDetect, Error> {
@@ -35,11 +40,31 @@ class ShazamRepository @Inject constructor(
         return getRelatedTracksHelper.load(url)
     }
 
+    override fun getTracksFlow(): Flow<List<Track>> {
+        return shazamTrackDao.getShazamTracksFlow()
+            .flowOn(dispatchers.io)
+            .map(::mapToTracks)
+            .flowOn(dispatchers.computation)
+    }
+
     private fun ShazamDetect.mapEntity(): List<ShazamTrack> {
         return mutableListOf<ShazamTrack>()
             .apply {
                 track?.map(tagId)?.also { add(it) }
             }
+    }
+
+    private fun mapToTracks(tracks: List<ShazamTrack>) = tracks.map { it.mapToTrack() }
+
+    private fun ShazamTrack.mapToTrack(): Track {
+        return Track(
+            audioUri = audioUri,
+            subtitle = subtitle,
+            title = title,
+            imageUrls = imageUrls,
+            relatedTracksUrl = null,
+            relatedTracks = emptyList(),
+        )
     }
 
     private fun Track.map(tagId: String): ShazamTrack? {

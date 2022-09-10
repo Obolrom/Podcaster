@@ -11,7 +11,7 @@ interface ShazamTrackDao {
     suspend fun insert(list: List<ShazamTrack>)
 
     @Query("SELECT * FROM shazam_tracks")
-    fun getShazamTracks(): Flow<ShazamTrack>
+    fun getShazamTracksFlow(): Flow<List<ShazamTrack>>
 
     @Query("DELETE FROM shazam_tracks")
     suspend fun clear()

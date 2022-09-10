@@ -13,9 +13,7 @@ import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.shazam.data.usecases.AudioDetectionUseCase
 import io.obolonsky.shazam.di.ScopedShazamRepo
 import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
@@ -54,6 +52,10 @@ class ShazamViewModel @AssistedInject constructor(
                 }
             }
         }
+    }
+
+    fun getRecentShazamTracks(): Flow<List<Track>> {
+        return shazamRepository.getTracksFlow()
     }
 
     private suspend fun getRelatedTracks(url: String): List<Track> {

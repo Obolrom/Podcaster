@@ -10,6 +10,8 @@ import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.downloads.di.DownloadsExportComponent
 import io.obolonsky.player.di.PlayerExportComponent
 import io.obolonsky.podcaster.ui.MainActivity
+import io.obolonsky.repository.database.di.DatabaseComponent
+import io.obolonsky.repository.database.di.DatabaseComponentProvider
 import io.obolonsky.repository.di.RepoComponent
 import io.obolonsky.shazam.di.ShazamExportComponent
 import io.obolonsky.spacex.di.SpaceXExportComponent
@@ -20,6 +22,7 @@ import io.obolonsky.spacex.di.SpaceXExportComponent
         RepositoryProvider::class,
         ToolsProvider::class,
         PlayerActionProvider::class,
+        DatabaseComponentProvider::class,
         DownloadsActionProvider::class,
         ShazamActionsProvider::class,
         SpaceXActionsProvider::class,
@@ -35,6 +38,7 @@ interface AppComponent : ApplicationProvider {
             repositoryProvider: RepositoryProvider,
             toolsProvider: ToolsProvider,
             playerActionProvider: PlayerActionProvider,
+            databaseComponentProvider: DatabaseComponentProvider,
             downloadsActionProvider: DownloadsActionProvider,
             shazamActionsProvider: ShazamActionsProvider,
             spaceXActionsProvider: SpaceXActionsProvider,
@@ -49,17 +53,25 @@ interface AppComponent : ApplicationProvider {
 
         fun create(appCtx: Context): AppComponent {
             val toolsProvider = ToolsComponent.create(appCtx)
-            val repoProvider = RepoComponent.create(toolsProvider)
             val playerActionsProvider = PlayerExportComponent.create()
             val downloadsActionProvider = DownloadsExportComponent.create()
             val shazamActionsProvider = ShazamExportComponent.createActionsProvider()
             val spaceXActionsProvider = SpaceXExportComponent.createSpaceXActionsProvider()
+            val databaseComponentProvider = DatabaseComponent.create(
+                applicationContextProvider = toolsProvider,
+                coroutineSchedulersProvider = toolsProvider,
+            )
+            val repoProvider = RepoComponent.create(
+                toolsProvider = toolsProvider,
+                databaseComponentProvider = databaseComponentProvider,
+            )
 
             return DaggerAppComponent.factory()
                 .create(
                     repositoryProvider = repoProvider,
                     toolsProvider = toolsProvider,
                     playerActionProvider = playerActionsProvider,
+                    databaseComponentProvider = databaseComponentProvider,
                     downloadsActionProvider = downloadsActionProvider,
                     shazamActionsProvider = shazamActionsProvider,
                     spaceXActionsProvider = spaceXActionsProvider

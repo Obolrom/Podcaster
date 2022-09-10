@@ -95,11 +95,6 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics-ktx:18.2.11")
     implementation("com.google.firebase:firebase-analytics-ktx:21.0.0")
 
-    // Room
-    implementation(Dependencies.Room.runtime)
-    implementation(Dependencies.Room.ktx)
-    kapt(Dependencies.Room.kapt)
-
     // Dagger 2
     implementation("com.google.dagger:dagger:2.40.5")
     kapt("com.google.dagger:dagger-compiler:2.40.5")

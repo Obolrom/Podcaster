@@ -5,12 +5,14 @@ import io.obolonsky.core.di.depsproviders.ToolsProvider
 import io.obolonsky.core.di.repositories.providers.RepositoryProvider
 import io.obolonsky.network.di.components.DaggerNetworkComponent
 import io.obolonsky.network.di.providers.ApiHelperProviders
+import io.obolonsky.repository.database.di.DatabaseComponentProvider
 import io.obolonsky.repository.di.modules.BinderModule
 
 @Component(
     dependencies = [
         ToolsProvider::class,
         ApiHelperProviders::class,
+        DatabaseComponentProvider::class,
     ],
     modules = [
         BinderModule::class
@@ -24,12 +26,16 @@ interface RepoComponent : RepositoryProvider {
         fun create(
             toolsProvider: ToolsProvider,
             apiHelperProviders: ApiHelperProviders,
+            databaseComponentProvider: DatabaseComponentProvider,
         ): RepoComponent
     }
 
     companion object {
 
-        fun create(toolsProvider: ToolsProvider): RepoComponent {
+        fun create(
+            toolsProvider: ToolsProvider,
+            databaseComponentProvider: DatabaseComponentProvider
+        ): RepoComponent {
             val apiHelperProviders = DaggerNetworkComponent.factory()
                 .create(toolsProvider)
 
@@ -37,6 +43,7 @@ interface RepoComponent : RepositoryProvider {
                 .create(
                     toolsProvider = toolsProvider,
                     apiHelperProviders = apiHelperProviders,
+                    databaseComponentProvider = databaseComponentProvider,
                 )
         }
     }

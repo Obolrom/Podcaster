@@ -45,6 +45,12 @@ dependencies {
     implementation("com.google.dagger:dagger:2.40.5")
     kapt("com.google.dagger:dagger-compiler:2.40.5")
 
+    // Room
+    implementation(Dependencies.Room.runtime)
+    implementation(Dependencies.Room.ktx)
+    kapt(Dependencies.Room.kapt)
+
     // Utilities
     implementation("com.jakewharton.timber:timber:5.0.1")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }

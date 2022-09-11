@@ -5,7 +5,9 @@ import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import io.obolonsky.core.di.scopes.ApplicationScope
+import io.obolonsky.core.di.utils.JsonConverter
 import io.obolonsky.repository.database.AppDatabase
+import io.obolonsky.repository.database.Converter
 import io.obolonsky.repository.database.TransactionManager
 import io.obolonsky.repository.database.daos.ShazamTrackDao
 
@@ -14,12 +16,16 @@ class DatabaseModule {
 
     @ApplicationScope
     @Provides
-    fun provideDatabase(appCtx: Context): AppDatabase {
+    fun provideDatabase(
+        appCtx: Context,
+        jsonConverter: JsonConverter
+    ): AppDatabase {
         return Room.databaseBuilder(
             appCtx,
             AppDatabase::class.java,
             "podcaster_db"
         )
+            .addTypeConverter(Converter(jsonConverter))
             .fallbackToDestructiveMigration()
             .build()
     }

@@ -6,6 +6,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.commit
 import androidx.lifecycle.flowWithLifecycle
@@ -138,6 +139,11 @@ class ShazamActivity : AppCompatActivity() {
             .setArtworkUri(imageUrls.firstOrNull()?.toUri())
             .setDisplayTitle(title)
             .setTitle(title)
+            .apply {
+                setExtras(
+                    bundleOf("shazam_images" to imageUrls.take(2))
+                )
+            }
             .setArtist(subtitle)
             .build()
     }

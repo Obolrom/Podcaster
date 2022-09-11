@@ -5,10 +5,9 @@ import androidx.room.TypeConverter
 import com.google.gson.reflect.TypeToken
 import io.obolonsky.core.di.utils.JsonConverter
 import java.lang.reflect.Type
-import javax.inject.Inject
 
 @ProvidedTypeConverter
-class Converter @Inject constructor(
+class Converter(
     private val jsonConverter: JsonConverter,
 ) {
 

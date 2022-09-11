@@ -38,25 +38,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="320dp"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/images"
+        android:layout_width="0dp"
         android:layout_height="320dp"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="16dp"
         app:layout_constraintBottom_toTopOf="@+id/exo_progress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/audio_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/pink_red"
-            android:contentDescription="@string/image_view_description"
-            android:scaleType="centerCrop" />
-
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="@color/black_10" />
 
     <TextView
         android:id="@+id/audio_track_title"

@@ -107,6 +107,7 @@ dependencies {
 
     // Utilities
     implementation("com.jakewharton.timber:timber:5.0.1")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("io.coil-kt:coil:2.0.0-rc03")
     implementation("com.github.kirich1409:viewbindingpropertydelegate:1.5.3")
 }

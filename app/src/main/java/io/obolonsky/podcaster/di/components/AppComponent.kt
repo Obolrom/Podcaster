@@ -58,8 +58,7 @@ interface AppComponent : ApplicationProvider {
             val shazamActionsProvider = ShazamExportComponent.createActionsProvider()
             val spaceXActionsProvider = SpaceXExportComponent.createSpaceXActionsProvider()
             val databaseComponentProvider = DatabaseComponent.create(
-                applicationContextProvider = toolsProvider,
-                coroutineSchedulersProvider = toolsProvider,
+                toolsProvider = toolsProvider,
             )
             val repoProvider = RepoComponent.create(
                 toolsProvider = toolsProvider,

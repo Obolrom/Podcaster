@@ -61,6 +61,7 @@ dependencies {
     // Utilities
     implementation("com.jakewharton.timber:timber:5.0.1")
     implementation("io.coil-kt:coil:2.0.0-rc03")
+    implementation("com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0")
     implementation("com.github.CodeBoy722:ViewPager2_Transformers:1.0.0")
     implementation("com.github.kirich1409:viewbindingpropertydelegate:1.5.3")
 }

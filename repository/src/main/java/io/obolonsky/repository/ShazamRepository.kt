@@ -13,6 +13,7 @@ import io.obolonsky.repository.database.entities.ShazamTrack
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -40,6 +41,18 @@ class ShazamRepository @Inject constructor(
 
     override suspend fun getRelatedTracks(url: String): Reaction<List<Track>, Error> {
         return getRelatedTracksHelper.load(url)
+    }
+
+    override suspend fun deleteRecentTrackTrack(track: Track) {
+        withContext(dispatchers.computation) {
+            track.audioUri
+                ?.let(::getGuid)
+                ?.let { trackId ->
+                    withContext(dispatchers.io) {
+                        shazamTrackDao.delete(trackId)
+                    }
+                }
+        }
     }
 
     override fun getTracksFlow(): Flow<List<Track>> {

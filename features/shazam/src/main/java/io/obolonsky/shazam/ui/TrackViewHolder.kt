@@ -6,10 +6,14 @@ import io.obolonsky.core.di.data.Track
 import io.obolonsky.shazam.databinding.TrackItemBinding
 
 class TrackViewHolder(
-    private val binding: TrackItemBinding
+    private val binding: TrackItemBinding,
+    private val onRemoveTrack: (Track) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(track: Track) {
+        binding.removeRecentTrack.setOnClickListener {
+            onRemoveTrack(track)
+        }
         track.imageUrls.firstOrNull()?.let { imageUrl ->
             binding.image.load(imageUrl) {
                 crossfade(500)

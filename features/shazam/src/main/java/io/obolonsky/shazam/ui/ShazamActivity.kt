@@ -51,7 +51,10 @@ class ShazamActivity : AppCompatActivity() {
     private val componentViewModel by viewModels<ComponentViewModel>()
 
     private val trackAdapter by lazy {
-        TrackAdapter(::onTrackDetected)
+        TrackAdapter(
+            onTrackClick = ::onTrackDetected,
+            onRemoveTrack = shazamViewModel::deleteRecentTrack,
+        )
     }
 
     private val shazamViewModel: ShazamViewModel by lazyViewModel {
@@ -100,7 +103,11 @@ class ShazamActivity : AppCompatActivity() {
 
         binding.recentTracks.apply {
             adapter = trackAdapter
-            layoutManager = LinearLayoutManager(this@ShazamActivity)
+            layoutManager = LinearLayoutManager(
+                this@ShazamActivity,
+                LinearLayoutManager.VERTICAL,
+                true
+            )
         }
 
         intent?.handleIntent()

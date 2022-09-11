@@ -13,5 +13,7 @@ interface ShazamRepo {
 
     suspend fun getRelatedTracks(url: String): Reaction<List<Track>, Error>
 
+    suspend fun deleteRecentTrackTrack(track: Track)
+
     fun getTracksFlow(): Flow<List<Track>>
 }

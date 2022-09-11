@@ -14,6 +14,7 @@ import io.obolonsky.coreui.BaseFragment
 import io.obolonsky.player.databinding.FragmentPlayerBinding
 import io.obolonsky.player.databinding.FragmentPlayerNavigationBinding
 import io.obolonsky.player.player.PodcasterPlaybackService
+import io.obolonsky.coreui.R as CoreUiR
 import timber.log.Timber
 import java.util.concurrent.ExecutionException
 
@@ -46,7 +47,7 @@ class PlayerFragment : BaseFragment(R.layout.fragment_player) {
     override fun initViews(savedInstanceState: Bundle?) {
         activity?.window?.navigationBarColor = ContextCompat.getColor(
             requireContext(),
-            R.color.pink_red
+            CoreUiR.color.pink_red
         )
         binding.playerView.showController()
     }

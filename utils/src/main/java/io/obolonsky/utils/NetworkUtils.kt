@@ -21,14 +21,6 @@ val Context.isNetworkConnected: Boolean
         return activeNetworkInfo != null && activeNetworkInfo.isConnected
     }
 
-/**
- * Returns connection type.
- * * 0 - none
- * * 1 - mobile data
- * * 2 - wifi
- * * 3 - vpn
- *
- */
 fun Context.getConnectionType(): NetworkType {
     var result = NetworkType.NONE
     val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?

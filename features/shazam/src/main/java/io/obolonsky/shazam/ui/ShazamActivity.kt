@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
+import androidx.fragment.app.commit
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
@@ -14,7 +15,7 @@ import androidx.media3.common.MediaMetadata
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.obolonsky.core.di.actions.NavigateToDownloadsAction
-import io.obolonsky.core.di.actions.ShowPlayer
+import io.obolonsky.core.di.actions.CreatePlayerScreenAction
 import io.obolonsky.core.di.actions.StopPlayerService
 import io.obolonsky.core.di.common.AudioSource
 import io.obolonsky.core.di.common.launchWhenStarted
@@ -38,7 +39,7 @@ import javax.inject.Provider
 class ShazamActivity : AppCompatActivity() {
 
     @Inject
-    internal lateinit var showPlayerAction: Provider<ShowPlayer>
+    internal lateinit var createPlayerScreenAction: Provider<CreatePlayerScreenAction>
 
     @Inject
     internal lateinit var stopPlayerServiceAction: Provider<StopPlayerService>
@@ -161,8 +162,11 @@ class ShazamActivity : AppCompatActivity() {
 
         binding.shazam.visibility = View.GONE
 
-        showPlayerAction.get {
-            showPlayer(supportFragmentManager)
+        createPlayerScreenAction.get {
+            supportFragmentManager.commit {
+                addToBackStack(null)
+                add(R.id.container, showPlayer())
+            }
         }
     }
 

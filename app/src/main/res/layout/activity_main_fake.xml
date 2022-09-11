@@ -15,6 +15,13 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/go_to_space_x"
         android:text="@string/space_x"
+        android:layout_marginBottom="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/go_to_nasa"
+        android:text="@string/nasa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

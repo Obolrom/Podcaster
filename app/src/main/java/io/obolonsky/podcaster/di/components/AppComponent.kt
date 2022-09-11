@@ -8,6 +8,7 @@ import io.obolonsky.podcaster.PodcasterApp
 import io.obolonsky.podcaster.di.modules.AppModule
 import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.downloads.di.DownloadsExportComponent
+import io.obolonsky.nasa.di.components.NasaExportComponent
 import io.obolonsky.player.di.PlayerExportComponent
 import io.obolonsky.podcaster.ui.MainActivity
 import io.obolonsky.repository.database.di.DatabaseComponent
@@ -22,6 +23,7 @@ import io.obolonsky.spacex.di.SpaceXExportComponent
         RepositoryProvider::class,
         ToolsProvider::class,
         PlayerActionProvider::class,
+        NasaActionsProvider::class,
         DatabaseComponentProvider::class,
         DownloadsActionProvider::class,
         ShazamActionsProvider::class,
@@ -38,6 +40,7 @@ interface AppComponent : ApplicationProvider {
             repositoryProvider: RepositoryProvider,
             toolsProvider: ToolsProvider,
             playerActionProvider: PlayerActionProvider,
+            nasaActionsProvider: NasaActionsProvider,
             databaseComponentProvider: DatabaseComponentProvider,
             downloadsActionProvider: DownloadsActionProvider,
             shazamActionsProvider: ShazamActionsProvider,
@@ -57,6 +60,7 @@ interface AppComponent : ApplicationProvider {
             val downloadsActionProvider = DownloadsExportComponent.create()
             val shazamActionsProvider = ShazamExportComponent.createActionsProvider()
             val spaceXActionsProvider = SpaceXExportComponent.createSpaceXActionsProvider()
+            val nasaActionsProvider = NasaExportComponent.createNasaActionsProvider()
             val databaseComponentProvider = DatabaseComponent.create(
                 toolsProvider = toolsProvider,
             )
@@ -70,6 +74,7 @@ interface AppComponent : ApplicationProvider {
                     repositoryProvider = repoProvider,
                     toolsProvider = toolsProvider,
                     playerActionProvider = playerActionsProvider,
+                    nasaActionsProvider = nasaActionsProvider,
                     databaseComponentProvider = databaseComponentProvider,
                     downloadsActionProvider = downloadsActionProvider,
                     shazamActionsProvider = shazamActionsProvider,

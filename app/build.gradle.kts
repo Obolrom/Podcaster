@@ -62,6 +62,7 @@ dependencies {
     implementation(project(":shazam"))
     implementation(project(":downloads"))
     implementation(project(":spaceX"))
+    implementation(project(":nasa"))
 
     implementation("com.google.android.material:material:1.5.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")

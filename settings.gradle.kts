@@ -40,3 +40,6 @@ project(":spaceX").projectDir = File(rootDir, "features/spaceX")
 
 include(":utils")
 project(":utils").projectDir = File(rootDir, "utils")
+
+include(":nasa")
+project(":nasa").projectDir = File(rootDir, "features/nasa")

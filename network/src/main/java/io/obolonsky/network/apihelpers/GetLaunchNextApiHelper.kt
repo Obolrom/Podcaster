@@ -13,9 +13,9 @@ import javax.inject.Inject
 class GetLaunchNextApiHelper @Inject constructor(
     private val apolloClient: ApolloClient,
     private val dispatchers: CoroutineSchedulers,
-) : ApiHelper<LaunchNextQuery.Data?, Error> {
+) : ApiHelper<LaunchNextQuery.Data?, Unit> {
 
-    override suspend fun load(): Reaction<LaunchNextQuery.Data?, Error> {
+    override suspend fun load(param: Unit): Reaction<LaunchNextQuery.Data?, Error> {
         val data = try {
             withContext(dispatchers.io) {
                 apolloClient.query(LaunchNextQuery())

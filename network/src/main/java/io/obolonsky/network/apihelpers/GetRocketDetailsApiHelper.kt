@@ -15,7 +15,7 @@ import javax.inject.Inject
 class GetRocketDetailsApiHelper @Inject constructor(
     private val apolloClient: ApolloClient,
     private val dispatchers: CoroutineSchedulers,
-) : ApiHelperWithOneParam<Rocket?, Error, String> {
+) : ApiHelper<Rocket?, String> {
 
     override suspend fun load(param: String): Reaction<Rocket?, Error> {
         val response = try {

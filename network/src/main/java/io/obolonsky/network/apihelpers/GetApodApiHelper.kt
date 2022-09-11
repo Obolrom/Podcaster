@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class GetApodApiHelper @Inject constructor(
     private val apodApi: NasaApodApi,
-) : ApiHelperWithOneParam<List<String>, Error, Int> {
+) : ApiHelper<List<String>, Int> {
 
     override suspend fun load(param: Int): Reaction<List<String>, Error> = try {
         val apodImages = apodApi.getRandomApod(param)

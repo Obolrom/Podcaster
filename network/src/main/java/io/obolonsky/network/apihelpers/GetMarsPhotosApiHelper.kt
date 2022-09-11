@@ -11,14 +11,16 @@ import javax.inject.Inject
 
 class GetMarsPhotosApiHelper @Inject constructor(
     private val marsPhotoApi: MarsPhotosApi,
-) : ApiHelperWith3Params<List<String>, Error, String, String, Int> {
+) : ApiHelper<List<String>, GetMarsPhotosQueryParams> {
 
     override suspend fun load(
-        param1: String,
-        param2: String,
-        param3: Int
+        param: GetMarsPhotosQueryParams
     ): Reaction<List<String>, Error> = try {
-        val marsImages = marsPhotoApi.getPhotosByRover(param1, param2, param3)
+        val marsImages = marsPhotoApi.getPhotosByRover(
+            name = param.roverName,
+            earthDate = param.earthDate,
+            page = param.page,
+        )
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.computation())
             .map { MarsPhotoRoverResponseToImageUrlsMapper.map(it) }
@@ -30,3 +32,9 @@ class GetMarsPhotosApiHelper @Inject constructor(
         Reaction.Fail(Error.NetworkError(e))
     }
 }
+
+data class GetMarsPhotosQueryParams(
+    val roverName: String,
+    val earthDate: String,
+    val page: Int,
+)

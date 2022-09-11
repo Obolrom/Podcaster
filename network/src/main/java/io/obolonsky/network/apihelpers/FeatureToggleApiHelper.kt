@@ -14,7 +14,7 @@ import javax.inject.Inject
 class FeatureToggleApiHelper @Inject constructor(
     private val featureTogglesApi: FeatureTogglesApi,
     private val dispatchers: CoroutineSchedulers,
-) : ApiHelperWithOneParam<FeatureToggles?, Error, ProductionTypes> {
+) : ApiHelper<FeatureToggles?, ProductionTypes> {
 
     override suspend fun load(param: ProductionTypes): Reaction<FeatureToggles?, Error> {
         return when (val response = featureTogglesApi.getFeatureFlags(param.type)) {

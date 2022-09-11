@@ -24,17 +24,12 @@ import javax.inject.Inject
 
 const val FILE = "file"
 
-interface ApiHelperWithOneParam<D, E : Error, P> {
-
-    suspend fun load(param: P): Reaction<D, E>
-}
-
 class ShazamSongRecognitionApiHelper @Inject constructor(
     private val context: Context,
     private val songRecognitionApi: SongRecognitionApi,
     private val featureToggleApiHelper: FeatureToggleApiHelper,
     private val dispatchers: CoroutineSchedulers,
-) : ApiHelperWithOneParam<ShazamDetect, Error, File> {
+) : ApiHelper<ShazamDetect, File> {
 
     override suspend fun load(param: File): Reaction<ShazamDetect, Error> {
         val body = MultipartBody.Builder()
@@ -95,7 +90,7 @@ class ShazamSongRecognitionApiHelper @Inject constructor(
 
 class GetRelatedTracksApiHelper @Inject constructor(
     private val plainShazamApi: PlainShazamApi,
-) : ApiHelperWithOneParam<List<Track>, Error, String> {
+) : ApiHelper<List<Track>, String> {
 
     override suspend fun load(param: String): Reaction<List<Track>, Error> {
         return when (val response = plainShazamApi.getRelatedTracks(param)) {

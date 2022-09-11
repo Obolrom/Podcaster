@@ -5,6 +5,7 @@ import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.repositories.NasaRepo
 import io.obolonsky.network.apihelpers.GetApodApiHelper
 import io.obolonsky.network.apihelpers.GetMarsPhotosApiHelper
+import io.obolonsky.network.apihelpers.GetMarsPhotosQueryParams
 import javax.inject.Inject
 
 class NasaRepository @Inject constructor(
@@ -21,6 +22,12 @@ class NasaRepository @Inject constructor(
         earthDate: String,
         page: Int
     ): Reaction<List<String>, Error> {
-        return marsPhotosApiHelper.load(roverName, earthDate, page)
+        return marsPhotosApiHelper.load(
+            GetMarsPhotosQueryParams(
+                roverName = roverName,
+                earthDate = earthDate,
+                page = page,
+            )
+        )
     }
 }

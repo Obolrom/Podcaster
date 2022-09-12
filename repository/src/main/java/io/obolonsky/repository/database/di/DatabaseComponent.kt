@@ -13,7 +13,7 @@ import io.obolonsky.core.di.scopes.ApplicationScope
         DatabaseModule::class,
     ]
 )
-interface DatabaseComponent : DatabaseComponentProvider {
+internal interface DatabaseComponent : DatabaseComponentProvider {
 
     @Component.Factory
     interface Factory {

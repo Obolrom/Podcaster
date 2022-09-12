@@ -3,12 +3,14 @@ package io.obolonsky.network.di.components
 import dagger.Component
 import io.obolonsky.core.di.depsproviders.CoroutineSchedulersProvider
 import io.obolonsky.core.di.depsproviders.ToolsProvider
+import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.network.di.modules.NetworkModule
 import io.obolonsky.network.di.providers.ApiHelperProviders
 
+@ApplicationScope
 @Component(
     dependencies = [
-        ToolsProvider::class
+        ToolsProvider::class,
     ],
     modules = [
         NetworkModule::class,

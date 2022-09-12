@@ -5,7 +5,9 @@ import com.apollographql.apollo3.network.okHttpClient
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
+import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.network.BuildConfig
 import io.obolonsky.network.api.*
 import io.obolonsky.network.utils.Apod
@@ -21,9 +23,11 @@ import retrofit2.create
 @Module
 class RemoteApiModule {
 
+    @ApplicationScope
     @Provides
     fun provideGsonConverterFactory(): GsonConverterFactory = GsonConverterFactory.create()
 
+    @ApplicationScope
     @Provides
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().apply {
@@ -33,6 +37,7 @@ class RemoteApiModule {
         }
     }
 
+    @ApplicationScope
     @Provides
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
@@ -42,6 +47,7 @@ class RemoteApiModule {
             .build()
     }
 
+    @Reusable
     @Provides
     fun provideRetrofit(
         client: OkHttpClient,
@@ -55,6 +61,7 @@ class RemoteApiModule {
             .build()
     }
 
+    @Reusable
     @ShazamPlain
     @Provides
     fun providePlainRetrofit(
@@ -69,6 +76,7 @@ class RemoteApiModule {
             .build()
     }
 
+    @Reusable
     @FeatureToggles
     @Provides
     fun provideFeatureTogglesRetrofit(
@@ -83,6 +91,7 @@ class RemoteApiModule {
             .build()
     }
 
+    @Reusable
     @MarsPhotos
     @Provides
     fun provideMarsPhotosRetrofit(
@@ -97,6 +106,7 @@ class RemoteApiModule {
             .build()
     }
 
+    @Reusable
     @Apod
     @Provides
     fun provideNasaApodRetrofit(
@@ -111,31 +121,37 @@ class RemoteApiModule {
             .build()
     }
 
+    @Reusable
     @Provides
     fun provideSongRecognitionApi(
         retrofit: Retrofit,
     ): SongRecognitionApi = retrofit.create()
 
+    @Reusable
     @Provides
     fun providePlainApi(
         @ShazamPlain retrofit: Retrofit,
     ): PlainShazamApi = retrofit.create()
 
+    @Reusable
     @Provides
     fun provideFeatureTogglesApi(
         @FeatureToggles retrofit: Retrofit,
     ): FeatureTogglesApi = retrofit.create()
 
+    @Reusable
     @Provides
     fun provideMarsPhotosApi(
         @MarsPhotos retrofit: Retrofit,
     ): MarsPhotosApi = retrofit.create()
 
+    @Reusable
     @Provides
     fun provideNasaApodApi(
         @Apod retrofit: Retrofit,
     ): NasaApodApi = retrofit.create()
 
+    @Reusable
     @Provides
     fun provideApolloClient(
         okHttpClient: OkHttpClient,

@@ -1,8 +1,11 @@
-package io.obolonsky.repository.database.daos
+package io.obolonsky.storage.database.daos
 
-import androidx.room.*
-import io.obolonsky.repository.database.entities.Guid
-import io.obolonsky.repository.database.entities.ShazamTrack
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import io.obolonsky.storage.database.entities.ShazamTrack
+import io.obolonsky.storage.database.utils.Guid
 import kotlinx.coroutines.flow.Flow
 
 @Dao

@@ -13,7 +13,6 @@ android {
         targetSdk = 31
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -39,14 +38,15 @@ android {
 dependencies {
 
     implementation(project(":core"))
-    implementation(project(":network"))
-    implementation(project(":storage"))
 
     // Dagger 2
     implementation("com.google.dagger:dagger:2.40.5")
     kapt("com.google.dagger:dagger-compiler:2.40.5")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+    // Room
+    implementation(Dependencies.Room.runtime)
+    implementation(Dependencies.Room.ktx)
+    kapt(Dependencies.Room.kapt)
 
     // Utilities
     implementation("com.jakewharton.timber:timber:5.0.1")

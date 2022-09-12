@@ -6,16 +6,16 @@ import io.obolonsky.core.di.repositories.providers.RepositoryProvider
 import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.network.di.components.NetworkComponent
 import io.obolonsky.network.di.providers.ApiHelperProviders
-import io.obolonsky.repository.database.di.DatabaseComponent
-import io.obolonsky.repository.database.di.DatabaseComponentProvider
 import io.obolonsky.repository.di.modules.BinderModule
+import io.obolonsky.storage.di.StorageComponent
+import io.obolonsky.storage.di.StorageProvider
 
 @ApplicationScope
 @Component(
     dependencies = [
         ToolsProvider::class,
         ApiHelperProviders::class,
-        DatabaseComponentProvider::class,
+        StorageProvider::class,
     ],
     modules = [
         BinderModule::class
@@ -29,7 +29,7 @@ interface RepoComponent : RepositoryProvider {
         fun create(
             toolsProvider: ToolsProvider,
             apiHelperProviders: ApiHelperProviders,
-            databaseComponentProvider: DatabaseComponentProvider,
+            storageProvider: StorageProvider,
         ): RepoComponent
     }
 
@@ -39,15 +39,13 @@ interface RepoComponent : RepositoryProvider {
             toolsProvider: ToolsProvider,
         ): RepoComponent {
             val apiHelperProviders = NetworkComponent.create(toolsProvider)
-            val databaseComponentProvider = DatabaseComponent.create(
-                toolsProvider = toolsProvider,
-            )
+            val storageProvider = StorageComponent.createStorageProvider(toolsProvider)
 
             return DaggerRepoComponent.factory()
                 .create(
                     toolsProvider = toolsProvider,
                     apiHelperProviders = apiHelperProviders,
-                    databaseComponentProvider = databaseComponentProvider,
+                    storageProvider = storageProvider,
                 )
         }
     }

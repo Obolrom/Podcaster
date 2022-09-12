@@ -1,4 +1,4 @@
-package io.obolonsky.repository.database.di
+package io.obolonsky.storage.di
 
 import dagger.Component
 import io.obolonsky.core.di.depsproviders.ToolsProvider
@@ -13,23 +13,23 @@ import io.obolonsky.core.di.scopes.ApplicationScope
         DatabaseModule::class,
     ]
 )
-internal interface DatabaseComponent : DatabaseComponentProvider {
+interface StorageComponent : StorageProvider {
 
     @Component.Factory
     interface Factory {
 
         fun create(
             toolsProvider: ToolsProvider,
-        ): DatabaseComponent
+        ): StorageComponent
     }
 
     companion object {
 
-        fun create(
+        fun createStorageProvider(
             toolsProvider: ToolsProvider,
-        ) = DaggerDatabaseComponent.factory()
+        ) = DaggerStorageComponent.factory()
             .create(
-                 toolsProvider = toolsProvider,
+                toolsProvider = toolsProvider,
             )
     }
 }

@@ -1,8 +1,9 @@
-package io.obolonsky.repository.database.entities
+package io.obolonsky.storage.database.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import io.obolonsky.storage.database.utils.Guid
 
 @Entity(tableName = "shazam_tracks")
 data class ShazamTrack(

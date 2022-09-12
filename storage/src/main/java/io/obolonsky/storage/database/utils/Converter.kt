@@ -1,4 +1,4 @@
-package io.obolonsky.repository.database
+package io.obolonsky.storage.database.utils
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter

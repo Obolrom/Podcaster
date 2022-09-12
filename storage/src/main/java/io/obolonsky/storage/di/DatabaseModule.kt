@@ -1,15 +1,16 @@
-package io.obolonsky.repository.database.di
+package io.obolonsky.storage.di
 
 import android.content.Context
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.core.di.utils.JsonConverter
-import io.obolonsky.repository.database.AppDatabase
-import io.obolonsky.repository.database.Converter
-import io.obolonsky.repository.database.TransactionManager
-import io.obolonsky.repository.database.daos.ShazamTrackDao
+import io.obolonsky.storage.database.AppDatabase
+import io.obolonsky.storage.database.utils.Converter
+import io.obolonsky.storage.database.utils.TransactionManager
+import io.obolonsky.storage.database.daos.ShazamTrackDao
 
 @Module
 class DatabaseModule {
@@ -34,6 +35,7 @@ class DatabaseModule {
     @Provides
     fun provideTransactionManager(db: AppDatabase): TransactionManager = db
 
+    @Reusable
     @Provides
     fun provideShazamTrackDao(db: AppDatabase): ShazamTrackDao = db.shazamTrackDao
 }

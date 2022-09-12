@@ -8,8 +8,8 @@ import io.obolonsky.core.di.repositories.ShazamRepo
 import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.network.apihelpers.GetRelatedTracksApiHelper
 import io.obolonsky.network.apihelpers.ShazamSongRecognitionApiHelper
-import io.obolonsky.repository.database.daos.ShazamTrackDao
-import io.obolonsky.repository.database.entities.ShazamTrack
+import io.obolonsky.storage.database.daos.ShazamTrackDao
+import io.obolonsky.storage.database.entities.ShazamTrack
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map

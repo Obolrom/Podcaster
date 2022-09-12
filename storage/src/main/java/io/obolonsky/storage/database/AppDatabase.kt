@@ -1,11 +1,13 @@
-package io.obolonsky.repository.database
+package io.obolonsky.storage.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.withTransaction
-import io.obolonsky.repository.database.daos.ShazamTrackDao
-import io.obolonsky.repository.database.entities.ShazamTrack
+import io.obolonsky.storage.database.daos.ShazamTrackDao
+import io.obolonsky.storage.database.entities.ShazamTrack
+import io.obolonsky.storage.database.utils.Converter
+import io.obolonsky.storage.database.utils.TransactionManager
 
 @Database(
     entities = [

@@ -3,10 +3,10 @@ package io.obolonsky.player.di
 import dagger.Binds
 import dagger.Component
 import dagger.Module
-import io.obolonsky.core.di.actions.ShowPlayer
+import io.obolonsky.core.di.actions.CreatePlayerScreenAction
 import io.obolonsky.core.di.actions.StopPlayerService
 import io.obolonsky.core.di.depsproviders.PlayerActionProvider
-import io.obolonsky.player.actions.GoToPlayerAction
+import io.obolonsky.player.actions.ShowPlayerActionImpl
 import io.obolonsky.player.actions.StopPlayerServiceAction
 
 @Component(
@@ -33,7 +33,7 @@ interface PlayerExportComponent : PlayerActionProvider {
 internal interface PlayerExportModule {
 
     @Binds
-    fun bindGoToPlayerAction(action: GoToPlayerAction): ShowPlayer
+    fun bindGoToPlayerAction(action: ShowPlayerActionImpl): CreatePlayerScreenAction
 
     @Binds
     fun bindStopPlayerService(action: StopPlayerServiceAction): StopPlayerService

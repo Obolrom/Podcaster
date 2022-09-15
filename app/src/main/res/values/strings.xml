@@ -4,6 +4,7 @@
     <string name="activity_shazam">Shazam</string>
     <string name="go_to_shazam">Shazam</string>
     <string name="space_x">SPACE X</string>
+    <string name="nasa">NASA</string>
 
     <string-array name="shazam_synonyms">
         <item>shazam</item>

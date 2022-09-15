@@ -21,6 +21,12 @@ class NasaRepository @Inject constructor(
         earthDate: String,
         page: Int
     ): Reaction<List<String>, Error> {
-        return marsPhotosApiHelper.load(roverName, earthDate, page)
+        return marsPhotosApiHelper.load(
+            GetMarsPhotosApiHelper.QueryParams(
+                roverName = roverName,
+                earthDate = earthDate,
+                page = page,
+            )
+        )
     }
 }

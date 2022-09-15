@@ -6,14 +6,17 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.fragment.app.commit
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
+import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
-import coil.load
 import io.obolonsky.core.di.actions.NavigateToDownloadsAction
-import io.obolonsky.core.di.actions.ShowPlayer
+import io.obolonsky.core.di.actions.CreatePlayerScreenAction
 import io.obolonsky.core.di.actions.StopPlayerService
 import io.obolonsky.core.di.common.AudioSource
 import io.obolonsky.core.di.common.launchWhenStarted
@@ -25,6 +28,7 @@ import io.obolonsky.shazam.databinding.ActivityShazamBinding
 import io.obolonsky.shazam.viewmodels.ComponentViewModel
 import io.obolonsky.shazam.viewmodels.ShazamViewModel
 import io.obolonsky.utils.get
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -36,7 +40,7 @@ import javax.inject.Provider
 class ShazamActivity : AppCompatActivity() {
 
     @Inject
-    internal lateinit var showPlayerAction: Provider<ShowPlayer>
+    internal lateinit var createPlayerScreenAction: Provider<CreatePlayerScreenAction>
 
     @Inject
     internal lateinit var stopPlayerServiceAction: Provider<StopPlayerService>
@@ -45,6 +49,13 @@ class ShazamActivity : AppCompatActivity() {
     internal lateinit var navigateToDownloadsAction: NavigateToDownloadsAction
 
     private val componentViewModel by viewModels<ComponentViewModel>()
+
+    private val trackAdapter by lazy {
+        TrackAdapter(
+            onTrackClick = ::onTrackDetected,
+            onRemoveTrack = shazamViewModel::deleteRecentTrack,
+        )
+    }
 
     private val shazamViewModel: ShazamViewModel by lazyViewModel {
         componentViewModel.shazamComponent
@@ -90,6 +101,15 @@ class ShazamActivity : AppCompatActivity() {
             binding.shazam.isVisible = !isPlayerRunning
         }
 
+        binding.recentTracks.apply {
+            adapter = trackAdapter
+            layoutManager = LinearLayoutManager(
+                this@ShazamActivity,
+                LinearLayoutManager.VERTICAL,
+                true
+            )
+        }
+
         intent?.handleIntent()
 
         initViewModel()
@@ -114,6 +134,11 @@ class ShazamActivity : AppCompatActivity() {
 //                .flowWithLifecycle(lifecycle)
 //                .collect()
         }
+
+        shazamViewModel.getRecentShazamTracks()
+            .onEach(::onRecentTracks)
+            .flowWithLifecycle(lifecycle)
+            .launchIn(lifecycleScope)
     }
 
     private fun Track.metadata(): MediaMetadata {
@@ -121,6 +146,11 @@ class ShazamActivity : AppCompatActivity() {
             .setArtworkUri(imageUrls.firstOrNull()?.toUri())
             .setDisplayTitle(title)
             .setTitle(title)
+            .apply {
+                setExtras(
+                    bundleOf("shazam_images" to imageUrls.take(2))
+                )
+            }
             .setArtist(subtitle)
             .build()
     }
@@ -145,8 +175,11 @@ class ShazamActivity : AppCompatActivity() {
 
         binding.shazam.visibility = View.GONE
 
-        showPlayerAction.get {
-            showPlayer(supportFragmentManager)
+        createPlayerScreenAction.get {
+            supportFragmentManager.commit {
+                addToBackStack(null)
+                add(R.id.container, showPlayer())
+            }
         }
     }
 
@@ -189,20 +222,16 @@ class ShazamActivity : AppCompatActivity() {
                         .build()
                 )
             }
-            showPlayer()
         }
-
-        track.imageUrls.firstOrNull()?.let { imageUrl ->
-            binding.image.load(imageUrl) {
-                crossfade(500)
-            }
-        }
-        track.title?.let { binding.title.text = it }
-        track.subtitle?.let { binding.subtitle.text = it }
+        showPlayer()
     }
 
     private fun onRecordPermissionGranted() {
         mediaRecorderViewModel.record()
+    }
+
+    private fun onRecentTracks(tracks: List<Track>) {
+        trackAdapter.submitList(tracks)
     }
 
     private fun onMediaRecorded() {

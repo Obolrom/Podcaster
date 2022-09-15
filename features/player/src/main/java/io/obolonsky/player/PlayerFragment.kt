@@ -7,13 +7,15 @@ import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
 import androidx.media3.session.*
 import by.kirich1409.viewbindingdelegate.viewBinding
-import coil.load
+import com.codeboy.pager2_transformers.Pager2_ZoomOutTransformer
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
 import io.obolonsky.coreui.BaseFragment
 import io.obolonsky.player.databinding.FragmentPlayerBinding
 import io.obolonsky.player.databinding.FragmentPlayerNavigationBinding
 import io.obolonsky.player.player.PodcasterPlaybackService
+import io.obolonsky.player.ui.ImagesAdapter
+import io.obolonsky.coreui.R as CoreUiR
 import timber.log.Timber
 import java.util.concurrent.ExecutionException
 
@@ -39,6 +41,8 @@ class PlayerFragment : BaseFragment(R.layout.fragment_player) {
         }
     }
 
+    private val mediaImagesAdapter by lazy { ImagesAdapter() }
+
     private var controllerFuture: ListenableFuture<MediaController>? = null
 
     override fun initViewModels() { }
@@ -46,9 +50,11 @@ class PlayerFragment : BaseFragment(R.layout.fragment_player) {
     override fun initViews(savedInstanceState: Bundle?) {
         activity?.window?.navigationBarColor = ContextCompat.getColor(
             requireContext(),
-            R.color.pink_red
+            CoreUiR.color.pink_red
         )
         binding.playerView.showController()
+        playerNavBinding.images.setPageTransformer(Pager2_ZoomOutTransformer())
+        playerNavBinding.images.adapter = mediaImagesAdapter
     }
 
     override fun onStart() {
@@ -85,9 +91,9 @@ class PlayerFragment : BaseFragment(R.layout.fragment_player) {
             ?: mediaMetadata.title
             ?: mediaMetadata.albumTitle
         playerNavBinding.audioTrackTitle.text = trackTitle
-        playerNavBinding.audioImage.load(mediaMetadata.artworkUri) {
-            crossfade(500)
-        }
+        mediaMetadata.extras
+            ?.getStringArrayList("shazam_images")
+            ?.let(mediaImagesAdapter::submitList)
     }
 
     inner class MediaControllerListener : MediaController.Listener {

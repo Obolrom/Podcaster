@@ -3,6 +3,7 @@ package io.obolonsky.podcaster.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import by.kirich1409.viewbindingdelegate.viewBinding
+import io.obolonsky.core.di.actions.GoToNasaAction
 import io.obolonsky.core.di.actions.GoToShazamAction
 import io.obolonsky.core.di.actions.GoToSpaceXAction
 import io.obolonsky.podcaster.PodcasterApp
@@ -20,6 +21,9 @@ class MainActivity : AppCompatActivity() {
     @Inject
     internal lateinit var goToSpaceXAction: Provider<GoToSpaceXAction>
 
+    @Inject
+    internal lateinit var goToNasaAction: Provider<GoToNasaAction>
+
     private val binding: ActivityMainFakeBinding by viewBinding()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +39,12 @@ class MainActivity : AppCompatActivity() {
 
         binding.goToSpaceX.setOnClickListener {
             goToSpaceXAction.get {
+                navigate(this@MainActivity)
+            }
+        }
+
+        binding.goToNasa.setOnClickListener {
+            goToNasaAction.get {
                 navigate(this@MainActivity)
             }
         }

@@ -62,6 +62,7 @@ dependencies {
     implementation(project(":shazam"))
     implementation(project(":downloads"))
     implementation(project(":spaceX"))
+    implementation(project(":nasa"))
 
     implementation("com.google.android.material:material:1.5.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
@@ -95,11 +96,6 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics-ktx:18.2.11")
     implementation("com.google.firebase:firebase-analytics-ktx:21.0.0")
 
-    // Room
-    implementation(Dependencies.Room.runtime)
-    implementation(Dependencies.Room.ktx)
-    kapt(Dependencies.Room.kapt)
-
     // Dagger 2
     implementation("com.google.dagger:dagger:2.40.5")
     kapt("com.google.dagger:dagger-compiler:2.40.5")
@@ -112,6 +108,7 @@ dependencies {
 
     // Utilities
     implementation("com.jakewharton.timber:timber:5.0.1")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("io.coil-kt:coil:2.0.0-rc03")
     implementation("com.github.kirich1409:viewbindingpropertydelegate:1.5.3")
 }

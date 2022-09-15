@@ -11,11 +11,10 @@ import io.obolonsky.core.di.data.ShazamDetect
 import io.obolonsky.core.di.data.Track
 import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.shazam.data.usecases.AudioDetectionUseCase
+import io.obolonsky.shazam.data.usecases.DeleteRecentTrackUseCase
 import io.obolonsky.shazam.di.ScopedShazamRepo
 import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
@@ -23,6 +22,7 @@ import java.io.File
 class ShazamViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
     private val audioDetectionUseCase: AudioDetectionUseCase,
+    private val deleteRecentTrackUseCase: DeleteRecentTrackUseCase,
     private val shazamRepository: ScopedShazamRepo,
     private val dispatchers: CoroutineSchedulers,
 ) : ViewModel() {
@@ -54,6 +54,16 @@ class ShazamViewModel @AssistedInject constructor(
                 }
             }
         }
+    }
+
+    fun deleteRecentTrack(track: Track) {
+        viewModelScope.launch {
+            deleteRecentTrackUseCase(track)
+        }
+    }
+
+    fun getRecentShazamTracks(): Flow<List<Track>> {
+        return shazamRepository.getTracksFlow()
     }
 
     private suspend fun getRelatedTracks(url: String): List<Track> {

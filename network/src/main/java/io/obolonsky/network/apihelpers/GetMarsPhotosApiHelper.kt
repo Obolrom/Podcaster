@@ -4,24 +4,27 @@ import io.obolonsky.core.di.Error
 import io.obolonsky.core.di.Reaction
 import io.obolonsky.network.api.MarsPhotosApi
 import io.obolonsky.network.mappers.MarsPhotoRoverResponseToImageUrlsMapper
-import io.reactivex.rxjava3.schedulers.Schedulers
+import io.obolonsky.network.utils.RxSchedulers
 import kotlinx.coroutines.rx3.await
 import java.lang.Exception
 import javax.inject.Inject
 
 class GetMarsPhotosApiHelper @Inject constructor(
     private val marsPhotoApi: MarsPhotosApi,
-) : ApiHelperWith3Params<List<String>, Error, String, String, Int> {
+    private val rxSchedulers: RxSchedulers,
+) : ApiHelper<List<String>, GetMarsPhotosApiHelper.QueryParams> {
 
     override suspend fun load(
-        param1: String,
-        param2: String,
-        param3: Int
+        param: QueryParams
     ): Reaction<List<String>, Error> = try {
-        val marsImages = marsPhotoApi.getPhotosByRover(param1, param2, param3)
-            .subscribeOn(Schedulers.io())
-            .observeOn(Schedulers.computation())
-            .map { MarsPhotoRoverResponseToImageUrlsMapper.map(it) }
+        val marsImages = marsPhotoApi.getPhotosByRover(
+            name = param.roverName,
+            earthDate = param.earthDate,
+            page = param.page,
+        )
+            .subscribeOn(rxSchedulers.io)
+            .observeOn(rxSchedulers.computation)
+            .map(MarsPhotoRoverResponseToImageUrlsMapper::map)
             .await()
             .orEmpty()
 
@@ -29,4 +32,10 @@ class GetMarsPhotosApiHelper @Inject constructor(
     } catch (e: Exception) {
         Reaction.Fail(Error.NetworkError(e))
     }
+
+    data class QueryParams(
+        val roverName: String,
+        val earthDate: String,
+        val page: Int,
+    )
 }

@@ -40,11 +40,15 @@ dependencies {
 
     implementation(project(":core"))
     implementation(project(":network"))
+    implementation(project(":storage"))
 
     // Dagger 2
     implementation("com.google.dagger:dagger:2.40.5")
     kapt("com.google.dagger:dagger-compiler:2.40.5")
 
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+
     // Utilities
     implementation("com.jakewharton.timber:timber:5.0.1")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }

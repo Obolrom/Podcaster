@@ -10,10 +10,7 @@ import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.network.BuildConfig
 import io.obolonsky.network.api.*
-import io.obolonsky.network.utils.Apod
-import io.obolonsky.network.utils.FeatureToggles
-import io.obolonsky.network.utils.MarsPhotos
-import io.obolonsky.network.utils.ShazamPlain
+import io.obolonsky.network.utils.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -122,6 +119,21 @@ class RemoteApiModule {
     }
 
     @Reusable
+    @PrivateBank
+    @Provides
+    fun providePrivateBankRetrofit(
+        client: OkHttpClient,
+        converter: GsonConverterFactory,
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://api.privatbank.ua/p24api/")
+            .client(client)
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .addConverterFactory(converter)
+            .build()
+    }
+
+    @Reusable
     @Provides
     fun provideSongRecognitionApi(
         retrofit: Retrofit,
@@ -150,6 +162,12 @@ class RemoteApiModule {
     fun provideNasaApodApi(
         @Apod retrofit: Retrofit,
     ): NasaApodApi = retrofit.create()
+
+    @Reusable
+    @Provides
+    fun providePrivateBankApi(
+        @PrivateBank retrofit: Retrofit,
+    ): PrivateBankApi = retrofit.create()
 
     @Reusable
     @Provides

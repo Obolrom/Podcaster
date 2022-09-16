@@ -4,4 +4,5 @@ interface RepositoryProvider :
     ShazamRepoProvider,
     FeatureTogglesRepoProvider,
     SpaceXRepoProvider,
-    NasaRepoProvider
+    NasaRepoProvider,
+    BanksRepoProvider

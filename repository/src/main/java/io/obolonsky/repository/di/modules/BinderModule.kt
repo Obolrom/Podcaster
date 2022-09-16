@@ -2,14 +2,8 @@ package io.obolonsky.repository.di.modules
 
 import dagger.Binds
 import dagger.Module
-import io.obolonsky.core.di.repositories.FeatureTogglesRepo
-import io.obolonsky.core.di.repositories.NasaRepo
-import io.obolonsky.core.di.repositories.ShazamRepo
-import io.obolonsky.core.di.repositories.SpaceXRepo
-import io.obolonsky.repository.FeatureTogglesRepository
-import io.obolonsky.repository.NasaRepository
-import io.obolonsky.repository.ShazamRepository
-import io.obolonsky.repository.SpaceXRepository
+import io.obolonsky.core.di.repositories.*
+import io.obolonsky.repository.*
 
 @Module
 interface BinderModule {
@@ -33,4 +27,9 @@ interface BinderModule {
     fun bindNasaRepository(
         repo: NasaRepository
     ): NasaRepo
+
+    @Binds
+    fun bindBanksRepository(
+        repo: BanksRepository
+    ): BanksRepo
 }

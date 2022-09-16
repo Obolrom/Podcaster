@@ -26,3 +26,8 @@ annotation class Apod
 @MustBeDocumented
 @Retention(value = AnnotationRetention.RUNTIME)
 annotation class PrivateBank
+
+@Qualifier
+@MustBeDocumented
+@Retention(value = AnnotationRetention.RUNTIME)
+annotation class MonoBank

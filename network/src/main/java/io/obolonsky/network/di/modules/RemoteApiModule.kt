@@ -134,6 +134,21 @@ class RemoteApiModule {
     }
 
     @Reusable
+    @MonoBank
+    @Provides
+    fun provideMonoBankRetrofit(
+        client: OkHttpClient,
+        converter: GsonConverterFactory,
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://api.monobank.ua/personal/")
+            .client(client)
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .addConverterFactory(converter)
+            .build()
+    }
+
+    @Reusable
     @Provides
     fun provideSongRecognitionApi(
         retrofit: Retrofit,
@@ -168,6 +183,12 @@ class RemoteApiModule {
     fun providePrivateBankApi(
         @PrivateBank retrofit: Retrofit,
     ): PrivateBankApi = retrofit.create()
+
+    @Reusable
+    @Provides
+    fun provideMonoBankApi(
+        @MonoBank retrofit: Retrofit,
+    ): MonoBankApi = retrofit.create()
 
     @Reusable
     @Provides

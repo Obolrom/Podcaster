@@ -8,4 +8,6 @@ import java.util.*
 interface BanksRepo {
 
     suspend fun getExchangeRatesByDate(date: Date): Reaction<List<ExchangeRate>, Error>
+
+    suspend fun getMonoAccountInfo(): Reaction<Unit, Error>
 }

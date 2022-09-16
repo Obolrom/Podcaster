@@ -30,6 +30,13 @@ android {
         )
 
         buildConfigField(
+            type = "String",
+            name = Constants.MONO_BANK_TOKEN,
+            value = gradleLocalProperties(rootDir)
+                .getProperty(Constants.MONO_BANK_PROPERTY_NAME)
+        )
+
+        buildConfigField(
             type = "io.obolonsky.network.utils.ProductionTypes",
             name = "PRODUCTION_TYPE",
             value = "io.obolonsky.network.utils.ProductionTypes.PROD"

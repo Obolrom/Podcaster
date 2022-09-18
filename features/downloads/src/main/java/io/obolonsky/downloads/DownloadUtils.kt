@@ -18,6 +18,8 @@ import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.RenderersFactory
 import androidx.media3.exoplayer.offline.DownloadManager
 import androidx.media3.exoplayer.offline.DownloadNotificationHelper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asExecutor
 import java.io.File
 import java.net.CookieHandler
 import java.net.CookieManager
@@ -158,7 +160,7 @@ object DownloadUtils {
                 getDatabaseProvider(context),
                 getDownloadCache(context),
                 getHttpDataSourceFactory(context),
-                Executors.newFixedThreadPool( /* nThreads= */6)
+                Dispatchers.IO.asExecutor()
             )
             downloadTracker = DownloadTracker(
                 context = context,

@@ -5,21 +5,25 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.offline.DownloadService
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
+import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import io.obolonsky.core.di.data.Track
 import io.obolonsky.core.di.lazyViewModel
-import io.obolonsky.downloads.DownloadTracker
-import io.obolonsky.downloads.DownloadUtils
+import io.obolonsky.downloads.*
 import io.obolonsky.downloads.DownloadUtils.getDownloadTracker
-import io.obolonsky.downloads.MediaDownloadService
-import io.obolonsky.downloads.R
 import io.obolonsky.downloads.databinding.ActivityPlayerBinding
 import io.obolonsky.downloads.viewmodels.ComponentViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class DownloadsActivity : AppCompatActivity(), DownloadTracker.Listener {
@@ -37,6 +41,13 @@ class DownloadsActivity : AppCompatActivity(), DownloadTracker.Listener {
     private var useExtensionRenderers = DownloadUtils.useExtensionRenderers()
     private val downloadTracker by lazy { getDownloadTracker(this) }
 
+    private val trackAdapter by lazy {
+        TrackAdapter(
+            onTrackClick = ::onTrackClick,
+            onDownloadTrack = ::onDownloadTrack,
+        )
+    }
+
     private val mediaUrl = "https://images-assets.nasa.gov/video/0200306-SpaceX_CRS_20_Live_Launch_Coverage_ISO_String-3243998/0200306-SpaceX_CRS_20_Live_Launch_Coverage_ISO_String-3243998~orig.mp4"
 
     private lateinit var dataSourceFactory: DataSource.Factory
@@ -47,21 +58,46 @@ class DownloadsActivity : AppCompatActivity(), DownloadTracker.Listener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
 
+        binding.tracks.apply {
+            layoutManager = LinearLayoutManager(this@DownloadsActivity)
+            adapter = trackAdapter
+        }
+
+        lifecycleScope.launch {
+            downloadsViewModel.getTracks()
+                .onEach { trackAdapter.submitList(it) }
+                .flowWithLifecycle(lifecycle)
+                .collect()
+        }
+
         dataSourceFactory = DownloadUtils.getDataSourceFactory(this)
 
-        binding.download.setOnClickListener {
-            downloadTracker.addListener(this)
+        downloadTracker.addListener(this)
 
+        startDownloadService()
+    }
+
+    private fun onTrackClick(track: Track) {
+        binding.player.player?.apply {
+            track.audioUri?.let { trackUri ->
+                setMediaItem(
+                    MediaItem.fromUri(trackUri)
+                )
+                prepare()
+            }
+        }
+    }
+
+    private fun onDownloadTrack(track: Track) {
+        track.audioUri?.let { trackUri ->
             downloadTracker.toggleDownload(
-                mediaItem = MediaItem.fromUri(mediaUrl),
+                mediaItem = MediaItem.fromUri(trackUri),
                 DownloadUtils.buildRenderersFactory(
                     context = this,
                     preferExtensionRenderer = false,
                 )
             )
         }
-
-        startDownloadService()
     }
 
     override fun onStart() {
@@ -103,6 +139,7 @@ class DownloadsActivity : AppCompatActivity(), DownloadTracker.Listener {
             )
             .build()
         binding.player.player = player
+        player.playWhenReady = true
         player.seekTo(0, 0)
         player.setMediaItem(
             MediaItem.fromUri(mediaUrl)

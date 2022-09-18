@@ -142,5 +142,13 @@ class DownloadTracker(
                 listener.onDownloadsChanged()
             }
         }
+
+        override fun onInitialized(downloadManager: DownloadManager) {
+            Timber.d("customDownloads DownloadManager.onInitialized")
+        }
+
+        override fun onIdle(downloadManager: DownloadManager) {
+            Timber.d("customDownloads DownloadManager.onIdle")
+        }
     }
 }

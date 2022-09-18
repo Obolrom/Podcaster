@@ -48,17 +48,17 @@ class MediaDownloadService : DownloadService(
         downloads: MutableList<Download>,
         notMetRequirements: Int
     ): Notification {
-        return DownloadUtils.getDownloadNotificationHelper(this)
+        return DownloadUtils
+            .getDownloadNotificationHelper(this)
             .buildProgressNotification(
                 this,
-                /* download done */  io.obolonsky.coreui.R.drawable.ic_round_arrow_back_24,
+                R.drawable.ic_round_download_done_24,
                 null,
                 null,
                 downloads,
                 notMetRequirements
             )
     }
-
 
     /**
      * Creates and displays notifications for downloads when they complete or fail.
@@ -68,20 +68,22 @@ class MediaDownloadService : DownloadService(
      * It is static to avoid leaking the first [MediaDownloadService] instance.
      */
     private class TerminalStateNotificationHelper(
-        context: Context, notificationHelper: DownloadNotificationHelper, firstNotificationId: Int
-    ) :
-        DownloadManager.Listener {
-        private val context: Context
-        private val notificationHelper: DownloadNotificationHelper
-        private var nextNotificationId: Int
+        private val context: Context,
+        private val notificationHelper: DownloadNotificationHelper,
+        firstNotificationId: Int
+    ) : DownloadManager.Listener {
+        private var nextNotificationId = firstNotificationId
+
         override fun onDownloadChanged(
-            downloadManager: DownloadManager, download: Download, finalException: Exception?
+            downloadManager: DownloadManager,
+            download: Download,
+            finalException: Exception?
         ) {
             val notification: Notification = when (download.state) {
                 Download.STATE_COMPLETED -> {
                     notificationHelper.buildDownloadCompletedNotification(
                         context,
-                      /* download done */  io.obolonsky.coreui.R.drawable.ic_round_arrow_back_24,
+                        R.drawable.ic_round_download_done_24,
                         null,
                         Util.fromUtf8Bytes(download.request.data)
                     )
@@ -89,7 +91,7 @@ class MediaDownloadService : DownloadService(
                 Download.STATE_FAILED -> {
                     notificationHelper.buildDownloadFailedNotification(
                         context,
-                        /* download done */  io.obolonsky.coreui.R.drawable.ic_round_arrow_back_24,
+                        R.drawable.ic_round_download_done_24,
                         null,
                         Util.fromUtf8Bytes(download.request.data)
                     )
@@ -99,12 +101,6 @@ class MediaDownloadService : DownloadService(
                 }
             }
             NotificationUtil.setNotification(context, nextNotificationId++, notification)
-        }
-
-        init {
-            this.context = context.applicationContext
-            this.notificationHelper = notificationHelper
-            nextNotificationId = firstNotificationId
         }
     }
 

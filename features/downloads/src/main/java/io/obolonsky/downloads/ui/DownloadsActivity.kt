@@ -81,6 +81,11 @@ class DownloadsActivity : AppCompatActivity(), DownloadTracker.Listener {
         startDownloadService()
     }
 
+    override fun onDestroy() {
+        MediaDownloadService.deleteComponent()
+        super.onDestroy()
+    }
+
     private fun onTrackClick(track: Track) {
         binding.player.player?.apply {
             track.audioUri?.let { trackUri ->

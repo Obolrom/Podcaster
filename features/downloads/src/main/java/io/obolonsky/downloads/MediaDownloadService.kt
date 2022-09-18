@@ -15,6 +15,7 @@ import io.obolonsky.core.di.depsproviders.ApplicationProvider
 import io.obolonsky.downloads.DownloadUtils.Companion.DOWNLOAD_NOTIFICATION_CHANNEL_ID
 import io.obolonsky.downloads.di.DaggerDownloadsComponent
 import io.obolonsky.downloads.di.DownloadsComponent
+import timber.log.Timber
 import javax.inject.Inject
 import androidx.media3.exoplayer.R as Media3R
 
@@ -36,11 +37,6 @@ class MediaDownloadService : DownloadService(
         getComponent((applicationContext as App).getAppComponent())
             .inject(this)
         super.onCreate()
-    }
-
-    override fun onDestroy() {
-        deleteComponent()
-        super.onDestroy()
     }
 
     override fun getDownloadManager(): DownloadManager {
@@ -128,12 +124,15 @@ class MediaDownloadService : DownloadService(
         private var downloadsComponent: DownloadsComponent? = null
 
         internal fun getComponent(applicationProvider: ApplicationProvider): DownloadsComponent {
-            return downloadsComponent ?: DaggerDownloadsComponent.factory()
+            val fuck = downloadsComponent ?: DaggerDownloadsComponent.factory()
                 .create(applicationProvider = applicationProvider)
                 .also { downloadsComponent = it }
+            Timber.d("fuckingShit fuck: ${fuck.hashCode()}")
+            return fuck
         }
 
         internal fun deleteComponent() {
+            Timber.d("fuckingShit deleteComponent")
             downloadsComponent = null
         }
 

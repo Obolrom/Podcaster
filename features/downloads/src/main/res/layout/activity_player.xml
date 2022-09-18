@@ -4,4 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.media3.ui.PlayerView
+        android:id="@+id/player"
+        android:layout_width="match_parent"
+        android:layout_height="220dp" />
+
+    <Button
+        android:id="@+id/download"
+        android:text="Download"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

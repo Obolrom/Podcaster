@@ -88,6 +88,18 @@
             </intent-filter>
         </service>
 
+        <service android:name="io.obolonsky.downloads.MediaDownloadService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="androidx.media3.exoplayer.downloadService.action.RESTART"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </service>
+
+        <service android:name="androidx.media3.exoplayer.scheduler.PlatformScheduler$PlatformSchedulerService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="true"/>
+
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"

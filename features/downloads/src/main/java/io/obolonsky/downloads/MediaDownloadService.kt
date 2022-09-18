@@ -38,6 +38,11 @@ class MediaDownloadService : DownloadService(
         super.onCreate()
     }
 
+    override fun onDestroy() {
+        deleteComponent()
+        super.onDestroy()
+    }
+
     override fun getDownloadManager(): DownloadManager {
         // This will only happen once, because getDownloadManager is guaranteed to be called only once
         // in the life cycle of the process.

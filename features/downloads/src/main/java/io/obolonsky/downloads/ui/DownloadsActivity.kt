@@ -2,7 +2,6 @@ package io.obolonsky.downloads.ui
 
 import android.os.Build
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.flowWithLifecycle
@@ -16,30 +15,36 @@ import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.obolonsky.core.di.data.Track
+import io.obolonsky.core.di.depsproviders.App
 import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.downloads.*
-import io.obolonsky.downloads.DownloadUtils.getDownloadTracker
 import io.obolonsky.downloads.databinding.ActivityPlayerBinding
-import io.obolonsky.downloads.viewmodels.ComponentViewModel
+import io.obolonsky.downloads.di.CacheDataSource
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 class DownloadsActivity : AppCompatActivity(), DownloadTracker.Listener {
 
-    private val componentViewModel by viewModels<ComponentViewModel>()
+    @Inject
+    internal lateinit var downloadsUtils: DownloadUtils
+
+    @Inject
+    internal lateinit var downloadTracker: DownloadTracker
+
+    @Inject
+    @CacheDataSource
+    internal lateinit var dataSourceFactory: DataSource.Factory
 
     private val downloadsViewModel by lazyViewModel { savedStateHandle ->
-        componentViewModel.downloadComponent
+        MediaDownloadService.getComponent((applicationContext as App).getAppComponent())
             .downloadsViewModelFactory()
             .create(savedStateHandle)
     }
 
     private val binding by viewBinding<ActivityPlayerBinding>()
-
-    private var useExtensionRenderers = DownloadUtils.useExtensionRenderers()
-    private val downloadTracker by lazy { getDownloadTracker(this) }
 
     private val trackAdapter by lazy {
         TrackAdapter(
@@ -48,12 +53,9 @@ class DownloadsActivity : AppCompatActivity(), DownloadTracker.Listener {
         )
     }
 
-    private val mediaUrl = "https://images-assets.nasa.gov/video/0200306-SpaceX_CRS_20_Live_Launch_Coverage_ISO_String-3243998/0200306-SpaceX_CRS_20_Live_Launch_Coverage_ISO_String-3243998~orig.mp4"
-
-    private lateinit var dataSourceFactory: DataSource.Factory
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        componentViewModel.downloadComponent.inject(this)
+        MediaDownloadService.getComponent((applicationContext as App).getAppComponent())
+            .inject(this)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
@@ -69,8 +71,6 @@ class DownloadsActivity : AppCompatActivity(), DownloadTracker.Listener {
                 .flowWithLifecycle(lifecycle)
                 .collect()
         }
-
-        dataSourceFactory = DownloadUtils.getDataSourceFactory(this)
 
         downloadTracker.addListener(this)
 
@@ -92,7 +92,7 @@ class DownloadsActivity : AppCompatActivity(), DownloadTracker.Listener {
         track.audioUri?.let { trackUri ->
             downloadTracker.toggleDownload(
                 mediaItem = MediaItem.fromUri(trackUri),
-                DownloadUtils.buildRenderersFactory(
+                downloadsUtils.buildRenderersFactory(
                     context = this,
                     preferExtensionRenderer = false,
                 )
@@ -120,7 +120,7 @@ class DownloadsActivity : AppCompatActivity(), DownloadTracker.Listener {
         super.onPause()
         if (Build.VERSION.SDK_INT <= 23) {
             binding.player.onPause()
-//            releasePlayer()
+            releasePlayer()
         }
     }
 
@@ -128,22 +128,23 @@ class DownloadsActivity : AppCompatActivity(), DownloadTracker.Listener {
         super.onStop()
         if (Build.VERSION.SDK_INT > 23) {
             binding.player.onPause()
-//            releasePlayer()
+            releasePlayer()
+        }
+    }
+
+    private fun releasePlayer() {
+        binding.player.player?.apply {
+            release()
         }
     }
 
     private fun initializePlayer(): Boolean {
         val player = ExoPlayer.Builder(this)
-            .setMediaSourceFactory(
-                DefaultMediaSourceFactory(dataSourceFactory)
-            )
+            .setMediaSourceFactory(DefaultMediaSourceFactory(dataSourceFactory))
             .build()
         binding.player.player = player
         player.playWhenReady = true
         player.seekTo(0, 0)
-        player.setMediaItem(
-            MediaItem.fromUri(mediaUrl)
-        )
         player.prepare()
         return true
     }

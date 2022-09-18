@@ -4,23 +4,30 @@ import android.content.Context
 import android.net.Uri
 import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
-import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.common.util.Util
 import androidx.media3.datasource.DataSource
 import androidx.media3.exoplayer.RenderersFactory
 import androidx.media3.exoplayer.offline.*
 import com.google.common.base.Preconditions
+import io.obolonsky.core.di.scopes.FeatureScope
+import io.obolonsky.core.di.utils.CoroutineSchedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.IOException
 import java.util.concurrent.CopyOnWriteArraySet
+import javax.inject.Inject
 
 /** Tracks media that has been downloaded. */
 @OptIn(markerClass = [UnstableApi::class])
-class DownloadTracker(
+@FeatureScope
+class DownloadTracker @Inject constructor(
     val context: Context,
-    private val dataSourceFactory: DataSource.Factory,
     downloadManager: DownloadManager,
+    private val dataSourceFactory: DataSource.Factory,
+    private val dispatchers: CoroutineSchedulers,
 ) {
 
     /** Listens for changes in the tracked downloads.  */
@@ -29,8 +36,6 @@ class DownloadTracker(
         /** Called when the tracked downloads changed.  */
         fun onDownloadsChanged()
     }
-
-    private val TAG = "DownloadTracker"
 
     private val listeners: CopyOnWriteArraySet<Listener> = CopyOnWriteArraySet()
     private val downloads: HashMap<Uri, Download> = HashMap()
@@ -57,7 +62,8 @@ class DownloadTracker(
 
     fun getDownloadRequest(uri: Uri): DownloadRequest? {
         val download = downloads[uri]
-        return if (download != null && download.state != Download.STATE_FAILED) download.request else null
+        return if (download != null && download.state != Download.STATE_FAILED) download.request
+            else null
     }
 
     private var downloadHelper: DownloadHelper? = null
@@ -84,17 +90,21 @@ class DownloadTracker(
         }
     }
 
+    @Suppress("BlockingMethodInNonBlockingContext")
     private fun loadDownloads() {
-        try {
-            downloadIndex!!.getDownloads().use { loadedDownloads ->
-                while (loadedDownloads.moveToNext()) {
-                    val download =
-                        loadedDownloads.download
-                    downloads[download.request.uri] = download
+        CoroutineScope(Job()).launch(dispatchers.io) {
+            try {
+                downloadIndex!!.getDownloads().use { loadedDownloads ->
+                    while (loadedDownloads.moveToNext()) {
+                        val download =
+                            loadedDownloads.download
+                        downloads[download.request.uri] = download
+                    }
                 }
+            } catch (e: IOException) {
+                Timber.e(e)
+                throw e
             }
-        } catch (e: IOException) {
-            Log.w(TAG, "Failed to query downloads", e)
         }
     }
 

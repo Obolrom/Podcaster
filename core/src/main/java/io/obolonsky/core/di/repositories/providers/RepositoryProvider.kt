@@ -5,4 +5,5 @@ interface RepositoryProvider :
     FeatureTogglesRepoProvider,
     SpaceXRepoProvider,
     NasaRepoProvider,
-    BanksRepoProvider
+    BanksRepoProvider,
+    DownloadsRepoProvider

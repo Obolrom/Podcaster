@@ -75,7 +75,7 @@
         </activity>
 
         <activity
-            android:name="io.obolonsky.downloads.DownloadsActivity"
+            android:name="io.obolonsky.downloads.ui.DownloadsActivity"
             android:screenOrientation="portrait"
             android:exported="true" />
 

@@ -32,4 +32,9 @@ interface BinderModule {
     fun bindBanksRepository(
         repo: BanksRepository
     ): BanksRepo
+
+    @Binds
+    fun bindDownloadsRepository(
+        repo: DownloadsRepository
+    ): DownloadsRepo
 }

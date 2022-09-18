@@ -3,13 +3,13 @@ package io.obolonsky.downloads.di
 import dagger.Component
 import io.obolonsky.core.di.depsproviders.ApplicationProvider
 import io.obolonsky.core.di.scopes.FeatureScope
-import io.obolonsky.downloads.DownloadsActivity
+import io.obolonsky.downloads.ui.DownloadsActivity
 
 @FeatureScope
 @Component(
     dependencies = [ApplicationProvider::class],
 )
-internal interface DownloadsComponent {
+internal interface DownloadsComponent : AssistedFactories {
 
     @Component.Factory
     interface Factory {

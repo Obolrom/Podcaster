@@ -17,7 +17,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.IOException
-import java.util.concurrent.CopyOnWriteArraySet
 import javax.inject.Inject
 
 /** Tracks media that has been downloaded. */
@@ -28,36 +27,24 @@ class DownloadTracker @Inject constructor(
     downloadManager: DownloadManager,
     private val dataSourceFactory: DataSource.Factory,
     private val dispatchers: CoroutineSchedulers,
+    private val inMemoryStorage: InMemoryStorage,
 ) {
 
-    /** Listens for changes in the tracked downloads.  */
-    interface Listener {
-
-        /** Called when the tracked downloads changed.  */
-        fun onDownloadsChanged()
-    }
-
-    private val listeners: CopyOnWriteArraySet<Listener> = CopyOnWriteArraySet()
     private val downloads: HashMap<Uri, Download> = HashMap()
-    private var downloadIndex: DownloadIndex? = null
+    private var downloadIndex: DownloadIndex = downloadManager.downloadIndex
 
     init {
-        downloadIndex = downloadManager.downloadIndex
         downloadManager.addListener(DownloadManagerListener())
         loadDownloads()
-    }
-
-    fun addListener(listener: Listener?) {
-        listeners.add(Preconditions.checkNotNull(listener))
-    }
-
-    fun removeListener(listener: Listener) {
-        listeners.remove(listener)
     }
 
     fun isDownloaded(mediaItem: MediaItem): Boolean {
         val download = downloads[Preconditions.checkNotNull(mediaItem.localConfiguration).uri]
         return download != null && download.state != Download.STATE_FAILED
+    }
+
+    fun release() {
+        downloadHelper?.release()
     }
 
     fun getDownloadRequest(uri: Uri): DownloadRequest? {
@@ -72,7 +59,12 @@ class DownloadTracker @Inject constructor(
         mediaItem: MediaItem,
         renderersFactory: RenderersFactory?
     ) {
-        val download = downloads[Preconditions.checkNotNull(mediaItem.localConfiguration).uri]
+        val download = inMemoryStorage.downloads
+            .replayCache
+            .firstOrNull()
+            ?.firstOrNull {
+                it.request.uri == Preconditions.checkNotNull(mediaItem.localConfiguration).uri
+            }
         if (download != null && download.state != Download.STATE_FAILED) {
             DownloadService.sendRemoveDownload(
                 context,
@@ -94,12 +86,14 @@ class DownloadTracker @Inject constructor(
     private fun loadDownloads() {
         CoroutineScope(Job()).launch(dispatchers.io) {
             try {
-                downloadIndex!!.getDownloads().use { loadedDownloads ->
+                downloadIndex.getDownloads().use { loadedDownloads ->
+                    val downloadList = mutableListOf<Download>()
                     while (loadedDownloads.moveToNext()) {
-                        val download =
-                            loadedDownloads.download
+                        val download = loadedDownloads.download
+                        downloadList.add(download)
                         downloads[download.request.uri] = download
                     }
+                    inMemoryStorage.mutableDownloads.emit(downloadList)
                 }
             } catch (e: IOException) {
                 Timber.e(e)
@@ -112,10 +106,12 @@ class DownloadTracker @Inject constructor(
         override fun onPrepared(helper: DownloadHelper) {
             Timber.d("customDownloads DownloadCallback.onPrepared")
             startDownload()
+            loadDownloads()
         }
 
         override fun onPrepareError(helper: DownloadHelper, e: IOException) {
-            Timber.d("customDownloads DownloadCallback.onPrepareError")
+            Timber.d("customDownloads DownloadCallback.onPrepareError $e")
+            loadDownloads()
         }
 
         private fun startDownload() {
@@ -124,7 +120,10 @@ class DownloadTracker @Inject constructor(
 
         private fun startDownload(downloadRequest: DownloadRequest) {
             DownloadService.sendAddDownload(
-                context, MediaDownloadService::class.java, downloadRequest,  /* foreground= */false
+                context,
+                MediaDownloadService::class.java,
+                downloadRequest,
+                /* foreground= */false
             )
         }
 
@@ -140,17 +139,14 @@ class DownloadTracker @Inject constructor(
         override fun onDownloadChanged(
             downloadManager: DownloadManager, download: Download, finalException: Exception?
         ) {
+            Timber.d("downloadsStorage $finalException")
+            loadDownloads()
             downloads[download.request.uri] = download
-            for (listener in listeners) {
-                listener.onDownloadsChanged()
-            }
         }
 
         override fun onDownloadRemoved(downloadManager: DownloadManager, download: Download) {
+            loadDownloads()
             downloads.remove(download.request.uri)
-            for (listener in listeners) {
-                listener.onDownloadsChanged()
-            }
         }
 
         override fun onInitialized(downloadManager: DownloadManager) {

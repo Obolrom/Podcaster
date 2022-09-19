@@ -12,6 +12,7 @@ import androidx.media3.datasource.cache.SimpleCache
 import androidx.media3.datasource.cronet.CronetDataSource
 import androidx.media3.datasource.cronet.CronetUtil
 import androidx.media3.exoplayer.offline.DownloadManager
+import androidx.media3.exoplayer.scheduler.Requirements
 import dagger.Module
 import dagger.Provides
 import io.obolonsky.core.di.scopes.FeatureScope
@@ -115,7 +116,10 @@ internal class DownloadsModule {
             downloadCache,
             dataSourceFactory,
             dispatchers.io.asExecutor()
-        )
+        ).apply {
+            maxParallelDownloads = 2
+            requirements = Requirements(Requirements.NETWORK_UNMETERED)
+        }
     }
 }
 

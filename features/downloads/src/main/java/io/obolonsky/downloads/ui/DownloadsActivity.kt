@@ -22,12 +22,13 @@ import io.obolonsky.downloads.*
 import io.obolonsky.downloads.databinding.ActivityPlayerBinding
 import io.obolonsky.downloads.di.CacheDataSource
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
-class DownloadsActivity : AppCompatActivity(), DownloadTracker.Listener {
+class DownloadsActivity : AppCompatActivity() {
 
     @Inject
     internal lateinit var downloadsUtils: DownloadUtils
@@ -39,8 +40,13 @@ class DownloadsActivity : AppCompatActivity(), DownloadTracker.Listener {
     internal lateinit var cache: Cache
 
     @Inject
+    internal lateinit var inMemoryStorage: InMemoryStorage
+
+    @Inject
     @CacheDataSource
     internal lateinit var dataSourceFactory: DataSource.Factory
+
+    val mediaUrl = "https://images-assets.nasa.gov/video/KSC-20201115-MH-AJW02-0001-SpaceX_Crew_1_Live_Launch_Coverage_ISO_Broll_String_720p-3263009/KSC-20201115-MH-AJW02-0001-SpaceX_Crew_1_Live_Launch_Coverage_ISO_Broll_String_720p-3263009~orig.mp4"
 
     private val downloadsViewModel by lazyViewModel { savedStateHandle ->
         MediaDownloadService.getComponent((applicationContext as App).getAppComponent())
@@ -76,12 +82,21 @@ class DownloadsActivity : AppCompatActivity(), DownloadTracker.Listener {
                 .collect()
         }
 
-        downloadTracker.addListener(this)
+        inMemoryStorage.downloads
+            .onEach { downloads ->
+                downloads.map { "state: ${it.state}, id: ${it.request.id}" }
+                    .onEach { Timber.d("downloadsStorage $it") }
+                Timber.d("downloadsStorage ------------------------")
+            }
+            .flowWithLifecycle(lifecycle)
+            .launchIn(lifecycleScope)
 
         startDownloadService()
     }
 
     override fun onDestroy() {
+        cache.release()
+        downloadTracker.release()
         MediaDownloadService.deleteComponent()
         super.onDestroy()
     }
@@ -145,7 +160,6 @@ class DownloadsActivity : AppCompatActivity(), DownloadTracker.Listener {
         binding.player.player?.apply {
             release()
         }
-        cache.release()
     }
 
     private fun initializePlayer(): Boolean {
@@ -157,10 +171,6 @@ class DownloadsActivity : AppCompatActivity(), DownloadTracker.Listener {
         player.seekTo(0, 0)
         player.prepare()
         return true
-    }
-
-    override fun onDownloadsChanged() {
-        Timber.d("customDownloads onDownloadsChanged")
     }
 
     @OptIn(markerClass = [UnstableApi::class])

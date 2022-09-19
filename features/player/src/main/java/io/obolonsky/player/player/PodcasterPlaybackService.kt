@@ -53,8 +53,13 @@ class PodcasterPlaybackService : MediaSessionService() {
     }
 
     private fun inject() {
+        val applicationProvider = (application as App).getAppComponent()
+
         DaggerPlayerComponent.factory()
-            .create((application as App).getAppComponent())
+            .create(
+                appCtxProvider = applicationProvider,
+                downloadsStorageProvider = applicationProvider,
+            )
             .inject(this)
     }
 

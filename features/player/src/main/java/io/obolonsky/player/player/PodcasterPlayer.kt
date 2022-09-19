@@ -1,6 +1,5 @@
 package io.obolonsky.player.player
 
-import androidx.media3.datasource.cache.Cache
 import androidx.media3.exoplayer.ExoPlayer
 import io.obolonsky.core.di.common.AudioSource
 import io.obolonsky.core.di.scopes.FeatureScope
@@ -9,7 +8,6 @@ import javax.inject.Inject
 @FeatureScope
 class PodcasterPlayer @Inject constructor(
     val player: ExoPlayer,
-    private val cache: Cache,
 ) {
 
     init {
@@ -43,6 +41,5 @@ class PodcasterPlayer @Inject constructor(
 
     fun release() {
         player.release()
-        cache.release()
     }
 }

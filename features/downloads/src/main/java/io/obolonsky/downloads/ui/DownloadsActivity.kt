@@ -8,8 +8,8 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.cache.Cache
+import androidx.media3.datasource.cache.CacheDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.offline.DownloadService
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
@@ -20,7 +20,6 @@ import io.obolonsky.core.di.depsproviders.App
 import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.downloads.*
 import io.obolonsky.downloads.databinding.ActivityPlayerBinding
-import io.obolonsky.downloads.di.CacheDataSource
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -43,8 +42,7 @@ class DownloadsActivity : AppCompatActivity() {
     internal lateinit var inMemoryStorage: InMemoryStorage
 
     @Inject
-    @CacheDataSource
-    internal lateinit var dataSourceFactory: DataSource.Factory
+    internal lateinit var dataSourceFactory: CacheDataSource.Factory
 
     val mediaUrl = "https://images-assets.nasa.gov/video/KSC-20201115-MH-AJW02-0001-SpaceX_Crew_1_Live_Launch_Coverage_ISO_Broll_String_720p-3263009/KSC-20201115-MH-AJW02-0001-SpaceX_Crew_1_Live_Launch_Coverage_ISO_Broll_String_720p-3263009~orig.mp4"
 
@@ -95,7 +93,6 @@ class DownloadsActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        cache.release()
         downloadTracker.release()
         MediaDownloadService.deleteComponent()
         super.onDestroy()

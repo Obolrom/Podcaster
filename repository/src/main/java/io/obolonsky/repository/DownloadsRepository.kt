@@ -1,6 +1,7 @@
 package io.obolonsky.repository
 
 import io.obolonsky.core.di.data.Track
+import io.obolonsky.core.di.downloads.DownloadsStorage
 import io.obolonsky.core.di.repositories.DownloadsRepo
 import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.storage.database.daos.ShazamTrackDao
@@ -12,6 +13,7 @@ import javax.inject.Inject
 
 class DownloadsRepository @Inject constructor(
     private val shazamTrackDao: ShazamTrackDao,
+    private val downloadsStorage: DownloadsStorage,
     private val dispatchers: CoroutineSchedulers,
 ) : DownloadsRepo {
 

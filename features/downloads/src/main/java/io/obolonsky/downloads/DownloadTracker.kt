@@ -7,6 +7,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.common.util.Util
 import androidx.media3.datasource.DataSource
+import androidx.media3.datasource.cache.CacheDataSource
 import androidx.media3.exoplayer.RenderersFactory
 import androidx.media3.exoplayer.offline.*
 import com.google.common.base.Preconditions
@@ -25,7 +26,7 @@ import javax.inject.Inject
 class DownloadTracker @Inject constructor(
     val context: Context,
     downloadManager: DownloadManager,
-    private val dataSourceFactory: DataSource.Factory,
+    private val dataSourceFactory: CacheDataSource.Factory,
     private val dispatchers: CoroutineSchedulers,
     private val inMemoryStorage: InMemoryStorage,
 ) {

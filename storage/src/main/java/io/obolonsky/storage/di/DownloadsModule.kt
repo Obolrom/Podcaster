@@ -1,4 +1,4 @@
-package io.obolonsky.downloads.di
+package io.obolonsky.storage.di
 
 import android.content.Context
 import androidx.media3.database.DatabaseProvider
@@ -7,6 +7,7 @@ import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.datasource.cache.Cache
+import androidx.media3.datasource.cache.CacheDataSource
 import androidx.media3.datasource.cache.NoOpCacheEvictor
 import androidx.media3.datasource.cache.SimpleCache
 import androidx.media3.datasource.cronet.CronetDataSource
@@ -15,17 +16,14 @@ import androidx.media3.exoplayer.offline.DownloadManager
 import androidx.media3.exoplayer.scheduler.Requirements
 import dagger.Module
 import dagger.Provides
-import io.obolonsky.core.di.scopes.FeatureScope
+import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.core.di.utils.CoroutineSchedulers
-import io.obolonsky.downloads.DownloadUtils
-import io.obolonsky.downloads.utils.getDownloadDirectory
 import kotlinx.coroutines.asExecutor
 import java.io.File
 import java.net.CookieHandler
 import java.net.CookieManager
 import java.net.CookiePolicy
 import java.util.concurrent.Executors
-import javax.inject.Qualifier
 
 /**
  * Whether the demo application uses Cronet for networking. Note that Cronet does not provide
@@ -36,11 +34,16 @@ import javax.inject.Qualifier
  * configured in [DownloadsModule.provideHttpDataSourceFactory].
  */
 private const val USE_CRONET_FOR_NETWORKING = true
+private const val DOWNLOAD_CONTENT_DIRECTORY = "downloads"
+
+internal fun getDownloadDirectory(context: Context): File? {
+    return context.getExternalFilesDir(null) ?: context.filesDir
+}
 
 @Module
 internal class DownloadsModule {
 
-    @FeatureScope
+    @ApplicationScope
     @Provides
     fun provideHttpDataSourceFactory(context: Context): DataSource.Factory {
         val httpDataSourceFactory = if (USE_CRONET_FOR_NETWORKING) {
@@ -63,13 +66,13 @@ internal class DownloadsModule {
         }
     }
 
-    @FeatureScope
+    @ApplicationScope
     @Provides
     fun provideDatabaseProvider(context: Context): DatabaseProvider {
         return StandaloneDatabaseProvider(context.applicationContext)
     }
 
-    @FeatureScope
+    @ApplicationScope
     @Provides
     fun provideDownloadCache(
         context: Context,
@@ -77,31 +80,30 @@ internal class DownloadsModule {
     ): Cache {
         val downloadContentDirectory = File(
             getDownloadDirectory(context),
-            DownloadUtils.DOWNLOAD_CONTENT_DIRECTORY
+            DOWNLOAD_CONTENT_DIRECTORY
         )
         return SimpleCache(downloadContentDirectory, NoOpCacheEvictor(), databaseProvider)
     }
 
-    @FeatureScope
-    @CacheDataSource
+    @ApplicationScope
     @Provides
     fun provideCacheDataSourceFactory(
         context: Context,
         httpDataSourceFactory: DataSource.Factory,
         downloadCache: Cache,
-    ): DataSource.Factory {
+    ): CacheDataSource.Factory {
         val upstreamFactory = DefaultDataSource.Factory(
             context,
             httpDataSourceFactory
         )
-        return androidx.media3.datasource.cache.CacheDataSource.Factory()
+        return CacheDataSource.Factory()
             .setCache(downloadCache)
             .setUpstreamDataSourceFactory(upstreamFactory)
             .setCacheWriteDataSinkFactory(null)
-            .setFlags(androidx.media3.datasource.cache.CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
+            .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
     }
 
-    @FeatureScope
+    @ApplicationScope
     @Provides
     fun provideDownloadManager(
         context: Context,
@@ -122,8 +124,3 @@ internal class DownloadsModule {
         }
     }
 }
-
-@Qualifier
-@MustBeDocumented
-@Retention(value = AnnotationRetention.RUNTIME)
-annotation class CacheDataSource

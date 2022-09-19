@@ -125,7 +125,15 @@ class MediaDownloadService : DownloadService(
 
         internal fun getComponent(applicationProvider: ApplicationProvider): DownloadsComponent {
             val fuck = downloadsComponent ?: DaggerDownloadsComponent.factory()
-                .create(applicationProvider = applicationProvider)
+                .create(
+                    toolsProvider = applicationProvider,
+                    playerActionProvider = applicationProvider,
+                    nasaActionsProvider = applicationProvider,
+                    networkStatusObservableProvider = applicationProvider,
+                    downloadsActionProvider = applicationProvider,
+                    downloadsRepoProvider = applicationProvider,
+                    downloadsStorageProvider = applicationProvider,
+                )
                 .also { downloadsComponent = it }
             Timber.d("fuckingShit fuck: ${fuck.hashCode()}")
             return fuck

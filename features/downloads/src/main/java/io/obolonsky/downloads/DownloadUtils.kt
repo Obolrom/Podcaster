@@ -16,8 +16,6 @@ class DownloadUtils @Inject constructor() {
         const val DOWNLOAD_NOTIFICATION_CHANNEL_ID = "download_channel"
 
         private const val USE_DECODER_EXTENSIONS = false
-
-        const val DOWNLOAD_CONTENT_DIRECTORY = "downloads"
     }
 
     private var downloadNotificationHelper: DownloadNotificationHelper? = null

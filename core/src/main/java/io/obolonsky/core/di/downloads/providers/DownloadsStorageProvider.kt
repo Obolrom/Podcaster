@@ -6,7 +6,7 @@ import androidx.media3.datasource.cache.CacheDataSource
 import androidx.media3.exoplayer.offline.DownloadManager
 import io.obolonsky.core.di.downloads.DownloadsStorage
 
-interface DownloadsStorageProvider {
+interface DownloadsStorageProvider : DownloaderProvider {
 
     val downloadsStorage: DownloadsStorage
 

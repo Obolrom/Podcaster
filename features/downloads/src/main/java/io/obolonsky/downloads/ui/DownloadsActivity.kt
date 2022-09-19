@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.obolonsky.core.di.data.Track
 import io.obolonsky.core.di.depsproviders.App
+import io.obolonsky.core.di.downloads.Downloader
+import io.obolonsky.core.di.downloads.DownloadsStorage
 import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.downloads.*
 import io.obolonsky.downloads.databinding.ActivityPlayerBinding
@@ -33,18 +35,16 @@ class DownloadsActivity : AppCompatActivity() {
     internal lateinit var downloadsUtils: DownloadUtils
 
     @Inject
-    internal lateinit var downloadTracker: DownloadTracker
+    internal lateinit var downloadTracker: Downloader
 
     @Inject
     internal lateinit var cache: Cache
 
     @Inject
-    internal lateinit var inMemoryStorage: InMemoryStorage
+    internal lateinit var inMemoryStorage: DownloadsStorage
 
     @Inject
     internal lateinit var dataSourceFactory: CacheDataSource.Factory
-
-    val mediaUrl = "https://images-assets.nasa.gov/video/KSC-20201115-MH-AJW02-0001-SpaceX_Crew_1_Live_Launch_Coverage_ISO_Broll_String_720p-3263009/KSC-20201115-MH-AJW02-0001-SpaceX_Crew_1_Live_Launch_Coverage_ISO_Broll_String_720p-3263009~orig.mp4"
 
     private val downloadsViewModel by lazyViewModel { savedStateHandle ->
         MediaDownloadService.getComponent((applicationContext as App).getAppComponent())
@@ -113,10 +113,11 @@ class DownloadsActivity : AppCompatActivity() {
         track.audioUri?.let { trackUri ->
             downloadTracker.toggleDownload(
                 mediaItem = MediaItem.fromUri(trackUri),
-                downloadsUtils.buildRenderersFactory(
+                renderersFactory = downloadsUtils.buildRenderersFactory(
                     context = this,
                     preferExtensionRenderer = false,
-                )
+                ),
+                serviceClass = MediaDownloadService::class.java,
             )
         }
     }

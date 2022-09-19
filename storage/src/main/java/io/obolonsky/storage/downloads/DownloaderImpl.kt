@@ -1,64 +1,46 @@
-package io.obolonsky.downloads
+package io.obolonsky.storage.downloads
 
 import android.content.Context
 import android.net.Uri
-import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
-import androidx.media3.common.util.UnstableApi
 import androidx.media3.common.util.Util
-import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.cache.CacheDataSource
 import androidx.media3.exoplayer.RenderersFactory
 import androidx.media3.exoplayer.offline.*
 import com.google.common.base.Preconditions
-import io.obolonsky.core.di.scopes.FeatureScope
+import io.obolonsky.core.di.downloads.Downloader
+import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.core.di.utils.CoroutineSchedulers
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
 
-/** Tracks media that has been downloaded. */
-@OptIn(markerClass = [UnstableApi::class])
-@FeatureScope
-class DownloadTracker @Inject constructor(
+@ApplicationScope
+internal class DownloaderImpl @Inject constructor(
     val context: Context,
     downloadManager: DownloadManager,
     private val dataSourceFactory: CacheDataSource.Factory,
     private val dispatchers: CoroutineSchedulers,
-    private val inMemoryStorage: InMemoryStorage,
-) {
+    private val inMemoryStorage: DownloadsStorageImpl,
+) : Downloader {
 
+    private val downloadCoroutineScope = CoroutineScope(SupervisorJob())
     private val downloads: HashMap<Uri, Download> = HashMap()
-    private var downloadIndex: DownloadIndex = downloadManager.downloadIndex
+    private val downloadIndex: DownloadIndex = downloadManager.downloadIndex
+    private var downloadHelper: DownloadHelper? = null
 
     init {
         downloadManager.addListener(DownloadManagerListener())
         loadDownloads()
     }
 
-    fun isDownloaded(mediaItem: MediaItem): Boolean {
-        val download = downloads[Preconditions.checkNotNull(mediaItem.localConfiguration).uri]
-        return download != null && download.state != Download.STATE_FAILED
-    }
-
-    fun release() {
-        downloadHelper?.release()
-    }
-
-    fun getDownloadRequest(uri: Uri): DownloadRequest? {
-        val download = downloads[uri]
-        return if (download != null && download.state != Download.STATE_FAILED) download.request
-            else null
-    }
-
-    private var downloadHelper: DownloadHelper? = null
-
-    fun toggleDownload(
+    override fun toggleDownload(
         mediaItem: MediaItem,
-        renderersFactory: RenderersFactory?
+        renderersFactory: RenderersFactory?,
+        serviceClass: Class<out DownloadService>,
     ) {
         val download = inMemoryStorage.downloads
             .replayCache
@@ -69,7 +51,7 @@ class DownloadTracker @Inject constructor(
         if (download != null && download.state != Download.STATE_FAILED) {
             DownloadService.sendRemoveDownload(
                 context,
-                MediaDownloadService::class.java,
+                serviceClass,
                 download.request.id,  /* foreground= */
                 false
             )
@@ -79,13 +61,28 @@ class DownloadTracker @Inject constructor(
                 mediaItem,
                 renderersFactory,
                 dataSourceFactory
-            ).apply { prepare(DownloadCallback()) }
+            ).apply { prepare(DownloadCallback(serviceClass)) }
         }
+    }
+
+    override fun release() {
+        downloadHelper?.release()
+    }
+
+    fun isDownloaded(mediaItem: MediaItem): Boolean {
+        val download = downloads[Preconditions.checkNotNull(mediaItem.localConfiguration).uri]
+        return download != null && download.state != Download.STATE_FAILED
+    }
+
+    fun getDownloadRequest(uri: Uri): DownloadRequest? {
+        val download = downloads[uri]
+        return if (download != null && download.state != Download.STATE_FAILED) download.request
+        else null
     }
 
     @Suppress("BlockingMethodInNonBlockingContext")
     private fun loadDownloads() {
-        CoroutineScope(Job()).launch(dispatchers.io) {
+        downloadCoroutineScope.launch(dispatchers.io) {
             try {
                 downloadIndex.getDownloads().use { loadedDownloads ->
                     val downloadList = mutableListOf<Download>()
@@ -103,7 +100,9 @@ class DownloadTracker @Inject constructor(
         }
     }
 
-    private inner class DownloadCallback : DownloadHelper.Callback {
+    private inner class DownloadCallback(
+        private val serviceClass: Class<out DownloadService>,
+    ) : DownloadHelper.Callback {
         override fun onPrepared(helper: DownloadHelper) {
             Timber.d("customDownloads DownloadCallback.onPrepared")
             startDownload()
@@ -122,7 +121,7 @@ class DownloadTracker @Inject constructor(
         private fun startDownload(downloadRequest: DownloadRequest) {
             DownloadService.sendAddDownload(
                 context,
-                MediaDownloadService::class.java,
+                serviceClass,
                 downloadRequest,
                 /* foreground= */false
             )

@@ -8,7 +8,6 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.datasource.cache.Cache
 import androidx.media3.datasource.cache.CacheDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.offline.DownloadService
@@ -18,9 +17,11 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import io.obolonsky.core.di.data.Track
 import io.obolonsky.core.di.depsproviders.App
 import io.obolonsky.core.di.downloads.Downloader
-import io.obolonsky.core.di.downloads.DownloadsStorage
 import io.obolonsky.core.di.lazyViewModel
-import io.obolonsky.downloads.*
+import io.obolonsky.downloads.DownloadUtils
+import io.obolonsky.downloads.MediaDownloadService
+import io.obolonsky.downloads.R
+import io.obolonsky.downloads.TrackAdapter
 import io.obolonsky.downloads.databinding.ActivityPlayerBinding
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
@@ -36,12 +37,6 @@ class DownloadsActivity : AppCompatActivity() {
 
     @Inject
     internal lateinit var downloadTracker: Downloader
-
-    @Inject
-    internal lateinit var cache: Cache
-
-    @Inject
-    internal lateinit var inMemoryStorage: DownloadsStorage
 
     @Inject
     internal lateinit var dataSourceFactory: CacheDataSource.Factory
@@ -80,7 +75,7 @@ class DownloadsActivity : AppCompatActivity() {
                 .collect()
         }
 
-        inMemoryStorage.downloads
+        downloadsViewModel.downloads
             .onEach { downloads ->
                 downloads.map { "state: ${it.state}, id: ${it.request.id}" }
                     .onEach { Timber.d("downloadsStorage $it") }

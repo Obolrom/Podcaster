@@ -14,6 +14,7 @@ import androidx.media3.exoplayer.offline.DownloadService
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.data.Track
 import io.obolonsky.core.di.depsproviders.App
 import io.obolonsky.core.di.downloads.Downloader
@@ -76,10 +77,17 @@ class DownloadsActivity : AppCompatActivity() {
         }
 
         downloadsViewModel.downloads
-            .onEach { downloads ->
-                downloads.map { "state: ${it.state}, id: ${it.request.id}" }
-                    .onEach { Timber.d("downloadsStorage $it") }
-                Timber.d("downloadsStorage ------------------------")
+            .onEach { downloadsReaction ->
+                when (downloadsReaction) {
+                    is Reaction.Success -> {
+                        downloadsReaction.data.map { "state: ${it.state}, id: ${it.request.id}" }
+                            .onEach { Timber.d("downloadsStorage $it") }
+                        Timber.d("downloadsStorage ------------------------")
+                    }
+
+                    is Reaction.Fail -> {}
+                }
+
             }
             .flowWithLifecycle(lifecycle)
             .launchIn(lifecycleScope)

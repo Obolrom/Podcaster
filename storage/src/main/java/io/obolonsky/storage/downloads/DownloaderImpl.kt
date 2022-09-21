@@ -8,6 +8,8 @@ import androidx.media3.datasource.cache.CacheDataSource
 import androidx.media3.exoplayer.RenderersFactory
 import androidx.media3.exoplayer.offline.*
 import com.google.common.base.Preconditions
+import io.obolonsky.core.di.Error
+import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.downloads.Downloader
 import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.core.di.utils.CoroutineSchedulers
@@ -45,8 +47,18 @@ internal class DownloaderImpl @Inject constructor(
         val download = inMemoryStorage.downloads
             .replayCache
             .firstOrNull()
-            ?.firstOrNull {
-                it.request.uri == Preconditions.checkNotNull(mediaItem.localConfiguration).uri
+            ?.let { reaction ->
+                when (reaction) {
+                    is Reaction.Success -> {
+                        reaction.data.firstOrNull() {
+                            it.request.uri ==
+                                    Preconditions.checkNotNull(mediaItem.localConfiguration).uri
+                        }
+                    }
+                    is Reaction.Fail -> {
+                        null
+                    }
+                }
             }
         if (download != null && download.state != Download.STATE_FAILED) {
             DownloadService.sendRemoveDownload(
@@ -91,10 +103,14 @@ internal class DownloaderImpl @Inject constructor(
                         downloadList.add(download)
                         downloads[download.request.uri] = download
                     }
-                    inMemoryStorage.mutableDownloads.emit(downloadList)
+                    inMemoryStorage.mutableDownloads
+                        .emit(Reaction.Success(downloadList))
                 }
             } catch (e: IOException) {
+                // TODO: fix error type
                 Timber.e(e)
+                inMemoryStorage.mutableDownloads
+                    .emit(Reaction.Fail(Error.NetworkError(e)))
                 throw e
             }
         }

@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.data.spaceX.rocket.Rocket
+import io.obolonsky.core.di.reactWithSuccessOrNull
 import io.obolonsky.spacex.usecases.GetRocketFullDetailsUseCase
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -27,14 +27,9 @@ internal class SpaceXViewModel @AssistedInject constructor(
 
     fun loadRocketDetails(id: String) {
         viewModelScope.launch {
-            when (val response = getRocketFullDetailsUseCase(id)) {
-                is Reaction.Success -> {
-                    internalRocketDetails.emit(response.data)
-                }
-                is Reaction.Fail -> {
-                    internalRocketDetails.emit(null)
-                }
-            }
+            getRocketFullDetailsUseCase(id)
+                .reactWithSuccessOrNull()
+                ?.let { internalRocketDetails.emit(it) }
         }
     }
 

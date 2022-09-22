@@ -36,7 +36,7 @@ internal class DownloadsViewModel @AssistedInject constructor(
             .combine(downloads) { tracks, downloads ->
                 combineTracksAndDownloads(
                     downloadableMedia = tracks,
-                    downloads = downloads.reactWithSuccessOrDefault(emptyList())
+                    downloads = downloads.reactWithSuccessOrDefault { emptyList() }
                 )
             }
             .onEach(_tracks::emit)

@@ -16,10 +16,10 @@ inline fun <T> Reaction<T, Error>.reactWith(
     is Reaction.Fail -> onError(error)
 }
 
-fun <T> Reaction<T, Error>.reactWithSuccessOrDefault(default: T) = when (this) {
+fun <T> Reaction<T, Error>.reactWithSuccessOrDefault(defaultProvider: () -> T) = when (this) {
     is Reaction.Success -> data
 
-    is Reaction.Fail -> default
+    is Reaction.Fail -> defaultProvider()
 }
 
-fun <T> Reaction<T, Error>.reactWithSuccessOrNull() = reactWithSuccessOrDefault(null)
+fun <T> Reaction<T, Error>.reactWithSuccessOrNull() = reactWithSuccessOrDefault { null }

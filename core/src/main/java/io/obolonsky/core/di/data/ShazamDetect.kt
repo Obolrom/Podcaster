@@ -15,4 +15,7 @@ data class Track(
     val relatedTracksUrl: String?,
     val relatedTracks: List<Track>,
     val downloadStatus: DownloadStatus = DownloadStatus.NOT_DOWNLOADED,
-)
+) : DownloadableMedia {
+
+    override val mediaUrl = audioUri
+}

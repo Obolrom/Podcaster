@@ -34,4 +34,20 @@ class TrackViewHolder(
         track.title?.let { binding.title.text = it }
         track.subtitle?.let { binding.subtitle.text = it }
     }
+
+    fun updateDownloadStatus(track: Track) {
+        when (track.downloadStatus) {
+            QUEUED, COMPLETED -> {
+                binding.removeRecentTrack.load(R.drawable.ic_round_download_done_24)
+                binding.removeRecentTrack.setOnClickListener(null)
+            }
+            STOPPED, DOWNLOADING, FAILED, NOT_DOWNLOADED -> {
+                binding.removeRecentTrack.load(R.drawable.ic_round_download_24)
+                binding.removeRecentTrack.setOnClickListener {
+                    onRemoveTrack(track)
+                }
+            }
+            else -> { }
+        }
+    }
 }

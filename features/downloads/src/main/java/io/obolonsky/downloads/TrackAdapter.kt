@@ -21,6 +21,18 @@ class TrackAdapter(
         return TrackViewHolder(binding, onDownloadTrack)
     }
 
+    override fun onBindViewHolder(
+        holder: TrackViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads)
+            return
+        }
+        getItem(position)?.let(holder::updateDownloadStatus)
+    }
+
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         getItem(position)?.let { track ->
             holder.bind(track)
@@ -39,6 +51,14 @@ class TrackAdapter(
                 return oldItem.title == newItem.title
                         && oldItem.subtitle == newItem.subtitle
                         && oldItem.downloadStatus == newItem.downloadStatus
+            }
+
+            override fun getChangePayload(oldItem: Track, newItem: Track): Any? {
+                return when {
+                    oldItem.downloadStatus != newItem.downloadStatus -> Any()
+
+                    else -> null
+                }
             }
         }
     }

@@ -18,17 +18,13 @@ import io.obolonsky.core.di.data.Track
 import io.obolonsky.core.di.depsproviders.App
 import io.obolonsky.core.di.downloads.Downloader
 import io.obolonsky.core.di.lazyViewModel
-import io.obolonsky.core.di.utils.reactWith
 import io.obolonsky.downloads.DownloadUtils
 import io.obolonsky.downloads.MediaDownloadService
 import io.obolonsky.downloads.R
 import io.obolonsky.downloads.TrackAdapter
 import io.obolonsky.downloads.databinding.ActivityPlayerBinding
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 class DownloadsActivity : AppCompatActivity() {
@@ -69,25 +65,12 @@ class DownloadsActivity : AppCompatActivity() {
             adapter = trackAdapter
         }
 
-        lifecycleScope.launch {
-            downloadsViewModel.getTracks()
-                .onEach { trackAdapter.submitList(it) }
-                .flowWithLifecycle(lifecycle)
-                .collect()
-        }
-
-        downloadsViewModel.downloads
-            .reactWith(
-                onSuccess = { downloads ->
-                    downloads.map { "state: ${it.state}, id: ${it.request.id}" }
-                        .onEach { Timber.d("downloadsStorage $it") }
-                    Timber.d("downloadsStorage ------------------------")
-                },
-                onError = { }
-            )
-            .onEach {  }
+        downloadsViewModel.tracks
+            .onEach(trackAdapter::submitList)
             .flowWithLifecycle(lifecycle)
             .launchIn(lifecycleScope)
+
+        downloadsViewModel.load()
 
         startDownloadService()
     }

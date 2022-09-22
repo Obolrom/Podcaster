@@ -38,6 +38,7 @@ class TrackAdapter(
             override fun areContentsTheSame(oldItem: Track, newItem: Track): Boolean {
                 return oldItem.title == newItem.title
                         && oldItem.subtitle == newItem.subtitle
+                        && oldItem.downloadStatus == newItem.downloadStatus
             }
         }
     }

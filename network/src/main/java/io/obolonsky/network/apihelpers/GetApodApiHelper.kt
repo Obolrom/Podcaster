@@ -6,6 +6,7 @@ import io.obolonsky.network.api.NasaApodApi
 import io.obolonsky.network.mappers.ApodResponseToImageUrlsMapper
 import io.obolonsky.network.utils.RxSchedulers
 import kotlinx.coroutines.rx3.await
+import retrofit2.HttpException
 import javax.inject.Inject
 
 class GetApodApiHelper @Inject constructor(
@@ -22,7 +23,9 @@ class GetApodApiHelper @Inject constructor(
             .orEmpty()
 
         Reaction.Success(apodImages)
+    } catch (httpError: HttpException) {
+        Reaction.Fail(Error.NetworkError(httpError))
     } catch (e: Exception) {
-        Reaction.Fail(Error.NetworkError(e))
+        Reaction.Fail(Error.UnknownError(e))
     }
 }

@@ -6,6 +6,7 @@ import io.obolonsky.core.di.data.banks.ExchangeRate
 import io.obolonsky.network.api.PrivateBankApi
 import io.obolonsky.network.mappers.ExchangeRateResponseToExchangeRateListMapper
 import io.obolonsky.network.utils.RxSchedulers
+import io.obolonsky.network.utils.runWithReaction
 import kotlinx.coroutines.rx3.await
 import java.text.SimpleDateFormat
 import java.util.*
@@ -16,19 +17,15 @@ class GetExchangeRatesHelper @Inject constructor(
     private val rxSchedulers: RxSchedulers,
 ) : ApiHelper<List<ExchangeRate>, Date> {
 
-    override suspend fun load(param: Date): Reaction<List<ExchangeRate>, Error> = try {
+    override suspend fun load(param: Date): Reaction<List<ExchangeRate>, Error> = runWithReaction {
         val date = requireNotNull(
             SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).format(param)
         )
-        val result = privateBankApi.getExchangeRates(date)
+        privateBankApi.getExchangeRates(date)
             .subscribeOn(rxSchedulers.io)
             .observeOn(rxSchedulers.computation)
             .map(ExchangeRateResponseToExchangeRateListMapper::map)
             .await()
             .orEmpty()
-
-        Reaction.Success(result)
-    } catch (e: Exception) {
-        Reaction.Fail(Error.NetworkError(e))
     }
 }

@@ -15,6 +15,7 @@ import io.obolonsky.network.api.SongRecognitionApi
 import io.obolonsky.network.mappers.SongRecognizeResponseToShazamDetectMapper
 import io.obolonsky.network.mappers.TrackResponseToTrackMapper
 import io.obolonsky.network.responses.SongRecognizeResponse
+import io.obolonsky.network.utils.runWithReaction
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -56,15 +57,8 @@ class ShazamSongRecognitionApiHelper @Inject constructor(
             }
         }
 
-        return when (shazamDetect) {
-            is NetworkResponse.Success -> {
-                val detected = SongRecognizeResponseToShazamDetectMapper.map(shazamDetect.body)
-                Reaction.Success(detected)
-            }
-
-            is NetworkResponse.Error -> {
-                Reaction.Fail(Error.NetworkError())
-            }
+        return shazamDetect.runWithReaction {
+            SongRecognizeResponseToShazamDetectMapper.map(this)
         }
     }
 
@@ -92,15 +86,8 @@ class GetRelatedTracksApiHelper @Inject constructor(
     private val plainShazamApi: PlainShazamApi,
 ) : ApiHelper<List<Track>, String> {
 
-    override suspend fun load(param: String): Reaction<List<Track>, Error> {
-        return when (val response = plainShazamApi.getRelatedTracks(param)) {
-            is NetworkResponse.Success -> {
-                Reaction.Success(response.body.tracks.map(TrackResponseToTrackMapper::map))
-            }
-
-            is NetworkResponse.Error -> {
-                Reaction.Fail(Error.NetworkError(response.error))
-            }
-        }
-    }
+    override suspend fun load(
+        param: String
+    ): Reaction<List<Track>, Error> = plainShazamApi.getRelatedTracks(param)
+        .runWithReaction { tracks.map(TrackResponseToTrackMapper::map) }
 }

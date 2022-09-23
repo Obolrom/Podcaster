@@ -26,7 +26,7 @@ import retrofit2.Response
 
 @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
 @OptIn(ExperimentalCoroutinesApi::class)
-class ApiHelperTest {
+class GetApodApiHelperTest {
 
     private val testRxSchedulers by lazy {
         val testRxScheduler = Schedulers.trampoline()

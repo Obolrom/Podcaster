@@ -28,13 +28,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/exo_settings"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/download"
         android:layout_width="@dimen/clear_icon_size"
         android:layout_height="@dimen/clear_icon_size"
         android:layout_margin="@dimen/big_margin"
         android:contentDescription="@string/image_view_description"
-        android:src="@drawable/ic_round_format_list_bulleted"
+        app:srcCompat="@drawable/ic_round_download_24"
+        app:tint="@color/dark_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

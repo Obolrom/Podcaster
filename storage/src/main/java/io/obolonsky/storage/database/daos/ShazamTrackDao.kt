@@ -14,6 +14,9 @@ interface ShazamTrackDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(list: List<ShazamTrack>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(list: ShazamTrack)
+
     @Query("DELETE FROM shazam_tracks WHERE tag_id = :trackId")
     suspend fun delete(trackId: Guid)
 

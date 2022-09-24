@@ -46,6 +46,8 @@ dependencies {
 
     implementation(project(":core"))
     implementation(project(":core_ui"))
+    implementation(project(":utils"))
+    implementation(project(":media_downloader"))
 
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.4.2")

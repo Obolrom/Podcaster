@@ -1,5 +1,6 @@
 package io.obolonsky.repository
 
+import dagger.Reusable
 import io.obolonsky.core.di.Error
 import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.data.ShazamDetect
@@ -14,11 +15,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.io.File
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import javax.inject.Inject
 
+@Reusable
 class ShazamRepository @Inject constructor(
     private val songRecognitionHelper: ShazamSongRecognitionApiHelper,
     private val shazamTrackDao: ShazamTrackDao,
@@ -37,6 +40,17 @@ class ShazamRepository @Inject constructor(
         }
 
         return apiResult
+    }
+
+    override suspend fun saveTrack(track: Track): Reaction<Unit, Error> {
+        return try {
+            track.map()?.let { shazamTrackDao.insert(it) }
+
+            Reaction.Success(Unit)
+        } catch (e: Exception) {
+            Timber.e(e)
+            Reaction.Fail(Error.UnknownError(e))
+        }
     }
 
     override suspend fun getRelatedTracks(url: String): Reaction<List<Track>, Error> {

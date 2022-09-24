@@ -11,6 +11,8 @@ interface ShazamRepo {
 
     suspend fun audioDetect(audioFile: File): Reaction<ShazamDetect, Error>
 
+    suspend fun saveTrack(track: Track): Reaction<Unit, Error>
+
     suspend fun getRelatedTracks(url: String): Reaction<List<Track>, Error>
 
     suspend fun deleteRecentTrackTrack(track: Track)

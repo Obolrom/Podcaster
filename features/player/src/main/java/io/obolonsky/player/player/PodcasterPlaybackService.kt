@@ -8,7 +8,10 @@ import com.google.common.collect.ImmutableList
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
 import io.obolonsky.core.di.depsproviders.App
+import io.obolonsky.core.di.depsproviders.ApplicationProvider
+import io.obolonsky.media_downloader.di.MediaDownloadsExportComponent
 import io.obolonsky.player.di.DaggerPlayerComponent
+import io.obolonsky.player.di.PlayerComponent
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -53,14 +56,7 @@ class PodcasterPlaybackService : MediaSessionService() {
     }
 
     private fun inject() {
-        val applicationProvider = (application as App).getAppComponent()
-
-        DaggerPlayerComponent.factory()
-            .create(
-                appCtxProvider = applicationProvider,
-                playerDependenciesProvider = applicationProvider,
-            )
-            .inject(this)
+        getPlayerComponent((application as App).getAppComponent()).inject(this)
     }
 
     private inner class MediaSessionCallback : MediaSession.Callback {
@@ -153,6 +149,27 @@ class PodcasterPlaybackService : MediaSessionService() {
     }
 
     companion object {
+        private var playerComponent: PlayerComponent? = null
+
+        internal fun getPlayerComponent(
+            applicationProvider: ApplicationProvider
+        ): PlayerComponent {
+            return playerComponent ?: run {
+                val mediaDownloadExportComponent = MediaDownloadsExportComponent.create()
+
+                DaggerPlayerComponent.factory()
+                    .create(
+                        applicationProvider = applicationProvider,
+                        startDownloadServiceActionProvider = mediaDownloadExportComponent,
+                        getDownloadServiceClassActionProvider = mediaDownloadExportComponent,
+                    )
+            }
+        }
+
+        internal fun deletePlayerComponent() {
+            playerComponent = null
+        }
+
         const val REWIND_30 = "REWIND_30"
         const val FAST_FW_30 = "FAST_FW_30"
     }

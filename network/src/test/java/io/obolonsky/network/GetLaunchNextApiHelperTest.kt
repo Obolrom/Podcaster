@@ -4,6 +4,7 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.annotations.ApolloExperimental
 import com.apollographql.apollo3.mockserver.MockServer
 import com.apollographql.apollo3.mockserver.enqueue
+import io.obolonsky.core.di.Error
 import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.network.apihelpers.GetLaunchNextApiHelper
@@ -46,9 +47,40 @@ class GetLaunchNextApiHelperTest {
 
         assertTrue(response is Reaction.Success)
         assertEquals(
-            (response as Reaction.Success).data?.launchNext?.id,
-            "110"
+            (response as Reaction.Success).data,
+            true
         )
+
+        mockServer.stop()
+    }
+
+    @Test
+    fun testGraphQlQueryFail() = runTest {
+        val mockServer = MockServer()
+        val apolloClient = ApolloClient.Builder()
+            .serverUrl(mockServer.url())
+            .build()
+
+        mockServer.enqueue(
+            string = "",
+            statusCode = 401,
+        )
+
+        val testCoroutineScheduler = StandardTestDispatcher(testScheduler)
+        Dispatchers.setMain(testCoroutineScheduler)
+
+        val response = GetLaunchNextApiHelper(
+            apolloClient = apolloClient,
+            dispatchers = object : CoroutineSchedulers {
+                override val main = testCoroutineScheduler
+                override val io = testCoroutineScheduler
+                override val computation = testCoroutineScheduler
+                override val unconfined = testCoroutineScheduler
+            }
+        ).load(Unit)
+
+        assertTrue(response is Reaction.Fail)
+        assertTrue((response as Reaction.Fail).error is Error.UnknownError)
 
         mockServer.stop()
     }

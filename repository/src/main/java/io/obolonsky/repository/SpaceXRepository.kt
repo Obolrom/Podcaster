@@ -14,12 +14,7 @@ class SpaceXRepository @Inject constructor(
 ) : SpaceXRepo {
 
     override suspend fun getNextLaunch(): Reaction<Boolean, Error> {
-        return when (launchNextApiHelper.load(Unit)) {
-            is Reaction.Success -> {
-                Reaction.Success(true)
-            }
-            is Reaction.Fail -> Reaction.Success(false)
-        }
+        return launchNextApiHelper.load(Unit)
     }
 
     override suspend fun getRocket(id: String): Reaction<Rocket?, Error> {

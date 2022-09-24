@@ -58,7 +58,7 @@ class PodcasterPlaybackService : MediaSessionService() {
         DaggerPlayerComponent.factory()
             .create(
                 appCtxProvider = applicationProvider,
-                downloadsStorageProvider = applicationProvider,
+                playerDependenciesProvider = applicationProvider,
             )
             .inject(this)
     }

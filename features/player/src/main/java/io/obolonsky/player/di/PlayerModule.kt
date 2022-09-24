@@ -3,13 +3,14 @@ package io.obolonsky.player.di
 import android.content.Context
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
-import androidx.media3.datasource.cache.CacheDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
+import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.trackselection.TrackSelector
 import dagger.Module
 import dagger.Provides
+import io.obolonsky.core.di.player.PlayerDataSourceFactories
 import io.obolonsky.core.di.scopes.FeatureScope
 import io.obolonsky.player.R
 import java.util.concurrent.TimeUnit
@@ -43,10 +44,18 @@ class PlayerModule {
 
     @FeatureScope
     @Provides
+    fun provideMediaSourceFactory(
+        dataSourceFactories: PlayerDataSourceFactories,
+    ): MediaSource.Factory {
+        return DefaultMediaSourceFactory(dataSourceFactories.cacheDataSourceFactory)
+    }
+
+    @FeatureScope
+    @Provides
     fun providePlayer(
         context: Context,
         audioAttributes: AudioAttributes,
-        cacheDataSourceFactory: CacheDataSource.Factory,
+        mediaSourceFactory: MediaSource.Factory,
         trackSelector: TrackSelector,
         rewindTimeMs: Long
     ): ExoPlayer {
@@ -56,7 +65,7 @@ class PlayerModule {
                 setSeekBackIncrementMs(rewindTimeMs)
                 setSeekForwardIncrementMs(rewindTimeMs)
             }
-            .setMediaSourceFactory(DefaultMediaSourceFactory(cacheDataSourceFactory))
+            .setMediaSourceFactory(mediaSourceFactory)
             .setHandleAudioBecomingNoisy(true)
             .setTrackSelector(trackSelector)
             .build()

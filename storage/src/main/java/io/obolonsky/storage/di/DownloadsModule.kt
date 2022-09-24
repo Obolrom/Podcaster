@@ -16,6 +16,7 @@ import androidx.media3.exoplayer.offline.DownloadManager
 import androidx.media3.exoplayer.scheduler.Requirements
 import dagger.Module
 import dagger.Provides
+import io.obolonsky.core.di.player.PlayerDataSourceFactories
 import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.core.di.utils.CoroutineSchedulers
 import kotlinx.coroutines.asExecutor
@@ -101,6 +102,18 @@ internal class DownloadsModule {
             .setUpstreamDataSourceFactory(upstreamFactory)
             .setCacheWriteDataSinkFactory(null)
             .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
+    }
+
+    @ApplicationScope
+    @Provides
+    fun providePlayerDataSourceFactories(
+        httpDataSourceFactory: DataSource.Factory,
+        cacheDataSourceFactory: CacheDataSource.Factory,
+    ): PlayerDataSourceFactories {
+        return PlayerDataSourceFactories(
+            httpDataSourceFactory = httpDataSourceFactory,
+            cacheDataSourceFactory = cacheDataSourceFactory,
+        )
     }
 
     @ApplicationScope

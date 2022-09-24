@@ -8,7 +8,6 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.datasource.cache.CacheDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.offline.DownloadService
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
@@ -18,6 +17,7 @@ import io.obolonsky.core.di.data.Track
 import io.obolonsky.core.di.depsproviders.App
 import io.obolonsky.core.di.downloads.Downloader
 import io.obolonsky.core.di.lazyViewModel
+import io.obolonsky.core.di.player.PlayerDataSourceFactories
 import io.obolonsky.downloads.DownloadUtils
 import io.obolonsky.downloads.MediaDownloadService
 import io.obolonsky.downloads.R
@@ -36,7 +36,7 @@ class DownloadsActivity : AppCompatActivity() {
     internal lateinit var downloadTracker: Downloader
 
     @Inject
-    internal lateinit var dataSourceFactory: CacheDataSource.Factory
+    internal lateinit var dataSourceFactories: PlayerDataSourceFactories
 
     private val downloadsViewModel by lazyViewModel { savedStateHandle ->
         MediaDownloadService.getComponent((applicationContext as App).getAppComponent())
@@ -145,7 +145,9 @@ class DownloadsActivity : AppCompatActivity() {
 
     private fun initializePlayer(): Boolean {
         val player = ExoPlayer.Builder(this)
-            .setMediaSourceFactory(DefaultMediaSourceFactory(dataSourceFactory))
+            .setMediaSourceFactory(
+                DefaultMediaSourceFactory(dataSourceFactories.cacheDataSourceFactory)
+            )
             .build()
         binding.player.player = player
         player.playWhenReady = true

@@ -1,14 +1,11 @@
-package io.obolonsky.downloads
+package io.obolonsky.media_downloader
 
 import android.content.Context
 import androidx.annotation.OptIn
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.offline.DownloadNotificationHelper
-import io.obolonsky.core.di.scopes.FeatureScope
-import javax.inject.Inject
 
-@FeatureScope
-class DownloadUtils @Inject constructor() {
+internal class DownloadNotificationUtils {
 
     private var downloadNotificationHelper: DownloadNotificationHelper? = null
 

@@ -2,6 +2,7 @@ package io.obolonsky.downloads.ui
 
 import android.os.Build
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.flowWithLifecycle
@@ -9,22 +10,23 @@ import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.exoplayer.offline.DownloadService
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import io.obolonsky.core.di.actions.GetDownloadServiceClassAction
+import io.obolonsky.core.di.actions.StartDownloadServiceAction
 import io.obolonsky.core.di.data.Track
-import io.obolonsky.core.di.depsproviders.App
 import io.obolonsky.core.di.downloads.Downloader
 import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.core.di.player.PlayerDataSourceFactories
-import io.obolonsky.downloads.MediaDownloadService
 import io.obolonsky.downloads.R
 import io.obolonsky.downloads.TrackAdapter
 import io.obolonsky.downloads.databinding.ActivityPlayerBinding
+import io.obolonsky.utils.get
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
+import javax.inject.Provider
 
 class DownloadsActivity : AppCompatActivity() {
 
@@ -34,8 +36,16 @@ class DownloadsActivity : AppCompatActivity() {
     @Inject
     internal lateinit var dataSourceFactories: PlayerDataSourceFactories
 
+    @Inject
+    internal lateinit var getDownloadServiceClassAction: GetDownloadServiceClassAction
+
+    @Inject
+    internal lateinit var startDownloadServiceAction: Provider<StartDownloadServiceAction>
+
+    private val componentViewModel by viewModels<ComponentViewModel>()
+
     private val downloadsViewModel by lazyViewModel { savedStateHandle ->
-        MediaDownloadService.getComponent((applicationContext as App).getAppComponent())
+        componentViewModel.downloadsComponent
             .downloadsViewModelFactory()
             .create(savedStateHandle)
     }
@@ -50,8 +60,7 @@ class DownloadsActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        MediaDownloadService.getComponent((applicationContext as App).getAppComponent())
-            .inject(this)
+        componentViewModel.downloadsComponent.inject(this)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
@@ -73,7 +82,6 @@ class DownloadsActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         downloadTracker.release()
-        MediaDownloadService.deleteComponent()
         super.onDestroy()
     }
 
@@ -92,7 +100,7 @@ class DownloadsActivity : AppCompatActivity() {
         track.audioUri?.let { trackUri ->
             downloadTracker.toggleDownload(
                 mediaItem = MediaItem.fromUri(trackUri),
-                serviceClass = MediaDownloadService::class.java,
+                serviceClass = getDownloadServiceClassAction.downloadServiceClass,
             )
         }
     }
@@ -150,13 +158,8 @@ class DownloadsActivity : AppCompatActivity() {
 
     @OptIn(markerClass = [UnstableApi::class])
     private fun startDownloadService() {
-        // Starting the service in the foreground causes notification flicker if there is no scheduled
-        // action. Starting it in the background throws an exception if the app is in the background too
-        // (e.g. if device screen is locked).
-        try {
-            DownloadService.start(this, MediaDownloadService::class.java)
-        } catch (e: IllegalStateException) {
-            DownloadService.startForeground(this, MediaDownloadService::class.java)
+        startDownloadServiceAction.get {
+            start(this@DownloadsActivity)
         }
     }
 

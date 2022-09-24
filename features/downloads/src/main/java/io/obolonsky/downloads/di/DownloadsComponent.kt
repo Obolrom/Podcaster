@@ -3,10 +3,12 @@ package io.obolonsky.downloads.di
 import dagger.Component
 import io.obolonsky.core.di.depsproviders.*
 import io.obolonsky.core.di.downloads.providers.DownloadsStorageProvider
+import io.obolonsky.core.di.downloads.providers.GetDownloadServiceClassActionProvider
+import io.obolonsky.core.di.downloads.providers.StartDownloadServiceActionProvider
 import io.obolonsky.core.di.repositories.providers.DownloadsRepoProvider
 import io.obolonsky.core.di.scopes.FeatureScope
-import io.obolonsky.downloads.MediaDownloadService
 import io.obolonsky.downloads.ui.DownloadsActivity
+import io.obolonsky.media_downloader.di.MediaDownloadsExportComponent
 
 @FeatureScope
 @Component(
@@ -18,6 +20,8 @@ import io.obolonsky.downloads.ui.DownloadsActivity
         DownloadsActionProvider::class,
         DownloadsRepoProvider::class,
         DownloadsStorageProvider::class,
+        StartDownloadServiceActionProvider::class,
+        GetDownloadServiceClassActionProvider::class,
     ],
 )
 internal interface DownloadsComponent : AssistedFactories {
@@ -33,12 +37,12 @@ internal interface DownloadsComponent : AssistedFactories {
             downloadsActionProvider: DownloadsActionProvider,
             downloadsRepoProvider: DownloadsRepoProvider,
             downloadsStorageProvider: DownloadsStorageProvider,
+            startDownloadServiceActionProvider: StartDownloadServiceActionProvider,
+            getDownloadServiceClassActionProvider: GetDownloadServiceClassActionProvider,
         ): DownloadsComponent
     }
 
     fun inject(target: DownloadsActivity)
-
-    fun inject(target: MediaDownloadService)
 
     companion object {
 
@@ -51,6 +55,8 @@ internal interface DownloadsComponent : AssistedFactories {
             downloadsRepoProvider: DownloadsRepoProvider,
             downloadsStorageProvider: DownloadsStorageProvider,
         ): DownloadsComponent {
+            val mediaDownloadsExportComponent = MediaDownloadsExportComponent.create()
+
             return DaggerDownloadsComponent.factory()
                 .create(
                     toolsProvider = toolsProvider,
@@ -60,6 +66,8 @@ internal interface DownloadsComponent : AssistedFactories {
                     downloadsActionProvider = downloadsActionProvider,
                     downloadsRepoProvider = downloadsRepoProvider,
                     downloadsStorageProvider = downloadsStorageProvider,
+                    startDownloadServiceActionProvider = mediaDownloadsExportComponent,
+                    getDownloadServiceClassActionProvider = mediaDownloadsExportComponent,
                 )
         }
     }

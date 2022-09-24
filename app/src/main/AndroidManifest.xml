@@ -88,7 +88,7 @@
             </intent-filter>
         </service>
 
-        <service android:name="io.obolonsky.downloads.MediaDownloadService"
+        <service android:name="io.obolonsky.media_downloader.MediaDownloadService"
             android:exported="false">
             <intent-filter>
                 <action android:name="androidx.media3.exoplayer.downloadService.action.RESTART"/>

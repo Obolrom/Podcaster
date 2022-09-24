@@ -46,3 +46,6 @@ project(":nasa").projectDir = File(rootDir, "features/nasa")
 
 include(":storage")
 project(":storage").projectDir = File(rootDir, "storage")
+
+include(":media_downloader")
+project(":media_downloader").projectDir = File(rootDir, "features/media_downloader")

@@ -1,4 +1,4 @@
-package io.obolonsky.downloads
+package io.obolonsky.media_downloader
 
 import android.app.Notification
 import android.content.Context
@@ -11,29 +11,26 @@ import androidx.media3.exoplayer.offline.DownloadService
 import androidx.media3.exoplayer.scheduler.PlatformScheduler
 import androidx.media3.exoplayer.scheduler.Scheduler
 import io.obolonsky.core.di.depsproviders.App
-import io.obolonsky.core.di.depsproviders.ApplicationProvider
-import io.obolonsky.downloads.DownloadUtils.Companion.DOWNLOAD_NOTIFICATION_CHANNEL_ID
-import io.obolonsky.downloads.di.DaggerDownloadsComponent
-import io.obolonsky.downloads.di.DownloadsComponent
+import io.obolonsky.media_downloader.DownloadNotificationUtils.Companion.DOWNLOAD_NOTIFICATION_CHANNEL_ID
+import io.obolonsky.media_downloader.di.MediaDownloadsComponent
 import javax.inject.Inject
-import androidx.media3.exoplayer.R as Media3R
 
 class MediaDownloadService : DownloadService(
     FOREGROUND_NOTIFICATION_ID,
     FOREGROUND_NOTIFICATION_UPDATE_INTERVAL,
     DOWNLOAD_NOTIFICATION_CHANNEL_ID,
-    Media3R.string.exo_download_notification_channel_name,
+    androidx.media3.exoplayer.R.string.exo_download_notification_channel_name,
     CHANNEL_DESCRIPTION_RESOURCE_ID
 ) {
 
     @Inject
-    internal lateinit var downloadUtils: DownloadUtils
-
-    @Inject
     internal lateinit var downloadManager: DownloadManager
 
+    private val downloadNotificationUtils by lazy { DownloadNotificationUtils() }
+
     override fun onCreate() {
-        getComponent((applicationContext as App).getAppComponent())
+        MediaDownloadsComponent
+            .create((applicationContext as App).getAppComponent())
             .inject(this)
         super.onCreate()
     }
@@ -44,7 +41,7 @@ class MediaDownloadService : DownloadService(
         downloadManager.addListener(
             TerminalStateNotificationHelper(
                 this,
-                downloadUtils.getDownloadNotificationHelper(this),
+                downloadNotificationUtils.getDownloadNotificationHelper(this),
                 FOREGROUND_NOTIFICATION_ID + 1
             )
         )
@@ -63,7 +60,7 @@ class MediaDownloadService : DownloadService(
         downloads: MutableList<Download>,
         notMetRequirements: Int
     ): Notification {
-        return downloadUtils
+        return downloadNotificationUtils
             .getDownloadNotificationHelper(this)
             .buildProgressNotification(
                 this,
@@ -120,25 +117,6 @@ class MediaDownloadService : DownloadService(
     }
 
     companion object {
-        private var downloadsComponent: DownloadsComponent? = null
-
-        internal fun getComponent(applicationProvider: ApplicationProvider): DownloadsComponent {
-            return downloadsComponent ?: DaggerDownloadsComponent.factory()
-                .create(
-                    toolsProvider = applicationProvider,
-                    playerActionProvider = applicationProvider,
-                    nasaActionsProvider = applicationProvider,
-                    networkStatusObservableProvider = applicationProvider,
-                    downloadsActionProvider = applicationProvider,
-                    downloadsRepoProvider = applicationProvider,
-                    downloadsStorageProvider = applicationProvider,
-                )
-                .also { downloadsComponent = it }
-        }
-
-        internal fun deleteComponent() {
-            downloadsComponent = null
-        }
 
         const val FOREGROUND_NOTIFICATION_ID = 1
         const val JOB_ID = 1

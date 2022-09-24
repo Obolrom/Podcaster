@@ -12,6 +12,8 @@ import androidx.media3.datasource.cache.NoOpCacheEvictor
 import androidx.media3.datasource.cache.SimpleCache
 import androidx.media3.datasource.cronet.CronetDataSource
 import androidx.media3.datasource.cronet.CronetUtil
+import androidx.media3.exoplayer.DefaultRenderersFactory
+import androidx.media3.exoplayer.RenderersFactory
 import androidx.media3.exoplayer.offline.DownloadManager
 import androidx.media3.exoplayer.scheduler.Requirements
 import dagger.Module
@@ -36,6 +38,8 @@ import java.util.concurrent.Executors
  */
 private const val USE_CRONET_FOR_NETWORKING = true
 private const val DOWNLOAD_CONTENT_DIRECTORY = "downloads"
+private const val PREFER_EXTENSION_RENDERER = false
+private const val USE_DECODER_EXTENSIONS = false
 
 internal fun getDownloadDirectory(context: Context): File? {
     return context.getExternalFilesDir(null) ?: context.filesDir
@@ -84,6 +88,20 @@ internal class DownloadsModule {
             DOWNLOAD_CONTENT_DIRECTORY
         )
         return SimpleCache(downloadContentDirectory, NoOpCacheEvictor(), databaseProvider)
+    }
+
+    @ApplicationScope
+    @Provides
+    fun provideRenderersFactory(
+        context: Context,
+    ): RenderersFactory {
+        val extensionRendererMode =
+            if (USE_DECODER_EXTENSIONS) {
+                if (PREFER_EXTENSION_RENDERER) DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER
+                else DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON
+            } else DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF
+        return DefaultRenderersFactory(context.applicationContext)
+            .setExtensionRendererMode(extensionRendererMode)
     }
 
     @ApplicationScope

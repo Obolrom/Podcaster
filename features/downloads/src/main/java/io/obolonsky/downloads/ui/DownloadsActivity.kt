@@ -18,7 +18,6 @@ import io.obolonsky.core.di.depsproviders.App
 import io.obolonsky.core.di.downloads.Downloader
 import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.core.di.player.PlayerDataSourceFactories
-import io.obolonsky.downloads.DownloadUtils
 import io.obolonsky.downloads.MediaDownloadService
 import io.obolonsky.downloads.R
 import io.obolonsky.downloads.TrackAdapter
@@ -28,9 +27,6 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class DownloadsActivity : AppCompatActivity() {
-
-    @Inject
-    internal lateinit var downloadsUtils: DownloadUtils
 
     @Inject
     internal lateinit var downloadTracker: Downloader
@@ -96,10 +92,6 @@ class DownloadsActivity : AppCompatActivity() {
         track.audioUri?.let { trackUri ->
             downloadTracker.toggleDownload(
                 mediaItem = MediaItem.fromUri(trackUri),
-                renderersFactory = downloadsUtils.buildRenderersFactory(
-                    context = this,
-                    preferExtensionRenderer = false,
-                ),
                 serviceClass = MediaDownloadService::class.java,
             )
         }

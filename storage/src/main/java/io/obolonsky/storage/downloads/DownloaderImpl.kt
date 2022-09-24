@@ -25,6 +25,7 @@ internal class DownloaderImpl @Inject constructor(
     val context: Context,
     downloadManager: DownloadManager,
     private val dataSourceFactory: CacheDataSource.Factory,
+    private val renderersFactory: RenderersFactory,
     private val dispatchers: CoroutineSchedulers,
     private val inMemoryStorage: DownloadsStorageImpl,
 ) : Downloader {
@@ -41,7 +42,6 @@ internal class DownloaderImpl @Inject constructor(
 
     override fun toggleDownload(
         mediaItem: MediaItem,
-        renderersFactory: RenderersFactory?,
         serviceClass: Class<out DownloadService>,
     ) {
         val download = inMemoryStorage.downloads

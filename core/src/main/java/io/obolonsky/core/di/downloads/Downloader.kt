@@ -11,7 +11,6 @@ interface Downloader {
 
     fun toggleDownload(
         mediaItem: MediaItem,
-        renderersFactory: RenderersFactory?,
         serviceClass: Class<out DownloadService>,
     )
 

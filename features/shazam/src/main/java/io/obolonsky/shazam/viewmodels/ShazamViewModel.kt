@@ -9,6 +9,7 @@ import dagger.assisted.AssistedInject
 import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.data.ShazamDetect
 import io.obolonsky.core.di.data.Track
+import io.obolonsky.core.di.reactWith
 import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.shazam.data.usecases.AudioDetectionUseCase
 import io.obolonsky.shazam.data.usecases.DeleteRecentTrackUseCase
@@ -37,22 +38,21 @@ class ShazamViewModel @AssistedInject constructor(
 
     fun audioDetect(audioFile: File) {
         viewModelScope.launch(dispatchers.computation) {
-            when (val shazamDetect = audioDetectionUseCase(audioFile)) {
-                is Reaction.Success -> {
-                    val detected = shazamDetect.data
-                    val relatedTracks = detected.track
-                        ?.relatedTracksUrl
-                        ?.let { getRelatedTracks(it) }
-                        ?: emptyList()
-                    val full = detected.track?.copy(relatedTracks = relatedTracks)
+            audioDetectionUseCase(audioFile)
+                .reactWith(
+                    onSuccess = { detected ->
+                        val relatedTracks = detected.track
+                            ?.relatedTracksUrl
+                            ?.let { getRelatedTracks(it) }
+                            ?: emptyList()
+                        val full = detected.track?.copy(relatedTracks = relatedTracks)
 
-                    _shazamDetect.emit(detected.copy(track = full))
-                }
-
-                is Reaction.Fail -> {
-                    Timber.d(shazamDetect.error.toString())
-                }
-            }
+                        _shazamDetect.emit(detected.copy(track = full))
+                    },
+                    onError = { error ->
+                        Timber.d(error.toString())
+                    }
+                )
         }
     }
 

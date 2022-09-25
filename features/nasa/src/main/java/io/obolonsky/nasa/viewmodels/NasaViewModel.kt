@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import io.obolonsky.core.di.Reaction
+import io.obolonsky.core.di.reactWithSuccessOrDefault
 import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.nasa.usecases.GetApodImageUrlsUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -27,14 +27,9 @@ internal class NasaViewModel @AssistedInject constructor(
 
     fun loadApodImageUrls(imageCount: Int) {
         viewModelScope.launch(dispatchers.computation) {
-            when (val result = apodImageUrlsUseCase.invoke(imageCount)) {
-                is Reaction.Success -> {
-                    internalApodImageUrls.emit(result.data)
-                }
-                is Reaction.Fail -> {
-                    internalApodImageUrls.emit(emptyList())
-                }
-            }
+            apodImageUrlsUseCase(imageCount)
+                .reactWithSuccessOrDefault { emptyList() }
+                .let { internalApodImageUrls.emit(it) }
         }
     }
 

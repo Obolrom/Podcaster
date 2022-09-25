@@ -75,7 +75,7 @@
         </activity>
 
         <activity
-            android:name="io.obolonsky.downloads.DownloadsActivity"
+            android:name="io.obolonsky.downloads.ui.DownloadsActivity"
             android:screenOrientation="portrait"
             android:exported="true" />
 
@@ -87,6 +87,18 @@
                 <action android:name="androidx.media3.session.MediaSessionService"/>
             </intent-filter>
         </service>
+
+        <service android:name="io.obolonsky.media_downloader.MediaDownloadService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="androidx.media3.exoplayer.downloadService.action.RESTART"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </service>
+
+        <service android:name="androidx.media3.exoplayer.scheduler.PlatformScheduler$PlatformSchedulerService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="true"/>
 
         <provider
             android:name="androidx.startup.InitializationProvider"

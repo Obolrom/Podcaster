@@ -11,6 +11,8 @@ import io.obolonsky.core.di.scopes.ApplicationScope
     ],
     modules = [
         DatabaseModule::class,
+        BinderModule::class,
+        DownloadsModule::class,
     ]
 )
 interface StorageComponent : StorageProvider {

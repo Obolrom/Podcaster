@@ -1,3 +1,5 @@
+import Dependencies.Media3
+
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
@@ -99,6 +101,8 @@ dependencies {
     // Dagger 2
     implementation("com.google.dagger:dagger:2.40.5")
     kapt("com.google.dagger:dagger-compiler:2.40.5")
+
+    implementation("androidx.media3:media3-exoplayer:${Media3.version}")
 
     implementation("androidx.work:work-runtime-ktx:2.7.1")
 

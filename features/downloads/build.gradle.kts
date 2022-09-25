@@ -36,12 +36,18 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
 
     implementation(project(":core_ui"))
     implementation(project(":core"))
+    implementation(project(":utils"))
+    implementation(project(":media_downloader"))
 
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.4.2")
@@ -59,9 +65,20 @@ dependencies {
     implementation("androidx.media3:media3-exoplayer:${Media3.version}")
     implementation("androidx.media3:media3-session:${Media3.version}")
 
+    implementation("org.chromium.net:cronet-api:76.3809.111")
+    // For loading data using the Cronet network stack
+    implementation("androidx.media3:media3-datasource-cronet:${Media3.version}")
+    // For loading data using the OkHttp network stack
+    implementation("androidx.media3:media3-datasource-okhttp:${Media3.version}")
+
     // KTX
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.activity:activity-ktx:1.4.0")
     implementation("androidx.fragment:fragment-ktx:1.4.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+
+    // Utilities
+    implementation("com.jakewharton.timber:timber:5.0.1")
+    implementation("io.coil-kt:coil:2.0.0-rc03")
+    implementation("com.github.kirich1409:viewbindingpropertydelegate:1.5.3")
 }

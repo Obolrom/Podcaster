@@ -9,6 +9,7 @@ import javax.inject.Inject
 class StopPlayerServiceAction @Inject constructor() : StopPlayerService {
 
     override fun stop(context: Context) {
+        PodcasterPlaybackService.deletePlayerComponent()
         context.stopService(Intent(context, PodcasterPlaybackService::class.java))
     }
 }

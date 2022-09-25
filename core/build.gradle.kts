@@ -46,7 +46,16 @@ dependencies {
     // Dagger 2
     implementation("com.google.dagger:dagger:2.40.5")
 
+    // Player
+    implementation("androidx.media3:media3-ui:${Media3.version}")
     implementation("androidx.media3:media3-exoplayer:${Media3.version}")
+    implementation("androidx.media3:media3-session:${Media3.version}")
+
+    implementation("org.chromium.net:cronet-api:76.3809.111")
+    // For loading data using the Cronet network stack
+    implementation("androidx.media3:media3-datasource-cronet:${Media3.version}")
+    // For loading data using the OkHttp network stack
+    implementation("androidx.media3:media3-datasource-okhttp:${Media3.version}")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")

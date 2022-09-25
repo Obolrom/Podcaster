@@ -13,4 +13,8 @@ interface ApiHelperProviders : SpaceXHelpersProvider {
     val getMarsPhotosApiHelper: GetMarsPhotosApiHelper
 
     val featureToggleApiHelper: FeatureToggleApiHelper
+
+    val getExchangeRatesHelper: GetExchangeRatesHelper
+
+    val getMonoAccountInfoApiHelper: GetMonoAccountInfoApiHelper
 }

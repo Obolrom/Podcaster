@@ -148,7 +148,10 @@ class ShazamActivity : AppCompatActivity() {
             .setTitle(title)
             .apply {
                 setExtras(
-                    bundleOf("shazam_images" to imageUrls.take(2))
+                    bundleOf(
+                        "mediaUrl" to audioUri,
+                        "shazam_images" to imageUrls.take(2)
+                    )
                 )
             }
             .setArtist(subtitle)
@@ -206,17 +209,29 @@ class ShazamActivity : AppCompatActivity() {
 
     private fun onTrackDetected(track: Track) {
         track.audioUri?.let { audioUri ->
+            AudioSource.addTrack(track)
             AudioSource.addMediaItem(
                 MediaItem.Builder()
+                    .setRequestMetadata(
+                        MediaItem.RequestMetadata.Builder()
+                            .setMediaUri(audioUri.toUri())
+                            .build()
+                    )
                     .setUri(audioUri)
                     .setMediaMetadata(track.metadata())
                     .build()
             )
         }
         track.relatedTracks.onEach { relatedTrack ->
+            AudioSource.addTrack(relatedTrack)
             relatedTrack.audioUri?.let { audioUri ->
                 AudioSource.addMediaItem(
                     MediaItem.Builder()
+                        .setRequestMetadata(
+                            MediaItem.RequestMetadata.Builder()
+                                .setMediaUri(audioUri.toUri())
+                                .build()
+                        )
                         .setUri(audioUri)
                         .setMediaMetadata(relatedTrack.metadata())
                         .build()

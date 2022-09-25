@@ -5,8 +5,8 @@ import io.obolonsky.core.di.Reaction
 import io.obolonsky.network.api.MarsPhotosApi
 import io.obolonsky.network.mappers.MarsPhotoRoverResponseToImageUrlsMapper
 import io.obolonsky.network.utils.RxSchedulers
+import io.obolonsky.network.utils.runWithReaction
 import kotlinx.coroutines.rx3.await
-import java.lang.Exception
 import javax.inject.Inject
 
 class GetMarsPhotosApiHelper @Inject constructor(
@@ -16,8 +16,8 @@ class GetMarsPhotosApiHelper @Inject constructor(
 
     override suspend fun load(
         param: QueryParams
-    ): Reaction<List<String>, Error> = try {
-        val marsImages = marsPhotoApi.getPhotosByRover(
+    ): Reaction<List<String>, Error> = runWithReaction {
+        marsPhotoApi.getPhotosByRover(
             name = param.roverName,
             earthDate = param.earthDate,
             page = param.page,
@@ -27,10 +27,6 @@ class GetMarsPhotosApiHelper @Inject constructor(
             .map(MarsPhotoRoverResponseToImageUrlsMapper::map)
             .await()
             .orEmpty()
-
-        Reaction.Success(marsImages)
-    } catch (e: Exception) {
-        Reaction.Fail(Error.NetworkError(e))
     }
 
     data class QueryParams(

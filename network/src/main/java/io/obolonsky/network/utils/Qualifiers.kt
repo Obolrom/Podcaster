@@ -21,3 +21,13 @@ annotation class MarsPhotos
 @MustBeDocumented
 @Retention(value = AnnotationRetention.RUNTIME)
 annotation class Apod
+
+@Qualifier
+@MustBeDocumented
+@Retention(value = AnnotationRetention.RUNTIME)
+annotation class PrivateBank
+
+@Qualifier
+@MustBeDocumented
+@Retention(value = AnnotationRetention.RUNTIME)
+annotation class MonoBank

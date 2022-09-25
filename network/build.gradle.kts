@@ -30,6 +30,13 @@ android {
         )
 
         buildConfigField(
+            type = "String",
+            name = Constants.MONO_BANK_TOKEN,
+            value = gradleLocalProperties(rootDir)
+                .getProperty(Constants.MONO_BANK_PROPERTY_NAME)
+        )
+
+        buildConfigField(
             type = "io.obolonsky.network.utils.ProductionTypes",
             name = "PRODUCTION_TYPE",
             value = "io.obolonsky.network.utils.ProductionTypes.PROD"
@@ -83,6 +90,12 @@ dependencies {
 
     // Utilities
     implementation("com.jakewharton.timber:timber:5.0.1")
+
+    // Testing
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
+    testImplementation("com.apollographql.apollo3:apollo-mockserver:3.5.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
 }
 
 apollo {

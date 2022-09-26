@@ -18,7 +18,7 @@ abstract class CoroutinesApiHelper<ApiResult, DomainResult, ApiParam>(
      */
     abstract suspend fun apiRequest(param: ApiParam): NetworkResponse<ApiResult, *>
 
-    override suspend fun load(param: ApiParam): Reaction<DomainResult, Error> {
+    final override suspend fun load(param: ApiParam): Reaction<DomainResult, Error> {
         val apiResult = withContext(dispatchers.io) {
             apiRequest(param)
         }

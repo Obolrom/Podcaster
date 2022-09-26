@@ -1,34 +1,30 @@
 package io.obolonsky.network.apihelpers
 
-import io.obolonsky.core.di.Error
-import io.obolonsky.core.di.Reaction
 import io.obolonsky.network.api.MarsPhotosApi
-import io.obolonsky.network.apihelpers.base.ApiHelper
+import io.obolonsky.network.apihelpers.base.RxApiHelper
 import io.obolonsky.network.mappers.MarsPhotoRoverResponseToImageUrlsMapper
+import io.obolonsky.network.responses.nasa.MarsPhotoRoverResponse
 import io.obolonsky.network.utils.RxSchedulers
-import io.obolonsky.network.utils.runWithReaction
-import kotlinx.coroutines.rx3.await
+import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 
 class GetMarsPhotosApiHelper @Inject constructor(
     private val marsPhotoApi: MarsPhotosApi,
-    private val rxSchedulers: RxSchedulers,
-) : ApiHelper<List<String>, GetMarsPhotosApiHelper.QueryParams> {
+    rxSchedulers: RxSchedulers,
+) : RxApiHelper<MarsPhotoRoverResponse, List<String>, GetMarsPhotosApiHelper.QueryParams>(
+    rxSchedulers = rxSchedulers,
+    mapper = MarsPhotoRoverResponseToImageUrlsMapper,
+) {
 
-    override suspend fun load(
-        param: QueryParams
-    ): Reaction<List<String>, Error> = runWithReaction {
-        marsPhotoApi.getPhotosByRover(
+    override fun apiRequest(param: QueryParams): Single<MarsPhotoRoverResponse> {
+        return marsPhotoApi.getPhotosByRover(
             name = param.roverName,
             earthDate = param.earthDate,
             page = param.page,
         )
-            .subscribeOn(rxSchedulers.io)
-            .observeOn(rxSchedulers.computation)
-            .map(MarsPhotoRoverResponseToImageUrlsMapper::map)
-            .await()
-            .orEmpty()
     }
+
+    override fun List<String>?.onNullableReturn(): List<String> = orEmpty()
 
     data class QueryParams(
         val roverName: String,

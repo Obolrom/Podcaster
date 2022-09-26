@@ -1,26 +1,24 @@
 package io.obolonsky.network.apihelpers
 
-import io.obolonsky.core.di.Error
-import io.obolonsky.core.di.Reaction
 import io.obolonsky.network.api.NasaApodApi
-import io.obolonsky.network.apihelpers.base.ApiHelper
+import io.obolonsky.network.apihelpers.base.RxApiHelper
 import io.obolonsky.network.mappers.ApodResponseToImageUrlsMapper
+import io.obolonsky.network.responses.nasa.ApodResponse
 import io.obolonsky.network.utils.RxSchedulers
-import io.obolonsky.network.utils.runWithReaction
-import kotlinx.coroutines.rx3.await
+import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 
 class GetApodApiHelper @Inject constructor(
     private val apodApi: NasaApodApi,
-    private val rxSchedulers: RxSchedulers,
-) : ApiHelper<List<String>, Int> {
+    rxSchedulers: RxSchedulers,
+) : RxApiHelper<List<ApodResponse>, List<String>, Int>(
+    rxSchedulers = rxSchedulers,
+    mapper = ApodResponseToImageUrlsMapper
+) {
 
-    override suspend fun load(param: Int): Reaction<List<String>, Error> = runWithReaction {
-        apodApi.getRandomApod(param)
-            .subscribeOn(rxSchedulers.io)
-            .observeOn(rxSchedulers.computation)
-            .map(ApodResponseToImageUrlsMapper::map)
-            .await()
-            .orEmpty()
+    override fun apiRequest(param: Int): Single<List<ApodResponse>> {
+        return apodApi.getRandomApod(param)
     }
+
+    override fun List<String>?.onNullableReturn(): List<String> = orEmpty()
 }

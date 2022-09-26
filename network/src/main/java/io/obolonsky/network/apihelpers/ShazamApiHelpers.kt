@@ -1,16 +1,16 @@
 package io.obolonsky.network.apihelpers
 
-import io.obolonsky.core.di.Error
-import io.obolonsky.core.di.Reaction
+import com.haroldadmin.cnradapter.NetworkResponse
 import io.obolonsky.core.di.data.ShazamDetect
 import io.obolonsky.core.di.data.Track
 import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.network.api.PlainShazamApi
 import io.obolonsky.network.api.SongRecognitionApi
+import io.obolonsky.network.apihelpers.base.CoroutinesApiHelper
 import io.obolonsky.network.mappers.SongRecognizeResponseToShazamDetectMapper
-import io.obolonsky.network.mappers.TrackResponseToTrackMapper
-import io.obolonsky.network.utils.runWithReaction
-import kotlinx.coroutines.withContext
+import io.obolonsky.network.mappers.TrackResponseToTrackListMapper
+import io.obolonsky.network.responses.RelatedTracksResponse
+import io.obolonsky.network.responses.SongRecognizeResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
@@ -20,10 +20,13 @@ const val FILE = "file"
 
 class ShazamSongRecognitionApiHelper @Inject constructor(
     private val songRecognitionApi: SongRecognitionApi,
-    private val dispatchers: CoroutineSchedulers,
-) : ApiHelper<ShazamDetect, File> {
+    dispatchers: CoroutineSchedulers,
+) : CoroutinesApiHelper<SongRecognizeResponse, ShazamDetect, File>(
+    dispatchers = dispatchers,
+    mapper = SongRecognizeResponseToShazamDetectMapper,
+) {
 
-    override suspend fun load(param: File): Reaction<ShazamDetect, Error> {
+    override suspend fun apiRequest(param: File): NetworkResponse<SongRecognizeResponse, *> {
         val body = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
             .addFormDataPart(
@@ -33,22 +36,19 @@ class ShazamSongRecognitionApiHelper @Inject constructor(
             )
             .build()
 
-        val shazamDetect = withContext(dispatchers.io) {
-            songRecognitionApi.detect(body)
-        }
-
-        return shazamDetect.runWithReaction {
-            SongRecognizeResponseToShazamDetectMapper.map(this)
-        }
+        return songRecognitionApi.detect(body)
     }
 }
 
 class GetRelatedTracksApiHelper @Inject constructor(
     private val plainShazamApi: PlainShazamApi,
-) : ApiHelper<List<Track>, String> {
+    dispatchers: CoroutineSchedulers,
+) : CoroutinesApiHelper<RelatedTracksResponse, List<Track>, String>(
+    dispatchers = dispatchers,
+    mapper = TrackResponseToTrackListMapper,
+) {
 
-    override suspend fun load(
-        param: String
-    ): Reaction<List<Track>, Error> = plainShazamApi.getRelatedTracks(param)
-        .runWithReaction { tracks.map(TrackResponseToTrackMapper::map) }
+    override suspend fun apiRequest(param: String): NetworkResponse<RelatedTracksResponse, *> {
+        return plainShazamApi.getRelatedTracks(param)
+    }
 }

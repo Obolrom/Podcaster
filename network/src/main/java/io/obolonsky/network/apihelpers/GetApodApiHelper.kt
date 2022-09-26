@@ -3,6 +3,7 @@ package io.obolonsky.network.apihelpers
 import io.obolonsky.core.di.Error
 import io.obolonsky.core.di.Reaction
 import io.obolonsky.network.api.NasaApodApi
+import io.obolonsky.network.apihelpers.base.ApiHelper
 import io.obolonsky.network.mappers.ApodResponseToImageUrlsMapper
 import io.obolonsky.network.utils.RxSchedulers
 import io.obolonsky.network.utils.runWithReaction

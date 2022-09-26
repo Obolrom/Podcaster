@@ -4,6 +4,7 @@ import io.obolonsky.core.di.Error
 import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.data.banks.ExchangeRate
 import io.obolonsky.network.api.PrivateBankApi
+import io.obolonsky.network.apihelpers.base.ApiHelper
 import io.obolonsky.network.mappers.ExchangeRateResponseToExchangeRateListMapper
 import io.obolonsky.network.utils.RxSchedulers
 import io.obolonsky.network.utils.runWithReaction

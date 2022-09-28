@@ -31,5 +31,7 @@ internal inline fun <I, O> NetworkResponse<I, *>.runWithReaction(
 ): Reaction<O, Error> = when (this) {
     is NetworkResponse.Success -> Reaction.Success(successBody(body))
 
+    is NetworkResponse.NetworkError -> Reaction.Fail(Error.NetworkError(error))
+
     is NetworkResponse.Error -> Reaction.Fail(Error.UnknownError(error))
 }

@@ -1,0 +1,2324 @@
+{
+  "properties": {},
+  "tracks": [
+    {
+      "layout": "5",
+      "type": "MUSIC",
+      "key": "581057507",
+      "title": "The Whistle Song (Remix)",
+      "subtitle": "Meaux Green",
+      "share": {
+        "subject": "The Whistle Song (Remix) - Meaux Green",
+        "text": "I used Shazam to discover The Whistle Song (Remix) by Meaux Green.",
+        "href": "https://www.shazam.com/track/581057507/the-whistle-song-remix",
+        "twitter": "I used @Shazam to discover The Whistle Song (Remix) by Meaux Green.",
+        "html": "https://www.shazam.com/snippets/email-share/581057507?lang=en&country=US",
+        "snapchat": "https://www.shazam.com/partner/sc/track/581057507"
+      },
+      "hub": {
+        "type": "APPLEMUSIC",
+        "image": "https://images.shazam.com/static/icons/hub/android/v5/applemusic_{scalefactor}.png",
+        "options": [
+          {
+            "caption": "OPEN",
+            "image": "https://images.shazam.com/static/icons/hub/android/v5/overflow-open-option_{scalefactor}.png",
+            "type": "open",
+            "listcaption": "Open in Apple Music",
+            "overflowimage": "https://images.shazam.com/static/icons/hub/android/v5/applemusic-overflow_{scalefactor}.png",
+            "colouroverflowimage": false,
+            "providername": "applemusic"
+          }
+        ],
+        "providers": [
+          {
+            "caption": "Open in Spotify",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/spotify-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/spotify_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:spotify:searchdeeplink",
+                "type": "uri",
+                "uri": "spotify:search:The%20Whistle%20Song%20%28Remix%29%20Meaux%20Green"
+              }
+            ],
+            "type": "SPOTIFY"
+          },
+          {
+            "caption": "Open in YouTube Music",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:youtubemusic:androiddeeplink",
+                "type": "uri",
+                "uri": "https://music.youtube.com/search?q=The+Whistle+Song+%28Remix%29+Meaux+Green&feature=shazam"
+              }
+            ],
+            "type": "YOUTUBEMUSIC"
+          },
+          {
+            "caption": "Open in Deezer",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/deezer-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/deezer_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:deezer:searchdeeplink",
+                "type": "uri",
+                "uri": "deezer-query://www.deezer.com/play?query=%7Btrack%3A%27The+Whistle+Song+%28Remix%29%27%20artist%3A%27Meaux+Green%27%7D"
+              }
+            ],
+            "type": "DEEZER"
+          }
+        ],
+        "explicit": false,
+        "displayname": "APPLE MUSIC"
+      },
+      "url": "https://www.shazam.com/track/581057507/the-whistle-song-remix",
+      "highlightsurls": {},
+      "properties": {}
+    },
+    {
+      "layout": "5",
+      "type": "MUSIC",
+      "key": "437899180",
+      "title": "Perfect Art",
+      "subtitle": "Himisphere",
+      "share": {
+        "subject": "Perfect Art - Himisphere",
+        "text": "I used Shazam to discover Perfect Art by Himisphere.",
+        "href": "https://www.shazam.com/track/437899180/perfect-art",
+        "image": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/62/bd/71/62bd7127-756d-3d97-019f-a78c1f0ae323/artwork.jpg/400x400cc.jpg",
+        "twitter": "I used @Shazam to discover Perfect Art by Himisphere.",
+        "html": "https://www.shazam.com/snippets/email-share/437899180?lang=en&country=US",
+        "snapchat": "https://www.shazam.com/partner/sc/track/437899180"
+      },
+      "images": {
+        "background": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/62/bd/71/62bd7127-756d-3d97-019f-a78c1f0ae323/artwork.jpg/400x400cc.jpg",
+        "coverart": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/62/bd/71/62bd7127-756d-3d97-019f-a78c1f0ae323/artwork.jpg/400x400cc.jpg",
+        "coverarthq": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/62/bd/71/62bd7127-756d-3d97-019f-a78c1f0ae323/artwork.jpg/400x400cc.jpg"
+      },
+      "hub": {
+        "type": "APPLEMUSIC",
+        "image": "https://images.shazam.com/static/icons/hub/android/v5/applemusic_{scalefactor}.png",
+        "options": [
+          {
+            "caption": "OPEN",
+            "image": "https://images.shazam.com/static/icons/hub/android/v5/overflow-open-option_{scalefactor}.png",
+            "type": "open",
+            "listcaption": "Open in Apple Music",
+            "overflowimage": "https://images.shazam.com/static/icons/hub/android/v5/applemusic-overflow_{scalefactor}.png",
+            "colouroverflowimage": false,
+            "providername": "applemusic"
+          }
+        ],
+        "providers": [
+          {
+            "caption": "Open in Spotify",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/spotify-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/spotify_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:spotify:searchdeeplink",
+                "type": "uri",
+                "uri": "spotify:search:Perfect%20Art%20Himisphere"
+              }
+            ],
+            "type": "SPOTIFY"
+          },
+          {
+            "caption": "Open in YouTube Music",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:youtubemusic:androiddeeplink",
+                "type": "uri",
+                "uri": "https://music.youtube.com/search?q=Perfect+Art+Himisphere&feature=shazam"
+              }
+            ],
+            "type": "YOUTUBEMUSIC"
+          },
+          {
+            "caption": "Open in Deezer",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/deezer-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/deezer_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:deezer:searchdeeplink",
+                "type": "uri",
+                "uri": "deezer-query://www.deezer.com/play?query=%7Btrack%3A%27Perfect+Art%27%20artist%3A%27Himisphere%27%7D"
+              }
+            ],
+            "type": "DEEZER"
+          }
+        ],
+        "explicit": false,
+        "displayname": "APPLE MUSIC"
+      },
+      "artists": [
+        {
+          "id": "42",
+          "adamid": "1425668546"
+        }
+      ],
+      "url": "https://www.shazam.com/track/437899180/perfect-art",
+      "highlightsurls": {
+        "artisthighlightsurl": "https://cdn.shazam.com/video/v3/en/US/android/1425668546/highlights?affiliate=mttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+      },
+      "properties": {}
+    },
+    {
+      "layout": "5",
+      "type": "MUSIC",
+      "key": "20125333",
+      "title": "Hey Mami",
+      "subtitle": "Fannypack",
+      "share": {
+        "subject": "Hey Mami - Fannypack",
+        "text": "I used Shazam to discover Hey Mami by Fannypack.",
+        "href": "https://www.shazam.com/track/20125333/hey-mami",
+        "image": "https://is3-ssl.mzstatic.com/image/thumb/Music/y2003/m12/d16/h15/s05.rbvteede.jpg/400x400cc.jpg",
+        "twitter": "I used @Shazam to discover Hey Mami by Fannypack.",
+        "html": "https://www.shazam.com/snippets/email-share/20125333?lang=en&country=US",
+        "avatar": "https://is4-ssl.mzstatic.com/image/thumb/Features114/v4/5c/c8/1b/5cc81ba3-44b1-2bb8-0ca9-82d5719e9b2b/mzl.zojhpglt.jpg/800x800cc.jpg",
+        "snapchat": "https://www.shazam.com/partner/sc/track/20125333"
+      },
+      "images": {
+        "background": "https://is4-ssl.mzstatic.com/image/thumb/Features114/v4/5c/c8/1b/5cc81ba3-44b1-2bb8-0ca9-82d5719e9b2b/mzl.zojhpglt.jpg/800x800cc.jpg",
+        "coverart": "https://is3-ssl.mzstatic.com/image/thumb/Music/y2003/m12/d16/h15/s05.rbvteede.jpg/400x400cc.jpg",
+        "coverarthq": "https://is3-ssl.mzstatic.com/image/thumb/Music/y2003/m12/d16/h15/s05.rbvteede.jpg/400x400cc.jpg",
+        "joecolor": "b:fffeffp:5d1429s:39302ft:7d4354q:615959"
+      },
+      "hub": {
+        "type": "APPLEMUSIC",
+        "image": "https://images.shazam.com/static/icons/hub/android/v5/applemusic_{scalefactor}.png",
+        "actions": [
+          {
+            "name": "apple",
+            "type": "applemusicplay",
+            "id": "4211715"
+          },
+          {
+            "name": "apple",
+            "type": "uri",
+            "uri": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/57/55/c4/5755c4c5-af25-b53c-b8f4-57739a35b484/mzaf_15551275901915730741.plus.aac.ep.m4a"
+          }
+        ],
+        "options": [
+          {
+            "caption": "OPEN",
+            "actions": [
+              {
+                "name": "hub:applemusic:deeplink",
+                "type": "intent",
+                "uri": "intent://music.apple.com/us/album/hey-mami/4211747?i=4211715&mttnagencyid=s2n&mttnsiteid=125115&mttn3pid=Apple-Shazam&mttnsub1=Shazam_android_am&mttnsub2=5348615A-616D-3235-3830-44754D6D5973&itscg=30201&app=music&itsct=Shazam_android_am#Intent;scheme=http;package=com.apple.android.music;action=android.intent.action.VIEW;end"
+              },
+              {
+                "name": "hub:applemusic:connect",
+                "type": "applemusicconnect",
+                "id": "4211715",
+                "uri": "https://unsupported.shazam.com"
+              },
+              {
+                "name": "hub:applemusic:androidstore",
+                "type": "uri",
+                "uri": "https://play.google.com/store/apps/details?id=com.apple.android.music&referrer=utm_source=https%3A%2F%2Fmusic.apple.com%2Fsubscribe%3Fmttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+              }
+            ],
+            "beacondata": {
+              "type": "open",
+              "providername": "applemusic"
+            },
+            "image": "https://images.shazam.com/static/icons/hub/android/v5/overflow-open-option_{scalefactor}.png",
+            "type": "open",
+            "listcaption": "Open in Apple Music",
+            "overflowimage": "https://images.shazam.com/static/icons/hub/android/v5/applemusic-overflow_{scalefactor}.png",
+            "colouroverflowimage": false,
+            "providername": "applemusic"
+          }
+        ],
+        "providers": [
+          {
+            "caption": "Open in Spotify",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/spotify-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/spotify_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:spotify:searchdeeplink",
+                "type": "uri",
+                "uri": "spotify:search:Hey%20Mami%20Fannypack"
+              }
+            ],
+            "type": "SPOTIFY"
+          },
+          {
+            "caption": "Open in YouTube Music",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:youtubemusic:androiddeeplink",
+                "type": "uri",
+                "uri": "https://music.youtube.com/search?q=Hey+Mami+Fannypack&feature=shazam"
+              }
+            ],
+            "type": "YOUTUBEMUSIC"
+          },
+          {
+            "caption": "Open in Deezer",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/deezer-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/deezer_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:deezer:searchdeeplink",
+                "type": "uri",
+                "uri": "deezer-query://www.deezer.com/play?query=%7Btrack%3A%27Hey+Mami%27%20artist%3A%27Fannypack%27%7D"
+              }
+            ],
+            "type": "DEEZER"
+          }
+        ],
+        "explicit": false,
+        "displayname": "APPLE MUSIC"
+      },
+      "artists": [
+        {
+          "id": "42",
+          "adamid": "4211712"
+        }
+      ],
+      "url": "https://www.shazam.com/track/20125333/hey-mami",
+      "highlightsurls": {
+        "artisthighlightsurl": "https://cdn.shazam.com/video/v3/en/US/android/4211712/highlights?affiliate=mttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+      },
+      "properties": {}
+    },
+    {
+      "layout": "5",
+      "type": "MUSIC",
+      "key": "116220685",
+      "title": "Like a Pimp",
+      "subtitle": "Frank Willis",
+      "share": {
+        "subject": "Like a Pimp - Frank Willis",
+        "text": "I used Shazam to discover Like a Pimp by Frank Willis.",
+        "href": "https://www.shazam.com/track/116220685/like-a-pimp",
+        "image": "https://is3-ssl.mzstatic.com/image/thumb/Music/d8/12/09/mzi.kthiidlq.jpg/400x400cc.jpg",
+        "twitter": "I used @Shazam to discover Like a Pimp by Frank Willis.",
+        "html": "https://www.shazam.com/snippets/email-share/116220685?lang=en&country=US",
+        "snapchat": "https://www.shazam.com/partner/sc/track/116220685"
+      },
+      "images": {
+        "background": "https://is3-ssl.mzstatic.com/image/thumb/Music/d8/12/09/mzi.kthiidlq.jpg/400x400cc.jpg",
+        "coverart": "https://is3-ssl.mzstatic.com/image/thumb/Music/d8/12/09/mzi.kthiidlq.jpg/400x400cc.jpg",
+        "coverarthq": "https://is3-ssl.mzstatic.com/image/thumb/Music/d8/12/09/mzi.kthiidlq.jpg/400x400cc.jpg"
+      },
+      "hub": {
+        "type": "APPLEMUSIC",
+        "image": "https://images.shazam.com/static/icons/hub/android/v5/applemusic_{scalefactor}.png",
+        "options": [
+          {
+            "caption": "OPEN",
+            "image": "https://images.shazam.com/static/icons/hub/android/v5/overflow-open-option_{scalefactor}.png",
+            "type": "open",
+            "listcaption": "Open in Apple Music",
+            "overflowimage": "https://images.shazam.com/static/icons/hub/android/v5/applemusic-overflow_{scalefactor}.png",
+            "colouroverflowimage": false,
+            "providername": "applemusic"
+          }
+        ],
+        "providers": [
+          {
+            "caption": "Open in Spotify",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/spotify-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/spotify_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:spotify:searchdeeplink",
+                "type": "uri",
+                "uri": "spotify:search:Like%20a%20Pimp%20Frank%20Willis"
+              }
+            ],
+            "type": "SPOTIFY"
+          },
+          {
+            "caption": "Open in YouTube Music",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:youtubemusic:androiddeeplink",
+                "type": "uri",
+                "uri": "https://music.youtube.com/search?q=Like+a+Pimp+Frank+Willis&feature=shazam"
+              }
+            ],
+            "type": "YOUTUBEMUSIC"
+          },
+          {
+            "caption": "Open in Deezer",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/deezer-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/deezer_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:deezer:searchdeeplink",
+                "type": "uri",
+                "uri": "deezer-query://www.deezer.com/play?query=%7Btrack%3A%27Like+a+Pimp%27%20artist%3A%27Frank+Willis%27%7D"
+              }
+            ],
+            "type": "DEEZER"
+          }
+        ],
+        "explicit": false,
+        "displayname": "APPLE MUSIC"
+      },
+      "artists": [
+        {
+          "id": "42",
+          "adamid": "269847570"
+        }
+      ],
+      "url": "https://www.shazam.com/track/116220685/like-a-pimp",
+      "highlightsurls": {
+        "artisthighlightsurl": "https://cdn.shazam.com/video/v3/en/US/android/269847570/highlights?affiliate=mttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+      },
+      "properties": {}
+    },
+    {
+      "layout": "5",
+      "type": "MUSIC",
+      "key": "43318644",
+      "title": "Nurega",
+      "subtitle": "Organic Audio",
+      "share": {
+        "subject": "Nurega - Organic Audio",
+        "text": "I used Shazam to discover Nurega by Organic Audio.",
+        "href": "https://www.shazam.com/track/43318644/nurega",
+        "image": "https://is2-ssl.mzstatic.com/image/thumb/Music124/v4/f0/f9/61/f0f961e2-4fd6-2d2e-6f75-da3284db14fb/859730815053_cover.jpg/400x400cc.jpg",
+        "twitter": "I used @Shazam to discover Nurega by Organic Audio.",
+        "html": "https://www.shazam.com/snippets/email-share/43318644?lang=en&country=US",
+        "snapchat": "https://www.shazam.com/partner/sc/track/43318644"
+      },
+      "images": {
+        "background": "https://is2-ssl.mzstatic.com/image/thumb/Music124/v4/f0/f9/61/f0f961e2-4fd6-2d2e-6f75-da3284db14fb/859730815053_cover.jpg/400x400cc.jpg",
+        "coverart": "https://is2-ssl.mzstatic.com/image/thumb/Music124/v4/f0/f9/61/f0f961e2-4fd6-2d2e-6f75-da3284db14fb/859730815053_cover.jpg/400x400cc.jpg",
+        "coverarthq": "https://is2-ssl.mzstatic.com/image/thumb/Music124/v4/f0/f9/61/f0f961e2-4fd6-2d2e-6f75-da3284db14fb/859730815053_cover.jpg/400x400cc.jpg",
+        "joecolor": "b:335a7cp:eeece3s:e0e3f2t:c9cfcfq:bec8db"
+      },
+      "hub": {
+        "type": "APPLEMUSIC",
+        "image": "https://images.shazam.com/static/icons/hub/android/v5/applemusic_{scalefactor}.png",
+        "actions": [
+          {
+            "name": "apple",
+            "type": "applemusicplay",
+            "id": "1455572306"
+          },
+          {
+            "name": "apple",
+            "type": "uri",
+            "uri": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/34/18/78/34187890-5306-35d5-0f05-a4c1e76a8987/mzaf_17252907343724820687.plus.aac.ep.m4a"
+          }
+        ],
+        "options": [
+          {
+            "caption": "OPEN",
+            "actions": [
+              {
+                "name": "hub:applemusic:deeplink",
+                "type": "intent",
+                "uri": "intent://music.apple.com/us/album/nurega/1455571937?i=1455572306&mttnagencyid=s2n&mttnsiteid=125115&mttn3pid=Apple-Shazam&mttnsub1=Shazam_android_am&mttnsub2=5348615A-616D-3235-3830-44754D6D5973&itscg=30201&app=music&itsct=Shazam_android_am#Intent;scheme=http;package=com.apple.android.music;action=android.intent.action.VIEW;end"
+              },
+              {
+                "name": "hub:applemusic:connect",
+                "type": "applemusicconnect",
+                "id": "1455572306",
+                "uri": "https://unsupported.shazam.com"
+              },
+              {
+                "name": "hub:applemusic:androidstore",
+                "type": "uri",
+                "uri": "https://play.google.com/store/apps/details?id=com.apple.android.music&referrer=utm_source=https%3A%2F%2Fmusic.apple.com%2Fsubscribe%3Fmttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+              }
+            ],
+            "beacondata": {
+              "type": "open",
+              "providername": "applemusic"
+            },
+            "image": "https://images.shazam.com/static/icons/hub/android/v5/overflow-open-option_{scalefactor}.png",
+            "type": "open",
+            "listcaption": "Open in Apple Music",
+            "overflowimage": "https://images.shazam.com/static/icons/hub/android/v5/applemusic-overflow_{scalefactor}.png",
+            "colouroverflowimage": false,
+            "providername": "applemusic"
+          }
+        ],
+        "providers": [
+          {
+            "caption": "Open in Spotify",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/spotify-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/spotify_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:spotify:searchdeeplink",
+                "type": "uri",
+                "uri": "spotify:search:Nurega%20Organic%20Audio"
+              }
+            ],
+            "type": "SPOTIFY"
+          },
+          {
+            "caption": "Open in YouTube Music",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:youtubemusic:androiddeeplink",
+                "type": "uri",
+                "uri": "https://music.youtube.com/search?q=Nurega+Organic+Audio&feature=shazam"
+              }
+            ],
+            "type": "YOUTUBEMUSIC"
+          },
+          {
+            "caption": "Open in Deezer",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/deezer-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/deezer_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:deezer:searchdeeplink",
+                "type": "uri",
+                "uri": "deezer-query://www.deezer.com/play?query=%7Btrack%3A%27Nurega%27%20artist%3A%27Organic+Audio%27%7D"
+              }
+            ],
+            "type": "DEEZER"
+          }
+        ],
+        "explicit": false,
+        "displayname": "APPLE MUSIC"
+      },
+      "artists": [
+        {
+          "id": "42",
+          "adamid": "5352731"
+        }
+      ],
+      "url": "https://www.shazam.com/track/43318644/nurega",
+      "highlightsurls": {
+        "artisthighlightsurl": "https://cdn.shazam.com/video/v3/en/US/android/5352731/highlights?affiliate=mttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+      },
+      "properties": {}
+    },
+    {
+      "layout": "5",
+      "type": "MUSIC",
+      "key": "609637528",
+      "title": "2 Fast 2 Furious",
+      "subtitle": "SLVG",
+      "share": {
+        "subject": "2 Fast 2 Furious - SLVG",
+        "text": "I used Shazam to discover 2 Fast 2 Furious by SLVG.",
+        "href": "https://www.shazam.com/track/609637528/2-fast-2-furious",
+        "image": "https://is2-ssl.mzstatic.com/image/thumb/Music112/v4/69/25/37/6925371c-7890-1a5f-7049-78e40a7d094c/752470976247_cover.jpg/400x400cc.jpg",
+        "twitter": "I used @Shazam to discover 2 Fast 2 Furious by SLVG.",
+        "html": "https://www.shazam.com/snippets/email-share/609637528?lang=en&country=US",
+        "snapchat": "https://www.shazam.com/partner/sc/track/609637528"
+      },
+      "images": {
+        "background": "https://is2-ssl.mzstatic.com/image/thumb/Music112/v4/69/25/37/6925371c-7890-1a5f-7049-78e40a7d094c/752470976247_cover.jpg/400x400cc.jpg",
+        "coverart": "https://is2-ssl.mzstatic.com/image/thumb/Music112/v4/69/25/37/6925371c-7890-1a5f-7049-78e40a7d094c/752470976247_cover.jpg/400x400cc.jpg",
+        "coverarthq": "https://is2-ssl.mzstatic.com/image/thumb/Music112/v4/69/25/37/6925371c-7890-1a5f-7049-78e40a7d094c/752470976247_cover.jpg/400x400cc.jpg",
+        "joecolor": "b:ffffffp:090907s:323130t:3a3a38q:5b5a59"
+      },
+      "hub": {
+        "type": "APPLEMUSIC",
+        "image": "https://images.shazam.com/static/icons/hub/android/v5/applemusic_{scalefactor}.png",
+        "actions": [
+          {
+            "name": "apple",
+            "type": "applemusicplay",
+            "id": "1616039939"
+          },
+          {
+            "name": "apple",
+            "type": "uri",
+            "uri": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/0d/db/7c/0ddb7c3b-589e-4fd1-4545-8bdf6226cae4/mzaf_11533805964524068368.plus.aac.p.m4a"
+          }
+        ],
+        "options": [
+          {
+            "caption": "OPEN",
+            "actions": [
+              {
+                "name": "hub:applemusic:deeplink",
+                "type": "intent",
+                "uri": "intent://music.apple.com/us/album/2-fast-2-furious/1616039938?i=1616039939&mttnagencyid=s2n&mttnsiteid=125115&mttn3pid=Apple-Shazam&mttnsub1=Shazam_android_am&mttnsub2=5348615A-616D-3235-3830-44754D6D5973&itscg=30201&app=music&itsct=Shazam_android_am#Intent;scheme=http;package=com.apple.android.music;action=android.intent.action.VIEW;end"
+              },
+              {
+                "name": "hub:applemusic:connect",
+                "type": "applemusicconnect",
+                "id": "1616039939",
+                "uri": "https://unsupported.shazam.com"
+              },
+              {
+                "name": "hub:applemusic:androidstore",
+                "type": "uri",
+                "uri": "https://play.google.com/store/apps/details?id=com.apple.android.music&referrer=utm_source=https%3A%2F%2Fmusic.apple.com%2Fsubscribe%3Fmttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+              }
+            ],
+            "beacondata": {
+              "type": "open",
+              "providername": "applemusic"
+            },
+            "image": "https://images.shazam.com/static/icons/hub/android/v5/overflow-open-option_{scalefactor}.png",
+            "type": "open",
+            "listcaption": "Open in Apple Music",
+            "overflowimage": "https://images.shazam.com/static/icons/hub/android/v5/applemusic-overflow_{scalefactor}.png",
+            "colouroverflowimage": false,
+            "providername": "applemusic"
+          }
+        ],
+        "providers": [
+          {
+            "caption": "Open in Spotify",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/spotify-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/spotify_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:spotify:searchdeeplink",
+                "type": "uri",
+                "uri": "spotify:search:2%20Fast%202%20Furious%20SLVG"
+              }
+            ],
+            "type": "SPOTIFY"
+          },
+          {
+            "caption": "Open in YouTube Music",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:youtubemusic:androiddeeplink",
+                "type": "uri",
+                "uri": "https://music.youtube.com/search?q=2+Fast+2+Furious+SLVG&feature=shazam"
+              }
+            ],
+            "type": "YOUTUBEMUSIC"
+          },
+          {
+            "caption": "Open in Deezer",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/deezer-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/deezer_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:deezer:searchdeeplink",
+                "type": "uri",
+                "uri": "deezer-query://www.deezer.com/play?query=%7Btrack%3A%272+Fast+2+Furious%27%20artist%3A%27SLVG%27%7D"
+              }
+            ],
+            "type": "DEEZER"
+          }
+        ],
+        "explicit": true,
+        "displayname": "APPLE MUSIC"
+      },
+      "artists": [
+        {
+          "id": "42",
+          "adamid": "1290238801"
+        }
+      ],
+      "url": "https://www.shazam.com/track/609637528/2-fast-2-furious",
+      "highlightsurls": {
+        "artisthighlightsurl": "https://cdn.shazam.com/video/v3/en/US/android/1290238801/highlights?affiliate=mttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+      },
+      "properties": {}
+    },
+    {
+      "layout": "5",
+      "type": "MUSIC",
+      "key": "41221726",
+      "title": "You'll Be Under My Wheels (超凡乐团)",
+      "subtitle": "The Prodigy",
+      "share": {
+        "subject": "You'll Be Under My Wheels (超凡乐团) - The Prodigy",
+        "text": "I used Shazam to discover You'll Be Under My Wheels (超凡乐团) by The Prodigy.",
+        "href": "https://www.shazam.com/track/41221726/-",
+        "twitter": "I used @Shazam to discover You'll Be Under My Wheels (超凡乐团) by The Prodigy.",
+        "html": "https://www.shazam.com/snippets/email-share/41221726?lang=en&country=US",
+        "snapchat": "https://www.shazam.com/partner/sc/track/41221726"
+      },
+      "hub": {
+        "type": "APPLEMUSIC",
+        "image": "https://images.shazam.com/static/icons/hub/android/v5/applemusic_{scalefactor}.png",
+        "options": [
+          {
+            "caption": "OPEN",
+            "image": "https://images.shazam.com/static/icons/hub/android/v5/overflow-open-option_{scalefactor}.png",
+            "type": "open",
+            "listcaption": "Open in Apple Music",
+            "overflowimage": "https://images.shazam.com/static/icons/hub/android/v5/applemusic-overflow_{scalefactor}.png",
+            "colouroverflowimage": false,
+            "providername": "applemusic"
+          }
+        ],
+        "providers": [
+          {
+            "caption": "Open in Spotify",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/spotify-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/spotify_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:spotify:searchdeeplink",
+                "type": "uri",
+                "uri": "spotify:search:You%27ll%20Be%20Under%20My%20Wheels%20%28%E8%B6%85%E5%87%A1%E4%B9%90%E5%9B%A2%29%20The%20Prodigy"
+              }
+            ],
+            "type": "SPOTIFY"
+          },
+          {
+            "caption": "Open in YouTube Music",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:youtubemusic:androiddeeplink",
+                "type": "uri",
+                "uri": "https://music.youtube.com/search?q=Youll+Be+Under+My+Wheels+%28%E8%B6%85%E5%87%A1%E4%B9%90%E5%9B%A2%29+The+Prodigy&feature=shazam"
+              }
+            ],
+            "type": "YOUTUBEMUSIC"
+          },
+          {
+            "caption": "Open in Deezer",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/deezer-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/deezer_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:deezer:searchdeeplink",
+                "type": "uri",
+                "uri": "deezer-query://www.deezer.com/play?query=%7Btrack%3A%27You%5C%27ll+Be+Under+My+Wheels+%28%E8%B6%85%E5%87%A1%E4%B9%90%E5%9B%A2%29%27%20artist%3A%27The+Prodigy%27%7D"
+              }
+            ],
+            "type": "DEEZER"
+          }
+        ],
+        "explicit": false,
+        "displayname": "APPLE MUSIC"
+      },
+      "url": "https://www.shazam.com/track/41221726/-",
+      "highlightsurls": {},
+      "properties": {}
+    },
+    {
+      "layout": "5",
+      "type": "MUSIC",
+      "key": "40450399",
+      "title": "You’ll Be Under My Wheels",
+      "subtitle": "The Prodigy",
+      "share": {
+        "subject": "You’ll Be Under My Wheels - The Prodigy",
+        "text": "I used Shazam to discover You’ll Be Under My Wheels by The Prodigy.",
+        "href": "https://www.shazam.com/track/40450399/youll-be-under-my-wheels",
+        "image": "https://is2-ssl.mzstatic.com/image/thumb/Music125/v4/5a/53/25/5a5325b8-a921-22d9-2b2f-3fcf520a6da7/634904918361.png/400x400cc.jpg",
+        "twitter": "I used @Shazam to discover You’ll Be Under My Wheels by The Prodigy.",
+        "html": "https://www.shazam.com/snippets/email-share/40450399?lang=en&country=US",
+        "avatar": "https://is2-ssl.mzstatic.com/image/thumb/Features125/v4/bc/85/e1/bc85e150-f64b-f9fa-d806-a4e99e8054ea/pr_source.png/800x800cc.jpg",
+        "snapchat": "https://www.shazam.com/partner/sc/track/40450399"
+      },
+      "images": {
+        "background": "https://is2-ssl.mzstatic.com/image/thumb/Features125/v4/bc/85/e1/bc85e150-f64b-f9fa-d806-a4e99e8054ea/pr_source.png/800x800cc.jpg",
+        "coverart": "https://is2-ssl.mzstatic.com/image/thumb/Music125/v4/5a/53/25/5a5325b8-a921-22d9-2b2f-3fcf520a6da7/634904918361.png/400x400cc.jpg",
+        "coverarthq": "https://is2-ssl.mzstatic.com/image/thumb/Music125/v4/5a/53/25/5a5325b8-a921-22d9-2b2f-3fcf520a6da7/634904918361.png/400x400cc.jpg",
+        "joecolor": "b:fffef1p:140005s:560a35t:433234q:783b5b"
+      },
+      "hub": {
+        "type": "APPLEMUSIC",
+        "image": "https://images.shazam.com/static/icons/hub/android/v5/applemusic_{scalefactor}.png",
+        "actions": [
+          {
+            "name": "apple",
+            "type": "applemusicplay",
+            "id": "500402716"
+          },
+          {
+            "name": "apple",
+            "type": "uri",
+            "uri": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/c2/9c/e8/c29ce84f-fa3a-612e-c74c-12f21a150703/mzaf_10435451348817226591.plus.aac.ep.m4a"
+          }
+        ],
+        "options": [
+          {
+            "caption": "OPEN",
+            "actions": [
+              {
+                "name": "hub:applemusic:deeplink",
+                "type": "intent",
+                "uri": "intent://music.apple.com/us/album/youll-be-under-my-wheels/500402694?i=500402716&mttnagencyid=s2n&mttnsiteid=125115&mttn3pid=Apple-Shazam&mttnsub1=Shazam_android_am&mttnsub2=5348615A-616D-3235-3830-44754D6D5973&itscg=30201&app=music&itsct=Shazam_android_am#Intent;scheme=http;package=com.apple.android.music;action=android.intent.action.VIEW;end"
+              },
+              {
+                "name": "hub:applemusic:connect",
+                "type": "applemusicconnect",
+                "id": "500402716",
+                "uri": "https://unsupported.shazam.com"
+              },
+              {
+                "name": "hub:applemusic:androidstore",
+                "type": "uri",
+                "uri": "https://play.google.com/store/apps/details?id=com.apple.android.music&referrer=utm_source=https%3A%2F%2Fmusic.apple.com%2Fsubscribe%3Fmttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+              }
+            ],
+            "beacondata": {
+              "type": "open",
+              "providername": "applemusic"
+            },
+            "image": "https://images.shazam.com/static/icons/hub/android/v5/overflow-open-option_{scalefactor}.png",
+            "type": "open",
+            "listcaption": "Open in Apple Music",
+            "overflowimage": "https://images.shazam.com/static/icons/hub/android/v5/applemusic-overflow_{scalefactor}.png",
+            "colouroverflowimage": false,
+            "providername": "applemusic"
+          }
+        ],
+        "providers": [
+          {
+            "caption": "Open in Spotify",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/spotify-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/spotify_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:spotify:searchdeeplink",
+                "type": "uri",
+                "uri": "spotify:search:You%E2%80%99ll%20Be%20Under%20My%20Wheels%20The%20Prodigy"
+              }
+            ],
+            "type": "SPOTIFY"
+          },
+          {
+            "caption": "Open in YouTube Music",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:youtubemusic:androiddeeplink",
+                "type": "uri",
+                "uri": "https://music.youtube.com/search?q=You%E2%80%99ll+Be+Under+My+Wheels+The+Prodigy&feature=shazam"
+              }
+            ],
+            "type": "YOUTUBEMUSIC"
+          },
+          {
+            "caption": "Open in Deezer",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/deezer-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/deezer_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:deezer:searchdeeplink",
+                "type": "uri",
+                "uri": "deezer-query://www.deezer.com/play?query=%7Btrack%3A%27You%E2%80%99ll+Be+Under+My+Wheels%27%20artist%3A%27The+Prodigy%27%7D"
+              }
+            ],
+            "type": "DEEZER"
+          }
+        ],
+        "explicit": false,
+        "displayname": "APPLE MUSIC"
+      },
+      "artists": [
+        {
+          "id": "42",
+          "adamid": "1093102"
+        }
+      ],
+      "url": "https://www.shazam.com/track/40450399/youll-be-under-my-wheels",
+      "highlightsurls": {
+        "artisthighlightsurl": "https://cdn.shazam.com/video/v3/en/US/android/1093102/highlights?affiliate=mttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+      },
+      "properties": {}
+    },
+    {
+      "layout": "5",
+      "type": "MUSIC",
+      "key": "10515891",
+      "title": "Life Ain't A Game",
+      "subtitle": "Ja Rule",
+      "share": {
+        "subject": "Life Ain't A Game - Ja Rule",
+        "text": "I used Shazam to discover Life Ain't A Game by Ja Rule.",
+        "href": "https://www.shazam.com/track/10515891/life-aint-a-game",
+        "image": "https://is4-ssl.mzstatic.com/image/thumb/Music125/v4/0c/a0/9e/0ca09e97-98cb-c3cc-3fc1-2dce9765401b/06UMGIM01313.rgb.jpg/400x400cc.jpg",
+        "twitter": "I used @Shazam to discover Life Ain't A Game by Ja Rule.",
+        "html": "https://www.shazam.com/snippets/email-share/10515891?lang=en&country=US",
+        "avatar": "https://is4-ssl.mzstatic.com/image/thumb/Features115/v4/61/34/03/61340333-a6fe-c736-0ec9-0fbd85c57cf7/mza_5205427308512971884.png/800x800cc.jpg",
+        "snapchat": "https://www.shazam.com/partner/sc/track/10515891"
+      },
+      "images": {
+        "background": "https://is4-ssl.mzstatic.com/image/thumb/Features115/v4/61/34/03/61340333-a6fe-c736-0ec9-0fbd85c57cf7/mza_5205427308512971884.png/800x800cc.jpg",
+        "coverart": "https://is4-ssl.mzstatic.com/image/thumb/Music125/v4/0c/a0/9e/0ca09e97-98cb-c3cc-3fc1-2dce9765401b/06UMGIM01313.rgb.jpg/400x400cc.jpg",
+        "coverarthq": "https://is4-ssl.mzstatic.com/image/thumb/Music125/v4/0c/a0/9e/0ca09e97-98cb-c3cc-3fc1-2dce9765401b/06UMGIM01313.rgb.jpg/400x400cc.jpg",
+        "joecolor": "b:030306p:ffffffs:f8d58at:cccccdq:c7ab70"
+      },
+      "hub": {
+        "type": "APPLEMUSIC",
+        "image": "https://images.shazam.com/static/icons/hub/android/v5/applemusic_{scalefactor}.png",
+        "actions": [
+          {
+            "name": "apple",
+            "type": "applemusicplay",
+            "id": "1586254719"
+          },
+          {
+            "name": "apple",
+            "type": "uri",
+            "uri": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/eb/2b/83/eb2b8392-0b1b-c334-b686-38df45097274/mzaf_15284522808017872712.plus.aac.ep.m4a"
+          }
+        ],
+        "options": [
+          {
+            "caption": "OPEN",
+            "actions": [
+              {
+                "name": "hub:applemusic:deeplink",
+                "type": "intent",
+                "uri": "intent://music.apple.com/us/album/life-aint-a-game/1586254546?i=1586254719&mttnagencyid=s2n&mttnsiteid=125115&mttn3pid=Apple-Shazam&mttnsub1=Shazam_android_am&mttnsub2=5348615A-616D-3235-3830-44754D6D5973&itscg=30201&app=music&itsct=Shazam_android_am#Intent;scheme=http;package=com.apple.android.music;action=android.intent.action.VIEW;end"
+              },
+              {
+                "name": "hub:applemusic:connect",
+                "type": "applemusicconnect",
+                "id": "1586254719",
+                "uri": "https://unsupported.shazam.com"
+              },
+              {
+                "name": "hub:applemusic:androidstore",
+                "type": "uri",
+                "uri": "https://play.google.com/store/apps/details?id=com.apple.android.music&referrer=utm_source=https%3A%2F%2Fmusic.apple.com%2Fsubscribe%3Fmttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+              }
+            ],
+            "beacondata": {
+              "type": "open",
+              "providername": "applemusic"
+            },
+            "image": "https://images.shazam.com/static/icons/hub/android/v5/overflow-open-option_{scalefactor}.png",
+            "type": "open",
+            "listcaption": "Open in Apple Music",
+            "overflowimage": "https://images.shazam.com/static/icons/hub/android/v5/applemusic-overflow_{scalefactor}.png",
+            "colouroverflowimage": false,
+            "providername": "applemusic"
+          }
+        ],
+        "providers": [
+          {
+            "caption": "Open in Spotify",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/spotify-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/spotify_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:spotify:searchdeeplink",
+                "type": "uri",
+                "uri": "spotify:search:Life%20Ain%27t%20A%20Game%20Ja%20Rule"
+              }
+            ],
+            "type": "SPOTIFY"
+          },
+          {
+            "caption": "Open in YouTube Music",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:youtubemusic:androiddeeplink",
+                "type": "uri",
+                "uri": "https://music.youtube.com/search?q=Life+Aint+A+Game+Ja+Rule&feature=shazam"
+              }
+            ],
+            "type": "YOUTUBEMUSIC"
+          },
+          {
+            "caption": "Open in Deezer",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/deezer-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/deezer_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:deezer:searchdeeplink",
+                "type": "uri",
+                "uri": "deezer-query://www.deezer.com/play?query=%7Btrack%3A%27Life+Ain%5C%27t+A+Game%27%20artist%3A%27Ja+Rule%27%7D"
+              }
+            ],
+            "type": "DEEZER"
+          }
+        ],
+        "explicit": false,
+        "displayname": "APPLE MUSIC"
+      },
+      "artists": [
+        {
+          "id": "42",
+          "adamid": "134420"
+        }
+      ],
+      "url": "https://www.shazam.com/track/10515891/life-aint-a-game",
+      "highlightsurls": {
+        "artisthighlightsurl": "https://cdn.shazam.com/video/v3/en/US/android/134420/highlights?affiliate=mttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+      },
+      "properties": {}
+    },
+    {
+      "layout": "5",
+      "type": "MUSIC",
+      "key": "606496573",
+      "title": "Blowin Up",
+      "subtitle": "Solo Artist Saxx",
+      "share": {
+        "subject": "Blowin Up - Solo Artist Saxx",
+        "text": "I used Shazam to discover Blowin Up by Solo Artist Saxx.",
+        "href": "https://www.shazam.com/track/606496573/blowin-up",
+        "image": "https://is4-ssl.mzstatic.com/image/thumb/Music116/v4/5b/0b/42/5b0b428e-6d62-7ebe-9003-a97f1aa9a326/artwork.jpg/400x400cc.jpg",
+        "twitter": "I used @Shazam to discover Blowin Up by Solo Artist Saxx.",
+        "html": "https://www.shazam.com/snippets/email-share/606496573?lang=en&country=US",
+        "snapchat": "https://www.shazam.com/partner/sc/track/606496573"
+      },
+      "images": {
+        "background": "https://is4-ssl.mzstatic.com/image/thumb/Music116/v4/5b/0b/42/5b0b428e-6d62-7ebe-9003-a97f1aa9a326/artwork.jpg/400x400cc.jpg",
+        "coverart": "https://is4-ssl.mzstatic.com/image/thumb/Music116/v4/5b/0b/42/5b0b428e-6d62-7ebe-9003-a97f1aa9a326/artwork.jpg/400x400cc.jpg",
+        "coverarthq": "https://is4-ssl.mzstatic.com/image/thumb/Music116/v4/5b/0b/42/5b0b428e-6d62-7ebe-9003-a97f1aa9a326/artwork.jpg/400x400cc.jpg",
+        "joecolor": "b:220c0dp:fcdedcs:d2a786t:d0b4b3q:af886e"
+      },
+      "hub": {
+        "type": "APPLEMUSIC",
+        "image": "https://images.shazam.com/static/icons/hub/android/v5/applemusic_{scalefactor}.png",
+        "actions": [
+          {
+            "name": "apple",
+            "type": "applemusicplay",
+            "id": "1612217474"
+          },
+          {
+            "name": "apple",
+            "type": "uri",
+            "uri": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/b4/16/3c/b4163cbe-1c4f-f331-c2c0-505cf81c12fa/mzaf_6220207427981792124.plus.aac.ep.m4a"
+          }
+        ],
+        "options": [
+          {
+            "caption": "OPEN",
+            "actions": [
+              {
+                "name": "hub:applemusic:deeplink",
+                "type": "intent",
+                "uri": "intent://music.apple.com/us/album/blowin-up/1612217473?i=1612217474&mttnagencyid=s2n&mttnsiteid=125115&mttn3pid=Apple-Shazam&mttnsub1=Shazam_android_am&mttnsub2=5348615A-616D-3235-3830-44754D6D5973&itscg=30201&app=music&itsct=Shazam_android_am#Intent;scheme=http;package=com.apple.android.music;action=android.intent.action.VIEW;end"
+              },
+              {
+                "name": "hub:applemusic:connect",
+                "type": "applemusicconnect",
+                "id": "1612217474",
+                "uri": "https://unsupported.shazam.com"
+              },
+              {
+                "name": "hub:applemusic:androidstore",
+                "type": "uri",
+                "uri": "https://play.google.com/store/apps/details?id=com.apple.android.music&referrer=utm_source=https%3A%2F%2Fmusic.apple.com%2Fsubscribe%3Fmttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+              }
+            ],
+            "beacondata": {
+              "type": "open",
+              "providername": "applemusic"
+            },
+            "image": "https://images.shazam.com/static/icons/hub/android/v5/overflow-open-option_{scalefactor}.png",
+            "type": "open",
+            "listcaption": "Open in Apple Music",
+            "overflowimage": "https://images.shazam.com/static/icons/hub/android/v5/applemusic-overflow_{scalefactor}.png",
+            "colouroverflowimage": false,
+            "providername": "applemusic"
+          }
+        ],
+        "providers": [
+          {
+            "caption": "Open in Spotify",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/spotify-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/spotify_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:spotify:searchdeeplink",
+                "type": "uri",
+                "uri": "spotify:search:Blowin%20Up%20Solo%20Artist%20Saxx"
+              }
+            ],
+            "type": "SPOTIFY"
+          },
+          {
+            "caption": "Open in YouTube Music",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:youtubemusic:androiddeeplink",
+                "type": "uri",
+                "uri": "https://music.youtube.com/search?q=Blowin+Up+Solo+Artist+Saxx&feature=shazam"
+              }
+            ],
+            "type": "YOUTUBEMUSIC"
+          },
+          {
+            "caption": "Open in Deezer",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/deezer-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/deezer_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:deezer:searchdeeplink",
+                "type": "uri",
+                "uri": "deezer-query://www.deezer.com/play?query=%7Btrack%3A%27Blowin+Up%27%20artist%3A%27Solo+Artist+Saxx%27%7D"
+              }
+            ],
+            "type": "DEEZER"
+          }
+        ],
+        "explicit": true,
+        "displayname": "APPLE MUSIC"
+      },
+      "artists": [
+        {
+          "id": "42",
+          "adamid": "1308119287"
+        }
+      ],
+      "url": "https://www.shazam.com/track/606496573/blowin-up",
+      "highlightsurls": {
+        "artisthighlightsurl": "https://cdn.shazam.com/video/v3/en/US/android/1308119287/highlights?affiliate=mttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+      },
+      "properties": {}
+    },
+    {
+      "layout": "5",
+      "type": "MUSIC",
+      "key": "295457322",
+      "title": "Act a Fool",
+      "subtitle": "DJ Smallz",
+      "share": {
+        "subject": "Act a Fool - DJ Smallz",
+        "text": "I used Shazam to discover Act a Fool by DJ Smallz.",
+        "href": "https://www.shazam.com/track/295457322/act-a-fool",
+        "image": "https://is1-ssl.mzstatic.com/image/thumb/Music/30/c3/b8/mzi.bykouaew.jpg/400x400cc.jpg",
+        "twitter": "I used @Shazam to discover Act a Fool by DJ Smallz.",
+        "html": "https://www.shazam.com/snippets/email-share/295457322?lang=en&country=US",
+        "snapchat": "https://www.shazam.com/partner/sc/track/295457322"
+      },
+      "images": {
+        "background": "https://is1-ssl.mzstatic.com/image/thumb/Music/30/c3/b8/mzi.bykouaew.jpg/400x400cc.jpg",
+        "coverart": "https://is1-ssl.mzstatic.com/image/thumb/Music/30/c3/b8/mzi.bykouaew.jpg/400x400cc.jpg",
+        "coverarthq": "https://is1-ssl.mzstatic.com/image/thumb/Music/30/c3/b8/mzi.bykouaew.jpg/400x400cc.jpg"
+      },
+      "hub": {
+        "type": "APPLEMUSIC",
+        "image": "https://images.shazam.com/static/icons/hub/android/v5/applemusic_{scalefactor}.png",
+        "options": [
+          {
+            "caption": "OPEN",
+            "image": "https://images.shazam.com/static/icons/hub/android/v5/overflow-open-option_{scalefactor}.png",
+            "type": "open",
+            "listcaption": "Open in Apple Music",
+            "overflowimage": "https://images.shazam.com/static/icons/hub/android/v5/applemusic-overflow_{scalefactor}.png",
+            "colouroverflowimage": false,
+            "providername": "applemusic"
+          }
+        ],
+        "providers": [
+          {
+            "caption": "Open in Spotify",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/spotify-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/spotify_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:spotify:searchdeeplink",
+                "type": "uri",
+                "uri": "spotify:search:Act%20a%20Fool%20DJ%20Smallz"
+              }
+            ],
+            "type": "SPOTIFY"
+          },
+          {
+            "caption": "Open in YouTube Music",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:youtubemusic:androiddeeplink",
+                "type": "uri",
+                "uri": "https://music.youtube.com/search?q=Act+a+Fool+DJ+Smallz&feature=shazam"
+              }
+            ],
+            "type": "YOUTUBEMUSIC"
+          },
+          {
+            "caption": "Open in Deezer",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/deezer-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/deezer_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:deezer:searchdeeplink",
+                "type": "uri",
+                "uri": "deezer-query://www.deezer.com/play?query=%7Btrack%3A%27Act+a+Fool%27%20artist%3A%27DJ+Smallz%27%7D"
+              }
+            ],
+            "type": "DEEZER"
+          }
+        ],
+        "explicit": false,
+        "displayname": "APPLE MUSIC"
+      },
+      "artists": [
+        {
+          "id": "42",
+          "adamid": "130024994"
+        }
+      ],
+      "url": "https://www.shazam.com/track/295457322/act-a-fool",
+      "highlightsurls": {
+        "artisthighlightsurl": "https://cdn.shazam.com/video/v3/en/US/android/130024994/highlights?affiliate=mttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+      },
+      "properties": {}
+    },
+    {
+      "layout": "5",
+      "type": "MUSIC",
+      "key": "53232475",
+      "title": "100% Legit",
+      "subtitle": "WC",
+      "share": {
+        "subject": "100% Legit - WC",
+        "text": "I used Shazam to discover 100% Legit by WC.",
+        "href": "https://www.shazam.com/track/53232475/100-legit",
+        "image": "https://is4-ssl.mzstatic.com/image/thumb/Music124/v4/85/05/60/850560a5-475e-465c-b19e-33d4db958976/mzi.acxbdocy.jpg/400x400cc.jpg",
+        "twitter": "I used @Shazam to discover 100% Legit by WC.",
+        "html": "https://www.shazam.com/snippets/email-share/53232475?lang=en&country=US",
+        "snapchat": "https://www.shazam.com/partner/sc/track/53232475"
+      },
+      "images": {
+        "background": "https://is4-ssl.mzstatic.com/image/thumb/Music124/v4/85/05/60/850560a5-475e-465c-b19e-33d4db958976/mzi.acxbdocy.jpg/400x400cc.jpg",
+        "coverart": "https://is4-ssl.mzstatic.com/image/thumb/Music124/v4/85/05/60/850560a5-475e-465c-b19e-33d4db958976/mzi.acxbdocy.jpg/400x400cc.jpg",
+        "coverarthq": "https://is4-ssl.mzstatic.com/image/thumb/Music124/v4/85/05/60/850560a5-475e-465c-b19e-33d4db958976/mzi.acxbdocy.jpg/400x400cc.jpg",
+        "joecolor": "b:121724p:d5dad8s:bfced6t:aeb3b4q:9da9b2"
+      },
+      "hub": {
+        "type": "APPLEMUSIC",
+        "image": "https://images.shazam.com/static/icons/hub/android/v5/applemusic_{scalefactor}.png",
+        "actions": [
+          {
+            "name": "apple",
+            "type": "applemusicplay",
+            "id": "421680657"
+          },
+          {
+            "name": "apple",
+            "type": "uri",
+            "uri": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/30/ab/a5/30aba5c0-d91e-2836-2fdb-58fd989f8908/mzaf_7435933774975691781.plus.aac.ep.m4a"
+          }
+        ],
+        "options": [
+          {
+            "caption": "OPEN",
+            "actions": [
+              {
+                "name": "hub:applemusic:deeplink",
+                "type": "intent",
+                "uri": "intent://music.apple.com/us/album/100-legit/421680328?i=421680657&mttnagencyid=s2n&mttnsiteid=125115&mttn3pid=Apple-Shazam&mttnsub1=Shazam_android_am&mttnsub2=5348615A-616D-3235-3830-44754D6D5973&itscg=30201&app=music&itsct=Shazam_android_am#Intent;scheme=http;package=com.apple.android.music;action=android.intent.action.VIEW;end"
+              },
+              {
+                "name": "hub:applemusic:connect",
+                "type": "applemusicconnect",
+                "id": "421680657",
+                "uri": "https://unsupported.shazam.com"
+              },
+              {
+                "name": "hub:applemusic:androidstore",
+                "type": "uri",
+                "uri": "https://play.google.com/store/apps/details?id=com.apple.android.music&referrer=utm_source=https%3A%2F%2Fmusic.apple.com%2Fsubscribe%3Fmttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+              }
+            ],
+            "beacondata": {
+              "type": "open",
+              "providername": "applemusic"
+            },
+            "image": "https://images.shazam.com/static/icons/hub/android/v5/overflow-open-option_{scalefactor}.png",
+            "type": "open",
+            "listcaption": "Open in Apple Music",
+            "overflowimage": "https://images.shazam.com/static/icons/hub/android/v5/applemusic-overflow_{scalefactor}.png",
+            "colouroverflowimage": false,
+            "providername": "applemusic"
+          }
+        ],
+        "providers": [
+          {
+            "caption": "Open in Spotify",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/spotify-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/spotify_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:spotify:searchdeeplink",
+                "type": "uri",
+                "uri": "spotify:search:100%25%20Legit%20WC"
+              }
+            ],
+            "type": "SPOTIFY"
+          },
+          {
+            "caption": "Open in YouTube Music",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:youtubemusic:androiddeeplink",
+                "type": "uri",
+                "uri": "https://music.youtube.com/search?q=100%25+Legit+WC&feature=shazam"
+              }
+            ],
+            "type": "YOUTUBEMUSIC"
+          },
+          {
+            "caption": "Open in Deezer",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/deezer-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/deezer_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:deezer:searchdeeplink",
+                "type": "uri",
+                "uri": "deezer-query://www.deezer.com/play?query=%7Btrack%3A%27100%25+Legit%27%20artist%3A%27WC%27%7D"
+              }
+            ],
+            "type": "DEEZER"
+          }
+        ],
+        "explicit": false,
+        "displayname": "APPLE MUSIC"
+      },
+      "artists": [
+        {
+          "id": "42",
+          "adamid": "7305531"
+        }
+      ],
+      "url": "https://www.shazam.com/track/53232475/100-legit",
+      "highlightsurls": {
+        "artisthighlightsurl": "https://cdn.shazam.com/video/v3/en/US/android/7305531/highlights?affiliate=mttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+      },
+      "properties": {}
+    },
+    {
+      "layout": "5",
+      "type": "MUSIC",
+      "key": "20099685",
+      "title": "Like a Pimp (feat. Lil' Flip)",
+      "subtitle": "David Banner",
+      "share": {
+        "subject": "Like a Pimp (feat. Lil' Flip) - David Banner",
+        "text": "I used Shazam to discover Like a Pimp (feat. Lil' Flip) by David Banner.",
+        "href": "https://www.shazam.com/track/20099685/like-a-pimp-feat-lil-flip",
+        "image": "https://is4-ssl.mzstatic.com/image/thumb/Music115/v4/86/fb/75/86fb757e-4134-f2d5-b2f1-6fdc15cf0a4e/00602567017752.rgb.jpg/400x400cc.jpg",
+        "twitter": "I used @Shazam to discover Like a Pimp (feat. Lil' Flip) by David Banner.",
+        "html": "https://www.shazam.com/snippets/email-share/20099685?lang=en&country=US",
+        "avatar": "https://is5-ssl.mzstatic.com/image/thumb/Features115/v4/bd/f6/04/bdf6041f-96a7-b136-33ad-56332e93560c/mzl.qveqdtvr.jpg/800x800cc.jpg",
+        "snapchat": "https://www.shazam.com/partner/sc/track/20099685"
+      },
+      "images": {
+        "background": "https://is5-ssl.mzstatic.com/image/thumb/Features115/v4/bd/f6/04/bdf6041f-96a7-b136-33ad-56332e93560c/mzl.qveqdtvr.jpg/800x800cc.jpg",
+        "coverart": "https://is4-ssl.mzstatic.com/image/thumb/Music115/v4/86/fb/75/86fb757e-4134-f2d5-b2f1-6fdc15cf0a4e/00602567017752.rgb.jpg/400x400cc.jpg",
+        "coverarthq": "https://is4-ssl.mzstatic.com/image/thumb/Music115/v4/86/fb/75/86fb757e-4134-f2d5-b2f1-6fdc15cf0a4e/00602567017752.rgb.jpg/400x400cc.jpg",
+        "joecolor": "b:000000p:ffffffs:eb5129t:cbcbcbq:bc4120"
+      },
+      "hub": {
+        "type": "APPLEMUSIC",
+        "image": "https://images.shazam.com/static/icons/hub/android/v5/applemusic_{scalefactor}.png",
+        "actions": [
+          {
+            "name": "apple",
+            "type": "applemusicplay",
+            "id": "1442306090"
+          },
+          {
+            "name": "apple",
+            "type": "uri",
+            "uri": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/8d/ea/71/8dea7198-bdb1-4719-c48a-c85dc4bd0022/mzaf_2485391631117968603.plus.aac.ep.m4a"
+          }
+        ],
+        "options": [
+          {
+            "caption": "OPEN",
+            "actions": [
+              {
+                "name": "hub:applemusic:deeplink",
+                "type": "intent",
+                "uri": "intent://music.apple.com/us/album/like-a-pimp-feat-lil-flip/1442305522?i=1442306090&mttnagencyid=s2n&mttnsiteid=125115&mttn3pid=Apple-Shazam&mttnsub1=Shazam_android_am&mttnsub2=5348615A-616D-3235-3830-44754D6D5973&itscg=30201&app=music&itsct=Shazam_android_am#Intent;scheme=http;package=com.apple.android.music;action=android.intent.action.VIEW;end"
+              },
+              {
+                "name": "hub:applemusic:connect",
+                "type": "applemusicconnect",
+                "id": "1442306090",
+                "uri": "https://unsupported.shazam.com"
+              },
+              {
+                "name": "hub:applemusic:androidstore",
+                "type": "uri",
+                "uri": "https://play.google.com/store/apps/details?id=com.apple.android.music&referrer=utm_source=https%3A%2F%2Fmusic.apple.com%2Fsubscribe%3Fmttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+              }
+            ],
+            "beacondata": {
+              "type": "open",
+              "providername": "applemusic"
+            },
+            "image": "https://images.shazam.com/static/icons/hub/android/v5/overflow-open-option_{scalefactor}.png",
+            "type": "open",
+            "listcaption": "Open in Apple Music",
+            "overflowimage": "https://images.shazam.com/static/icons/hub/android/v5/applemusic-overflow_{scalefactor}.png",
+            "colouroverflowimage": false,
+            "providername": "applemusic"
+          }
+        ],
+        "providers": [
+          {
+            "caption": "Open in Spotify",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/spotify-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/spotify_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:spotify:searchdeeplink",
+                "type": "uri",
+                "uri": "spotify:search:Like%20a%20Pimp%20%28feat.%20Lil%27%20Flip%29%20David%20Banner"
+              }
+            ],
+            "type": "SPOTIFY"
+          },
+          {
+            "caption": "Open in YouTube Music",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:youtubemusic:androiddeeplink",
+                "type": "uri",
+                "uri": "https://music.youtube.com/search?q=Like+a+Pimp+%28feat.+Lil+Flip%29+David+Banner&feature=shazam"
+              }
+            ],
+            "type": "YOUTUBEMUSIC"
+          },
+          {
+            "caption": "Open in Deezer",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/deezer-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/deezer_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:deezer:searchdeeplink",
+                "type": "uri",
+                "uri": "deezer-query://www.deezer.com/play?query=%7Btrack%3A%27Like+a+Pimp+%28feat.+Lil%5C%27+Flip%29%27%20artist%3A%27David+Banner%27%7D"
+              }
+            ],
+            "type": "DEEZER"
+          }
+        ],
+        "explicit": true,
+        "displayname": "APPLE MUSIC"
+      },
+      "artists": [
+        {
+          "id": "42",
+          "adamid": "860257596"
+        }
+      ],
+      "url": "https://www.shazam.com/track/20099685/like-a-pimp-feat-lil-flip",
+      "highlightsurls": {
+        "artisthighlightsurl": "https://cdn.shazam.com/video/v3/en/US/android/860257596/highlights?affiliate=mttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am&videoIdToFilter=1445853825",
+        "trackhighlighturl": "https://cdn.shazam.com/video/v3/en/US/android/highlights/1445853825?affiliate=mttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+      },
+      "properties": {}
+    },
+    {
+      "layout": "5",
+      "type": "MUSIC",
+      "key": "609583207",
+      "title": "Boom Break",
+      "subtitle": "Dj Creem",
+      "share": {
+        "subject": "Boom Break - Dj Creem",
+        "text": "I used Shazam to discover Boom Break by Dj Creem.",
+        "href": "https://www.shazam.com/track/609583207/boom-break",
+        "image": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/e6/fb/c9/e6fbc970-2988-6813-d043-39163590d73e/artwork.jpg/400x400cc.jpg",
+        "twitter": "I used @Shazam to discover Boom Break by Dj Creem.",
+        "html": "https://www.shazam.com/snippets/email-share/609583207?lang=en&country=US",
+        "snapchat": "https://www.shazam.com/partner/sc/track/609583207"
+      },
+      "images": {
+        "background": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/e6/fb/c9/e6fbc970-2988-6813-d043-39163590d73e/artwork.jpg/400x400cc.jpg",
+        "coverart": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/e6/fb/c9/e6fbc970-2988-6813-d043-39163590d73e/artwork.jpg/400x400cc.jpg",
+        "coverarthq": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/e6/fb/c9/e6fbc970-2988-6813-d043-39163590d73e/artwork.jpg/400x400cc.jpg",
+        "joecolor": "b:080c0dp:fad462s:f1c342t:caac51q:c29f37"
+      },
+      "hub": {
+        "type": "APPLEMUSIC",
+        "image": "https://images.shazam.com/static/icons/hub/android/v5/applemusic_{scalefactor}.png",
+        "actions": [
+          {
+            "name": "apple",
+            "type": "applemusicplay",
+            "id": "1615977363"
+          },
+          {
+            "name": "apple",
+            "type": "uri",
+            "uri": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/dd/77/f1/dd77f131-159b-ab89-1c09-0812d14fa420/mzaf_10553147915870799123.plus.aac.ep.m4a"
+          }
+        ],
+        "options": [
+          {
+            "caption": "OPEN",
+            "actions": [
+              {
+                "name": "hub:applemusic:deeplink",
+                "type": "intent",
+                "uri": "intent://music.apple.com/us/album/boom-break/1615977361?i=1615977363&mttnagencyid=s2n&mttnsiteid=125115&mttn3pid=Apple-Shazam&mttnsub1=Shazam_android_am&mttnsub2=5348615A-616D-3235-3830-44754D6D5973&itscg=30201&app=music&itsct=Shazam_android_am#Intent;scheme=http;package=com.apple.android.music;action=android.intent.action.VIEW;end"
+              },
+              {
+                "name": "hub:applemusic:connect",
+                "type": "applemusicconnect",
+                "id": "1615977363",
+                "uri": "https://unsupported.shazam.com"
+              },
+              {
+                "name": "hub:applemusic:androidstore",
+                "type": "uri",
+                "uri": "https://play.google.com/store/apps/details?id=com.apple.android.music&referrer=utm_source=https%3A%2F%2Fmusic.apple.com%2Fsubscribe%3Fmttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+              }
+            ],
+            "beacondata": {
+              "type": "open",
+              "providername": "applemusic"
+            },
+            "image": "https://images.shazam.com/static/icons/hub/android/v5/overflow-open-option_{scalefactor}.png",
+            "type": "open",
+            "listcaption": "Open in Apple Music",
+            "overflowimage": "https://images.shazam.com/static/icons/hub/android/v5/applemusic-overflow_{scalefactor}.png",
+            "colouroverflowimage": false,
+            "providername": "applemusic"
+          }
+        ],
+        "providers": [
+          {
+            "caption": "Open in Spotify",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/spotify-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/spotify_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:spotify:searchdeeplink",
+                "type": "uri",
+                "uri": "spotify:search:Boom%20Break%20Dj%20Creem"
+              }
+            ],
+            "type": "SPOTIFY"
+          },
+          {
+            "caption": "Open in YouTube Music",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:youtubemusic:androiddeeplink",
+                "type": "uri",
+                "uri": "https://music.youtube.com/search?q=Boom+Break+Dj+Creem&feature=shazam"
+              }
+            ],
+            "type": "YOUTUBEMUSIC"
+          },
+          {
+            "caption": "Open in Deezer",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/deezer-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/deezer_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:deezer:searchdeeplink",
+                "type": "uri",
+                "uri": "deezer-query://www.deezer.com/play?query=%7Btrack%3A%27Boom+Break%27%20artist%3A%27Dj+Creem%27%7D"
+              }
+            ],
+            "type": "DEEZER"
+          }
+        ],
+        "explicit": false,
+        "displayname": "APPLE MUSIC"
+      },
+      "artists": [
+        {
+          "id": "42",
+          "adamid": "1537005399"
+        }
+      ],
+      "url": "https://www.shazam.com/track/609583207/boom-break",
+      "highlightsurls": {
+        "artisthighlightsurl": "https://cdn.shazam.com/video/v3/en/US/android/1537005399/highlights?affiliate=mttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+      },
+      "properties": {}
+    },
+    {
+      "layout": "5",
+      "type": "MUSIC",
+      "key": "628849976",
+      "title": "Power Move",
+      "subtitle": "Dj Arabinho",
+      "share": {
+        "subject": "Power Move - Dj Arabinho",
+        "text": "I used Shazam to discover Power Move by Dj Arabinho.",
+        "href": "https://www.shazam.com/track/628849976/power-move",
+        "image": "https://is5-ssl.mzstatic.com/image/thumb/Music112/v4/d1/e7/87/d1e7873b-d953-9284-a8f3-de517392fc92/859765062767_cover.jpg/400x400cc.jpg",
+        "twitter": "I used @Shazam to discover Power Move by Dj Arabinho.",
+        "html": "https://www.shazam.com/snippets/email-share/628849976?lang=en&country=US",
+        "avatar": "https://is4-ssl.mzstatic.com/image/thumb/Music125/v4/18/d9/8d/18d98db3-cfc7-6ba2-8be9-6247c88edfe5/pr_source.png/800x800cc.jpg",
+        "snapchat": "https://www.shazam.com/partner/sc/track/628849976"
+      },
+      "images": {
+        "background": "https://is4-ssl.mzstatic.com/image/thumb/Music125/v4/18/d9/8d/18d98db3-cfc7-6ba2-8be9-6247c88edfe5/pr_source.png/800x800cc.jpg",
+        "coverart": "https://is5-ssl.mzstatic.com/image/thumb/Music112/v4/d1/e7/87/d1e7873b-d953-9284-a8f3-de517392fc92/859765062767_cover.jpg/400x400cc.jpg",
+        "coverarthq": "https://is5-ssl.mzstatic.com/image/thumb/Music112/v4/d1/e7/87/d1e7873b-d953-9284-a8f3-de517392fc92/859765062767_cover.jpg/400x400cc.jpg",
+        "joecolor": "b:030408p:f9fef8s:f3b04ct:c7ccc8q:c38e3e"
+      },
+      "hub": {
+        "type": "APPLEMUSIC",
+        "image": "https://images.shazam.com/static/icons/hub/android/v5/applemusic_{scalefactor}.png",
+        "actions": [
+          {
+            "name": "apple",
+            "type": "applemusicplay",
+            "id": "1640659934"
+          },
+          {
+            "name": "apple",
+            "type": "uri",
+            "uri": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/ad/05/77/ad057755-4427-1f50-33ba-a4a40e8ed08d/mzaf_781908741319379786.plus.aac.ep.m4a"
+          }
+        ],
+        "options": [
+          {
+            "caption": "OPEN",
+            "actions": [
+              {
+                "name": "hub:applemusic:deeplink",
+                "type": "intent",
+                "uri": "intent://music.apple.com/us/album/power-move/1640659929?i=1640659934&mttnagencyid=s2n&mttnsiteid=125115&mttn3pid=Apple-Shazam&mttnsub1=Shazam_android_am&mttnsub2=5348615A-616D-3235-3830-44754D6D5973&itscg=30201&app=music&itsct=Shazam_android_am#Intent;scheme=http;package=com.apple.android.music;action=android.intent.action.VIEW;end"
+              },
+              {
+                "name": "hub:applemusic:connect",
+                "type": "applemusicconnect",
+                "id": "1640659934",
+                "uri": "https://unsupported.shazam.com"
+              },
+              {
+                "name": "hub:applemusic:androidstore",
+                "type": "uri",
+                "uri": "https://play.google.com/store/apps/details?id=com.apple.android.music&referrer=utm_source=https%3A%2F%2Fmusic.apple.com%2Fsubscribe%3Fmttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+              }
+            ],
+            "beacondata": {
+              "type": "open",
+              "providername": "applemusic"
+            },
+            "image": "https://images.shazam.com/static/icons/hub/android/v5/overflow-open-option_{scalefactor}.png",
+            "type": "open",
+            "listcaption": "Open in Apple Music",
+            "overflowimage": "https://images.shazam.com/static/icons/hub/android/v5/applemusic-overflow_{scalefactor}.png",
+            "colouroverflowimage": false,
+            "providername": "applemusic"
+          }
+        ],
+        "providers": [
+          {
+            "caption": "Open in Spotify",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/spotify-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/spotify_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:spotify:searchdeeplink",
+                "type": "uri",
+                "uri": "spotify:search:Power%20Move%20Dj%20Arabinho"
+              }
+            ],
+            "type": "SPOTIFY"
+          },
+          {
+            "caption": "Open in YouTube Music",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:youtubemusic:androiddeeplink",
+                "type": "uri",
+                "uri": "https://music.youtube.com/search?q=Power+Move+Dj+Arabinho&feature=shazam"
+              }
+            ],
+            "type": "YOUTUBEMUSIC"
+          },
+          {
+            "caption": "Open in Deezer",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/deezer-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/deezer_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:deezer:searchdeeplink",
+                "type": "uri",
+                "uri": "deezer-query://www.deezer.com/play?query=%7Btrack%3A%27Power+Move%27%20artist%3A%27Dj+Arabinho%27%7D"
+              }
+            ],
+            "type": "DEEZER"
+          }
+        ],
+        "explicit": false,
+        "displayname": "APPLE MUSIC"
+      },
+      "artists": [
+        {
+          "id": "42",
+          "adamid": "1546524954"
+        }
+      ],
+      "url": "https://www.shazam.com/track/628849976/power-move",
+      "highlightsurls": {
+        "artisthighlightsurl": "https://cdn.shazam.com/video/v3/en/US/android/1546524954/highlights?affiliate=mttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+      },
+      "properties": {}
+    },
+    {
+      "layout": "5",
+      "type": "MUSIC",
+      "key": "578035983",
+      "title": "Muddy Waters",
+      "subtitle": "Chipinkos",
+      "share": {
+        "subject": "Muddy Waters - Chipinkos",
+        "text": "I used Shazam to discover Muddy Waters by Chipinkos.",
+        "href": "https://www.shazam.com/track/578035983/muddy-waters",
+        "image": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/74/25/f3/7425f31e-268b-8ad9-5125-d71d6bf74050/859749135494_cover.jpg/400x400cc.jpg",
+        "twitter": "I used @Shazam to discover Muddy Waters by Chipinkos.",
+        "html": "https://www.shazam.com/snippets/email-share/578035983?lang=en&country=US",
+        "avatar": "https://is4-ssl.mzstatic.com/image/thumb/Music125/v4/a3/21/54/a321543a-3ec3-ddc7-f8b1-95658be7f417/pr_source.png/800x800cc.jpg",
+        "snapchat": "https://www.shazam.com/partner/sc/track/578035983"
+      },
+      "images": {
+        "background": "https://is4-ssl.mzstatic.com/image/thumb/Music125/v4/a3/21/54/a321543a-3ec3-ddc7-f8b1-95658be7f417/pr_source.png/800x800cc.jpg",
+        "coverart": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/74/25/f3/7425f31e-268b-8ad9-5125-d71d6bf74050/859749135494_cover.jpg/400x400cc.jpg",
+        "coverarthq": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/74/25/f3/7425f31e-268b-8ad9-5125-d71d6bf74050/859749135494_cover.jpg/400x400cc.jpg"
+      },
+      "hub": {
+        "type": "APPLEMUSIC",
+        "image": "https://images.shazam.com/static/icons/hub/android/v5/applemusic_{scalefactor}.png",
+        "options": [
+          {
+            "caption": "OPEN",
+            "image": "https://images.shazam.com/static/icons/hub/android/v5/overflow-open-option_{scalefactor}.png",
+            "type": "open",
+            "listcaption": "Open in Apple Music",
+            "overflowimage": "https://images.shazam.com/static/icons/hub/android/v5/applemusic-overflow_{scalefactor}.png",
+            "colouroverflowimage": false,
+            "providername": "applemusic"
+          }
+        ],
+        "providers": [
+          {
+            "caption": "Open in Spotify",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/spotify-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/spotify_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:spotify:searchdeeplink",
+                "type": "uri",
+                "uri": "spotify:search:Muddy%20Waters%20Chipinkos"
+              }
+            ],
+            "type": "SPOTIFY"
+          },
+          {
+            "caption": "Open in YouTube Music",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:youtubemusic:androiddeeplink",
+                "type": "uri",
+                "uri": "https://music.youtube.com/search?q=Muddy+Waters+Chipinkos&feature=shazam"
+              }
+            ],
+            "type": "YOUTUBEMUSIC"
+          },
+          {
+            "caption": "Open in Deezer",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/deezer-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/deezer_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:deezer:searchdeeplink",
+                "type": "uri",
+                "uri": "deezer-query://www.deezer.com/play?query=%7Btrack%3A%27Muddy+Waters%27%20artist%3A%27Chipinkos%27%7D"
+              }
+            ],
+            "type": "DEEZER"
+          }
+        ],
+        "explicit": false,
+        "displayname": "APPLE MUSIC"
+      },
+      "artists": [
+        {
+          "id": "42",
+          "adamid": "1118218425"
+        }
+      ],
+      "url": "https://www.shazam.com/track/578035983/muddy-waters",
+      "highlightsurls": {
+        "artisthighlightsurl": "https://cdn.shazam.com/video/v3/en/US/android/1118218425/highlights?affiliate=mttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+      },
+      "properties": {}
+    },
+    {
+      "layout": "5",
+      "type": "MUSIC",
+      "key": "91058388",
+      "title": "There It Go! (The Whistle Song)",
+      "subtitle": "Road Demonz",
+      "share": {
+        "subject": "There It Go! (The Whistle Song) - Road Demonz",
+        "text": "I used Shazam to discover There It Go! (The Whistle Song) by Road Demonz.",
+        "href": "https://www.shazam.com/track/91058388/there-it-go-the-whistle-song",
+        "image": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/43/46/56/43465667-bf37-1529-9629-2ac4ce70a744/CD136.jpg/400x400cc.jpg",
+        "twitter": "I used @Shazam to discover There It Go! (The Whistle Song) by Road Demonz.",
+        "html": "https://www.shazam.com/snippets/email-share/91058388?lang=en&country=US",
+        "snapchat": "https://www.shazam.com/partner/sc/track/91058388"
+      },
+      "images": {
+        "background": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/43/46/56/43465667-bf37-1529-9629-2ac4ce70a744/CD136.jpg/400x400cc.jpg",
+        "coverart": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/43/46/56/43465667-bf37-1529-9629-2ac4ce70a744/CD136.jpg/400x400cc.jpg",
+        "coverarthq": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/43/46/56/43465667-bf37-1529-9629-2ac4ce70a744/CD136.jpg/400x400cc.jpg"
+      },
+      "hub": {
+        "type": "APPLEMUSIC",
+        "image": "https://images.shazam.com/static/icons/hub/android/v5/applemusic_{scalefactor}.png",
+        "options": [
+          {
+            "caption": "OPEN",
+            "image": "https://images.shazam.com/static/icons/hub/android/v5/overflow-open-option_{scalefactor}.png",
+            "type": "open",
+            "listcaption": "Open in Apple Music",
+            "overflowimage": "https://images.shazam.com/static/icons/hub/android/v5/applemusic-overflow_{scalefactor}.png",
+            "colouroverflowimage": false,
+            "providername": "applemusic"
+          }
+        ],
+        "providers": [
+          {
+            "caption": "Open in Spotify",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/spotify-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/spotify_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:spotify:searchdeeplink",
+                "type": "uri",
+                "uri": "spotify:search:There%20It%20Go%21%20%28The%20Whistle%20Song%29%20Road%20Demonz"
+              }
+            ],
+            "type": "SPOTIFY"
+          },
+          {
+            "caption": "Open in YouTube Music",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:youtubemusic:androiddeeplink",
+                "type": "uri",
+                "uri": "https://music.youtube.com/search?q=There+It+Go%21+%28The+Whistle+Song%29+Road+Demonz&feature=shazam"
+              }
+            ],
+            "type": "YOUTUBEMUSIC"
+          },
+          {
+            "caption": "Open in Deezer",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/deezer-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/deezer_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:deezer:searchdeeplink",
+                "type": "uri",
+                "uri": "deezer-query://www.deezer.com/play?query=%7Btrack%3A%27There+It+Go%21+%28The+Whistle+Song%29%27%20artist%3A%27Road+Demonz%27%7D"
+              }
+            ],
+            "type": "DEEZER"
+          }
+        ],
+        "explicit": false,
+        "displayname": "APPLE MUSIC"
+      },
+      "artists": [
+        {
+          "id": "42",
+          "adamid": "664635923"
+        }
+      ],
+      "url": "https://www.shazam.com/track/91058388/there-it-go-the-whistle-song",
+      "highlightsurls": {
+        "artisthighlightsurl": "https://cdn.shazam.com/video/v3/en/US/android/664635923/highlights?affiliate=mttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+      },
+      "properties": {}
+    },
+    {
+      "layout": "5",
+      "type": "MUSIC",
+      "key": "346518975",
+      "title": "Still Dre",
+      "subtitle": "Yetto",
+      "share": {
+        "subject": "Still Dre - Yetto",
+        "text": "I used Shazam to discover Still Dre by Yetto.",
+        "href": "https://www.shazam.com/track/346518975/still-dre",
+        "image": "https://is2-ssl.mzstatic.com/image/thumb/Music122/v4/86/b0/0c/86b00c9c-7b04-6577-df6c-40a03b6f36a9/cover.jpg/400x400cc.jpg",
+        "twitter": "I used @Shazam to discover Still Dre by Yetto.",
+        "html": "https://www.shazam.com/snippets/email-share/346518975?lang=en&country=US",
+        "snapchat": "https://www.shazam.com/partner/sc/track/346518975"
+      },
+      "images": {
+        "background": "https://is2-ssl.mzstatic.com/image/thumb/Music122/v4/86/b0/0c/86b00c9c-7b04-6577-df6c-40a03b6f36a9/cover.jpg/400x400cc.jpg",
+        "coverart": "https://is2-ssl.mzstatic.com/image/thumb/Music122/v4/86/b0/0c/86b00c9c-7b04-6577-df6c-40a03b6f36a9/cover.jpg/400x400cc.jpg",
+        "coverarthq": "https://is2-ssl.mzstatic.com/image/thumb/Music122/v4/86/b0/0c/86b00c9c-7b04-6577-df6c-40a03b6f36a9/cover.jpg/400x400cc.jpg"
+      },
+      "hub": {
+        "type": "APPLEMUSIC",
+        "image": "https://images.shazam.com/static/icons/hub/android/v5/applemusic_{scalefactor}.png",
+        "options": [
+          {
+            "caption": "OPEN",
+            "image": "https://images.shazam.com/static/icons/hub/android/v5/overflow-open-option_{scalefactor}.png",
+            "type": "open",
+            "listcaption": "Open in Apple Music",
+            "overflowimage": "https://images.shazam.com/static/icons/hub/android/v5/applemusic-overflow_{scalefactor}.png",
+            "colouroverflowimage": false,
+            "providername": "applemusic"
+          }
+        ],
+        "providers": [
+          {
+            "caption": "Open in Spotify",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/spotify-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/spotify_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:spotify:searchdeeplink",
+                "type": "uri",
+                "uri": "spotify:search:Still%20Dre%20Yetto"
+              }
+            ],
+            "type": "SPOTIFY"
+          },
+          {
+            "caption": "Open in YouTube Music",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:youtubemusic:androiddeeplink",
+                "type": "uri",
+                "uri": "https://music.youtube.com/search?q=Still+Dre+Yetto&feature=shazam"
+              }
+            ],
+            "type": "YOUTUBEMUSIC"
+          },
+          {
+            "caption": "Open in Deezer",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/deezer-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/deezer_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:deezer:searchdeeplink",
+                "type": "uri",
+                "uri": "deezer-query://www.deezer.com/play?query=%7Btrack%3A%27Still+Dre%27%20artist%3A%27Yetto%27%7D"
+              }
+            ],
+            "type": "DEEZER"
+          }
+        ],
+        "explicit": false,
+        "displayname": "APPLE MUSIC"
+      },
+      "artists": [
+        {
+          "id": "42",
+          "adamid": "1572721972"
+        }
+      ],
+      "url": "https://www.shazam.com/track/346518975/still-dre",
+      "highlightsurls": {
+        "artisthighlightsurl": "https://cdn.shazam.com/video/v3/en/US/android/1572721972/highlights?affiliate=mttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+      },
+      "properties": {}
+    },
+    {
+      "layout": "5",
+      "type": "MUSIC",
+      "key": "96078422",
+      "title": "Aint Talkin Bout Love",
+      "subtitle": "Blue Alpha Djs",
+      "share": {
+        "subject": "Aint Talkin Bout Love - Blue Alpha Djs",
+        "text": "I used Shazam to discover Aint Talkin Bout Love by Blue Alpha Djs.",
+        "href": "https://www.shazam.com/track/96078422/aint-talkin-bout-love",
+        "image": "https://is4-ssl.mzstatic.com/image/thumb/Music4/v4/52/52/83/52528354-9f5f-f642-0192-c25fd24af579/cover.jpg/400x400cc.jpg",
+        "twitter": "I used @Shazam to discover Aint Talkin Bout Love by Blue Alpha Djs.",
+        "html": "https://www.shazam.com/snippets/email-share/96078422?lang=en&country=US",
+        "snapchat": "https://www.shazam.com/partner/sc/track/96078422"
+      },
+      "images": {
+        "background": "https://is4-ssl.mzstatic.com/image/thumb/Music4/v4/52/52/83/52528354-9f5f-f642-0192-c25fd24af579/cover.jpg/400x400cc.jpg",
+        "coverart": "https://is4-ssl.mzstatic.com/image/thumb/Music4/v4/52/52/83/52528354-9f5f-f642-0192-c25fd24af579/cover.jpg/400x400cc.jpg",
+        "coverarthq": "https://is4-ssl.mzstatic.com/image/thumb/Music4/v4/52/52/83/52528354-9f5f-f642-0192-c25fd24af579/cover.jpg/400x400cc.jpg",
+        "joecolor": "b:ffffffp:0a0708s:242424t:3b3939q:50504f"
+      },
+      "hub": {
+        "type": "APPLEMUSIC",
+        "image": "https://images.shazam.com/static/icons/hub/android/v5/applemusic_{scalefactor}.png",
+        "actions": [
+          {
+            "name": "apple",
+            "type": "applemusicplay",
+            "id": "687188004"
+          },
+          {
+            "name": "apple",
+            "type": "uri",
+            "uri": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/3b/c6/c3/3bc6c3a8-6b81-ad90-a458-55f7e21be384/mzaf_2462328228458393814.plus.aac.ep.m4a"
+          }
+        ],
+        "options": [
+          {
+            "caption": "OPEN",
+            "actions": [
+              {
+                "name": "hub:applemusic:deeplink",
+                "type": "intent",
+                "uri": "intent://music.apple.com/us/album/aint-talkin-bout-love/687188003?i=687188004&mttnagencyid=s2n&mttnsiteid=125115&mttn3pid=Apple-Shazam&mttnsub1=Shazam_android_am&mttnsub2=5348615A-616D-3235-3830-44754D6D5973&itscg=30201&app=music&itsct=Shazam_android_am#Intent;scheme=http;package=com.apple.android.music;action=android.intent.action.VIEW;end"
+              },
+              {
+                "name": "hub:applemusic:connect",
+                "type": "applemusicconnect",
+                "id": "687188004",
+                "uri": "https://unsupported.shazam.com"
+              },
+              {
+                "name": "hub:applemusic:androidstore",
+                "type": "uri",
+                "uri": "https://play.google.com/store/apps/details?id=com.apple.android.music&referrer=utm_source=https%3A%2F%2Fmusic.apple.com%2Fsubscribe%3Fmttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+              }
+            ],
+            "beacondata": {
+              "type": "open",
+              "providername": "applemusic"
+            },
+            "image": "https://images.shazam.com/static/icons/hub/android/v5/overflow-open-option_{scalefactor}.png",
+            "type": "open",
+            "listcaption": "Open in Apple Music",
+            "overflowimage": "https://images.shazam.com/static/icons/hub/android/v5/applemusic-overflow_{scalefactor}.png",
+            "colouroverflowimage": false,
+            "providername": "applemusic"
+          }
+        ],
+        "providers": [
+          {
+            "caption": "Open in Spotify",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/spotify-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/spotify_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:spotify:searchdeeplink",
+                "type": "uri",
+                "uri": "spotify:search:Aint%20Talkin%20Bout%20Love%20Blue%20Alpha%20Djs"
+              }
+            ],
+            "type": "SPOTIFY"
+          },
+          {
+            "caption": "Open in YouTube Music",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:youtubemusic:androiddeeplink",
+                "type": "uri",
+                "uri": "https://music.youtube.com/search?q=Aint+Talkin+Bout+Love+Blue+Alpha+Djs&feature=shazam"
+              }
+            ],
+            "type": "YOUTUBEMUSIC"
+          },
+          {
+            "caption": "Open in Deezer",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/deezer-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/deezer_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:deezer:searchdeeplink",
+                "type": "uri",
+                "uri": "deezer-query://www.deezer.com/play?query=%7Btrack%3A%27Aint+Talkin+Bout+Love%27%20artist%3A%27Blue+Alpha+Djs%27%7D"
+              }
+            ],
+            "type": "DEEZER"
+          }
+        ],
+        "explicit": false,
+        "displayname": "APPLE MUSIC"
+      },
+      "artists": [
+        {
+          "id": "42",
+          "adamid": "475256666"
+        }
+      ],
+      "url": "https://www.shazam.com/track/96078422/aint-talkin-bout-love",
+      "highlightsurls": {
+        "artisthighlightsurl": "https://cdn.shazam.com/video/v3/en/US/android/475256666/highlights?affiliate=mttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+      },
+      "properties": {}
+    },
+    {
+      "layout": "5",
+      "type": "MUSIC",
+      "key": "133372810",
+      "title": "Stfu",
+      "subtitle": "Saint Sinna",
+      "share": {
+        "subject": "Stfu - Saint Sinna",
+        "text": "I used Shazam to discover Stfu by Saint Sinna.",
+        "href": "https://www.shazam.com/track/133372810/stfu",
+        "image": "https://is4-ssl.mzstatic.com/image/thumb/Music6/v4/67/eb/af/67ebaf5c-e85a-460d-d55d-619a855b6441/188912.jpg/400x400cc.jpg",
+        "twitter": "I used @Shazam to discover Stfu by Saint Sinna.",
+        "html": "https://www.shazam.com/snippets/email-share/133372810?lang=en&country=US",
+        "snapchat": "https://www.shazam.com/partner/sc/track/133372810"
+      },
+      "images": {
+        "background": "https://is4-ssl.mzstatic.com/image/thumb/Music6/v4/67/eb/af/67ebaf5c-e85a-460d-d55d-619a855b6441/188912.jpg/400x400cc.jpg",
+        "coverart": "https://is4-ssl.mzstatic.com/image/thumb/Music6/v4/67/eb/af/67ebaf5c-e85a-460d-d55d-619a855b6441/188912.jpg/400x400cc.jpg",
+        "coverarthq": "https://is4-ssl.mzstatic.com/image/thumb/Music6/v4/67/eb/af/67ebaf5c-e85a-460d-d55d-619a855b6441/188912.jpg/400x400cc.jpg",
+        "joecolor": "b:151716p:f8cbads:eaac7et:cba78fq:bf8e69"
+      },
+      "hub": {
+        "type": "APPLEMUSIC",
+        "image": "https://images.shazam.com/static/icons/hub/android/v5/applemusic_{scalefactor}.png",
+        "actions": [
+          {
+            "name": "apple",
+            "type": "applemusicplay",
+            "id": "753630115"
+          },
+          {
+            "name": "apple",
+            "type": "uri",
+            "uri": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/cf/d7/f3/cfd7f322-7d1d-2d8f-9a73-e2afec60debb/mzaf_5576129706927206972.plus.aac.ep.m4a"
+          }
+        ],
+        "options": [
+          {
+            "caption": "OPEN",
+            "actions": [
+              {
+                "name": "hub:applemusic:deeplink",
+                "type": "intent",
+                "uri": "intent://music.apple.com/us/album/stfu/753630076?i=753630115&mttnagencyid=s2n&mttnsiteid=125115&mttn3pid=Apple-Shazam&mttnsub1=Shazam_android_am&mttnsub2=5348615A-616D-3235-3830-44754D6D5973&itscg=30201&app=music&itsct=Shazam_android_am#Intent;scheme=http;package=com.apple.android.music;action=android.intent.action.VIEW;end"
+              },
+              {
+                "name": "hub:applemusic:connect",
+                "type": "applemusicconnect",
+                "id": "753630115",
+                "uri": "https://unsupported.shazam.com"
+              },
+              {
+                "name": "hub:applemusic:androidstore",
+                "type": "uri",
+                "uri": "https://play.google.com/store/apps/details?id=com.apple.android.music&referrer=utm_source=https%3A%2F%2Fmusic.apple.com%2Fsubscribe%3Fmttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+              }
+            ],
+            "beacondata": {
+              "type": "open",
+              "providername": "applemusic"
+            },
+            "image": "https://images.shazam.com/static/icons/hub/android/v5/overflow-open-option_{scalefactor}.png",
+            "type": "open",
+            "listcaption": "Open in Apple Music",
+            "overflowimage": "https://images.shazam.com/static/icons/hub/android/v5/applemusic-overflow_{scalefactor}.png",
+            "colouroverflowimage": false,
+            "providername": "applemusic"
+          }
+        ],
+        "providers": [
+          {
+            "caption": "Open in Spotify",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/spotify-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/spotify_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:spotify:searchdeeplink",
+                "type": "uri",
+                "uri": "spotify:search:Stfu%20Saint%20Sinna"
+              }
+            ],
+            "type": "SPOTIFY"
+          },
+          {
+            "caption": "Open in YouTube Music",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/youtubemusic_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:youtubemusic:androiddeeplink",
+                "type": "uri",
+                "uri": "https://music.youtube.com/search?q=Stfu+Saint+Sinna&feature=shazam"
+              }
+            ],
+            "type": "YOUTUBEMUSIC"
+          },
+          {
+            "caption": "Open in Deezer",
+            "images": {
+              "overflow": "https://images.shazam.com/static/icons/hub/android/v5/deezer-overflow_{scalefactor}.png",
+              "default": "https://images.shazam.com/static/icons/hub/android/v5/deezer_{scalefactor}.png"
+            },
+            "actions": [
+              {
+                "name": "hub:deezer:searchdeeplink",
+                "type": "uri",
+                "uri": "deezer-query://www.deezer.com/play?query=%7Btrack%3A%27Stfu%27%20artist%3A%27Saint+Sinna%27%7D"
+              }
+            ],
+            "type": "DEEZER"
+          }
+        ],
+        "explicit": true,
+        "displayname": "APPLE MUSIC"
+      },
+      "artists": [
+        {
+          "id": "42",
+          "adamid": "386641984"
+        }
+      ],
+      "url": "https://www.shazam.com/track/133372810/stfu",
+      "highlightsurls": {
+        "artisthighlightsurl": "https://cdn.shazam.com/video/v3/en/US/android/386641984/highlights?affiliate=mttnagencyid%3Ds2n%26mttnsiteid%3D125115%26mttn3pid%3DApple-Shazam%26mttnsub1%3DShazam_android_am%26mttnsub2%3D5348615A-616D-3235-3830-44754D6D5973%26itscg%3D30201%26app%3Dmusic%26itsct%3DShazam_android_am"
+      },
+      "properties": {}
+    }
+  ]
+}

@@ -80,6 +80,22 @@ class GetRelatedTracksApiHelperTest : CoroutineApiHelperTest() {
     }
 
     @Test
+    fun test_504_response_code() = runTest {
+        mockedServer.enqueueResponse("/get-related-tracks/server_error_504.json", 504)
+
+        val testCoroutineSchedulers = provideTestCoroutineDispatcher(testScheduler)
+
+        val response = GetRelatedTracksApiHelper(
+            mockedPlainApi,
+            testCoroutineSchedulers
+        ).load("/")
+
+        assertTrue(response is Reaction.Fail)
+
+        assertTrue((response as Reaction.Fail).error is Error.ServerError)
+    }
+
+    @Test
     fun testGetRelatedTracksApiHelper2() = runTest {
         val mockedShazamApi = mock<PlainShazamApi> {
             onBlocking {
@@ -122,7 +138,7 @@ class GetRelatedTracksApiHelperTest : CoroutineApiHelperTest() {
 
         assertTrue(response is Reaction.Fail)
 
-        assertTrue((response as Reaction.Fail).error is Error.UnknownError)
+        assertTrue((response as Reaction.Fail).error is Error.ServerError)
     }
 
     @Test

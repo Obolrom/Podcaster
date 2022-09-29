@@ -4,5 +4,7 @@ sealed class Error {
 
     class NetworkError(val throwable: Throwable? = null) : Error()
 
+    class ServerError(val throwable: Throwable? = null) : Error()
+
     class UnknownError(val throwable: Throwable? = null, val message: String? = null) : Error()
 }

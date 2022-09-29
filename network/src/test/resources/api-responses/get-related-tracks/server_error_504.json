@@ -1,0 +1,4 @@
+{
+  "messages": "The request to the API has timed out. Please try again later, or if the issue persists, please contact the API provider",
+  "info": "Your Client (working) ---> Gateway (working) ---> API (took too long to respond)"
+}

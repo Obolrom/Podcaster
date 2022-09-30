@@ -37,6 +37,8 @@ object TrackResponseToTrackMapper : Mapper<SongRecognizeResponse.TrackResponse, 
 object TrackResponseToTrackListMapper : Mapper<RelatedTracksResponse, List<Track>> {
 
     override fun map(input: RelatedTracksResponse): List<Track> {
-        return input.tracks.map { TrackResponseToTrackMapper.map(it) }
+        return input.tracks
+            ?.map(TrackResponseToTrackMapper::map)
+            .orEmpty()
     }
 }

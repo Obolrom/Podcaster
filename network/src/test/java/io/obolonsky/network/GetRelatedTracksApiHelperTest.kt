@@ -4,18 +4,14 @@ import com.haroldadmin.cnradapter.NetworkResponse
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import io.obolonsky.core.di.Error
 import io.obolonsky.core.di.Reaction
-import io.obolonsky.core.di.data.Track
 import io.obolonsky.network.api.PlainShazamApi
 import io.obolonsky.network.apihelpers.GetRelatedTracksApiHelper
 import io.obolonsky.network.di.modules.RemoteApiModule
-import io.obolonsky.network.responses.RelatedTracksResponse
-import junit.framework.TestCase
+import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody.Companion.toResponseBody
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okio.buffer
@@ -24,7 +20,6 @@ import org.junit.After
 import org.junit.Test
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
@@ -53,30 +48,20 @@ class GetRelatedTracksApiHelperTest : CoroutineApiHelperTest() {
 
     @Test
     fun testGetRelatedTracksApiHelper() = runTest {
-        val mockedShazamApi = mock<PlainShazamApi> {
-            onBlocking { getRelatedTracks("url") } doReturn NetworkResponse.Success(
-                body = RelatedTracksResponse(
-                    emptyList()
-                ),
-                response = Response.success(
-                    RelatedTracksResponse(
-                    emptyList()
-                )
-                )
-            )
-        }
+        mockedServer.enqueueResponse("/get-related-tracks/empty_response_200.json", 200)
 
         val testCoroutineSchedulers = provideTestCoroutineDispatcher(testScheduler)
 
         val response = GetRelatedTracksApiHelper(
-            mockedShazamApi,
+            mockedPlainApi,
             testCoroutineSchedulers
         ).load("url")
 
-        TestCase.assertEquals(
-            Reaction.Success<List<Track>>(emptyList()).data,
-            (response as Reaction.Success).data
-        )
+        assertTrue(response is Reaction.Success)
+
+        (response as? Reaction.Success)?.data?.let { relatedTracks ->
+            assertTrue(relatedTracks.isEmpty())
+        }
     }
 
     @Test
@@ -93,6 +78,24 @@ class GetRelatedTracksApiHelperTest : CoroutineApiHelperTest() {
         assertTrue(response is Reaction.Fail)
 
         assertTrue((response as Reaction.Fail).error is Error.ServerError)
+    }
+
+    @Test
+    fun test_for_parsing_error() = runTest {
+        mockedServer.enqueueResponse("/get-related-tracks/for_nullable_check.json", 200)
+
+        val testCoroutineSchedulers = provideTestCoroutineDispatcher(testScheduler)
+
+        val response = GetRelatedTracksApiHelper(
+            mockedPlainApi,
+            testCoroutineSchedulers
+        ).load("/")
+
+        assertTrue(response is Reaction.Success)
+
+        (response as Reaction.Success).data.forEach {
+            it.audioUri?.length
+        }
     }
 
     @Test
@@ -117,22 +120,13 @@ class GetRelatedTracksApiHelperTest : CoroutineApiHelperTest() {
 
     @Test
     fun testGetRelatedTracksApiHelper3() = runTest {
-        val mockedShazamApi = mock<PlainShazamApi> {
-            onBlocking {
-                getRelatedTracks("sampleUrl")
-            } doReturn NetworkResponse.ServerError(
-                null,
-                Response.error<RelatedTracksResponse>(
-                    400,
-                    "raw response body as string".toResponseBody("application/json".toMediaTypeOrNull())
-                )
-            )
-        }
+        // just throw error with 400 status code
+        mockedServer.enqueueResponse("/get-related-tracks/real_response-200.json", 400)
 
         val testCoroutineSchedulers = provideTestCoroutineDispatcher(testScheduler)
 
         val response = GetRelatedTracksApiHelper(
-            mockedShazamApi,
+            mockedPlainApi,
             testCoroutineSchedulers
         ).load("sampleUrl")
 
@@ -153,6 +147,14 @@ class GetRelatedTracksApiHelperTest : CoroutineApiHelperTest() {
         ).load("/")
 
         assertTrue(response is Reaction.Success)
+
+        assertEquals((response as Reaction.Success).data.size, 20)
+
+        response.data.first().let { firstTrack ->
+            assertEquals(null, firstTrack.audioUri)
+            assertEquals("Meaux Green", firstTrack.subtitle)
+            assertEquals(0, firstTrack.imageUrls.size)
+        }
     }
 
     private fun MockWebServer.enqueueResponse(fileName: String, code: Int) {

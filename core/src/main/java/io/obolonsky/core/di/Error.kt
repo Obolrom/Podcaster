@@ -6,5 +6,7 @@ sealed class Error {
 
     class ServerError(val throwable: Throwable? = null) : Error()
 
+    class SerializationError(val throwable: Throwable? = null) : Error()
+
     class UnknownError(val throwable: Throwable? = null, val message: String? = null) : Error()
 }

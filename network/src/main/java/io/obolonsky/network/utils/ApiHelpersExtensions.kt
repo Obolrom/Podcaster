@@ -2,6 +2,7 @@ package io.obolonsky.network.utils
 
 import com.apollographql.apollo3.exception.ApolloException
 import com.apollographql.apollo3.exception.ApolloNetworkException
+import com.google.gson.JsonParseException
 import com.haroldadmin.cnradapter.NetworkResponse
 import io.obolonsky.core.di.Error
 import io.obolonsky.core.di.Reaction
@@ -35,5 +36,12 @@ internal inline fun <I, O> NetworkResponse<I, *>.runWithReaction(
 
     is NetworkResponse.NetworkError -> Reaction.Fail(Error.NetworkError(error))
 
-    is NetworkResponse.Error -> Reaction.Fail(Error.UnknownError(error))
+    is NetworkResponse.Error -> {
+        val domainError = when (error) {
+            is JsonParseException -> Error.SerializationError(error)
+
+            else -> Error.UnknownError(error)
+        }
+        Reaction.Fail(domainError)
+    }
 }

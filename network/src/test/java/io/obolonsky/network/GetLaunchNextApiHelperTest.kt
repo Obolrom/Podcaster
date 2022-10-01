@@ -6,7 +6,6 @@ import com.apollographql.apollo3.mockserver.MockServer
 import com.apollographql.apollo3.mockserver.enqueue
 import io.obolonsky.core.di.Error
 import io.obolonsky.core.di.Reaction
-import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.network.apihelpers.GetLaunchNextApiHelper
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
@@ -24,7 +23,7 @@ import java.nio.charset.StandardCharsets
 
 @Suppress("EXPERIMENTAL_IS_NOT_ENABLED", "BlockingMethodInNonBlockingContext")
 @OptIn(ExperimentalCoroutinesApi::class, ApolloExperimental::class)
-class GetLaunchNextApiHelperTest {
+class GetLaunchNextApiHelperTest : TestCoroutineDispatcherProvider {
 
     private val mockServer by lazy {
         MockServer()
@@ -45,73 +44,66 @@ class GetLaunchNextApiHelperTest {
     }
 
     @Test
-    fun testGraphQlQuery() = runTest {
-        mockServer.enqueue("""
-            {"data":{"launchNext":{"id":"110","is_tentative":false,"launch_date_local":"2020-12-06T11:17:00-05:00","links":{"flickr_images":[],"article_link":null,"video_link":null},"rocket":{"rocket_name":"Falcon 9"}}}}
-        """.trimIndent())
-
-        val testCoroutineScheduler = StandardTestDispatcher(testScheduler)
-        Dispatchers.setMain(testCoroutineScheduler)
-
-        val response = GetLaunchNextApiHelper(
-            apolloClient = apolloClient,
-            dispatchers = object : CoroutineSchedulers {
-                override val main = testCoroutineScheduler
-                override val io = testCoroutineScheduler
-                override val computation = testCoroutineScheduler
-                override val unconfined = testCoroutineScheduler
-            }
-        ).load(Unit)
-
-        assertTrue(response is Reaction.Success)
-        assertEquals(
-            (response as Reaction.Success).data,
-            true
-        )
-    }
-
-    @Test
-    fun test_200_good_response() = runTest {
+    fun `response 200 code, check for return data`() = runTest {
         mockServer.enqueueRequest("launch_next_200.json")
 
-        val testCoroutineScheduler = StandardTestDispatcher(testScheduler)
-        Dispatchers.setMain(testCoroutineScheduler)
+        val testCoroutineDispatchers = provideTestCoroutineDispatcher(testScheduler)
+        Dispatchers.setMain(StandardTestDispatcher(testScheduler))
 
         val response = GetLaunchNextApiHelper(
             apolloClient = apolloClient,
-            dispatchers = object : CoroutineSchedulers {
-                override val main = testCoroutineScheduler
-                override val io = testCoroutineScheduler
-                override val computation = testCoroutineScheduler
-                override val unconfined = testCoroutineScheduler
-            }
+            dispatchers = testCoroutineDispatchers,
         ).load(Unit)
 
         assertTrue(response is Reaction.Success)
+
+        assertEquals(
+            true,
+            (response as Reaction.Success).data
+        )
     }
 
     @Test
-    fun testGraphQlQueryFail() = runTest {
-        mockServer.enqueue(
-            string = "",
-            statusCode = 401,
-        )
+    fun `partial response, check for error`() = runTest {
+        mockServer.enqueueRequest("partial_response.json")
 
-        val testCoroutineScheduler = StandardTestDispatcher(testScheduler)
-        Dispatchers.setMain(testCoroutineScheduler)
+        val testCoroutineDispatchers = provideTestCoroutineDispatcher(testScheduler)
+        Dispatchers.setMain(StandardTestDispatcher(testScheduler))
 
         val response = GetLaunchNextApiHelper(
             apolloClient = apolloClient,
-            dispatchers = object : CoroutineSchedulers {
-                override val main = testCoroutineScheduler
-                override val io = testCoroutineScheduler
-                override val computation = testCoroutineScheduler
-                override val unconfined = testCoroutineScheduler
-            }
+            dispatchers = testCoroutineDispatchers,
         ).load(Unit)
 
         assertTrue(response is Reaction.Fail)
-        assertTrue((response as Reaction.Fail).error is Error.UnknownError)
+
+        assertEquals(
+            Error.UnknownError::class.java,
+            (response as Reaction.Fail).error::class.java
+        )
+    }
+
+    @Test
+    fun `response 401 code, check for error`() = runTest {
+        mockServer.enqueueRequest(
+            "launch_next_200.json",
+            statusCode = 401,
+        )
+
+        val testCoroutineDispatchers = provideTestCoroutineDispatcher(testScheduler)
+        Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+
+        val response = GetLaunchNextApiHelper(
+            apolloClient = apolloClient,
+            dispatchers = testCoroutineDispatchers,
+        ).load(Unit)
+
+        assertTrue(response is Reaction.Fail)
+
+        assertEquals(
+            Error.ServerError::class.java,
+            (response as Reaction.Fail).error::class.java
+        )
     }
 
     private fun MockServer.enqueueRequest(fileName: String, statusCode: Int = 200) {

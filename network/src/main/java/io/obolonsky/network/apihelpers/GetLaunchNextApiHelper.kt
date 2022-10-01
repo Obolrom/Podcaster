@@ -28,7 +28,7 @@ class GetLaunchNextApiHelper @Inject constructor(
             is Reaction.Success -> {
                 Reaction.Success(true)
             }
-            is Reaction.Fail -> Reaction.Fail(Error.UnknownError())
+            is Reaction.Fail -> Reaction.Fail(data.error)
         }
     }
 }

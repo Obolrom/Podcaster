@@ -1,7 +1,6 @@
 package io.obolonsky.network.utils
 
-import com.apollographql.apollo3.exception.ApolloException
-import com.apollographql.apollo3.exception.ApolloNetworkException
+import com.apollographql.apollo3.exception.*
 import com.google.gson.JsonParseException
 import com.haroldadmin.cnradapter.NetworkResponse
 import io.obolonsky.core.di.Error
@@ -16,12 +15,15 @@ internal inline fun <R> runWithReaction(successBody: () -> R): Reaction<R, Error
         Reaction.Fail(Error.NetworkError(httpError))
     } catch (apolloException: ApolloException) {
         Timber.e(apolloException)
-        when (apolloException) {
+        return when (apolloException) {
             is ApolloNetworkException -> Reaction.Fail(Error.NetworkError(apolloException))
+
+            is JsonDataException -> Reaction.Fail(Error.ServerError(apolloException))
+
+            is ApolloHttpException -> Reaction.Fail(Error.ServerError(apolloException))
 
             else -> Reaction.Fail(Error.UnknownError(apolloException))
         }
-        Reaction.Fail(Error.NetworkError(apolloException))
     } catch (e: Exception) {
         Reaction.Fail(Error.UnknownError(e))
     }

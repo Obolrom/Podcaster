@@ -47,8 +47,8 @@ class GetRelatedTracksApiHelperTest : CoroutineApiHelperTest() {
     }
 
     @Test
-    fun testGetRelatedTracksApiHelper() = runTest {
-        mockedServer.enqueueResponse("/get-related-tracks/empty_response_200.json", 200)
+    fun `response 200 code, check mapper for empty response`() = runTest {
+        mockedServer.enqueueResponse("/get-related-tracks/empty_response_200.json")
 
         val testCoroutineSchedulers = provideTestCoroutineDispatcher(testScheduler)
 
@@ -65,7 +65,7 @@ class GetRelatedTracksApiHelperTest : CoroutineApiHelperTest() {
     }
 
     @Test
-    fun test_504_response_code() = runTest {
+    fun `response 504 code, check for server error`() = runTest {
         mockedServer.enqueueResponse("/get-related-tracks/server_error_504.json", 504)
 
         val testCoroutineSchedulers = provideTestCoroutineDispatcher(testScheduler)
@@ -81,8 +81,8 @@ class GetRelatedTracksApiHelperTest : CoroutineApiHelperTest() {
     }
 
     @Test
-    fun test_for_parsing_error() = runTest {
-        mockedServer.enqueueResponse("/get-related-tracks/for_nullable_check.json", 200)
+    fun `response 200 code, check result list size`() = runTest {
+        mockedServer.enqueueResponse("/get-related-tracks/for_nullable_check.json")
 
         val testCoroutineSchedulers = provideTestCoroutineDispatcher(testScheduler)
 
@@ -99,7 +99,7 @@ class GetRelatedTracksApiHelperTest : CoroutineApiHelperTest() {
     }
 
     @Test
-    fun testGetRelatedTracksApiHelper2() = runTest {
+    fun `check for probable network error`() = runTest {
         val mockedShazamApi = mock<PlainShazamApi> {
             onBlocking {
                 getRelatedTracks("sampleUrl")
@@ -119,8 +119,7 @@ class GetRelatedTracksApiHelperTest : CoroutineApiHelperTest() {
     }
 
     @Test
-    fun testGetRelatedTracksApiHelper3() = runTest {
-        // just throw error with 400 status code
+    fun `response 400 code, check for server error`() = runTest {
         mockedServer.enqueueResponse("/get-related-tracks/real_response-200.json", 400)
 
         val testCoroutineSchedulers = provideTestCoroutineDispatcher(testScheduler)
@@ -136,8 +135,8 @@ class GetRelatedTracksApiHelperTest : CoroutineApiHelperTest() {
     }
 
     @Test
-    fun testWithMockServer() = runTest {
-        mockedServer.enqueueResponse("/get-related-tracks/real_response-200.json", 200)
+    fun `response 200 code with checking result fields`() = runTest {
+        mockedServer.enqueueResponse("/get-related-tracks/real_response-200.json")
 
         val testCoroutineSchedulers = provideTestCoroutineDispatcher(testScheduler)
 
@@ -157,14 +156,14 @@ class GetRelatedTracksApiHelperTest : CoroutineApiHelperTest() {
         }
     }
 
-    private fun MockWebServer.enqueueResponse(fileName: String, code: Int) {
+    private fun MockWebServer.enqueueResponse(fileName: String, statusCode: Int = 200) {
         val inputStream = javaClass.classLoader?.getResourceAsStream("api-responses/$fileName")
 
         val source = inputStream?.let { inputStream.source().buffer() }
         source?.let {
             enqueue(
                 MockResponse()
-                    .setResponseCode(code)
+                    .setResponseCode(statusCode)
                     .setBody(source.readString(StandardCharsets.UTF_8))
             )
         }

@@ -5,9 +5,7 @@ import io.obolonsky.core.di.Reaction
 import io.obolonsky.network.api.NasaApodApi
 import io.obolonsky.network.apihelpers.GetApodApiHelper
 import io.obolonsky.network.responses.nasa.ApodResponse
-import io.obolonsky.network.utils.RxSchedulers
 import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.schedulers.Schedulers
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,15 +19,7 @@ import retrofit2.Response
 
 @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
 @OptIn(ExperimentalCoroutinesApi::class)
-class GetApodApiHelperTest {
-
-    private val testRxSchedulers by lazy {
-        val testRxScheduler = Schedulers.trampoline()
-        object : RxSchedulers {
-            override val io = testRxScheduler
-            override val computation = testRxScheduler
-        }
-    }
+class GetApodApiHelperTest : RxApiHelperTest() {
 
     @Test
     fun testToTest() = runTest {

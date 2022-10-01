@@ -15,14 +15,20 @@ abstract class RxApiHelper<ApiResult : Any, DomainResult, ApiParam>(
 
     abstract fun apiRequest(param: ApiParam): Single<ApiResult>
 
-    abstract fun DomainResult?.onNullableReturn(): DomainResult
+    open fun DomainResult?.onNullableReturn(): DomainResult {
+        error("Should not be null")
+    }
 
-    final override suspend fun load(param: ApiParam): Reaction<DomainResult, Error> = runWithReaction {
+    final override suspend fun load(
+        param: ApiParam
+    ): Reaction<DomainResult, Error> = runWithReaction {
         apiRequest(param)
             .subscribeOn(rxSchedulers.io)
             .observeOn(rxSchedulers.computation)
             .map(mapper::map)
             .await()
-            .onNullableReturn()
+            .let { result ->
+                result ?: result.onNullableReturn()
+            }
     }
 }

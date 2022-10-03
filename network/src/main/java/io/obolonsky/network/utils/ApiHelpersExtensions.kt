@@ -1,7 +1,7 @@
 package io.obolonsky.network.utils
 
-import com.apollographql.apollo3.exception.ApolloException
-import com.apollographql.apollo3.exception.ApolloNetworkException
+import com.apollographql.apollo3.exception.*
+import com.google.gson.JsonParseException
 import com.haroldadmin.cnradapter.NetworkResponse
 import io.obolonsky.core.di.Error
 import io.obolonsky.core.di.Reaction
@@ -15,12 +15,15 @@ internal inline fun <R> runWithReaction(successBody: () -> R): Reaction<R, Error
         Reaction.Fail(Error.NetworkError(httpError))
     } catch (apolloException: ApolloException) {
         Timber.e(apolloException)
-        when (apolloException) {
+        return when (apolloException) {
             is ApolloNetworkException -> Reaction.Fail(Error.NetworkError(apolloException))
+
+            is JsonDataException -> Reaction.Fail(Error.ServerError(apolloException))
+
+            is ApolloHttpException -> Reaction.Fail(Error.ServerError(apolloException))
 
             else -> Reaction.Fail(Error.UnknownError(apolloException))
         }
-        Reaction.Fail(Error.NetworkError(apolloException))
     } catch (e: Exception) {
         Reaction.Fail(Error.UnknownError(e))
     }
@@ -31,5 +34,16 @@ internal inline fun <I, O> NetworkResponse<I, *>.runWithReaction(
 ): Reaction<O, Error> = when (this) {
     is NetworkResponse.Success -> Reaction.Success(successBody(body))
 
-    is NetworkResponse.Error -> Reaction.Fail(Error.UnknownError(error))
+    is NetworkResponse.ServerError -> Reaction.Fail(Error.ServerError(error))
+
+    is NetworkResponse.NetworkError -> Reaction.Fail(Error.NetworkError(error))
+
+    is NetworkResponse.Error -> {
+        val domainError = when (error) {
+            is JsonParseException -> Error.SerializationError(error)
+
+            else -> Error.UnknownError(error)
+        }
+        Reaction.Fail(domainError)
+    }
 }

@@ -149,6 +149,21 @@ class RemoteApiModule {
     }
 
     @Reusable
+    @CoinPaprika
+    @Provides
+    fun provideCoinPaprikaRetrofit(
+        client: OkHttpClient,
+        converter: GsonConverterFactory,
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://api.coinpaprika.com/v1/")
+            .client(client)
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .addConverterFactory(converter)
+            .build()
+    }
+
+    @Reusable
     @Provides
     fun provideSongRecognitionApi(
         retrofit: Retrofit,
@@ -189,6 +204,12 @@ class RemoteApiModule {
     fun provideMonoBankApi(
         @MonoBank retrofit: Retrofit,
     ): MonoBankApi = retrofit.create()
+
+    @Reusable
+    @Provides
+    fun provideCoinPaprikaApi(
+        @CoinPaprika retrofit: Retrofit,
+    ): CoinPaprikaApi = retrofit.create()
 
     @Reusable
     @Provides

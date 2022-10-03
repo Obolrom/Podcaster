@@ -1,31 +1,30 @@
 package io.obolonsky.network.apihelpers
 
-import io.obolonsky.core.di.Error
-import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.data.banks.ExchangeRate
 import io.obolonsky.network.api.PrivateBankApi
+import io.obolonsky.network.apihelpers.base.RxApiHelper
 import io.obolonsky.network.mappers.ExchangeRateResponseToExchangeRateListMapper
+import io.obolonsky.network.responses.banks.ExchangeRatesResponse
 import io.obolonsky.network.utils.RxSchedulers
-import io.obolonsky.network.utils.runWithReaction
-import kotlinx.coroutines.rx3.await
+import io.reactivex.rxjava3.core.Single
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
 class GetExchangeRatesHelper @Inject constructor(
     private val privateBankApi: PrivateBankApi,
-    private val rxSchedulers: RxSchedulers,
-) : ApiHelper<List<ExchangeRate>, Date> {
+    rxSchedulers: RxSchedulers,
+) : RxApiHelper<ExchangeRatesResponse, List<ExchangeRate>, Date>(
+    rxSchedulers = rxSchedulers,
+    mapper = ExchangeRateResponseToExchangeRateListMapper
+) {
 
-    override suspend fun load(param: Date): Reaction<List<ExchangeRate>, Error> = runWithReaction {
+    override fun apiRequest(param: Date): Single<ExchangeRatesResponse> {
         val date = requireNotNull(
             SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).format(param)
         )
-        privateBankApi.getExchangeRates(date)
-            .subscribeOn(rxSchedulers.io)
-            .observeOn(rxSchedulers.computation)
-            .map(ExchangeRateResponseToExchangeRateListMapper::map)
-            .await()
-            .orEmpty()
+        return privateBankApi.getExchangeRates(date)
     }
+
+    override fun List<ExchangeRate>?.onNullableReturn(): List<ExchangeRate> = orEmpty()
 }

@@ -7,31 +7,33 @@ import io.obolonsky.core.di.data.spaceX.rocket.SecondStage
 import io.obolonsky.core.di.utils.Mapper
 import io.obolonsky.network.RocketFullDetailsQuery
 
-object RocketFullDetailsToRocketMapper : Mapper<RocketFullDetailsQuery.Rocket, Rocket?> {
+object RocketFullDetailsToRocketMapper : Mapper<RocketFullDetailsQuery.Data, Rocket?> {
 
-    override fun map(input: RocketFullDetailsQuery.Rocket): Rocket? {
+    override fun map(input: RocketFullDetailsQuery.Data): Rocket? {
+        val rocket = input.rocket ?: return null
+
         val secondStage = SecondStage(
-            engines = input.second_stage?.engines,
-            fuelAmountTons = input.second_stage?.fuel_amount_tons,
+            engines = rocket.second_stage?.engines,
+            fuelAmountTons = rocket.second_stage?.fuel_amount_tons,
         )
 
         return Rocket(
-            id = input.id,
-            name = input.name,
-            country = input.country,
-            costPerLaunch = input.cost_per_launch,
-            company = input.company,
-            boosters = input.boosters,
-            active = input.active,
-            stages = input.stages,
-            successRatePct = input.success_rate_pct,
-            type = input.type,
-            wikipedia = input.wikipedia,
+            id = rocket.id,
+            name = rocket.name,
+            country = rocket.country,
+            costPerLaunch = rocket.cost_per_launch,
+            company = rocket.company,
+            boosters = rocket.boosters,
+            active = rocket.active,
+            stages = rocket.stages,
+            successRatePct = rocket.success_rate_pct,
+            type = rocket.type,
+            wikipedia = rocket.wikipedia,
             secondStage = secondStage,
-            payloadWeights = input.payload_weights?.mapPayloadWeights(),
-            description = input.description,
-            engines = input.engines?.mapEngines(),
-            firstFlight = input.first_flight,
+            payloadWeights = rocket.payload_weights?.mapPayloadWeights(),
+            description = rocket.description,
+            engines = rocket.engines?.mapEngines(),
+            firstFlight = rocket.first_flight,
         )
     }
 

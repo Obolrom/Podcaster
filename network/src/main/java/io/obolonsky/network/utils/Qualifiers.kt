@@ -31,3 +31,8 @@ annotation class PrivateBank
 @MustBeDocumented
 @Retention(value = AnnotationRetention.RUNTIME)
 annotation class MonoBank
+
+@Qualifier
+@MustBeDocumented
+@Retention(value = AnnotationRetention.RUNTIME)
+annotation class CoinPaprika

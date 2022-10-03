@@ -3,6 +3,7 @@ package io.obolonsky.network.mappers
 import io.obolonsky.core.di.data.Track
 import io.obolonsky.core.di.utils.AUDIO_TRACK_HUB_LINK_INDEX
 import io.obolonsky.core.di.utils.Mapper
+import io.obolonsky.network.responses.RelatedTracksResponse
 import io.obolonsky.network.responses.SongRecognizeResponse
 import okhttp3.internal.toImmutableList
 
@@ -30,5 +31,14 @@ object TrackResponseToTrackMapper : Mapper<SongRecognizeResponse.TrackResponse, 
             relatedTracksUrl = input.relatedTracksUrl,
             relatedTracks = emptyList()
         )
+    }
+}
+
+object TrackResponseToTrackListMapper : Mapper<RelatedTracksResponse, List<Track>> {
+
+    override fun map(input: RelatedTracksResponse): List<Track> {
+        return input.tracks
+            ?.map(TrackResponseToTrackMapper::map)
+            .orEmpty()
     }
 }

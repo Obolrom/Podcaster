@@ -69,8 +69,8 @@ class GetCoinDetailsApiHelperTest : RxApiHelperTest() {
         ).load(GetCoinDetailsApiHelper.QueryParams("id"))
 
         assertEquals(
-            Reaction.Fail::class.java,
-            response::class.java
+            true,
+            response is Reaction.Fail,
         )
 
         assertEquals(

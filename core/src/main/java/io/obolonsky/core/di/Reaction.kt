@@ -1,11 +1,29 @@
 package io.obolonsky.core.di
 
-sealed class Reaction<out D, out E> {
+sealed interface Reaction<out D, out E> {
 
-    class Success<D>(val data: D) : Reaction<D, Nothing>()
+    interface Success<D>: Reaction<D, Nothing> {
 
-    class Fail(val error: Error) : Reaction<Nothing, Error>()
+        val data: D
+    }
+
+    interface Fail : Reaction<Nothing, Error> {
+
+        val error: Error
+    }
+
+    companion object {
+
+        fun <D> success(data: D): Success<D> = SuccessImpl(data)
+
+        fun fail(error: Error): Fail = FailImpl(error)
+    }
 }
+
+internal data class SuccessImpl<D>(override val data: D) : Reaction.Success<D>
+
+internal data class FailImpl(override val error: Error) : Reaction.Fail
+
 
 inline fun <T> Reaction<T, Error>.reactWith(
     onSuccess: (T) -> Unit,

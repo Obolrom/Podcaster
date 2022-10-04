@@ -46,10 +46,10 @@ class ShazamRepository @Inject constructor(
         return try {
             track.map()?.let { shazamTrackDao.insert(it) }
 
-            Reaction.Success(Unit)
+            Reaction.success(Unit)
         } catch (e: Exception) {
             Timber.e(e)
-            Reaction.Fail(Error.UnknownError(e))
+            Reaction.fail(Error.UnknownError(e))
         }
     }
 

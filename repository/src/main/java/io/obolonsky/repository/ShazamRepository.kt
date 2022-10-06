@@ -29,7 +29,7 @@ class ShazamRepository @Inject constructor(
     private val dispatchers: CoroutineSchedulers,
 ) : ShazamRepo {
 
-    override suspend fun audioDetect(audioFile: File): Reaction<ShazamDetect, Error> {
+    override suspend fun audioDetect(audioFile: File): Reaction<ShazamDetect> {
         val apiResult = songRecognitionHelper.load(audioFile)
 
         when (apiResult) {
@@ -42,7 +42,7 @@ class ShazamRepository @Inject constructor(
         return apiResult
     }
 
-    override suspend fun saveTrack(track: Track): Reaction<Unit, Error> {
+    override suspend fun saveTrack(track: Track): Reaction<Unit> {
         return try {
             track.map()?.let { shazamTrackDao.insert(it) }
 
@@ -53,7 +53,7 @@ class ShazamRepository @Inject constructor(
         }
     }
 
-    override suspend fun getRelatedTracks(url: String): Reaction<List<Track>, Error> {
+    override suspend fun getRelatedTracks(url: String): Reaction<List<Track>> {
         return getRelatedTracksHelper.load(url)
     }
 

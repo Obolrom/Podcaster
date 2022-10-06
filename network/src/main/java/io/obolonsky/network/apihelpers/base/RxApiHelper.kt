@@ -1,6 +1,5 @@
 package io.obolonsky.network.apihelpers.base
 
-import io.obolonsky.core.di.Error
 import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.utils.Mapper
 import io.obolonsky.network.utils.RxSchedulers
@@ -21,7 +20,7 @@ abstract class RxApiHelper<ApiResult : Any, DomainResult, ApiParam>(
 
     final override suspend fun load(
         param: ApiParam
-    ): Reaction<DomainResult, Error> = runWithReaction {
+    ): Reaction<DomainResult> = runWithReaction {
         apiRequest(param)
             .subscribeOn(rxSchedulers.io)
             .observeOn(rxSchedulers.computation)

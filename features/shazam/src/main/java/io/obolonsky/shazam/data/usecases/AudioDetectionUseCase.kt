@@ -11,7 +11,7 @@ class AudioDetectionUseCase @Inject constructor(
     private val shazamRepository: ScopedShazamRepo,
 ) {
 
-    suspend operator fun invoke(audioFile: File): Reaction<ShazamDetect, Error> {
+    suspend operator fun invoke(audioFile: File): Reaction<ShazamDetect> {
         return shazamRepository.audioDetect(audioFile)
     }
 }

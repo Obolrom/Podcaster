@@ -8,7 +8,7 @@ import io.obolonsky.core.di.Reaction
 import retrofit2.HttpException
 import timber.log.Timber
 
-internal inline fun <R> runWithReaction(successBody: () -> R): Reaction<R, Error> {
+internal inline fun <R> runWithReaction(successBody: () -> R): Reaction<R> {
     return try {
         Reaction.success(successBody())
     } catch (httpError: HttpException) {
@@ -31,7 +31,7 @@ internal inline fun <R> runWithReaction(successBody: () -> R): Reaction<R, Error
 
 internal inline fun <I, O> NetworkResponse<I, *>.runWithReaction(
     successBody: I.() -> O
-): Reaction<O, Error> = when (this) {
+): Reaction<O> = when (this) {
     is NetworkResponse.Success -> Reaction.success(successBody(body))
 
     is NetworkResponse.ServerError -> Reaction.fail(Error.ServerError(error))

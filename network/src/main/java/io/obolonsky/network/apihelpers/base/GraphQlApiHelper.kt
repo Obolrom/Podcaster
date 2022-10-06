@@ -2,7 +2,6 @@ package io.obolonsky.network.apihelpers.base
 
 import com.apollographql.apollo3.ApolloCall
 import com.apollographql.apollo3.api.Query
-import io.obolonsky.core.di.Error
 import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.core.di.utils.Mapper
@@ -18,7 +17,7 @@ abstract class GraphQlApiHelper<ApiResult : Query.Data, DomainResult, ApiParam>(
 
     final override suspend fun load(
         param: ApiParam
-    ): Reaction<DomainResult, Error> = runWithReaction {
+    ): Reaction<DomainResult> = runWithReaction {
         val apiResult = withContext(dispatchers.io) {
             apiRequest(param)
                 .execute()

@@ -1,31 +1,31 @@
 package io.obolonsky.core.di
 
-sealed interface Reaction<out D, out E> {
+sealed interface Reaction<out D> {
 
-    interface Success<D>: Reaction<D, Nothing> {
+    interface Success<D>: Reaction<D> {
 
         val data: D
     }
 
-    interface Fail<E> : Reaction<Nothing, E> {
+    interface Fail: Reaction<Nothing> {
 
-        val error: E
+        val error: Error
     }
 
     companion object {
 
         fun <D> success(data: D): Success<D> = SuccessImpl(data)
 
-        fun <E> fail(error: E): Fail<E> = FailImpl(error)
+        fun fail(error: Error): Fail = FailImpl(error)
     }
 }
 
 internal data class SuccessImpl<D>(override val data: D) : Reaction.Success<D>
 
-internal data class FailImpl<E>(override val error: E) : Reaction.Fail<E>
+internal data class FailImpl(override val error: Error) : Reaction.Fail
 
 
-inline fun <T> Reaction<T, Error>.reactWith(
+inline fun <T> Reaction<T>.reactWith(
     onSuccess: (T) -> Unit,
     onError: (Error) -> Unit,
 ) = when (this) {
@@ -34,10 +34,10 @@ inline fun <T> Reaction<T, Error>.reactWith(
     is Reaction.Fail -> onError(error)
 }
 
-fun <T> Reaction<T, Error>.reactWithSuccessOrDefault(defaultProvider: () -> T) = when (this) {
+fun <T> Reaction<T>.reactWithSuccessOrDefault(defaultProvider: () -> T) = when (this) {
     is Reaction.Success -> data
 
     is Reaction.Fail -> defaultProvider()
 }
 
-fun <T> Reaction<T, Error>.reactWithSuccessOrNull() = reactWithSuccessOrDefault { null }
+fun <T> Reaction<T>.reactWithSuccessOrNull() = reactWithSuccessOrDefault { null }

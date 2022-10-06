@@ -7,22 +7,22 @@ sealed interface Reaction<out D, out E> {
         val data: D
     }
 
-    interface Fail : Reaction<Nothing, Error> {
+    interface Fail<E> : Reaction<Nothing, E> {
 
-        val error: Error
+        val error: E
     }
 
     companion object {
 
         fun <D> success(data: D): Success<D> = SuccessImpl(data)
 
-        fun fail(error: Error): Fail = FailImpl(error)
+        fun <E> fail(error: E): Fail<E> = FailImpl(error)
     }
 }
 
 internal data class SuccessImpl<D>(override val data: D) : Reaction.Success<D>
 
-internal data class FailImpl(override val error: Error) : Reaction.Fail
+internal data class FailImpl<E>(override val error: E) : Reaction.Fail<E>
 
 
 inline fun <T> Reaction<T, Error>.reactWith(

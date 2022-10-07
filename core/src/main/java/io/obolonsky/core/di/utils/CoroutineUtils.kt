@@ -4,7 +4,7 @@ import io.obolonsky.core.di.Error
 import io.obolonsky.core.di.Reaction
 import kotlinx.coroutines.flow.*
 
-inline fun <T> Flow<Reaction<T, Error>>.reactWith(
+inline fun <T> Flow<Reaction<T>>.reactWith(
     crossinline onSuccess: suspend (T) -> Unit,
     crossinline onError: suspend (Error) -> Unit,
 ) = onEach { reaction ->

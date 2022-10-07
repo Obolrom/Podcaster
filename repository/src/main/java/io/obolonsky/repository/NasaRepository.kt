@@ -1,6 +1,5 @@
 package io.obolonsky.repository
 
-import io.obolonsky.core.di.Error
 import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.repositories.NasaRepo
 import io.obolonsky.network.apihelpers.GetApodApiHelper
@@ -12,7 +11,7 @@ class NasaRepository @Inject constructor(
     private val marsPhotosApiHelper: GetMarsPhotosApiHelper,
 ) : NasaRepo {
 
-    override suspend fun getApodUrls(imagesRequestCount: Int): Reaction<List<String>, Error> {
+    override suspend fun getApodUrls(imagesRequestCount: Int): Reaction<List<String>> {
         return apodApiHelper.load(imagesRequestCount)
     }
 
@@ -20,7 +19,7 @@ class NasaRepository @Inject constructor(
         roverName: String,
         earthDate: String,
         page: Int
-    ): Reaction<List<String>, Error> {
+    ): Reaction<List<String>> {
         return marsPhotosApiHelper.load(
             GetMarsPhotosApiHelper.QueryParams(
                 roverName = roverName,

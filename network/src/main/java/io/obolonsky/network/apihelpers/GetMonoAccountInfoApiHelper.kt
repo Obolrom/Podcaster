@@ -1,6 +1,5 @@
 package io.obolonsky.network.apihelpers
 
-import io.obolonsky.core.di.Error
 import io.obolonsky.core.di.Reaction
 import io.obolonsky.network.api.MonoBankApi
 import io.obolonsky.network.apihelpers.base.ApiHelper
@@ -14,7 +13,7 @@ class GetMonoAccountInfoApiHelper @Inject constructor(
     private val rxSchedulers: RxSchedulers,
 ) : ApiHelper<Unit, Unit> {
 
-    override suspend fun load(param: Unit): Reaction<Unit, Error> = runWithReaction {
+    override suspend fun load(param: Unit): Reaction<Unit> = runWithReaction {
         monoBankApi.getAccountInfo()
             .subscribeOn(rxSchedulers.io)
             .observeOn(rxSchedulers.computation)

@@ -8,35 +8,35 @@ import io.obolonsky.core.di.Reaction
 import retrofit2.HttpException
 import timber.log.Timber
 
-internal inline fun <R> runWithReaction(successBody: () -> R): Reaction<R, Error> {
+internal inline fun <R> runWithReaction(successBody: () -> R): Reaction<R> {
     return try {
-        Reaction.Success(successBody())
+        Reaction.success(successBody())
     } catch (httpError: HttpException) {
-        Reaction.Fail(Error.NetworkError(httpError))
+        Reaction.fail(Error.NetworkError(httpError))
     } catch (apolloException: ApolloException) {
         Timber.e(apolloException)
         return when (apolloException) {
-            is ApolloNetworkException -> Reaction.Fail(Error.NetworkError(apolloException))
+            is ApolloNetworkException -> Reaction.fail(Error.NetworkError(apolloException))
 
-            is JsonDataException -> Reaction.Fail(Error.ServerError(apolloException))
+            is JsonDataException -> Reaction.fail(Error.ServerError(apolloException))
 
-            is ApolloHttpException -> Reaction.Fail(Error.ServerError(apolloException))
+            is ApolloHttpException -> Reaction.fail(Error.ServerError(apolloException))
 
-            else -> Reaction.Fail(Error.UnknownError(apolloException))
+            else -> Reaction.fail(Error.UnknownError(apolloException))
         }
     } catch (e: Exception) {
-        Reaction.Fail(Error.UnknownError(e))
+        Reaction.fail(Error.UnknownError(e))
     }
 }
 
 internal inline fun <I, O> NetworkResponse<I, *>.runWithReaction(
     successBody: I.() -> O
-): Reaction<O, Error> = when (this) {
-    is NetworkResponse.Success -> Reaction.Success(successBody(body))
+): Reaction<O> = when (this) {
+    is NetworkResponse.Success -> Reaction.success(successBody(body))
 
-    is NetworkResponse.ServerError -> Reaction.Fail(Error.ServerError(error))
+    is NetworkResponse.ServerError -> Reaction.fail(Error.ServerError(error))
 
-    is NetworkResponse.NetworkError -> Reaction.Fail(Error.NetworkError(error))
+    is NetworkResponse.NetworkError -> Reaction.fail(Error.NetworkError(error))
 
     is NetworkResponse.Error -> {
         val domainError = when (error) {
@@ -44,6 +44,6 @@ internal inline fun <I, O> NetworkResponse<I, *>.runWithReaction(
 
             else -> Error.UnknownError(error)
         }
-        Reaction.Fail(domainError)
+        Reaction.fail(domainError)
     }
 }

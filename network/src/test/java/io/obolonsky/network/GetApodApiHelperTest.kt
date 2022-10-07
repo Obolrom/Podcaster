@@ -43,7 +43,7 @@ class GetApodApiHelperTest : RxApiHelperTest() {
         ).load(1)
 
         assertEquals(
-            Reaction.Success(listOf("url")).data,
+            Reaction.success(listOf("url")).data,
             (response as Reaction.Success).data
         )
     }
@@ -107,7 +107,7 @@ class GetApodApiHelperTest : RxApiHelperTest() {
         ).load(2)
 
         assertEquals(
-            Reaction.Success(listOf("url1", "url2")).data,
+            Reaction.success(listOf("url1", "url2")).data,
             (response as Reaction.Success).data
         )
     }

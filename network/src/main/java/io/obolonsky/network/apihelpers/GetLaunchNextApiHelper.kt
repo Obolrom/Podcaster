@@ -1,7 +1,6 @@
 package io.obolonsky.network.apihelpers
 
 import com.apollographql.apollo3.ApolloClient
-import io.obolonsky.core.di.Error
 import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.network.LaunchNextQuery
@@ -15,7 +14,7 @@ class GetLaunchNextApiHelper @Inject constructor(
     private val dispatchers: CoroutineSchedulers,
 ) : ApiHelper<Boolean, Unit> {
 
-    override suspend fun load(param: Unit): Reaction<Boolean, Error> {
+    override suspend fun load(param: Unit): Reaction<Boolean> {
         val data = runWithReaction {
             withContext(dispatchers.io) {
                 apolloClient.query(LaunchNextQuery())
@@ -26,9 +25,9 @@ class GetLaunchNextApiHelper @Inject constructor(
 
         return when (data) {
             is Reaction.Success -> {
-                Reaction.Success(true)
+                Reaction.success(true)
             }
-            is Reaction.Fail -> Reaction.Fail(data.error)
+            is Reaction.Fail -> Reaction.fail(data.error)
         }
     }
 }

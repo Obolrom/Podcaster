@@ -18,12 +18,12 @@ abstract class CoroutinesApiHelper<ApiResult, DomainResult, ApiParam>(
      */
     abstract suspend fun apiRequest(param: ApiParam): NetworkResponse<ApiResult, *>
 
-    final override suspend fun load(param: ApiParam): Reaction<DomainResult, Error> {
+    final override suspend fun load(param: ApiParam): Reaction<DomainResult> {
         return flowOf(apiRequest(param))
             .flowOn(dispatchers.io)
             .map { it.runWithReaction { mapper.map(this) } }
             .flowOn(dispatchers.computation)
-            .catch { emit(Reaction.Fail(Error.UnknownError(it))) }
+            .catch { emit(Reaction.fail(Error.UnknownError(it))) }
             .single()
     }
 }

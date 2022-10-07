@@ -104,13 +104,13 @@ internal class DownloaderImpl @Inject constructor(
                         downloads[download.request.uri] = download
                     }
                     inMemoryStorage.mutableDownloads
-                        .emit(Reaction.Success(downloadList))
+                        .emit(Reaction.success(downloadList))
                 }
             } catch (e: IOException) {
                 // TODO: fix error type
                 Timber.e(e)
                 inMemoryStorage.mutableDownloads
-                    .emit(Reaction.Fail(Error.NetworkError(e)))
+                    .emit(Reaction.fail(Error.NetworkError(e)))
                 throw e
             }
         }

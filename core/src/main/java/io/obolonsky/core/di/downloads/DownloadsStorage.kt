@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.SharedFlow
 
 interface DownloadsStorage {
 
-    val downloads: SharedFlow<Reaction<List<Download>, Error>>
+    val downloads: SharedFlow<Reaction<List<Download>>>
 }

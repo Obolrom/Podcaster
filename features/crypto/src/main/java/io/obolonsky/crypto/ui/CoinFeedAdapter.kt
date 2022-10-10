@@ -8,7 +8,8 @@ import io.obolonsky.core.di.data.coinpaprika.CoinPaprika
 import io.obolonsky.crypto.databinding.CoinFeedItemBinding
 
 internal class CoinFeedAdapter(
-    diffUtil: DiffUtil.ItemCallback<CoinPaprika> = DiffUtilCallback()
+    diffUtil: DiffUtil.ItemCallback<CoinPaprika> = DiffUtilCallback(),
+    private val onClick: (CoinPaprika) -> Unit,
 ) : ListAdapter<CoinPaprika, CoinFeedViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinFeedViewHolder {
@@ -23,6 +24,9 @@ internal class CoinFeedAdapter(
     override fun onBindViewHolder(holder: CoinFeedViewHolder, position: Int) {
         getItem(position)?.let { coin ->
             holder.bind(coin)
+            holder.itemView.setOnClickListener {
+                onClick(coin)
+            }
         }
     }
 

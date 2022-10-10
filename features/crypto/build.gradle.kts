@@ -60,6 +60,9 @@ dependencies {
     implementation("com.google.dagger:dagger:2.40.5")
     kapt("com.google.dagger:dagger-compiler:2.40.5")
 
+    // Navigation
+    implementation("com.github.terrakok:cicerone:7.1")
+
     // Utilities
     implementation("com.jakewharton.timber:timber:5.0.1")
     implementation("io.coil-kt:coil:2.0.0-rc03")

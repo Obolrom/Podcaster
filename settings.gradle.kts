@@ -49,3 +49,6 @@ project(":storage").projectDir = File(rootDir, "storage")
 
 include(":media_downloader")
 project(":media_downloader").projectDir = File(rootDir, "features/media_downloader")
+
+include(":crypto")
+project(":crypto").projectDir = File(rootDir, "features/crypto")

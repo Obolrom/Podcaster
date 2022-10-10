@@ -17,4 +17,8 @@ interface ApiHelperProviders : SpaceXHelpersProvider {
     val getExchangeRatesHelper: GetExchangeRatesHelper
 
     val getMonoAccountInfoApiHelper: GetMonoAccountInfoApiHelper
+
+    val getCoinFeedApiHelper: GetCoinFeedApiHelper
+
+    val getCoinDetailsApiHelper: GetCoinDetailsApiHelper
 }

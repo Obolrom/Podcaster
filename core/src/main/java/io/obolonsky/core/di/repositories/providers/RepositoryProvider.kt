@@ -9,4 +9,5 @@ interface RepositoryProvider :
     NasaRepoProvider,
     BanksRepoProvider,
     DownloadsRepoProvider,
-    DownloadsStorageProvider
+    DownloadsStorageProvider,
+    CryptoRepoProvider

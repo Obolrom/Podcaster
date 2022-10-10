@@ -37,4 +37,9 @@ interface BinderModule {
     fun bindDownloadsRepository(
         repo: DownloadsRepository
     ): DownloadsRepo
+
+    @Binds
+    fun bindCryptoRepository(
+        repo: CryptoRepository
+    ): CryptoRepo
 }

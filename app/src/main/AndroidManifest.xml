@@ -37,6 +37,11 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
+            android:name="io.obolonsky.crypto.ui.CryptoActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
             android:name="io.obolonsky.nasa.ui.NasaActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan" />

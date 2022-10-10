@@ -6,6 +6,7 @@
     <string name="space_x">SPACE X</string>
     <string name="nasa">NASA</string>
     <string name="downloads">Downloads</string>
+    <string name="crypto">Crypto</string>
 
     <string-array name="shazam_synonyms">
         <item>shazam</item>

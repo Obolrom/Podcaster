@@ -1,5 +1,6 @@
 package io.obolonsky.podcaster.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -7,6 +8,7 @@ import io.obolonsky.core.di.actions.GoToNasaAction
 import io.obolonsky.core.di.actions.GoToShazamAction
 import io.obolonsky.core.di.actions.GoToSpaceXAction
 import io.obolonsky.core.di.actions.NavigateToDownloadsAction
+import io.obolonsky.crypto.ui.CryptoActivity
 import io.obolonsky.podcaster.PodcasterApp
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.databinding.ActivityMainFakeBinding
@@ -57,6 +59,10 @@ class MainActivity : AppCompatActivity() {
             goToDownloadsAction.get {
                 navigate(this@MainActivity)
             }
+        }
+
+        binding.goToCrypto.setOnClickListener {
+            startActivity(Intent(this, CryptoActivity::class.java))
         }
     }
 }

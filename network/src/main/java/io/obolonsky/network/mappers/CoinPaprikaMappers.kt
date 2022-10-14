@@ -8,14 +8,34 @@ import io.obolonsky.network.responses.coinpaprika.CoinFeedItemResponse
 class CoinDetailsResponseToCoinPaprikaMapper : Mapper<CoinDetailsResponse, CoinPaprika> {
 
     override fun map(input: CoinDetailsResponse): CoinPaprika {
+        val tagMapper by lazy { CoinDetailsResponseTagToCoinPaprikaTagMapper() }
+
         return CoinPaprika(
             id = requireNotNull(input.id),
             isActive = requireNotNull(input.isActive),
             isNew = input.isNew,
             name = requireNotNull(input.name),
             rank = requireNotNull(input.rank),
+            logo = input.logo,
             symbol = input.symbol,
             type = input.type,
+            tags = input.tags
+                ?.filterNotNull()
+                ?.mapNotNull(tagMapper::map)
+                .orEmpty(),
+        )
+    }
+}
+
+class CoinDetailsResponseTagToCoinPaprikaTagMapper :
+    Mapper<CoinDetailsResponse.Tag, CoinPaprika.Tag?> {
+
+    override fun map(input: CoinDetailsResponse.Tag): CoinPaprika.Tag? {
+        return CoinPaprika.Tag(
+            id = input.id ?: return null,
+            name = input.name ?: return null,
+            coinCounter = input.coinCounter ?: return null,
+            icoCounter = input.icoCounter,
         )
     }
 }
@@ -35,10 +55,12 @@ class ListCoinFeedItemResponseToListCoinPaprikaMapper :
                 id = requireNotNull(input.id),
                 isActive = requireNotNull(input.isActive),
                 isNew = input.isNew,
+                logo = null,
                 name = requireNotNull(input.name),
                 rank = requireNotNull(input.rank),
                 symbol = input.symbol,
                 type = input.type,
+                tags = emptyList(),
             )
         }
     }

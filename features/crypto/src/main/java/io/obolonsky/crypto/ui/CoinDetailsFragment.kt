@@ -50,5 +50,9 @@ class CoinDetailsFragment : Fragment(R.layout.fragment_coin_details) {
         context?.imageLoader?.enqueue(request)
 
         binding.name.text = coinPaprika.name
+
+        coinPaprika.description?.let { binding.description.text = it }
+
+        binding.rank.text = coinPaprika.rank.toString()
     }
 }

@@ -23,6 +23,7 @@ class CoinDetailsResponseToCoinPaprikaMapper : Mapper<CoinDetailsResponse, CoinP
                 ?.filterNotNull()
                 ?.mapNotNull(tagMapper::map)
                 .orEmpty(),
+            description = input.description,
         )
     }
 }
@@ -61,6 +62,7 @@ class ListCoinFeedItemResponseToListCoinPaprikaMapper :
                 symbol = input.symbol,
                 type = input.type,
                 tags = emptyList(),
+                description = null,
             )
         }
     }

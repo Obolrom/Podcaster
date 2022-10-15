@@ -14,8 +14,7 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 
 class CoinDetailsViewModel @AssistedInject constructor(
-    @Assisted savedStateHandle: SavedStateHandle,
-    @Assisted private val coinId: String,
+    @Assisted private val savedStateHandle: SavedStateHandle,
     private val dispatchers: CoroutineSchedulers,
     private val cryptoRepo: ScopedCryptoRepo,
 ) : ViewModel() {
@@ -29,6 +28,8 @@ class CoinDetailsViewModel @AssistedInject constructor(
     val coinDetails: SharedFlow<CoinPaprika> get() = internalCoinDetails.asSharedFlow()
 
     fun loadDetails() {
+        val coinId = savedStateHandle.get<String>(ID_KEY) ?: return
+
         flow { emit(cryptoRepo.getCoinDetails(coinId)) }
             .reactWith(
                 {
@@ -43,6 +44,11 @@ class CoinDetailsViewModel @AssistedInject constructor(
     @AssistedFactory
     interface Factory {
 
-        fun create(savedStateHandle: SavedStateHandle, coinId: String): CoinDetailsViewModel
+        fun create(savedStateHandle: SavedStateHandle): CoinDetailsViewModel
+    }
+
+    companion object {
+
+        const val ID_KEY = "id_key"
     }
 }

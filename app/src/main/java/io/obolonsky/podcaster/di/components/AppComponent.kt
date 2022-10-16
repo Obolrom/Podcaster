@@ -5,6 +5,7 @@ import dagger.Component
 import io.obolonsky.core.di.depsproviders.*
 import io.obolonsky.core.di.repositories.providers.RepositoryProvider
 import io.obolonsky.core.di.scopes.ApplicationScope
+import io.obolonsky.crypto.di.CryptoExportComponent
 import io.obolonsky.downloads.di.DownloadsExportComponent
 import io.obolonsky.nasa.di.components.NasaExportComponent
 import io.obolonsky.player.di.PlayerExportComponent
@@ -25,6 +26,7 @@ import io.obolonsky.spacex.di.SpaceXExportComponent
         DownloadsActionProvider::class,
         ShazamActionsProvider::class,
         SpaceXActionsProvider::class,
+        CryptoActionsProvider::class,
     ],
     modules = [AppModule::class]
 )
@@ -41,6 +43,7 @@ interface AppComponent : ApplicationProvider {
             downloadsActionProvider: DownloadsActionProvider,
             shazamActionsProvider: ShazamActionsProvider,
             spaceXActionsProvider: SpaceXActionsProvider,
+            cryptoActionsProvider: CryptoActionsProvider,
         ): AppComponent
     }
 
@@ -57,6 +60,7 @@ interface AppComponent : ApplicationProvider {
             val shazamActionsProvider = ShazamExportComponent.createActionsProvider()
             val spaceXActionsProvider = SpaceXExportComponent.createSpaceXActionsProvider()
             val nasaActionsProvider = NasaExportComponent.createNasaActionsProvider()
+            val cryptoActionsProvider = CryptoExportComponent.createCryptoActionsProvider()
             val repoProvider = RepoComponent.create(
                 toolsProvider = toolsProvider,
             )
@@ -69,7 +73,8 @@ interface AppComponent : ApplicationProvider {
                     nasaActionsProvider = nasaActionsProvider,
                     downloadsActionProvider = downloadsActionProvider,
                     shazamActionsProvider = shazamActionsProvider,
-                    spaceXActionsProvider = spaceXActionsProvider
+                    spaceXActionsProvider = spaceXActionsProvider,
+                    cryptoActionsProvider = cryptoActionsProvider,
                 )
         }
     }

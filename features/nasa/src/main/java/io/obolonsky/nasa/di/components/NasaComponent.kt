@@ -1,7 +1,8 @@
 package io.obolonsky.nasa.di.components
 
 import dagger.Component
-import io.obolonsky.core.di.depsproviders.ApplicationProvider
+import io.obolonsky.core.di.depsproviders.ToolsProvider
+import io.obolonsky.core.di.repositories.providers.NasaRepoProvider
 import io.obolonsky.core.di.scopes.FeatureScope
 import io.obolonsky.nasa.di.AssistedFactoriesProvider
 import io.obolonsky.nasa.ui.NasaActivity
@@ -9,7 +10,8 @@ import io.obolonsky.nasa.ui.NasaActivity
 @FeatureScope
 @Component(
     dependencies = [
-        ApplicationProvider::class,
+        ToolsProvider::class,
+        NasaRepoProvider::class,
     ]
 )
 internal interface NasaComponent : AssistedFactoriesProvider {
@@ -18,7 +20,8 @@ internal interface NasaComponent : AssistedFactoriesProvider {
     interface Factory {
 
         fun create(
-            applicationProvider: ApplicationProvider,
+            toolsProvider: ToolsProvider,
+            nasaRepoProvider: NasaRepoProvider,
         ): NasaComponent
     }
 
@@ -26,10 +29,14 @@ internal interface NasaComponent : AssistedFactoriesProvider {
 
     companion object {
 
-        fun create(applicationProvider: ApplicationProvider): NasaComponent {
+        fun create(
+            toolsProvider: ToolsProvider,
+            nasaRepoProvider: NasaRepoProvider,
+        ): NasaComponent {
             return DaggerNasaComponent.factory()
                 .create(
-                    applicationProvider = applicationProvider,
+                    toolsProvider = toolsProvider,
+                    nasaRepoProvider = nasaRepoProvider,
                 )
         }
     }

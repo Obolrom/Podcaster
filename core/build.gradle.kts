@@ -44,7 +44,7 @@ dependencies {
     implementation("com.google.android.material:material:1.6.1")
 
     // Dagger 2
-    implementation("com.google.dagger:dagger:2.40.5")
+    implementation("com.google.dagger:dagger:2.44.2")
 
     // Player
     implementation("androidx.media3:media3-ui:${Media3.version}")

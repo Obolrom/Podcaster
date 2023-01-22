@@ -29,9 +29,11 @@ interface StorageComponent : StorageProvider {
 
         fun createStorageProvider(
             toolsProvider: ToolsProvider,
-        ) = DaggerStorageComponent.factory()
-            .create(
-                toolsProvider = toolsProvider,
-            )
+        ): StorageComponent {
+            return DaggerStorageComponent.factory()
+                .create(
+                    toolsProvider = toolsProvider,
+                )
+        }
     }
 }

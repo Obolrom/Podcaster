@@ -40,7 +40,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.4.1")
 
     // Dagger 2
-    implementation("com.google.dagger:dagger:2.40.5")
+    implementation("com.google.dagger:dagger:2.44.2")
 
     // Utilities
     implementation("com.jakewharton.timber:timber:5.0.1")

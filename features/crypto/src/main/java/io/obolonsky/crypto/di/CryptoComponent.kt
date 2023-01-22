@@ -1,13 +1,15 @@
 package io.obolonsky.crypto.di
 
 import dagger.Component
-import io.obolonsky.core.di.depsproviders.ApplicationProvider
+import io.obolonsky.core.di.depsproviders.ToolsProvider
+import io.obolonsky.core.di.repositories.providers.CryptoRepoProvider
 import io.obolonsky.core.di.scopes.FeatureScope
 
 @FeatureScope
 @Component(
     dependencies = [
-        ApplicationProvider::class,
+        ToolsProvider::class,
+        CryptoRepoProvider::class,
     ]
 )
 internal interface CryptoComponent : ViewModelProviders {
@@ -16,16 +18,21 @@ internal interface CryptoComponent : ViewModelProviders {
     interface Factory {
 
         fun create(
-            applicationProvider: ApplicationProvider,
+            toolsProvider: ToolsProvider,
+            cryptoRepoProvider: CryptoRepoProvider,
         ): CryptoComponent
     }
 
     companion object {
 
-        fun create(applicationProvider: ApplicationProvider): CryptoComponent {
+        fun create(
+            toolsProvider: ToolsProvider,
+            cryptoRepoProvider: CryptoRepoProvider,
+        ): CryptoComponent {
             return DaggerCryptoComponent.factory()
                 .create(
-                    applicationProvider = applicationProvider,
+                    toolsProvider = toolsProvider,
+                    cryptoRepoProvider = cryptoRepoProvider,
                 )
         }
     }

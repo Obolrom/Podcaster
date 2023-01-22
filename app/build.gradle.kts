@@ -100,8 +100,8 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx:21.0.0")
 
     // Dagger 2
-    implementation("com.google.dagger:dagger:2.40.5")
-    kapt("com.google.dagger:dagger-compiler:2.40.5")
+    implementation("com.google.dagger:dagger:2.44.2")
+    kapt("com.google.dagger:dagger-compiler:2.44.2")
 
     implementation("androidx.media3:media3-exoplayer:${Media3.version}")
 

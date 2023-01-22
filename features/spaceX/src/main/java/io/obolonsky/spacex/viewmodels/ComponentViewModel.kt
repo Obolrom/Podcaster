@@ -10,8 +10,12 @@ internal class ComponentViewModel(
 ) : AndroidViewModel(application) {
 
     internal val component: SpaceXComponent by lazy {
+        val appProvider = (application as App).getAppComponent()
+
         SpaceXComponent.create(
-            applicationProvider = (application as App).getAppComponent()
+            toolsProvider = appProvider,
+            spaceXRepoProvider = appProvider,
+            networkStatusObservableProvider = appProvider,
         )
     }
 }

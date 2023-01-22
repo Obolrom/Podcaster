@@ -15,10 +15,12 @@ import io.obolonsky.shazam.data.usecases.AudioDetectionUseCase
 import io.obolonsky.shazam.data.usecases.DeleteRecentTrackUseCase
 import io.obolonsky.shazam.di.ScopedShazamRepo
 import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 class ShazamViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
@@ -41,6 +43,7 @@ class ShazamViewModel @AssistedInject constructor(
             audioDetectionUseCase(audioFile)
                 .reactWith(
                     onSuccess = { detected ->
+                        delay(TimeUnit.SECONDS.toMillis(1))
                         val relatedTracks = detected.track
                             ?.relatedTracksUrl
                             ?.let { getRelatedTracks(it) }

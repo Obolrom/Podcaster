@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class SongRecognizeResponse(
     @SerializedName("tagid") val tagId: String?,
     @SerializedName("timestamp") val timestamp: Long?,
-    @SerializedName("track") val track: TrackResponse?,
+    @SerializedName("result") val track: TrackResponse?,
     @SerializedName("location") val location: LocationResponse?,
 ) {
 

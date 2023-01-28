@@ -50,6 +50,9 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
 
+    // AppAuth
+    implementation("net.openid:appauth:0.9.1")
+
     // Player
     implementation("androidx.media3:media3-ui:${Media3.version}")
     implementation("androidx.media3:media3-exoplayer:${Media3.version}")

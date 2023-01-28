@@ -8,4 +8,5 @@ interface ApplicationProvider :
     NasaActionsProvider,
     NetworkStatusObservableProvider,
     DownloadsActionProvider,
-    RepositoryProvider
+    RepositoryProvider,
+    AuthorizationServiceProvider

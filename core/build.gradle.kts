@@ -46,6 +46,9 @@ dependencies {
     // Dagger 2
     implementation("com.google.dagger:dagger:2.44.2")
 
+    // AppAuth
+    implementation("net.openid:appauth:0.9.1")
+
     // Player
     implementation("androidx.media3:media3-ui:${Media3.version}")
     implementation("androidx.media3:media3-exoplayer:${Media3.version}")

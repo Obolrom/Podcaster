@@ -27,6 +27,7 @@ import io.obolonsky.spacex.di.SpaceXExportComponent
         ShazamActionsProvider::class,
         SpaceXActionsProvider::class,
         CryptoActionsProvider::class,
+        AuthorizationServiceProvider::class,
     ],
     modules = [AppModule::class]
 )
@@ -44,6 +45,7 @@ interface AppComponent : ApplicationProvider {
             shazamActionsProvider: ShazamActionsProvider,
             spaceXActionsProvider: SpaceXActionsProvider,
             cryptoActionsProvider: CryptoActionsProvider,
+            authorizationServiceProvider: AuthorizationServiceProvider,
         ): AppComponent
     }
 
@@ -75,6 +77,7 @@ interface AppComponent : ApplicationProvider {
                     shazamActionsProvider = shazamActionsProvider,
                     spaceXActionsProvider = spaceXActionsProvider,
                     cryptoActionsProvider = cryptoActionsProvider,
+                    authorizationServiceProvider = repoProvider,
                 )
         }
     }

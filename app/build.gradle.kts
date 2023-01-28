@@ -102,6 +102,9 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics-ktx:18.2.11")
     implementation("com.google.firebase:firebase-analytics-ktx:21.0.0")
 
+    // AppAuth
+    implementation("net.openid:appauth:0.9.1")
+
     // Dagger 2
     implementation("com.google.dagger:dagger:2.44.2")
     kapt("com.google.dagger:dagger-compiler:2.44.2")

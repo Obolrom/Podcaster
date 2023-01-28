@@ -81,6 +81,9 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxjava:3.0.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-rx3:1.6.1")
 
+    // AppAuth
+    implementation("net.openid:appauth:0.9.1")
+
     // Apollo
     implementation("com.apollographql.apollo3:apollo-runtime:3.5.0")
 

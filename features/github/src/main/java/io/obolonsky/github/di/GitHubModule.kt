@@ -21,11 +21,6 @@ import timber.log.Timber
 @Module
 class GitHubModule {
 
-    @Provides
-    fun provideAuthorizationService(context: Context): AuthorizationService {
-        return AuthorizationService(context)
-    }
-
     @FeatureScope
     @Provides
     fun provideOkHttpClient(context: Context): OkHttpClient {

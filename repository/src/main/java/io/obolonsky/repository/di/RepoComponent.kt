@@ -1,12 +1,14 @@
 package io.obolonsky.repository.di
 
 import dagger.Component
+import io.obolonsky.core.di.depsproviders.AuthorizationServiceProvider
 import io.obolonsky.core.di.depsproviders.ToolsProvider
 import io.obolonsky.core.di.repositories.providers.RepositoryProvider
 import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.network.di.components.NetworkComponent
 import io.obolonsky.network.di.providers.ApiHelperProviders
 import io.obolonsky.repository.di.modules.BinderModule
+import io.obolonsky.repository.di.modules.RepoModule
 import io.obolonsky.storage.di.StorageComponent
 import io.obolonsky.storage.di.StorageProvider
 
@@ -18,10 +20,11 @@ import io.obolonsky.storage.di.StorageProvider
         StorageProvider::class,
     ],
     modules = [
-        BinderModule::class
+        BinderModule::class,
+        RepoModule::class,
     ]
 )
-interface RepoComponent : RepositoryProvider {
+interface RepoComponent : RepositoryProvider, AuthorizationServiceProvider {
 
     @Component.Factory
     interface Factory {

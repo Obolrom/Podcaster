@@ -55,3 +55,6 @@ project(":downloads").projectDir = File(rootDir, "features/downloads")
 
 include(":crypto")
 project(":crypto").projectDir = File(rootDir, "features/crypto")
+
+include(":github")
+project(":github").projectDir = File(rootDir, "features/github")

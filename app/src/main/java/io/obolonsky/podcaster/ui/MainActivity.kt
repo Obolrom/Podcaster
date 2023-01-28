@@ -1,9 +1,11 @@
 package io.obolonsky.podcaster.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.obolonsky.core.di.actions.*
+import io.obolonsky.github.ui.GitHubActivity
 import io.obolonsky.podcaster.PodcasterApp
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.databinding.ActivityMainFakeBinding
@@ -34,6 +36,10 @@ class MainActivity : AppCompatActivity() {
         (application as PodcasterApp).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_fake)
+
+        binding.goToGithub.setOnClickListener {
+            startActivity(Intent(this, GitHubActivity::class.java))
+        }
 
         binding.goToShazam.setOnClickListener {
             goToShazamAction.get {

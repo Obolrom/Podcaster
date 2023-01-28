@@ -80,6 +80,12 @@
         </activity>
 
         <activity
+            android:name="io.obolonsky.github.ui.GitHubActivity"
+            android:exported="true">
+
+        </activity>
+
+        <activity
             android:name="io.obolonsky.downloads.ui.DownloadsActivity"
             android:screenOrientation="portrait"
             android:exported="true" />

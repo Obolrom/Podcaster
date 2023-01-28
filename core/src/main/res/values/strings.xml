@@ -33,4 +33,11 @@
     <string name="results">Results</string>
     <string name="genres">Genres</string>
     <string name="library">Library</string>
+    <string name="auth_login">Login</string>
+    <string name="get_user_info">Get user info</string>
+    <string name="corrupt_access_token">Corrupt access token</string>
+    <string name="logout">Logout</string>
+    <string name="go_to_github">Github</string>
+    <string name="auth_canceled">Auth cancelled</string>
+    <string name="get_user_error">Get user error</string>
 </resources>

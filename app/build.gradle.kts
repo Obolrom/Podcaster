@@ -19,6 +19,8 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        manifestPlaceholders["appAuthRedirectScheme"] = "io.obolonsky.oauth"
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -66,6 +68,7 @@ dependencies {
     implementation(project(":spaceX"))
     implementation(project(":nasa"))
     implementation(project(":crypto"))
+    implementation(project(":github"))
 
     implementation("com.google.android.material:material:1.5.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")

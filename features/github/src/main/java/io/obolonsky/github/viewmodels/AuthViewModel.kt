@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import io.obolonsky.github.AuthRepository
+import io.obolonsky.github.interactors.LoginInteractor
 import io.obolonsky.core.R as CoreR
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.trySendBlocking
@@ -18,15 +18,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import net.openid.appauth.AuthorizationException
-import net.openid.appauth.AuthorizationService
 import net.openid.appauth.TokenRequest
 import timber.log.Timber
 
 @Suppress("unused_parameter")
 class AuthViewModel @AssistedInject constructor(
     @Assisted savedStateHandle: SavedStateHandle,
-    private val authRepository: AuthRepository,
-    private val authService: AuthorizationService,
+    private val loginInteractor: LoginInteractor,
 ) : ViewModel() {
 
     private val openAuthPageEventChannel = Channel<Intent>(Channel.BUFFERED)
@@ -59,10 +57,7 @@ class AuthViewModel @AssistedInject constructor(
             loadingMutableStateFlow.value = true
             runCatching {
                 Timber.tag("Oauth").d("4. Change code to token. Url = ${tokenRequest.configuration.tokenEndpoint}, verifier = ${tokenRequest.codeVerifier}")
-                authRepository.performTokenRequest(
-                    authService = authService,
-                    tokenRequest = tokenRequest
-                )
+                loginInteractor.performTokenRequest(tokenRequest)
             }.onSuccess {
                 loadingMutableStateFlow.value = false
                 authSuccessEventChannel.send(Unit)
@@ -76,11 +71,11 @@ class AuthViewModel @AssistedInject constructor(
     fun openLoginPage() {
         val customTabsIntent = CustomTabsIntent.Builder().build()
 
-        val authRequest = authRepository.getAuthRequest()
+        val authRequest = loginInteractor.getAuthRequest()
 
         Timber.tag("Oauth").d("1. Generated verifier=${authRequest.codeVerifier},challenge=${authRequest.codeVerifierChallenge}")
 
-        val openAuthPageIntent = authService.getAuthorizationRequestIntent(
+        val openAuthPageIntent = loginInteractor.getAuthorizationRequestIntent(
             authRequest,
             customTabsIntent
         )
@@ -91,7 +86,7 @@ class AuthViewModel @AssistedInject constructor(
 
     override fun onCleared() {
         super.onCleared()
-        authService.dispose()
+        loginInteractor.dispose()
     }
 
     @AssistedFactory

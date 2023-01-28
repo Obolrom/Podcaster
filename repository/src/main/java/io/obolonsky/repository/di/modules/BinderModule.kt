@@ -3,7 +3,11 @@ package io.obolonsky.repository.di.modules
 import dagger.Binds
 import dagger.Module
 import io.obolonsky.core.di.repositories.*
+import io.obolonsky.core.di.repositories.github.GitHubAuthRepo
+import io.obolonsky.core.di.repositories.github.GitHubUserRepo
 import io.obolonsky.repository.*
+import io.obolonsky.repository.features.github.GitHubAuthRepository
+import io.obolonsky.repository.features.github.GitHubUserRepository
 
 @Module
 interface BinderModule {
@@ -42,4 +46,14 @@ interface BinderModule {
     fun bindCryptoRepository(
         repo: CryptoRepository
     ): CryptoRepo
+
+    @Binds
+    fun bindGitHubAuthRepository(
+        repo: GitHubAuthRepository
+    ): GitHubAuthRepo
+
+    @Binds
+    fun bindGitHubUserRepository(
+        repo: GitHubUserRepository
+    ): GitHubUserRepo
 }

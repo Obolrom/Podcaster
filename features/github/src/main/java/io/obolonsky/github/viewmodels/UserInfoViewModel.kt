@@ -7,7 +7,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import io.obolonsky.github.RemoteGithubUser
+import io.obolonsky.core.di.data.github.GithubUser
+import io.obolonsky.core.di.reactWith
 import io.obolonsky.github.interactors.GitHubProfileInteractor
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.trySendBlocking
@@ -25,7 +26,7 @@ class UserInfoViewModel @AssistedInject constructor(
 ) : ViewModel() {
 
     private val loadingMutableStateFlow = MutableStateFlow(false)
-    private val userInfoMutableStateFlow = MutableStateFlow<RemoteGithubUser?>(null)
+    private val userInfoMutableStateFlow = MutableStateFlow<GithubUser?>(null)
     private val toastEventChannel = Channel<Int>(Channel.BUFFERED)
     private val logoutPageEventChannel = Channel<Intent>(Channel.BUFFERED)
     private val logoutCompletedEventChannel = Channel<Unit>(Channel.BUFFERED)
@@ -33,7 +34,7 @@ class UserInfoViewModel @AssistedInject constructor(
     val loadingFlow: Flow<Boolean>
         get() = loadingMutableStateFlow.asStateFlow()
 
-    val userInfoFlow: Flow<RemoteGithubUser?>
+    val userInfoFlow: Flow<GithubUser?>
         get() = userInfoMutableStateFlow.asStateFlow()
 
     val toastFlow: Flow<Int>
@@ -52,16 +53,18 @@ class UserInfoViewModel @AssistedInject constructor(
     fun loadUserInfo() {
         viewModelScope.launch {
             loadingMutableStateFlow.value = true
-            runCatching {
-                gitHubProfileInteractor.getUserInformation()
-            }.onSuccess {
-                userInfoMutableStateFlow.value = it
-                loadingMutableStateFlow.value = false
-            }.onFailure {
-                loadingMutableStateFlow.value = false
-                userInfoMutableStateFlow.value = null
-                toastEventChannel.trySendBlocking(CoreR.string.get_user_error)
-            }
+            gitHubProfileInteractor.getUserInformation()
+                .reactWith(
+                    onSuccess = {
+                        userInfoMutableStateFlow.value = it
+                        loadingMutableStateFlow.value = false
+                    },
+                    onError = {
+                        loadingMutableStateFlow.value = false
+                        userInfoMutableStateFlow.value = null
+                        toastEventChannel.trySendBlocking(CoreR.string.get_user_error)
+                    }
+                )
         }
     }
 

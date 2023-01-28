@@ -9,7 +9,6 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import io.obolonsky.github.interactors.LoginInteractor
-import io.obolonsky.core.R as CoreR
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
@@ -20,6 +19,7 @@ import kotlinx.coroutines.launch
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.TokenRequest
 import timber.log.Timber
+import io.obolonsky.core.R as CoreR
 
 @Suppress("unused_parameter")
 class AuthViewModel @AssistedInject constructor(

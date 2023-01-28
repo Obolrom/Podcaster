@@ -36,3 +36,8 @@ annotation class MonoBank
 @MustBeDocumented
 @Retention(value = AnnotationRetention.RUNTIME)
 annotation class CoinPaprika
+
+@Qualifier
+@MustBeDocumented
+@Retention(value = AnnotationRetention.RUNTIME)
+annotation class GitHub

@@ -3,6 +3,8 @@ package io.obolonsky.github.di
 import dagger.Component
 import io.obolonsky.core.di.depsproviders.AuthorizationServiceProvider
 import io.obolonsky.core.di.depsproviders.ToolsProvider
+import io.obolonsky.core.di.repositories.providers.GitHubAuthRepoProvider
+import io.obolonsky.core.di.repositories.providers.GitHubUserRepoProvider
 import io.obolonsky.core.di.scopes.FeatureScope
 import io.obolonsky.github.viewmodels.AuthViewModel
 import io.obolonsky.github.viewmodels.UserInfoViewModel
@@ -12,6 +14,8 @@ import io.obolonsky.github.viewmodels.UserInfoViewModel
     dependencies = [
         ToolsProvider::class,
         AuthorizationServiceProvider::class,
+        GitHubAuthRepoProvider::class,
+        GitHubUserRepoProvider::class,
     ],
     modules = [
         GitHubModule::class,
@@ -25,6 +29,8 @@ internal interface GitHubComponent {
         fun create(
             toolsProvider: ToolsProvider,
             authorizationServiceProvider: AuthorizationServiceProvider,
+            gitHubAuthRepoProvider: GitHubAuthRepoProvider,
+            gitHubUserRepoProvider: GitHubUserRepoProvider,
         ): GitHubComponent
     }
 

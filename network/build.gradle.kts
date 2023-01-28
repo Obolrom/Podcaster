@@ -42,6 +42,21 @@ android {
             value = "io.obolonsky.network.utils.ProductionTypes.PROD"
         )
 
+        buildConfigField(
+            type = "String",
+            name = "GITHUB_CLIENT_ID",
+            value = com.android.build.gradle.internal.cxx.configure.gradleLocalProperties(rootDir)
+                .getProperty("githubClientId")
+        )
+
+        buildConfigField(
+            type = "String",
+            name = "GITHUB_CLIENT_SECRET",
+            value = com.android.build.gradle.internal.cxx.configure.gradleLocalProperties(rootDir)
+                .getProperty("githubClientSecret")
+        )
+
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }

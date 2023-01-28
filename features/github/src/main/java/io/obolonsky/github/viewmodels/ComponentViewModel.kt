@@ -14,6 +14,8 @@ internal class ComponentViewModel(app: Application) : AndroidViewModel(app) {
             .create(
                 applicationProvider,
                 applicationProvider,
+                applicationProvider,
+                applicationProvider,
             )
     }
 }

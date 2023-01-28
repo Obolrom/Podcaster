@@ -1,5 +1,6 @@
 package io.obolonsky.network.di.modules
 
+import android.content.Context
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
@@ -10,7 +11,11 @@ import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.network.BuildConfig
 import io.obolonsky.network.api.*
+import io.obolonsky.network.apihelpers.github.TokenStorage
+import io.obolonsky.network.interceptors.github.GithubAuthorizationFailedInterceptor
+import io.obolonsky.network.interceptors.github.GithubAuthorizationInterceptor
 import io.obolonsky.network.utils.*
+import net.openid.appauth.AuthorizationService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -41,6 +46,20 @@ class RemoteApiModule {
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
+            .build()
+    }
+
+    @Reusable
+    @GitHub
+    @Provides
+    fun provideGitHubOkHttpClient(
+        loggingInterceptor: HttpLoggingInterceptor,
+        context: Context,
+    ): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addNetworkInterceptor(loggingInterceptor)
+            .addNetworkInterceptor(GithubAuthorizationInterceptor())
+            .addNetworkInterceptor(GithubAuthorizationFailedInterceptor(AuthorizationService(context), TokenStorage))
             .build()
     }
 
@@ -161,6 +180,21 @@ class RemoteApiModule {
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(converter)
             .build()
+    }
+
+    @Reusable
+    @Provides
+    fun provideGithubApi(
+        @GitHub githubOkHttpClient: OkHttpClient,
+        gsonConverterFactory: GsonConverterFactory,
+    ): GithubApi {
+        return Retrofit.Builder()
+            .baseUrl("https://api.github.com/")
+            .client(githubOkHttpClient)
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .addConverterFactory(gsonConverterFactory)
+            .build()
+            .create()
     }
 
     @Reusable

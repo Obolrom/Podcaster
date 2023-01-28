@@ -16,9 +16,6 @@ import io.obolonsky.github.viewmodels.UserInfoViewModel
         AuthorizationServiceProvider::class,
         GitHubAuthRepoProvider::class,
         GitHubUserRepoProvider::class,
-    ],
-    modules = [
-        GitHubModule::class,
     ]
 )
 internal interface GitHubComponent {

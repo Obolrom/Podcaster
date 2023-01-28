@@ -14,20 +14,6 @@ android {
         minSdk = 21
         targetSdk = 31
 
-        buildConfigField(
-            type = "String",
-            name = "GITHUB_CLIENT_ID",
-            value = com.android.build.gradle.internal.cxx.configure.gradleLocalProperties(rootDir)
-                .getProperty("githubClientId")
-        )
-
-        buildConfigField(
-            type = "String",
-            name = "GITHUB_CLIENT_SECRET",
-            value = com.android.build.gradle.internal.cxx.configure.gradleLocalProperties(rootDir)
-                .getProperty("githubClientSecret")
-        )
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 

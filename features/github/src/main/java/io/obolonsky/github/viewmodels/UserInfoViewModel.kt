@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import io.obolonsky.core.di.data.github.GithubUser
+import io.obolonsky.core.di.data.github.GithubUserProfile
 import io.obolonsky.core.di.reactWith
 import io.obolonsky.github.interactors.GitHubProfileInteractor
 import kotlinx.coroutines.channels.Channel
@@ -26,7 +26,7 @@ class UserInfoViewModel @AssistedInject constructor(
 ) : ViewModel() {
 
     private val loadingMutableStateFlow = MutableStateFlow(false)
-    private val userInfoMutableStateFlow = MutableStateFlow<GithubUser?>(null)
+    private val userInfoMutableStateFlow = MutableStateFlow<GithubUserProfile?>(null)
     private val toastEventChannel = Channel<Int>(Channel.BUFFERED)
     private val logoutPageEventChannel = Channel<Intent>(Channel.BUFFERED)
     private val logoutCompletedEventChannel = Channel<Unit>(Channel.BUFFERED)
@@ -34,7 +34,7 @@ class UserInfoViewModel @AssistedInject constructor(
     val loadingFlow: Flow<Boolean>
         get() = loadingMutableStateFlow.asStateFlow()
 
-    val userInfoFlow: Flow<GithubUser?>
+    val userInfoFlow: Flow<GithubUserProfile?>
         get() = userInfoMutableStateFlow.asStateFlow()
 
     val toastFlow: Flow<Int>
@@ -53,7 +53,7 @@ class UserInfoViewModel @AssistedInject constructor(
     fun loadUserInfo() {
         viewModelScope.launch {
             loadingMutableStateFlow.value = true
-            gitHubProfileInteractor.getUserInformation()
+            gitHubProfileInteractor.getCurrentUserProfile()
                 .reactWith(
                     onSuccess = {
                         userInfoMutableStateFlow.value = it

@@ -4,9 +4,9 @@ import com.apollographql.apollo3.ApolloCall
 import com.apollographql.apollo3.ApolloClient
 import io.obolonsky.core.di.data.spaceX.rocket.Rocket
 import io.obolonsky.core.di.utils.CoroutineSchedulers
-import io.obolonsky.network.RocketFullDetailsQuery
 import io.obolonsky.network.apihelpers.base.GraphQlApiHelper
 import io.obolonsky.network.mappers.RocketFullDetailsToRocketMapper
+import io.obolonsky.network.spacex.RocketFullDetailsQuery
 import javax.inject.Inject
 
 class GetRocketDetailsApiHelper @Inject constructor(

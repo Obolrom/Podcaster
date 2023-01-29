@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.browser.customtabs.CustomTabsIntent
 import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.data.github.GithubUser
+import io.obolonsky.core.di.data.github.GithubUserProfile
 import io.obolonsky.core.di.repositories.github.GitHubAuthRepo
 import io.obolonsky.core.di.repositories.github.GitHubUserRepo
 import net.openid.appauth.AuthorizationService
@@ -30,6 +31,10 @@ class GitHubProfileInteractor @Inject constructor(
 
     suspend fun getUserInformation(): Reaction<GithubUser> {
         return userRepository.getUserInformation()
+    }
+
+    suspend fun getCurrentUserProfile(): Reaction<GithubUserProfile> {
+        return userRepository.getViewerProfile()
     }
 
     fun logout() {

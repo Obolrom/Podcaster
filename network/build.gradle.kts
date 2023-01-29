@@ -118,8 +118,18 @@ dependencies {
 }
 
 apollo {
-    schemaFile.set(file("src/main/graphql/schema.graphqls"))
-    srcDir(file("src/main/graphql/"))
+    service("spaceX") {
+        packageName.set("io.obolonsky.network.spacex")
+        schemaFile.set(file("src/main/graphql/spaceX/schema.graphqls"))
+        srcDir(file("src/main/graphql/spaceX/"))
+    }
+
+    service("github") {
+        packageName.set("io.obolonsky.network.github")
+//        schemaFile.set(file("src/main/graphql/github/github_schema.json"))
+        schemaFile.set(file("src/main/graphql/github/schema.graphqls"))
+        srcDir(file("src/main/graphql/github/"))
+    }
 
     packageName.set("io.obolonsky.network")
 }

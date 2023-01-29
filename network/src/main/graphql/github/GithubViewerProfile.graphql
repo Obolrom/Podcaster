@@ -1,0 +1,14 @@
+query GetGithubViewerProfile {
+    viewer {
+        id
+        login
+        avatarUrl
+        email
+        followers {
+            totalCount
+        }
+        repositories {
+            totalCount
+        }
+    }
+}

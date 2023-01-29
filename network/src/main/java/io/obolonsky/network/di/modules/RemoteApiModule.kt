@@ -255,4 +255,16 @@ class RemoteApiModule {
             .okHttpClient(okHttpClient)
             .build()
     }
+
+    @Reusable
+    @GitHub
+    @Provides
+    fun provideGithubApolloClient(
+        @GitHub okHttpClient: OkHttpClient,
+    ): ApolloClient {
+        return ApolloClient.Builder()
+            .serverUrl("https://api.github.com/graphql")
+            .okHttpClient(okHttpClient)
+            .build()
+    }
 }

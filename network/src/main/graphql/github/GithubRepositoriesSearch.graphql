@@ -1,0 +1,24 @@
+query GithubRepositoriesSearch(
+    $pageSize: Int!,
+    $query: String!
+) {
+    search(
+        first: $pageSize,
+        query: $query,
+        type: REPOSITORY,
+    ) {
+        pageInfo {
+            hasNextPage
+            endCursor
+        }
+        repos: edges {
+            repo: node {
+                ... on Repository {
+                    name
+                    nameWithOwner
+                    stargazerCount
+                }
+            }
+        }
+    }
+}

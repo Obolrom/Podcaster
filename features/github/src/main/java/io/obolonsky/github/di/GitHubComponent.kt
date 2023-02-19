@@ -7,6 +7,7 @@ import io.obolonsky.core.di.repositories.providers.GitHubAuthRepoProvider
 import io.obolonsky.core.di.repositories.providers.GitHubUserRepoProvider
 import io.obolonsky.core.di.scopes.FeatureScope
 import io.obolonsky.github.viewmodels.AuthViewModel
+import io.obolonsky.github.viewmodels.SearchReposViewModel
 import io.obolonsky.github.viewmodels.UserInfoViewModel
 
 @FeatureScope
@@ -34,4 +35,6 @@ internal interface GitHubComponent {
     fun getAuthViewModelFactory(): AuthViewModel.Factory
 
     fun getUserInfoViewModelFactory(): UserInfoViewModel.Factory
+
+    fun getSearchReposViewModelFactory(): SearchReposViewModel.Factory
 }

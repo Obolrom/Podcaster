@@ -7,9 +7,11 @@ import io.obolonsky.core.di.data.github.GithubUser
 import io.obolonsky.core.di.data.github.GithubUserProfile
 import io.obolonsky.core.di.repositories.github.GitHubAuthRepo
 import io.obolonsky.core.di.repositories.github.GitHubUserRepo
+import io.obolonsky.core.di.scopes.FeatureScope
 import net.openid.appauth.AuthorizationService
 import javax.inject.Inject
 
+@FeatureScope
 class GitHubProfileInteractor @Inject constructor(
     private val authRepository: GitHubAuthRepo,
     private val authService: AuthorizationService,

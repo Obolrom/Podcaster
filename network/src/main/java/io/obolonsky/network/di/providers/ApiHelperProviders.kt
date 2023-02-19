@@ -1,6 +1,7 @@
 package io.obolonsky.network.di.providers
 
 import io.obolonsky.network.apihelpers.*
+import io.obolonsky.network.apihelpers.github.GetGithubSearchReposApiHelper
 import io.obolonsky.network.apihelpers.github.GetGithubUserApiHelper
 import io.obolonsky.network.apihelpers.github.GetGithubUserProfileApiHelper
 import io.obolonsky.network.apihelpers.github.GetGithubViewerProfileApiHelper
@@ -26,6 +27,8 @@ interface ApiHelperProviders : SpaceXHelpersProvider {
     val getCoinDetailsApiHelper: GetCoinDetailsApiHelper
 
     val getGithubUserApiHelper: GetGithubUserApiHelper
+
+    val getGithubSearchReposApiHelper: GetGithubSearchReposApiHelper
 
     val getGithubUserProfileApiHelper: GetGithubUserProfileApiHelper
 

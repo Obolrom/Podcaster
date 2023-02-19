@@ -1,9 +1,28 @@
 package io.obolonsky.network.mappers.github
 
+import io.obolonsky.core.di.data.github.GithubRepository
 import io.obolonsky.core.di.data.github.GithubUserProfile
 import io.obolonsky.core.di.utils.Mapper
 import io.obolonsky.network.github.GetGithubViewerProfileQuery
+import io.obolonsky.network.github.GithubRepositoriesSearchQuery
 import io.obolonsky.network.github.GithubUserProfileQuery
+
+class GithubSearchReposMapper : Mapper<GithubRepositoriesSearchQuery.Data, List<GithubRepository>> {
+
+    override fun map(input: GithubRepositoriesSearchQuery.Data): List<GithubRepository> {
+        return input.search
+            .repos
+            ?.mapNotNull {
+                val repo = it?.repo?.onRepository
+                GithubRepository(
+                    name = requireNotNull(repo?.name),
+                    nameWithOwner = repo?.nameWithOwner,
+                    stargazerCount = repo?.stargazerCount,
+                )
+            }
+            .orEmpty()
+    }
+}
 
 class GithubUserProfileMapper : Mapper<GithubUserProfileQuery.Data, GithubUserProfile> {
 

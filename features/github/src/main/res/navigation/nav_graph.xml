@@ -22,6 +22,18 @@
         android:name="io.obolonsky.github.ui.UserInfoFragment"
         android:label="RepositoryListFragment"
         tools:layout="@layout/fragment_user_info"
+        >
+        <action
+            android:id="@+id/action_repositoryListFragment_to_searchReposFragment"
+            app:destination="@id/searchReposFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchReposFragment"
+        android:name="io.obolonsky.github.ui.SearchReposFragment"
+        android:label="RepositoryListFragment"
+        tools:layout="@layout/fragment_search_repos"
         />
 
 </navigation>

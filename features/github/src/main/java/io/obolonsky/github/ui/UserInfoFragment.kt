@@ -9,11 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import coil.load
 import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.core.di.toaster
 import io.obolonsky.github.R
 import io.obolonsky.github.databinding.FragmentUserInfoBinding
-import io.obolonsky.github.launchAndCollectIn
 import io.obolonsky.github.redux.userinfo.UserInfoSideEffects
 import io.obolonsky.github.redux.userinfo.UserInfoState
 import io.obolonsky.github.resetNavGraph
@@ -51,27 +51,28 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         binding.logout.setOnClickListener {
             viewModel.logout()
         }
+        binding.searchRepositories.setOnClickListener {
+            findNavController()
+                .navigate(R.id.action_repositoryListFragment_to_searchReposFragment)
+        }
 
         viewModel.observe(viewLifecycleOwner, state = ::render, sideEffect = ::sideEffect)
-
-//        viewModel.logoutPageFlow.launchAndCollectIn(viewLifecycleOwner) {
-//            logoutResponse.launch(it)
-//        }
-//
-//        viewModel.logoutCompletedFlow.launchAndCollectIn(viewLifecycleOwner) {
-//            findNavController().resetNavGraph(R.navigation.nav_graph)
-//        }
     }
 
     private fun render(state: UserInfoState) {
         val isLoading = state.isLoading
+        val user = state.user
 
         binding.progressBar.isVisible = isLoading
         binding.getUserInfo.isEnabled = !isLoading
         binding.userInfo.isVisible = !isLoading
 
-        if (state.user != null) {
-            binding.userInfo.text = state.user.toString()
+        if (user != null) {
+            binding.avatar.load(user.avatarUrl) {
+                crossfade(400)
+            }
+            binding.username.text = user.login
+            binding.userInfo.text = user.toString()
         }
     }
 

@@ -37,6 +37,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_fake)
 
+        startActivity(Intent(this, GitHubActivity::class.java))
+
         binding.goToGithub.setOnClickListener {
             startActivity(Intent(this, GitHubActivity::class.java))
         }

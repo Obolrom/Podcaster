@@ -58,6 +58,10 @@ dependencies {
     // AppAuth
     implementation("net.openid:appauth:0.9.1")
 
+    // Redux
+    implementation("org.orbit-mvi:orbit-core:4.6.0")
+    implementation("org.orbit-mvi:orbit-viewmodel:4.6.0")
+
     // Network
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")

@@ -14,9 +14,12 @@ import io.obolonsky.core.di.toaster
 import io.obolonsky.github.R
 import io.obolonsky.github.databinding.FragmentUserInfoBinding
 import io.obolonsky.github.launchAndCollectIn
+import io.obolonsky.github.redux.userinfo.UserInfoSideEffects
+import io.obolonsky.github.redux.userinfo.UserInfoState
 import io.obolonsky.github.resetNavGraph
 import io.obolonsky.github.viewmodels.ComponentViewModel
 import io.obolonsky.github.viewmodels.UserInfoViewModel
+import org.orbitmvi.orbit.viewmodel.observe
 
 class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
@@ -34,7 +37,7 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
     private val logoutResponse = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        if(result.resultCode == Activity.RESULT_OK) {
+        if (result.resultCode == Activity.RESULT_OK) {
             viewModel.webLogoutComplete()
         } else {
             // логаут отменен
@@ -45,38 +48,44 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.corruptAccessToken.setOnClickListener {
-            viewModel.corruptAccessToken()
-        }
-        binding.getUserInfo.setOnClickListener {
-            viewModel.loadUserInfo()
-        }
         binding.logout.setOnClickListener {
             viewModel.logout()
         }
 
-        viewModel.loadingFlow.launchAndCollectIn(viewLifecycleOwner) { isLoading ->
-            binding.progressBar.isVisible = isLoading
-            binding.getUserInfo.isEnabled = !isLoading
-            binding.userInfo.isVisible = !isLoading
-        }
+        viewModel.observe(viewLifecycleOwner, state = ::render, sideEffect = ::sideEffect)
 
-        viewModel.userInfoFlow.launchAndCollectIn(viewLifecycleOwner) { userInfo ->
-            if (userInfo != null) {
-                binding.userInfo.text = userInfo.toString()
+//        viewModel.logoutPageFlow.launchAndCollectIn(viewLifecycleOwner) {
+//            logoutResponse.launch(it)
+//        }
+//
+//        viewModel.logoutCompletedFlow.launchAndCollectIn(viewLifecycleOwner) {
+//            findNavController().resetNavGraph(R.navigation.nav_graph)
+//        }
+    }
+
+    private fun render(state: UserInfoState) {
+        val isLoading = state.isLoading
+
+        binding.progressBar.isVisible = isLoading
+        binding.getUserInfo.isEnabled = !isLoading
+        binding.userInfo.isVisible = !isLoading
+
+        if (state.user != null) {
+            binding.userInfo.text = state.user.toString()
+        }
+    }
+
+    private fun sideEffect(effect: UserInfoSideEffects) {
+        when (effect) {
+            is UserInfoSideEffects.ToastEvent -> {
+                toaster.showToast(requireContext(), getString(effect.stringRes))
             }
-        }
-
-        viewModel.toastFlow.launchAndCollectIn(viewLifecycleOwner) {
-            toaster.showToast(requireContext(), getString(it))
-        }
-
-        viewModel.logoutPageFlow.launchAndCollectIn(viewLifecycleOwner) {
-            logoutResponse.launch(it)
-        }
-
-        viewModel.logoutCompletedFlow.launchAndCollectIn(viewLifecycleOwner) {
-            findNavController().resetNavGraph(R.navigation.nav_graph)
+            is UserInfoSideEffects.LogoutPageEvent -> {
+                logoutResponse.launch(effect.intent)
+            }
+            is UserInfoSideEffects.LogoutPageCompletedEvent -> {
+                findNavController().resetNavGraph(R.navigation.nav_graph)
+            }
         }
     }
 }

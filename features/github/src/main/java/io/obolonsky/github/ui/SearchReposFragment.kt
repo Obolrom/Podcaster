@@ -5,15 +5,16 @@ import android.view.View
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.obolonsky.core.di.lazyViewModel
+import io.obolonsky.core.di.toaster
 import io.obolonsky.github.R
 import io.obolonsky.github.databinding.FragmentSearchReposBinding
 import io.obolonsky.github.redux.searchrepos.SearchReposSideEffects
 import io.obolonsky.github.redux.searchrepos.SearchReposState
 import io.obolonsky.github.viewmodels.ComponentViewModel
 import org.orbitmvi.orbit.viewmodel.observe
-import timber.log.Timber
 
 class SearchReposFragment : Fragment(R.layout.fragment_search_repos) {
 
@@ -27,8 +28,15 @@ class SearchReposFragment : Fragment(R.layout.fragment_search_repos) {
 
     private val binding by viewBinding(FragmentSearchReposBinding::bind)
 
+    private val repoAdapter = SearchReposAdapter()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.searchResult.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = repoAdapter
+        }
 
         binding.searchQuery.doOnTextChanged { text, _, _, _ ->
             viewModel.repoNameSearchQuery.value = text.toString()
@@ -38,12 +46,17 @@ class SearchReposFragment : Fragment(R.layout.fragment_search_repos) {
     }
 
     private fun render(state: SearchReposState) {
-        state.searchResults?.forEach {
-            Timber.d("searchRepos success: $it")
+        repoAdapter.submitList(state.searchResults.orEmpty())
+    }
+
+    private fun sideEffect(effect: SearchReposSideEffects) = when (effect) {
+        is SearchReposSideEffects.SearchError -> {
+            toaster().value.showToast(requireContext(), effect.error.toString())
         }
     }
 
-    private fun sideEffect(effect: SearchReposSideEffects) {
-
+    override fun onDestroyView() {
+        binding.searchResult.adapter = null
+        super.onDestroyView()
     }
 }

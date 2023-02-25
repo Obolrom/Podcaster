@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.*
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.syntax.simple.repeatOnSubscription
 import org.orbitmvi.orbit.viewmodel.container
@@ -50,7 +51,9 @@ class SearchReposViewModel @AssistedInject constructor(
                     onSuccess = {
                         reduce { state.copy(searchResults = it) }
                     },
-                    onError = { }
+                    onError = {
+                        postSideEffect(SearchReposSideEffects.SearchError(it))
+                    }
                 )
                 .collect()
         }

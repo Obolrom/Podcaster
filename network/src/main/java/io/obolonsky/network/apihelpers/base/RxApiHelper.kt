@@ -7,7 +7,7 @@ import io.obolonsky.network.utils.runWithReaction
 import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.rx3.await
 
-abstract class RxApiHelper<ApiResult : Any, DomainResult, ApiParam>(
+abstract class RxApiHelper<ApiResult : Any, DomainResult : Any, ApiParam>(
     private val rxSchedulers: RxSchedulers,
     private val mapper: Mapper<ApiResult, DomainResult>
 ) : ApiHelper<DomainResult, ApiParam> {
@@ -26,8 +26,5 @@ abstract class RxApiHelper<ApiResult : Any, DomainResult, ApiParam>(
             .observeOn(rxSchedulers.computation)
             .map(mapper::map)
             .await()
-            .let { result ->
-                result ?: result.onNullableReturn()
-            }
     }
 }

@@ -10,12 +10,12 @@ plugins {
 }
 
 android {
-    compileSdk = 31
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "io.obolonsky.podcaster"
         minSdk = 21
-        targetSdk = 31
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -76,7 +76,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10")
 
     // Base
     implementation("androidx.appcompat:appcompat:1.4.1")

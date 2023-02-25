@@ -22,8 +22,8 @@ abstract class BaseSingleFlowGraphQlApiHelper<ApiResult : Query.Data, DomainResu
         return apiRequest(param)
             .toFlow()
             .map { mapper.map(it.dataAssertNoErrors) }
-            .map { Reaction.success(it) }
-            .catch { it.apolloWithReaction() }
+            .map<DomainResult, Reaction<DomainResult>> { Reaction.success(it) }
+            .catch { emit(it.apolloWithReaction()) }
             .flowOn(dispatchers.computation)
     }
 }

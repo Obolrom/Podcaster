@@ -11,7 +11,10 @@ interface GitHubUserRepo {
     @Deprecated("do not user rest implementation")
     suspend fun getUserInformation(): Reaction<GithubUser>
 
-    suspend fun getViewerProfile(): Reaction<GithubUserProfile>
+    /**
+     * Returns SINGLE value
+     */
+    fun getViewerProfile(): Flow<Reaction<GithubUserProfile>>
 
     fun getReposBySearchQuery(repoName: String): Flow<Reaction<List<GithubRepository>>>
 }

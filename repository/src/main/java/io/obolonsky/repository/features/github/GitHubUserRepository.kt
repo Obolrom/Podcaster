@@ -11,7 +11,6 @@ import io.obolonsky.network.apihelpers.github.GetGithubUserApiHelper
 import io.obolonsky.network.apihelpers.github.GetGithubUserProfileApiHelper
 import io.obolonsky.network.apihelpers.github.GetGithubViewerProfileApiHelper
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 @Reusable
@@ -22,18 +21,16 @@ class GitHubUserRepository @Inject constructor(
     private val getGithubSearchReposApiHelper: GetGithubSearchReposApiHelper,
 ) : GitHubUserRepo {
 
-    @Deprecated("do not user rest implementation")
+    @Deprecated("do not use rest implementation")
     override suspend fun getUserInformation(): Reaction<GithubUser> {
         return getGithubUserApiHelper.load(Unit)
     }
 
     override fun getReposBySearchQuery(repoName: String): Flow<Reaction<List<GithubRepository>>> {
-        return flow {
-            emit(getGithubSearchReposApiHelper.load(repoName))
-        }
+        return getGithubSearchReposApiHelper.load(repoName)
     }
 
-    override suspend fun getViewerProfile(): Reaction<GithubUserProfile> {
+    override fun getViewerProfile(): Flow<Reaction<GithubUserProfile>> {
         return githubUserViewerApiHelper.load(Unit)
     }
 }

@@ -8,6 +8,7 @@ import io.obolonsky.core.di.data.github.GithubUserProfile
 import io.obolonsky.core.di.repositories.github.GitHubAuthRepo
 import io.obolonsky.core.di.repositories.github.GitHubUserRepo
 import io.obolonsky.core.di.scopes.FeatureScope
+import kotlinx.coroutines.flow.Flow
 import net.openid.appauth.AuthorizationService
 import javax.inject.Inject
 
@@ -35,7 +36,7 @@ class GitHubProfileInteractor @Inject constructor(
         return userRepository.getUserInformation()
     }
 
-    suspend fun getCurrentUserProfile(): Reaction<GithubUserProfile> {
+    fun getCurrentUserProfile(): Flow<Reaction<GithubUserProfile>> {
         return userRepository.getViewerProfile()
     }
 

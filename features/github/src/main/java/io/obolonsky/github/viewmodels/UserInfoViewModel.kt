@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import io.obolonsky.core.di.reactWith
+import io.obolonsky.core.di.utils.reactWith
 import io.obolonsky.github.interactors.GitHubProfileInteractor
 import io.obolonsky.github.redux.userinfo.UserInfoSideEffects
 import io.obolonsky.github.redux.userinfo.UserInfoState
@@ -52,6 +52,7 @@ class UserInfoViewModel @AssistedInject constructor(
                     postSideEffect(UserInfoSideEffects.ToastEvent(CoreR.string.get_user_info))
                 }
             )
+            .collect()
     }
 
     fun logout() = intent {

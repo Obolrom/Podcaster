@@ -55,6 +55,10 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
             findNavController()
                 .navigate(R.id.action_repositoryListFragment_to_searchReposFragment)
         }
+        binding.toCompose.setOnClickListener {
+            findNavController()
+                .navigate(R.id.action_repositoryListFragment_to_githubRepoFragment)
+        }
 
         viewModel.observe(viewLifecycleOwner, state = ::render, sideEffect = ::sideEffect)
     }

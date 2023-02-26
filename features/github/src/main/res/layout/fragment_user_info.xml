@@ -26,13 +26,24 @@
         />
 
     <Button
+        android:id="@+id/to_compose"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="To repo view"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_repositories"
+        />
+
+    <Button
         android:id="@+id/logout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/logout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_repositories" />
+        app:layout_constraintTop_toBottomOf="@id/to_compose" />
 
     <ProgressBar
         android:id="@+id/progressBar"

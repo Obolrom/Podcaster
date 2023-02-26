@@ -1,0 +1,38 @@
+query GithubRepo($name: String!, $owner: String!) {
+    repository(
+        name: $name,
+        owner: $owner,
+    ) {
+        id
+        name
+        owner {
+            login
+        }
+        stargazerCount
+        forkCount
+        updatedAt
+        description
+        defaultBranchRef {
+            id
+            name
+        }
+        visibility
+        issues {
+            totalCount
+        }
+        primaryLanguage {
+            id
+            color
+            name
+        }
+        repoTree: object(expression: "HEAD:") {
+            ... on Tree {
+                entries {
+                    name
+                    type
+                    mode
+                }
+            }
+        }
+    }
+}

@@ -16,10 +16,6 @@
             app:popUpTo="@id/authFragment"
             app:popUpToInclusive="true"
             />
-        <action
-            android:id="@+id/action_authFragment_to_githubRepoFragment"
-            app:destination="@id/githubRepoFragment"
-            />
     </fragment>
 
     <fragment
@@ -31,6 +27,10 @@
         <action
             android:id="@+id/action_repositoryListFragment_to_searchReposFragment"
             app:destination="@id/searchReposFragment"
+            />
+        <action
+            android:id="@+id/action_repositoryListFragment_to_githubRepoFragment"
+            app:destination="@id/githubRepoFragment"
             />
     </fragment>
 

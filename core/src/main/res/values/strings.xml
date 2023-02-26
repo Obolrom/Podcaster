@@ -43,6 +43,7 @@
     <string name="get_user_error">Get user error</string>
 
     <!--  Github  -->
+    <string name="star">Star</string>
     <string name="stars_count">%d stars</string>
     <string name="forks_count">%d forks</string>
 

@@ -66,6 +66,7 @@ dependencies {
     // Redux
     implementation("org.orbit-mvi:orbit-core:4.6.0")
     implementation("org.orbit-mvi:orbit-viewmodel:4.6.0")
+    implementation("org.orbit-mvi:orbit-compose:4.6.0")
 
     // Compose
     val composeBom = platform("androidx.compose:compose-bom:2023.01.00")

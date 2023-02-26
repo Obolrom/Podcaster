@@ -2,14 +2,12 @@ package io.obolonsky.repository.features.github
 
 import dagger.Reusable
 import io.obolonsky.core.di.Reaction
+import io.obolonsky.core.di.data.github.GithubRepoView
 import io.obolonsky.core.di.data.github.GithubRepository
 import io.obolonsky.core.di.data.github.GithubUser
 import io.obolonsky.core.di.data.github.GithubUserProfile
 import io.obolonsky.core.di.repositories.github.GitHubUserRepo
-import io.obolonsky.network.apihelpers.github.GetGithubSearchReposApiHelper
-import io.obolonsky.network.apihelpers.github.GetGithubUserApiHelper
-import io.obolonsky.network.apihelpers.github.GetGithubUserProfileApiHelper
-import io.obolonsky.network.apihelpers.github.GetGithubViewerProfileApiHelper
+import io.obolonsky.network.apihelpers.github.*
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -19,6 +17,7 @@ class GitHubUserRepository @Inject constructor(
     private val githubUserProfileApiHelper: GetGithubUserProfileApiHelper,
     private val githubUserViewerApiHelper: GetGithubViewerProfileApiHelper,
     private val getGithubSearchReposApiHelper: GetGithubSearchReposApiHelper,
+    private val getGithubRepoApiHelper: GetGithubRepoApiHelper,
 ) : GitHubUserRepo {
 
     @Deprecated("do not use rest implementation")
@@ -28,6 +27,10 @@ class GitHubUserRepository @Inject constructor(
 
     override fun getReposBySearchQuery(repoName: String): Flow<Reaction<List<GithubRepository>>> {
         return getGithubSearchReposApiHelper.load(repoName)
+    }
+
+    override fun getGithubRepoView(): Flow<Reaction<GithubRepoView>> {
+        return getGithubRepoApiHelper.load(Unit)
     }
 
     override fun getViewerProfile(): Flow<Reaction<GithubUserProfile>> {

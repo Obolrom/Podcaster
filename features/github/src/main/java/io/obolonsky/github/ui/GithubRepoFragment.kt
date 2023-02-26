@@ -5,34 +5,57 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.Card
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ForkLeft
-import androidx.compose.material.icons.rounded.ForkRight
+import androidx.compose.material.icons.outlined.InsertDriveFile
+import androidx.compose.material.icons.rounded.Folder
 import androidx.compose.material.icons.rounded.StarOutline
-import androidx.compose.runtime.*
+import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import io.obolonsky.core.di.data.github.GithubRepoView
+import io.obolonsky.core.di.data.github.RepoTreeEntry
+import io.obolonsky.core.di.lazyViewModel
+import io.obolonsky.github.redux.repoview.GithubRepoViewState
 import io.obolonsky.github.ui.compose.theme.ComposeMainTheme
-import kotlinx.coroutines.flow.flowOf
+import io.obolonsky.github.viewmodels.ComponentViewModel
+import io.obolonsky.github.viewmodels.GithubRepoViewViewModel
+import org.orbitmvi.orbit.compose.collectAsState
 import io.obolonsky.core.R as CoreR
 import io.obolonsky.coreui.R as CoreUiR
 
 class GithubRepoFragment : Fragment() {
+
+    private val componentViewModel by activityViewModels<ComponentViewModel>()
+
+    private val viewModel: GithubRepoViewViewModel by lazyViewModel {
+        componentViewModel.gitHubComponent
+            .getGithubRepoViewViewModelFactory()
+            .create(it)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,36 +69,116 @@ class GithubRepoFragment : Fragment() {
                 )
             )
             setContent {
-                Screen()
+                val state by viewModel.collectAsState()
+
+                Screen(state)
             }
         }
     }
 }
 
 @Composable
-fun Screen() {
-    ComposeMainTheme {
-        val context = LocalContext.current
-        val starsState = remember { mutableStateOf(1) }
-
-        Column(
-            modifier = Modifier
-                .verticalScroll(rememberScrollState())
+fun Screen(viewState: GithubRepoViewState) = ComposeMainTheme {
+    Column(
+        modifier = Modifier.padding(6.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            RepoDescription(text = "Application for testing")
-            StarsForks(stars = starsState, forks = 1, Modifier.padding(8.dp))
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(102.dp),
-                onClick = {
-                    starsState.value++
-                    Toast.makeText(context, "fuck", Toast.LENGTH_SHORT).show()
-                },
-            ) {
-                Text(text = "Hello world")
+            Icon(
+                painter = painterResource(id = CoreUiR.drawable.repo_svgrepo_com),
+                contentDescription = null,
+            )
+            Spacer(Modifier.width(12.dp))
+            Text(
+                text = viewState.model?.owner.orEmpty(),
+                color = colorResource(id = CoreUiR.color.blue),
+            )
+            Spacer(Modifier.width(4.dp))
+            Text(text = "/")
+            Spacer(Modifier.width(4.dp))
+            Text(
+                text = viewState.model?.repoName.orEmpty(),
+                color = colorResource(id = CoreUiR.color.blue),
+                fontWeight = FontWeight.W500,
+            )
+        }
+
+        RepoDescription(
+            text = viewState.model?.description.orEmpty(),
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+        )
+        StarsForks(
+            stars = viewState.model?.stargazerCount ?: 0,
+            forks = viewState.model?.forkCount ?: 0,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+        )
+
+        Row(
+            modifier = Modifier.padding(8.dp),
+        ) {
+            StarButton(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.width(8.dp))
+            StarButton(modifier = Modifier.weight(1f))
+        }
+
+        Card(
+            modifier = Modifier.padding(8.dp),
+        ) {
+            Column {
+                Text(
+                    modifier = Modifier
+                        .height(36.dp)
+                        .background(colorResource(id = CoreUiR.color.black_10))
+                        .fillMaxWidth(),
+                    text = "Stub",
+                )
+                Divider()
+                LazyColumn {
+                    val items = viewState.model?.treeEntries.orEmpty()
+                    itemsIndexed(items) { index, treeEntry ->
+                        RepoTreeEntry(
+                            treeEntry = treeEntry,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                        )
+                        if (index != items.size - 1) {
+                            Divider()
+                        }
+                    }
+                }
             }
         }
+    }
+}
+
+@Composable
+fun RepoTreeEntry(
+    treeEntry: RepoTreeEntry,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        if (treeEntry.mode == 16384) {
+            Icon(
+                imageVector = Icons.Rounded.Folder,
+                contentDescription = null,
+                tint = colorResource(id = CoreUiR.color.blue),
+            )
+        } else {
+            Icon(
+                imageVector = Icons.Outlined.InsertDriveFile,
+                contentDescription = null,
+            )
+        }
+        Spacer(modifier = Modifier.width(12.dp))
+        Text(
+            text = treeEntry.name,
+        )
     }
 }
 
@@ -92,7 +195,7 @@ fun RepoDescription(
 
 @Composable
 fun StarsForks(
-    stars: MutableState<Int>,
+    stars: Int,
     forks: Int,
     modifier: Modifier = Modifier,
 ) {
@@ -102,11 +205,46 @@ fun StarsForks(
     ) {
         Icon(imageVector = Icons.Rounded.StarOutline, contentDescription = null)
         Spacer(modifier = Modifier.width(8.dp))
-        Text(text = stringResource(id = CoreR.string.stars_count, stars.value))
+        Text(text = stringResource(id = CoreR.string.stars_count, stars))
         Spacer(modifier = Modifier.width(24.dp))
         Icon(painter = painterResource(id = CoreUiR.drawable.git_fork), contentDescription = null)
         Spacer(modifier = Modifier.width(8.dp))
         Text(text = stringResource(id = CoreR.string.forks_count, forks))
+    }
+}
+
+@Composable
+fun StarButton(
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        modifier = modifier,
+        elevation = 2.dp,
+    ) {
+        val context = LocalContext.current
+
+        Row(
+            modifier = Modifier
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = rememberRipple(bounded = true),
+                    onClick = {
+                        Toast
+                            .makeText(context, "on star clicked", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                )
+                .padding(vertical = 2.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.StarOutline,
+                contentDescription = null,
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = stringResource(id = CoreR.string.star))
+        }
     }
 }
 
@@ -116,5 +254,28 @@ fun StarsForks(
 )
 @Composable
 fun SecondPreview() {
-    Screen()
+    val state = GithubRepoViewState(
+        model = GithubRepoView(
+            id = "id",
+            repoName = "RxJava",
+            owner = "Obolrom",
+            stargazerCount = 3,
+            forkCount = 1,
+            description = "The best application in the world",
+            treeEntries = listOf(
+                RepoTreeEntry(
+                    name = "README.md",
+                    type = "tree",
+                    mode = 16384,
+                ),
+                RepoTreeEntry(
+                    name = ".gitignore",
+                    type = "blob",
+                    mode = 33188,
+                ),
+            ),
+        )
+    )
+
+    Screen(state)
 }

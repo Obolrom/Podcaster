@@ -16,9 +16,9 @@ abstract class BaseSingleFlowGraphQlApiHelper<ApiResult : Query.Data, DomainResu
     private val mapper: Mapper<ApiResult, DomainResult>
 ) : SingleFlowApiHelper<ApiParam, DomainResult> {
 
-    abstract fun apiRequest(param: ApiParam): ApolloCall<ApiResult>
+    protected abstract fun apiRequest(param: ApiParam): ApolloCall<ApiResult>
 
-    override fun load(param: ApiParam): Flow<Reaction<DomainResult>> {
+    final override fun load(param: ApiParam): Flow<Reaction<DomainResult>> {
         return apiRequest(param)
             .toFlow()
             .map { mapper.map(it.dataAssertNoErrors) }

@@ -43,6 +43,9 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
 
     private fun bindViewModel() {
         binding.loginButton.setOnClickListener { viewModel.openLoginPage() }
+        binding.toCompose.setOnClickListener {
+            findNavController().navigate(R.id.action_authFragment_to_githubRepoFragment)
+        }
         viewModel.loadingFlow.launchAndCollectIn(viewLifecycleOwner) {
             updateIsLoading(it)
         }

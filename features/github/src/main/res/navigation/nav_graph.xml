@@ -14,7 +14,12 @@
             android:id="@+id/action_authFragment_to_repositoryListFragment"
             app:destination="@id/repositoryListFragment"
             app:popUpTo="@id/authFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            />
+        <action
+            android:id="@+id/action_authFragment_to_githubRepoFragment"
+            app:destination="@id/githubRepoFragment"
+            />
     </fragment>
 
     <fragment
@@ -34,6 +39,12 @@
         android:name="io.obolonsky.github.ui.SearchReposFragment"
         android:label="RepositoryListFragment"
         tools:layout="@layout/fragment_search_repos"
+        />
+
+    <fragment
+        android:id="@+id/githubRepoFragment"
+        android:name="io.obolonsky.github.ui.GithubRepoFragment"
+        android:label="RepositoryListFragment"
         />
 
 </navigation>

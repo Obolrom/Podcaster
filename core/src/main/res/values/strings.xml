@@ -41,4 +41,9 @@
     <string name="go_to_github">Github</string>
     <string name="auth_canceled">Auth cancelled</string>
     <string name="get_user_error">Get user error</string>
+
+    <!--  Github  -->
+    <string name="stars_count">%d stars</string>
+    <string name="forks_count">%d forks</string>
+
 </resources>

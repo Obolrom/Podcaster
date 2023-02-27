@@ -9,6 +9,7 @@ import io.obolonsky.core.di.repositories.github.GitHubUserRepo
 import io.obolonsky.core.di.utils.reactWith
 import io.obolonsky.github.redux.repoview.GithubRepoViewState
 import io.obolonsky.github.redux.repoview.RepoViewSideEffects
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
@@ -28,6 +29,15 @@ class GithubRepoViewViewModel @AssistedInject constructor(
 
     init {
         loadRepo()
+    }
+
+    fun toggleStar() = intent {
+        delay(200)
+
+        reduce {
+            val model = state.model
+            state.copy(model = model?.copy(viewerHasStarred = !model.viewerHasStarred))
+        }
     }
 
     private fun loadRepo() = intent {

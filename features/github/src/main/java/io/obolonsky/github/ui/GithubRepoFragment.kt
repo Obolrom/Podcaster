@@ -18,6 +18,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.InsertDriveFile
 import androidx.compose.material.icons.rounded.Folder
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.StarOutline
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
@@ -71,14 +72,20 @@ class GithubRepoFragment : Fragment() {
             setContent {
                 val state by viewModel.collectAsState()
 
-                Screen(state)
+                Screen(
+                    viewState = state,
+                    onStarClick = { viewModel.toggleStar() }
+                )
             }
         }
     }
 }
 
 @Composable
-fun Screen(viewState: GithubRepoViewState) = ComposeMainTheme {
+fun Screen(
+    viewState: GithubRepoViewState,
+    onStarClick: () -> Unit,
+) = ComposeMainTheme {
     Column(
         modifier = Modifier.padding(6.dp)
     ) {
@@ -118,9 +125,18 @@ fun Screen(viewState: GithubRepoViewState) = ComposeMainTheme {
         Row(
             modifier = Modifier.padding(8.dp),
         ) {
-            StarButton(modifier = Modifier.weight(1f))
+
+            StarButton(
+                viewerHasStarred = viewState.model?.viewerHasStarred ?: false,
+                modifier = Modifier.weight(1f),
+                onStarClick = onStarClick,
+            )
             Spacer(modifier = Modifier.width(8.dp))
-            StarButton(modifier = Modifier.weight(1f))
+            StarButton(
+                viewerHasStarred = viewState.model?.viewerHasStarred ?: false,
+                modifier = Modifier.weight(1f),
+                onStarClick = onStarClick,
+            )
         }
 
         Card(
@@ -215,35 +231,38 @@ fun StarsForks(
 
 @Composable
 fun StarButton(
+    viewerHasStarred: Boolean,
     modifier: Modifier = Modifier,
+    onStarClick: () -> Unit,
 ) {
     Card(
         modifier = modifier,
         elevation = 2.dp,
     ) {
-        val context = LocalContext.current
+        val imageVector =
+            if (viewerHasStarred) Icons.Rounded.Star
+            else Icons.Rounded.StarOutline
+        val messageResId =
+            if (viewerHasStarred) CoreR.string.starred
+            else CoreR.string.star
 
         Row(
             modifier = Modifier
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = rememberRipple(bounded = true),
-                    onClick = {
-                        Toast
-                            .makeText(context, "on star clicked", Toast.LENGTH_SHORT)
-                            .show()
-                    }
+                    onClick = onStarClick,
                 )
                 .padding(vertical = 2.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
         ) {
             Icon(
-                imageVector = Icons.Rounded.StarOutline,
+                imageVector = imageVector,
                 contentDescription = null,
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = stringResource(id = CoreR.string.star))
+            Text(text = stringResource(messageResId))
         }
     }
 }
@@ -274,8 +293,9 @@ fun SecondPreview() {
                     mode = 33188,
                 ),
             ),
+            viewerHasStarred = true,
         )
     )
 
-    Screen(state)
+    Screen(state) { }
 }

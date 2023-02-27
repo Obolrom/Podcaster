@@ -25,6 +25,7 @@ class GithubRepoViewMapper : Mapper<GithubRepoQuery.Data, GithubRepoView> {
             forkCount = repo.forkCount,
             description = repo.description,
             treeEntries = treeEntries,
+            viewerHasStarred = repo.viewerHasStarred,
         )
     }
 }

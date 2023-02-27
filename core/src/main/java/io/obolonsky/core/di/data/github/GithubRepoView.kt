@@ -8,6 +8,7 @@ data class GithubRepoView(
     val forkCount: Int,
     val description: String?,
     val treeEntries: List<RepoTreeEntry>,
+    val viewerHasStarred: Boolean,
 )
 
 data class RepoTreeEntry(

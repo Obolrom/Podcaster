@@ -8,6 +8,7 @@ query GithubRepo($name: String!, $owner: String!) {
         owner {
             login
         }
+        viewerHasStarred
         stargazerCount
         forkCount
         updatedAt

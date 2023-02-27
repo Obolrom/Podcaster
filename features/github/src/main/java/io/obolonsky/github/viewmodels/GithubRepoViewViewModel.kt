@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.collect
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
@@ -31,13 +32,24 @@ class GithubRepoViewViewModel @AssistedInject constructor(
         loadRepo()
     }
 
-    fun toggleStar() = intent {
-        delay(200)
-
-        reduce {
-            val model = state.model
-            state.copy(model = model?.copy(viewerHasStarred = !model.viewerHasStarred))
+    fun toggleRepoStar() = intent {
+        val model = state.model
+        if (model != null) {
+            githubRepo.addRepoStar(model.id)
+                .reactWith(
+                    onSuccess = { response ->
+                        reduce {
+                            state.copy(model = state.model?.copy(viewerHasStarred = response))
+                        }
+                    },
+                    onError = {
+                        postSideEffect(RepoViewSideEffects.TogglingStarFailed(it))
+                    }
+                )
+                .collect()
         }
+
+
     }
 
     private fun loadRepo() = intent {

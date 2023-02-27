@@ -16,6 +16,7 @@ import io.obolonsky.network.interceptors.github.GithubAuthorizationFailedInterce
 import io.obolonsky.network.interceptors.github.GithubAuthorizationInterceptor
 import io.obolonsky.network.utils.*
 import net.openid.appauth.AuthorizationService
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -58,6 +59,13 @@ class RemoteApiModule {
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addNetworkInterceptor(loggingInterceptor)
+            .addNetworkInterceptor(Interceptor { chain ->
+                val request = chain.request()
+                    .newBuilder()
+                    .addHeader("X-Github-Next-Global-ID", "1")
+                    .build()
+                chain.proceed(request)
+            })
             .addNetworkInterceptor(GithubAuthorizationInterceptor())
             .addNetworkInterceptor(GithubAuthorizationFailedInterceptor(AuthorizationService(context), TokenStorage))
             .build()

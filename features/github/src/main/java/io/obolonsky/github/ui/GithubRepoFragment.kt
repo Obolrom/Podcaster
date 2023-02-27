@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -40,11 +39,14 @@ import androidx.fragment.app.activityViewModels
 import io.obolonsky.core.di.data.github.GithubRepoView
 import io.obolonsky.core.di.data.github.RepoTreeEntry
 import io.obolonsky.core.di.lazyViewModel
+import io.obolonsky.core.di.toaster
 import io.obolonsky.github.redux.repoview.GithubRepoViewState
+import io.obolonsky.github.redux.repoview.RepoViewSideEffects
 import io.obolonsky.github.ui.compose.theme.ComposeMainTheme
 import io.obolonsky.github.viewmodels.ComponentViewModel
 import io.obolonsky.github.viewmodels.GithubRepoViewViewModel
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 import io.obolonsky.core.R as CoreR
 import io.obolonsky.coreui.R as CoreUiR
 
@@ -70,11 +72,21 @@ class GithubRepoFragment : Fragment() {
                 )
             )
             setContent {
+                val context = LocalContext.current
+
                 val state by viewModel.collectAsState()
+
+                viewModel.collectSideEffect { sideEffect ->
+                    when (sideEffect) {
+                        is RepoViewSideEffects.TogglingStarFailed -> {
+                            toaster().value.showToast(context, sideEffect.error.toString())
+                        }
+                    }
+                }
 
                 Screen(
                     viewState = state,
-                    onStarClick = { viewModel.toggleStar() }
+                    onStarClick = { viewModel.toggleRepoStar() }
                 )
             }
         }

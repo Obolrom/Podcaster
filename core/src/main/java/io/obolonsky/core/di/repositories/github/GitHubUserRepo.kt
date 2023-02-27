@@ -23,4 +23,9 @@ interface GitHubUserRepo {
     fun getGithubRepoView(): Flow<Reaction<GithubRepoView>>
 
     fun getReposBySearchQuery(repoName: String): Flow<Reaction<List<GithubRepository>>>
+
+    /**
+     * Returns SINGLE value
+     */
+    fun addRepoStar(repoId: String): Flow<Reaction<Boolean>>
 }

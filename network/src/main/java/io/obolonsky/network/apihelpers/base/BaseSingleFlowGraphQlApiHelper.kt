@@ -28,7 +28,7 @@ abstract class BaseSingleFlowGraphQlApiHelper<ApiResult : Query.Data, DomainResu
     }
 }
 
-private fun Throwable.apolloWithReaction(): Reaction.Fail = when (this) {
+internal fun Throwable.apolloWithReaction(): Reaction.Fail = when (this) {
     is ApolloNetworkException -> Reaction.fail(Error.NetworkError(this))
 
     is JsonDataException -> Reaction.fail(Error.ServerError(this))

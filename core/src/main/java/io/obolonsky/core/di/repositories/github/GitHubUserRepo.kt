@@ -1,10 +1,7 @@
 package io.obolonsky.core.di.repositories.github
 
 import io.obolonsky.core.di.Reaction
-import io.obolonsky.core.di.data.github.GithubRepoView
-import io.obolonsky.core.di.data.github.GithubRepository
-import io.obolonsky.core.di.data.github.GithubUser
-import io.obolonsky.core.di.data.github.GithubUserProfile
+import io.obolonsky.core.di.data.github.*
 import kotlinx.coroutines.flow.Flow
 
 interface GitHubUserRepo {
@@ -27,10 +24,10 @@ interface GitHubUserRepo {
     /**
      * Returns SINGLE value
      */
-    fun addRepoStar(repoId: String): Flow<Reaction<Boolean>>
+    fun addRepoStar(repoId: String): Flow<Reaction<GithubRepoStarToggle>>
 
     /**
      * Returns SINGLE value
      */
-    fun removeRepoStar(repoId: String): Flow<Reaction<Boolean>>
+    fun removeRepoStar(repoId: String): Flow<Reaction<GithubRepoStarToggle>>
 }

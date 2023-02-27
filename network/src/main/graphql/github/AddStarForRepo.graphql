@@ -3,6 +3,7 @@ mutation AddStarForRepo($repoId: ID!) {
         starrable {
             ... on Repository {
                 viewerHasStarred
+                stargazerCount
             }
         }
     }

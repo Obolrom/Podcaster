@@ -42,7 +42,10 @@ class GithubRepoViewViewModel @AssistedInject constructor(
                 .reactWith(
                     onSuccess = { response ->
                         reduce {
-                            state.copy(model = state.model?.copy(viewerHasStarred = response))
+                            state.copy(model = state.model?.copy(
+                                viewerHasStarred = response.viewerHasStarred,
+                                stargazerCount = response.stargazerCount,
+                            ))
                         }
                     },
                     onError = {

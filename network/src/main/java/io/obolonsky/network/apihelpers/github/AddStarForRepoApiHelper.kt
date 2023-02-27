@@ -2,6 +2,7 @@ package io.obolonsky.network.apihelpers.github
 
 import com.apollographql.apollo3.ApolloCall
 import com.apollographql.apollo3.ApolloClient
+import io.obolonsky.core.di.data.github.GithubRepoStarToggle
 import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.network.apihelpers.base.BaseMutationGraphQlApiHelper
 import io.obolonsky.network.github.AddStarForRepoMutation
@@ -12,7 +13,7 @@ import javax.inject.Inject
 class AddStarForRepoApiHelper @Inject constructor(
     @GitHub private val githubClient: ApolloClient,
     dispatchers: CoroutineSchedulers,
-) : BaseMutationGraphQlApiHelper<AddStarForRepoMutation.Data, Boolean, String>(
+) : BaseMutationGraphQlApiHelper<AddStarForRepoMutation.Data, GithubRepoStarToggle, String>(
     dispatchers = dispatchers,
     mapper = GithubAddStarForRepoMapper(),
 ) {

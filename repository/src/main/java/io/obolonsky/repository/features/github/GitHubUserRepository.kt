@@ -2,10 +2,7 @@ package io.obolonsky.repository.features.github
 
 import dagger.Reusable
 import io.obolonsky.core.di.Reaction
-import io.obolonsky.core.di.data.github.GithubRepoView
-import io.obolonsky.core.di.data.github.GithubRepository
-import io.obolonsky.core.di.data.github.GithubUser
-import io.obolonsky.core.di.data.github.GithubUserProfile
+import io.obolonsky.core.di.data.github.*
 import io.obolonsky.core.di.repositories.github.GitHubUserRepo
 import io.obolonsky.network.apihelpers.github.*
 import kotlinx.coroutines.flow.Flow
@@ -39,11 +36,11 @@ class GitHubUserRepository @Inject constructor(
         return githubUserViewerApiHelper.load(Unit)
     }
 
-    override fun addRepoStar(repoId: String): Flow<Reaction<Boolean>> {
+    override fun addRepoStar(repoId: String): Flow<Reaction<GithubRepoStarToggle>> {
         return addStarForRepoApiHelper.load(repoId)
     }
 
-    override fun removeRepoStar(repoId: String): Flow<Reaction<Boolean>> {
+    override fun removeRepoStar(repoId: String): Flow<Reaction<GithubRepoStarToggle>> {
         return removeStarForRepoApiHelper.load(repoId)
     }
 }

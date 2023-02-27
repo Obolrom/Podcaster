@@ -9,7 +9,6 @@ import io.obolonsky.core.di.repositories.github.GitHubUserRepo
 import io.obolonsky.core.di.utils.reactWith
 import io.obolonsky.github.redux.repoview.GithubRepoViewState
 import io.obolonsky.github.redux.repoview.RepoViewSideEffects
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
@@ -35,7 +34,11 @@ class GithubRepoViewViewModel @AssistedInject constructor(
     fun toggleRepoStar() = intent {
         val model = state.model
         if (model != null) {
-            githubRepo.addRepoStar(model.id)
+            val action =
+                if (model.viewerHasStarred) githubRepo.removeRepoStar(model.id)
+                else githubRepo.addRepoStar(model.id)
+
+            action
                 .reactWith(
                     onSuccess = { response ->
                         reduce {

@@ -19,6 +19,7 @@ class GitHubUserRepository @Inject constructor(
     private val getGithubSearchReposApiHelper: GetGithubSearchReposApiHelper,
     private val getGithubRepoApiHelper: GetGithubRepoApiHelper,
     private val addStarForRepoApiHelper: AddStarForRepoApiHelper,
+    private val removeStarForRepoApiHelper: RemoveStarForRepoApiHelper,
 ) : GitHubUserRepo {
 
     @Deprecated("do not use rest implementation")
@@ -40,5 +41,9 @@ class GitHubUserRepository @Inject constructor(
 
     override fun addRepoStar(repoId: String): Flow<Reaction<Boolean>> {
         return addStarForRepoApiHelper.load(repoId)
+    }
+
+    override fun removeRepoStar(repoId: String): Flow<Reaction<Boolean>> {
+        return removeStarForRepoApiHelper.load(repoId)
     }
 }

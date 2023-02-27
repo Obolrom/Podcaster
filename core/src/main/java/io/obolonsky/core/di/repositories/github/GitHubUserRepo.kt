@@ -28,4 +28,9 @@ interface GitHubUserRepo {
      * Returns SINGLE value
      */
     fun addRepoStar(repoId: String): Flow<Reaction<Boolean>>
+
+    /**
+     * Returns SINGLE value
+     */
+    fun removeRepoStar(repoId: String): Flow<Reaction<Boolean>>
 }

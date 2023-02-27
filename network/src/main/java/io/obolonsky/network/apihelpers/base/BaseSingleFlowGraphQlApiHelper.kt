@@ -1,6 +1,7 @@
 package io.obolonsky.network.apihelpers.base
 
 import com.apollographql.apollo3.ApolloCall
+import com.apollographql.apollo3.api.Mutation
 import com.apollographql.apollo3.api.Query
 import com.apollographql.apollo3.exception.ApolloHttpException
 import com.apollographql.apollo3.exception.ApolloNetworkException
@@ -28,7 +29,24 @@ abstract class BaseSingleFlowGraphQlApiHelper<ApiResult : Query.Data, DomainResu
     }
 }
 
-internal fun Throwable.apolloWithReaction(): Reaction.Fail = when (this) {
+abstract class BaseMutationGraphQlApiHelper<ApiResult : Mutation.Data, DomainResult, ApiParam>(
+    private val dispatchers: CoroutineSchedulers,
+    private val mapper: Mapper<ApiResult, DomainResult>
+) : SingleFlowApiHelper<ApiParam, DomainResult> {
+
+    protected abstract fun apiRequest(param: ApiParam): ApolloCall<ApiResult>
+
+    final override fun load(param: ApiParam): Flow<Reaction<DomainResult>> {
+        return apiRequest(param)
+            .toFlow()
+            .map { mapper.map(it.dataAssertNoErrors) }
+            .map<DomainResult, Reaction<DomainResult>> { Reaction.success(it) }
+            .catch { emit(it.apolloWithReaction()) }
+            .flowOn(dispatchers.computation)
+    }
+}
+
+private fun Throwable.apolloWithReaction(): Reaction.Fail = when (this) {
     is ApolloNetworkException -> Reaction.fail(Error.NetworkError(this))
 
     is JsonDataException -> Reaction.fail(Error.ServerError(this))

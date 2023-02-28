@@ -26,6 +26,7 @@ class GithubRepoViewMapper : Mapper<GithubRepoQuery.Data, GithubRepoView> {
             description = repo.description,
             treeEntries = treeEntries,
             viewerHasStarred = repo.viewerHasStarred,
+            defaultBranchName = repo.defaultBranchRef?.name.orEmpty(),
         )
     }
 }

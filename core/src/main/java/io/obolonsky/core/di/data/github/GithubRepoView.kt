@@ -9,6 +9,7 @@ data class GithubRepoView(
     val description: String?,
     val treeEntries: List<RepoTreeEntry>,
     val viewerHasStarred: Boolean,
+    val defaultBranchName: String,
 )
 
 data class RepoTreeEntry(

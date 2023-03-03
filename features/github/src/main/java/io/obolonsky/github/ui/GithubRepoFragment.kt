@@ -11,10 +11,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.InsertDriveFile
 import androidx.compose.material.icons.rounded.ArrowDropDown
@@ -25,6 +22,7 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -48,6 +46,7 @@ import io.obolonsky.github.redux.repoview.RepoViewSideEffects
 import io.obolonsky.github.ui.compose.theme.ComposeMainTheme
 import io.obolonsky.github.viewmodels.ComponentViewModel
 import io.obolonsky.github.viewmodels.GithubRepoViewViewModel
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import io.obolonsky.core.R as CoreR
@@ -76,6 +75,8 @@ class GithubRepoFragment : Fragment() {
             )
             setContent {
                 val context = LocalContext.current
+                val coroutineScope = rememberCoroutineScope()
+                val snackBarHostState = remember { SnackbarHostState() }
 
                 val state by viewModel.collectAsState()
 
@@ -84,6 +85,10 @@ class GithubRepoFragment : Fragment() {
                         is RepoViewSideEffects.TogglingStarFailed -> {
                             toaster().value.showToast(context, sideEffect.error.toString())
                         }
+                        is RepoViewSideEffects.TogglingStarSucceed -> coroutineScope.launch {
+                            val message = context.getString(sideEffect.messageResId)
+                            snackBarHostState.showSnackbar(message)
+                        }
                     }
                 }
 
@@ -91,6 +96,13 @@ class GithubRepoFragment : Fragment() {
                     viewState = state,
                     onStarClick = { viewModel.toggleRepoStar() }
                 )
+
+                Box {
+                    SnackbarHost(
+                        modifier = Modifier.align(Alignment.BottomCenter),
+                        hostState = snackBarHostState,
+                    )
+                }
             }
         }
     }

@@ -16,6 +16,7 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import io.obolonsky.core.R as CoreR
 
 @Suppress("unused_parameter")
 class GithubRepoViewViewModel @AssistedInject constructor(
@@ -41,6 +42,7 @@ class GithubRepoViewViewModel @AssistedInject constructor(
             action
                 .reactWith(
                     onSuccess = { response ->
+                        postSideEffect(RepoViewSideEffects.TogglingStarSucceed(CoreR.string.starred))
                         reduce {
                             state.copy(model = state.model?.copy(
                                 viewerHasStarred = response.viewerHasStarred,

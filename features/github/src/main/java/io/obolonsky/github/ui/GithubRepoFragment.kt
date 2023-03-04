@@ -68,11 +68,7 @@ class GithubRepoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         return ComposeView(requireContext()).apply {
-            setViewCompositionStrategy(
-                ViewCompositionStrategy.DisposeOnLifecycleDestroyed(
-                    viewLifecycleOwner
-                )
-            )
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 val context = LocalContext.current
                 val coroutineScope = rememberCoroutineScope()

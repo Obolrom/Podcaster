@@ -12,7 +12,7 @@ class SearchReposInteractor @Inject constructor(
     private val userRepository: GitHubUserRepo,
 ) {
 
-    fun getReposBySearchQuery(repoName: String): Flow<Reaction<List<GithubRepository>>> {
+    fun getReposBySearchQuery(repoName: String): Flow<Reaction<List<GithubRepository>?>> {
         return userRepository.getReposBySearchQuery(repoName)
     }
 }

@@ -7,20 +7,20 @@ import io.obolonsky.network.github.GetGithubViewerProfileQuery
 import io.obolonsky.network.github.GithubRepositoriesSearchQuery
 import io.obolonsky.network.github.GithubUserProfileQuery
 
-class GithubSearchReposMapper : Mapper<GithubRepositoriesSearchQuery.Data, List<GithubRepository>> {
+class GithubSearchReposMapper :
+    Mapper<GithubRepositoriesSearchQuery.Data, List<GithubRepository>?> {
 
-    override fun map(input: GithubRepositoriesSearchQuery.Data): List<GithubRepository> {
+    override fun map(input: GithubRepositoriesSearchQuery.Data): List<GithubRepository>? {
         return input.search
             .repos
-            ?.mapNotNull {
-                val repo = it?.repo?.onRepository
+            ?.mapNotNull { it?.repo?.onRepository }
+            ?.map { repo ->
                 GithubRepository(
-                    name = requireNotNull(repo?.name),
-                    nameWithOwner = repo?.nameWithOwner,
-                    stargazerCount = repo?.stargazerCount,
+                    name = repo.name,
+                    nameWithOwner = repo.nameWithOwner,
+                    stargazerCount = repo.stargazerCount,
                 )
             }
-            .orEmpty()
     }
 }
 

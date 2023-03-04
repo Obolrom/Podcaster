@@ -15,7 +15,7 @@ class GetGithubSearchReposApiHelper @Inject constructor(
     dispatchers: CoroutineSchedulers,
 ) : BaseSingleFlowGraphQlApiHelper<
         GithubRepositoriesSearchQuery.Data,
-        List<GithubRepository>,
+        List<GithubRepository>?,
         String>(
     dispatchers = dispatchers,
     mapper = GithubSearchReposMapper()

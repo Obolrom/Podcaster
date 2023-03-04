@@ -44,6 +44,7 @@ class SearchReposViewModel @AssistedInject constructor(
                 .drop(1)
                 .map { it.trim() }
                 .debounce(400)
+                .filter { query -> query.isNotEmpty() }
                 .flatMapLatest { query ->
                     searchReposInteractor.getReposBySearchQuery(query)
                 }

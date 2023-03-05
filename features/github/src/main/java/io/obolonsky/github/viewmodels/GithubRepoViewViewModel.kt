@@ -6,15 +6,20 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import io.obolonsky.core.di.repositories.github.GitHubUserRepo
+import io.obolonsky.core.di.utils.NetworkStatus
+import io.obolonsky.core.di.utils.NetworkStatusObservable
 import io.obolonsky.core.di.utils.reactWith
 import io.obolonsky.github.redux.repoview.GithubRepoViewState
 import io.obolonsky.github.redux.repoview.RepoViewSideEffects
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.onEach
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.syntax.simple.repeatOnSubscription
 import org.orbitmvi.orbit.viewmodel.container
 import io.obolonsky.core.R as CoreR
 
@@ -22,6 +27,7 @@ import io.obolonsky.core.R as CoreR
 class GithubRepoViewViewModel @AssistedInject constructor(
     @Assisted savedStateHandle: SavedStateHandle,
     private val githubRepo: GitHubUserRepo,
+    private val networkStatusObservable: NetworkStatusObservable,
 ) : ViewModel(), ContainerHost<GithubRepoViewState, RepoViewSideEffects> {
 
     override val container: Container<GithubRepoViewState, RepoViewSideEffects> = container(
@@ -29,7 +35,7 @@ class GithubRepoViewViewModel @AssistedInject constructor(
     )
 
     init {
-        loadRepo()
+        observeNetworkConnectivity()
     }
 
     fun toggleRepoStar() = intent {
@@ -58,6 +64,17 @@ class GithubRepoViewViewModel @AssistedInject constructor(
         }
 
 
+    }
+
+    private fun observeNetworkConnectivity() = intent(registerIdling = false) {
+        repeatOnSubscription {
+            networkStatusObservable.statusFlow
+                .filter { status -> status == NetworkStatus.AVAILABLE && state.model == null }
+                .onEach {
+                    loadRepo()
+                }
+                .collect()
+        }
     }
 
     private fun loadRepo() = intent {

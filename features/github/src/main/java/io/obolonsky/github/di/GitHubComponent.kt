@@ -2,6 +2,7 @@ package io.obolonsky.github.di
 
 import dagger.Component
 import io.obolonsky.core.di.depsproviders.AuthorizationServiceProvider
+import io.obolonsky.core.di.depsproviders.NetworkStatusObservableProvider
 import io.obolonsky.core.di.depsproviders.ToolsProvider
 import io.obolonsky.core.di.repositories.providers.GitHubAuthRepoProvider
 import io.obolonsky.core.di.repositories.providers.GitHubUserRepoProvider
@@ -18,6 +19,7 @@ import io.obolonsky.github.viewmodels.UserInfoViewModel
         AuthorizationServiceProvider::class,
         GitHubAuthRepoProvider::class,
         GitHubUserRepoProvider::class,
+        NetworkStatusObservableProvider::class,
     ]
 )
 internal interface GitHubComponent {
@@ -30,6 +32,7 @@ internal interface GitHubComponent {
             authorizationServiceProvider: AuthorizationServiceProvider,
             gitHubAuthRepoProvider: GitHubAuthRepoProvider,
             gitHubUserRepoProvider: GitHubUserRepoProvider,
+            networkStatusObservableProvider: NetworkStatusObservableProvider,
         ): GitHubComponent
     }
 

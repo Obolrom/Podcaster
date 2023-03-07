@@ -82,6 +82,7 @@ class GithubRepoFragment : Fragment() {
                             toaster().value.showToast(context, sideEffect.error.toString())
                         }
                         is RepoViewSideEffects.TogglingStarSucceed -> coroutineScope.launch {
+                            snackBarHostState.currentSnackbarData?.dismiss()
                             val message = context.getString(sideEffect.messageResId)
                             snackBarHostState.showSnackbar(message)
                         }
@@ -90,7 +91,8 @@ class GithubRepoFragment : Fragment() {
 
                 Screen(
                     viewState = state,
-                    onStarClick = { viewModel.toggleRepoStar() }
+                    onStarClick = { viewModel.toggleRepoStar() },
+                    onViewCodeClick = { viewModel.showRepoTree() }
                 )
 
                 Box {
@@ -108,6 +110,7 @@ class GithubRepoFragment : Fragment() {
 fun Screen(
     viewState: GithubRepoViewState,
     onStarClick: () -> Unit,
+    onViewCodeClick: () -> Unit,
 ) = ComposeMainTheme {
     Column(
         modifier = Modifier.padding(6.dp)
@@ -196,18 +199,40 @@ fun Screen(
                     text = "Stub",
                 )
                 Divider()
-                LazyColumn {
-                    val items = viewState.model?.treeEntries.orEmpty()
-                    itemsIndexed(items) { index, treeEntry ->
-                        RepoTreeEntry(
-                            treeEntry = treeEntry,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(8.dp)
-                        )
-                        if (index != items.size - 1) {
-                            Divider()
+                if (viewState.shouldShowRepoTree) {
+                    LazyColumn {
+                        val items = viewState.model?.treeEntries.orEmpty()
+                        itemsIndexed(items) { index, treeEntry ->
+                            RepoTreeEntry(
+                                treeEntry = treeEntry,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(8.dp)
+                            )
+                            if (index != items.size - 1) {
+                                Divider()
+                            }
                         }
+                    }
+                } else {
+                    val interactionSource = remember { MutableInteractionSource() }
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable(
+                                indication = rememberRipple(),
+                                interactionSource = interactionSource,
+                                onClick = onViewCodeClick,
+                            ),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .padding(vertical = 8.dp),
+                            text = "View code",
+                            color = colorResource(id = CoreUiR.color.blue),
+                        )
                     }
                 }
             }
@@ -340,8 +365,13 @@ fun SecondPreview() {
             ),
             viewerHasStarred = true,
             defaultBranchName = "master",
-        )
+        ),
+        shouldShowRepoTree = false,
     )
 
-    Screen(state) { }
+    Screen(
+        viewState = state,
+        onStarClick = { },
+        onViewCodeClick = { },
+    )
 }

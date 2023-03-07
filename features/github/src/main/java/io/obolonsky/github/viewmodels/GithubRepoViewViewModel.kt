@@ -31,7 +31,10 @@ class GithubRepoViewViewModel @AssistedInject constructor(
 ) : ViewModel(), ContainerHost<GithubRepoViewState, RepoViewSideEffects> {
 
     override val container: Container<GithubRepoViewState, RepoViewSideEffects> = container(
-        GithubRepoViewState(model = null)
+        GithubRepoViewState(
+            model = null,
+            shouldShowRepoTree = false,
+        )
     )
 
     init {
@@ -62,8 +65,10 @@ class GithubRepoViewViewModel @AssistedInject constructor(
                 )
                 .collect()
         }
+    }
 
-
+    fun showRepoTree() = intent {
+        reduce { state.copy(shouldShowRepoTree = true) }
     }
 
     private fun observeNetworkConnectivity() = intent(registerIdling = false) {

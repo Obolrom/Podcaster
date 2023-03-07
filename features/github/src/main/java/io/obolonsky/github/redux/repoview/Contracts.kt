@@ -6,6 +6,7 @@ import io.obolonsky.core.di.Error
 
 data class GithubRepoViewState(
     val model: GithubRepoView?,
+    val shouldShowRepoTree: Boolean,
 )
 
 sealed class RepoViewSideEffects {

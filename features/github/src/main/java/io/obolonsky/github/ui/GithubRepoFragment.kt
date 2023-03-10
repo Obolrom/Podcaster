@@ -265,6 +265,10 @@ fun RepoTreeEntry(
         Text(
             text = treeEntry.name,
         )
+        Spacer(modifier = Modifier.weight(1f))
+        Text(
+            text = treeEntry.lastCommit.date,
+        )
     }
 }
 
@@ -356,17 +360,27 @@ fun SecondPreview() {
                     name = "README.md",
                     type = "tree",
                     mode = 16384,
+                    treePath = "",
+                    lastCommit = RepoTreeEntry.LastCommit(
+                        message = "best feature ever",
+                        date = "2022-10-14"
+                    ),
                 ),
                 RepoTreeEntry(
                     name = ".gitignore",
                     type = "blob",
                     mode = 33188,
+                    treePath = "",
+                    lastCommit = RepoTreeEntry.LastCommit(
+                        message = "best feature ever",
+                        date = "2022-10-14"
+                    ),
                 ),
             ),
             viewerHasStarred = true,
             defaultBranchName = "master",
         ),
-        shouldShowRepoTree = false,
+        shouldShowRepoTree = true,
     )
 
     Screen(

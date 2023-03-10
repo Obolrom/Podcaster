@@ -33,6 +33,8 @@ interface ApiHelperProviders : SpaceXHelpersProvider {
 
     val getGithubRepoApiHelper: GetGithubRepoApiHelper
 
+    val getLastCommitForEntryApiHelper: GetLastCommitForEntryApiHelper
+
     val addStarForRepoApiHelper: AddStarForRepoApiHelper
 
     val removeStarForRepoApiHelper: RemoveStarForRepoApiHelper

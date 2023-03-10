@@ -32,6 +32,23 @@ query GithubRepo($name: String!, $owner: String!) {
                     name
                     type
                     mode
+                    treePath: path
+                    repository {
+                        defaultBranchRef {
+                            target {
+                                ... on Commit {
+                                    history(first: 1) {
+                                        edges {
+                                            node {
+                                                message
+                                                authoredDate
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

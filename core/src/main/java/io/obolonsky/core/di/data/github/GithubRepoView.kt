@@ -16,4 +16,12 @@ data class RepoTreeEntry(
     val name: String,
     val type: String,
     val mode: Int,
-)
+    val treePath: String,
+    val lastCommit: LastCommit,
+) {
+
+    data class LastCommit(
+        val message: String,
+        val date: String,
+    )
+}

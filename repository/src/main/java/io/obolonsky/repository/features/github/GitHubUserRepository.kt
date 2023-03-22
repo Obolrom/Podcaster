@@ -1,3 +1,5 @@
+@file:OptIn(FlowPreview::class)
+
 package io.obolonsky.repository.features.github
 
 import dagger.Reusable
@@ -6,6 +8,7 @@ import io.obolonsky.core.di.data.github.*
 import io.obolonsky.core.di.reactWithSuccessOrNull
 import io.obolonsky.core.di.repositories.github.GitHubUserRepo
 import io.obolonsky.network.apihelpers.github.*
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
@@ -33,29 +36,43 @@ class GitHubUserRepository @Inject constructor(
     // TODO: move to reaction extensions
     inline fun <T, R> Flow<Reaction<T>>.mapReaction(
         crossinline transform: suspend (value: T) -> R
-    ): Flow<Reaction<R>> = transform { value ->
-        return@transform when (value) {
-            is Reaction.Success -> emit(Reaction.success(transform(value.data)))
-            is Reaction.Fail -> emit(Reaction.fail(value.error))
+    ): Flow<Reaction<R>> = map {
+        when (it) {
+            is Reaction.Success -> Reaction.success(transform(it.data))
+            is Reaction.Fail -> Reaction.fail(it.error)
+        }
+    }
+
+    fun <T, R> Flow<Reaction<T>>.flatMapReactionMerge(
+        transform: suspend (value: T) -> Flow<Reaction<R>>
+    ): Flow<Reaction<R>> = flatMapMerge {
+        when (it) {
+            is Reaction.Success -> transform(it.data)
+            is Reaction.Fail -> flowOf(Reaction.fail(it.error))
         }
     }
 
     override fun getGithubRepoView(): Flow<Reaction<GithubRepoView>> {
         return getGithubRepoApiHelper.load(Unit)
-            .mapReaction { success ->
-                val newEntries = success.treeEntries
+            .flatMapReactionMerge { repoView ->
+                val entriesFlow = repoView.treeEntries
                     .map { entry ->
-                        val lastCommit = getLastCommitForEntryApiHelper.load(
-                            GetLastCommitForEntryApiHelper.Params(
-                                name = success.repoName,
-                                owner = success.owner,
-                                branchName = success.defaultBranchName,
-                                treeEntryPath = entry.treePath,
-                            )
-                        ).first().reactWithSuccessOrNull()!!
-                        entry.copy(lastCommit = lastCommit)
+                        getLastCommitForEntryApiHelper.load(GetLastCommitForEntryApiHelper.Params(
+                            name = repoView.repoName,
+                            owner = repoView.owner,
+                            branchName = repoView.defaultBranchName,
+                            treeEntryPath = entry.treePath,
+                        ))
+                            .mapNotNull { it.reactWithSuccessOrNull() }
+                            .map { entry.copy(lastCommit = it) }
                     }
-                success.copy(treeEntries = newEntries)
+                    .toList()
+
+                val entries = entriesFlow
+                    .merge()
+                    .toList(ArrayList(repoView.treeEntries.size))
+
+                flowOf(Reaction.success(repoView.copy(treeEntries = entries)))
             }
     }
 

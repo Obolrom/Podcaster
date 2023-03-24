@@ -4,12 +4,22 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.isVisible
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Button
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
-import coil.load
+import io.obolonsky.core.di.data.github.GithubUserProfile
 import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.core.di.toaster
 import io.obolonsky.github.R
@@ -17,9 +27,12 @@ import io.obolonsky.github.databinding.FragmentUserInfoBinding
 import io.obolonsky.github.redux.userinfo.UserInfoSideEffects
 import io.obolonsky.github.redux.userinfo.UserInfoState
 import io.obolonsky.github.resetNavGraph
+import io.obolonsky.github.ui.compose.theme.ComposeMainTheme
 import io.obolonsky.github.viewmodels.ComponentViewModel
 import io.obolonsky.github.viewmodels.UserInfoViewModel
-import org.orbitmvi.orbit.viewmodel.observe
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
+import io.obolonsky.core.R as CoreR
 
 class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
@@ -51,32 +64,24 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         binding.logout.setOnClickListener {
             viewModel.logout()
         }
-        binding.searchRepositories.setOnClickListener {
-            findNavController()
-                .navigate(R.id.action_repositoryListFragment_to_searchReposFragment)
-        }
-        binding.toCompose.setOnClickListener {
-            findNavController()
-                .navigate(R.id.action_repositoryListFragment_to_githubRepoFragment)
-        }
+        binding.composeContainer.setViewCompositionStrategy(
+            ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+        )
+        binding.composeContainer.setContent {
+            val state by viewModel.collectAsState()
+            viewModel.collectSideEffect(sideEffect = ::sideEffect)
 
-        viewModel.observe(viewLifecycleOwner, state = ::render, sideEffect = ::sideEffect)
-    }
-
-    private fun render(state: UserInfoState) {
-        val isLoading = state.isLoading
-        val user = state.user
-
-        binding.progressBar.isVisible = isLoading
-        binding.getUserInfo.isEnabled = !isLoading
-        binding.userInfo.isVisible = !isLoading
-
-        if (user != null) {
-            binding.avatar.load(user.avatarUrl) {
-                crossfade(400)
-            }
-            binding.username.text = user.login
-            binding.userInfo.text = user.toString()
+            UserInfoContainerScreen(
+                viewState = state,
+                onRepoClick = {
+                    findNavController()
+                        .navigate(R.id.action_repositoryListFragment_to_githubRepoFragment)
+                },
+                onSearch = {
+                    findNavController()
+                        .navigate(R.id.action_repositoryListFragment_to_searchReposFragment)
+                },
+            )
         }
     }
 
@@ -93,4 +98,68 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
             }
         }
     }
+}
+
+@Composable
+fun UserInfoContainerScreen(
+    viewState: UserInfoState,
+    onRepoClick: () -> Unit,
+    onSearch: () -> Unit,
+) = ComposeMainTheme {
+
+    if (viewState.user != null)
+        UserProfile(
+            user = viewState.user,
+            onRepoClick = onRepoClick,
+            onSearch = onSearch,
+        )
+}
+
+@Composable
+fun UserProfile(
+    user: GithubUserProfile,
+    onRepoClick: () -> Unit,
+    onSearch: () -> Unit,
+) = Column {
+    Text(
+        text = user.login,
+        fontSize = 24.sp
+    )
+    Button(
+        modifier = Modifier
+            .fillMaxWidth(),
+        onClick = onRepoClick,
+    ) {
+        Text(text = "To repo view")
+    }
+    Button(
+        modifier = Modifier
+            .fillMaxWidth(),
+        onClick = onSearch,
+    ) {
+        Text(text = stringResource(id = CoreR.string.search_repositories))
+    }
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+)
+@Composable
+fun UserInfoContainerScreenPreview() {
+    val state = UserInfoState(
+        isLoading = false,
+        user = GithubUserProfile(
+            id = "id",
+            login = "Obolrom",
+            avatarUrl = "avatar",
+            email = "android@gmail.com"
+        )
+    )
+
+    UserInfoContainerScreen(
+        viewState = state,
+        onRepoClick = { },
+        onSearch = { },
+    )
 }

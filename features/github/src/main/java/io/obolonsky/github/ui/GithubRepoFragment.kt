@@ -4,6 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -88,15 +92,33 @@ class GithubRepoFragment : Fragment() {
                     }
                 }
 
-                Screen(
-                    viewState = state,
-                    onStarClick = { viewModel.toggleRepoStar() },
-                    onViewCodeClick = { viewModel.showRepoTree() },
-                    onBranchDialogOpen = { viewModel.loadBranches() },
-                    onBranchSelected = { viewModel.selectBranch(it) },
-                )
-
                 Box {
+                    AnimatedVisibility(
+                        visible = state.model != null,
+                        enter = fadeIn(animationSpec = tween()),
+                    ) {
+                        Screen(
+                            viewState = state,
+                            onStarClick = { viewModel.toggleRepoStar() },
+                            onViewCodeClick = { viewModel.showRepoTree() },
+                            onBranchDialogOpen = { viewModel.loadBranches() },
+                            onBranchSelected = { viewModel.selectBranch(it) },
+                        )
+                    }
+
+                    Box(
+                        modifier = Modifier.align(Alignment.Center),
+                    ) {
+                        AnimatedVisibility(
+                            visible = state.model == null,
+                            exit = fadeOut(animationSpec = tween()),
+                        ) {
+                            CircularProgressIndicator(
+                                color = colorResource(id = CoreUiR.color.blue),
+                            )
+                        }
+                    }
+
                     SnackbarHost(
                         modifier = Modifier.align(Alignment.BottomCenter),
                         hostState = snackBarHostState,

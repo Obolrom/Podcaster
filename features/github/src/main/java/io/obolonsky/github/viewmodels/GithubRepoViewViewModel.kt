@@ -71,6 +71,24 @@ class GithubRepoViewViewModel @AssistedInject constructor(
         reduce { state.copy(shouldShowRepoTree = true) }
     }
 
+    fun selectBranch(branchName: String) = intent {
+
+    }
+
+    fun loadBranches() = intent {
+        val repoName = state.model?.repoName ?: return@intent
+        val repoOwner = state.model?.owner ?: return@intent
+
+        githubRepo.getRepoBranches(repoName, repoOwner)
+            .reactWith(
+                onSuccess = { branches ->
+                    reduce { state.copy(model = state.model?.copy(branches = branches)) }
+                },
+                onError = { },
+            )
+            .collect()
+    }
+
     private fun observeNetworkConnectivity() = intent(registerIdling = false) {
         repeatOnSubscription {
             networkStatusObservable.statusFlow

@@ -10,6 +10,7 @@ data class GithubRepoView(
     val treeEntries: List<RepoTreeEntry>,
     val viewerHasStarred: Boolean,
     val defaultBranchName: String,
+    val branches: List<String>? = null,
 )
 
 data class RepoTreeEntry(

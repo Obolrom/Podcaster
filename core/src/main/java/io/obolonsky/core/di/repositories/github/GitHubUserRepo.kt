@@ -30,4 +30,9 @@ interface GitHubUserRepo {
      * Returns SINGLE value
      */
     fun removeRepoStar(repoId: String): Flow<Reaction<GithubRepoStarToggle>>
+
+    /**
+     * Returns SINGLE value
+     */
+    fun getRepoBranches(repoName: String, repoOwner: String): Flow<Reaction<List<String>>>
 }

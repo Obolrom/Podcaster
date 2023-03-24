@@ -22,6 +22,7 @@ class GitHubUserRepository @Inject constructor(
     private val getLastCommitForEntryApiHelper: GetLastCommitForEntryApiHelper,
     private val addStarForRepoApiHelper: AddStarForRepoApiHelper,
     private val removeStarForRepoApiHelper: RemoveStarForRepoApiHelper,
+    private val getGithubRepoBranches: GetGithubRepoBranches,
 ) : GitHubUserRepo {
 
     @Deprecated("do not use rest implementation")
@@ -31,6 +32,13 @@ class GitHubUserRepository @Inject constructor(
 
     override fun getReposBySearchQuery(repoName: String): Flow<Reaction<List<GithubRepository>?>> {
         return getGithubSearchReposApiHelper.load(repoName)
+    }
+
+    override fun getRepoBranches(
+        repoName: String,
+        repoOwner: String
+    ): Flow<Reaction<List<String>>> {
+        return getGithubRepoBranches.load(GetGithubRepoBranches.Params(repoName, repoOwner))
     }
 
     // TODO: move to reaction extensions

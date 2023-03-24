@@ -10,6 +10,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -19,10 +20,7 @@ import androidx.compose.material.icons.rounded.Folder
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.StarOutline
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,6 +42,7 @@ import io.obolonsky.core.di.toaster
 import io.obolonsky.github.redux.repoview.GithubRepoViewState
 import io.obolonsky.github.redux.repoview.RepoViewSideEffects
 import io.obolonsky.github.ui.compose.theme.ComposeMainTheme
+import io.obolonsky.github.ui.compose.theme.Shapes
 import io.obolonsky.github.viewmodels.ComponentViewModel
 import io.obolonsky.github.viewmodels.GithubRepoViewViewModel
 import kotlinx.coroutines.launch
@@ -92,7 +91,9 @@ class GithubRepoFragment : Fragment() {
                 Screen(
                     viewState = state,
                     onStarClick = { viewModel.toggleRepoStar() },
-                    onViewCodeClick = { viewModel.showRepoTree() }
+                    onViewCodeClick = { viewModel.showRepoTree() },
+                    onBranchDialogOpen = { viewModel.loadBranches() },
+                    onBranchSelected = { viewModel.selectBranch(it) },
                 )
 
                 Box {
@@ -111,6 +112,8 @@ fun Screen(
     viewState: GithubRepoViewState,
     onStarClick: () -> Unit,
     onViewCodeClick: () -> Unit,
+    onBranchDialogOpen: () -> Unit,
+    onBranchSelected: (String) -> Unit,
 ) = ComposeMainTheme {
     Column(
         modifier = Modifier.padding(6.dp)
@@ -169,8 +172,69 @@ fun Screen(
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
             border = BorderStroke(0.25.dp, Color.Gray),
         ) {
+            val interactionSource = remember { MutableInteractionSource() }
+            val openDialog = remember { mutableStateOf(false) }
+
+            if (openDialog.value) {
+                AlertDialog(
+                    onDismissRequest = {
+                        openDialog.value = false
+                    },
+                    buttons = {
+                        Surface(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(210.dp)
+                            ,
+                            shape = Shapes.large,
+                        ) {
+                            Column {
+                                Text(
+                                    modifier = Modifier
+                                        .padding(12.dp, 12.dp, 12.dp),
+                                    text = "Switch branches",
+                                    fontWeight = FontWeight.W500,
+                                )
+                                Divider(modifier = Modifier.padding(vertical = 4.dp))
+
+                                val items = viewState.model?.branches
+
+                                if (items != null) {
+                                    LazyColumn(
+                                        modifier = Modifier
+                                            .padding(start = 16.dp, end = 16.dp, bottom = 12.dp),
+                                    ) {
+                                        items(items) { branch ->
+                                            Text(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .clickable {
+                                                        onBranchSelected(branch)
+                                                    }
+                                                    .padding(vertical = 4.dp),
+                                                text = branch,
+                                            )
+                                            Divider()
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                )
+            }
+
             Row(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+                modifier = Modifier
+                    .clickable(
+                        indication = rememberRipple(),
+                        interactionSource = interactionSource,
+                        onClick = {
+                            onBranchDialogOpen()
+                            openDialog.value = true
+                        },
+                    )
+                    .padding(horizontal = 16.dp, vertical = 4.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
@@ -387,5 +451,7 @@ fun SecondPreview() {
         viewState = state,
         onStarClick = { },
         onViewCodeClick = { },
+        onBranchDialogOpen = { },
+        onBranchSelected = { },
     )
 }

@@ -38,4 +38,6 @@ interface ApiHelperProviders : SpaceXHelpersProvider {
     val addStarForRepoApiHelper: AddStarForRepoApiHelper
 
     val removeStarForRepoApiHelper: RemoveStarForRepoApiHelper
+
+    val getGithubRepoBranches: GetGithubRepoBranches
 }

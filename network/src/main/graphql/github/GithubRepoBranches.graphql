@@ -1,0 +1,13 @@
+query GithubRepoBranches($name: String!, $owner: String!) {
+    repository(
+        name: $name,
+        owner: $owner,
+    ) {
+        refs(first: 30, refPrefix:"refs/heads/") {
+            nodes {
+                name
+                prefix
+            }
+        }
+    }
+}

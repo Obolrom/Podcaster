@@ -4,6 +4,7 @@ import io.obolonsky.core.di.data.github.GithubRepoView
 import io.obolonsky.core.di.data.github.RepoTreeEntry
 import io.obolonsky.core.di.utils.Mapper
 import io.obolonsky.network.github.GithubLastCommitQuery
+import io.obolonsky.network.github.GithubRepoBranchesQuery
 import io.obolonsky.network.github.GithubRepoQuery
 import java.text.SimpleDateFormat
 import java.util.*
@@ -78,5 +79,16 @@ class LastCommitForEntryMapper : Mapper<GithubLastCommitQuery.Data, RepoTreeEntr
             message = node.message,
             date = formatter.format(dateFormat.parse(node.authoredDate.toString()) ?: Date()),
         )
+    }
+}
+
+class RepoBranchesMapper : Mapper<GithubRepoBranchesQuery.Data, List<String>> {
+
+    override fun map(input: GithubRepoBranchesQuery.Data): List<String> {
+        val branches = requireNotNull(input.repository?.refs?.nodes)
+
+        return branches.mapNotNull {
+            it?.name
+        }
     }
 }

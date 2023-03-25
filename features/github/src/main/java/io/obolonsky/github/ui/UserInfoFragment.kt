@@ -4,21 +4,32 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.Icon
+import androidx.compose.material.TabRowDefaults.Divider
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.People
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import coil.compose.AsyncImage
 import io.obolonsky.core.di.data.github.GithubUserProfile
 import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.core.di.toaster
@@ -28,11 +39,13 @@ import io.obolonsky.github.redux.userinfo.UserInfoSideEffects
 import io.obolonsky.github.redux.userinfo.UserInfoState
 import io.obolonsky.github.resetNavGraph
 import io.obolonsky.github.ui.compose.theme.ComposeMainTheme
+import io.obolonsky.github.ui.compose.theme.Shapes
 import io.obolonsky.github.viewmodels.ComponentViewModel
 import io.obolonsky.github.viewmodels.UserInfoViewModel
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import io.obolonsky.core.R as CoreR
+import io.obolonsky.coreui.R as CoreUiR
 
 class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
@@ -121,12 +134,31 @@ fun UserProfile(
     onRepoClick: () -> Unit,
     onSearch: () -> Unit,
 ) = Column {
-    Text(
-        text = user.login,
-        fontSize = 24.sp
+    AvatarLogin(
+        modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 8.dp),
+        user = user,
     )
+
+    val statusMessage = user.status.message
+    if (statusMessage != null) {
+        Text(
+            modifier = Modifier
+                .padding(start = 8.dp, end = 8.dp, top = 16.dp)
+                .fillMaxWidth()
+                .border(1.dp, Color.LightGray, RoundedCornerShape(4.dp))
+                .padding(horizontal = 8.dp, vertical = 4.dp),
+            text = statusMessage,
+        )
+    }
+    FollowersFollowing(
+        modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp),
+        user = user,
+    )
+    Divider()
+
     Button(
         modifier = Modifier
+            .padding(horizontal = 8.dp)
             .fillMaxWidth(),
         onClick = onRepoClick,
     ) {
@@ -134,11 +166,58 @@ fun UserProfile(
     }
     Button(
         modifier = Modifier
+            .padding(horizontal = 8.dp)
             .fillMaxWidth(),
         onClick = onSearch,
     ) {
         Text(text = stringResource(id = CoreR.string.search_repositories))
     }
+}
+
+@Composable
+fun AvatarLogin(
+    user: GithubUserProfile,
+    modifier: Modifier = Modifier,
+) = Row(modifier = modifier) {
+    AsyncImage(
+        modifier = Modifier
+            .size(72.dp)
+            .clip(CircleShape)
+            .border(1.dp, Color.LightGray, CircleShape),
+        model = user.avatarUrl,
+        contentDescription = null,
+    )
+    Spacer(
+        modifier = Modifier.width(12.dp),
+    )
+    Text(
+        modifier = Modifier.padding(top = 12.dp),
+        text = user.login,
+        fontSize = 24.sp
+    )
+}
+
+@Composable
+fun FollowersFollowing(
+    user: GithubUserProfile,
+    modifier: Modifier = Modifier,
+) = Row(
+    modifier = modifier,
+) {
+    Icon(
+        imageVector = Icons.Rounded.People,
+        contentDescription = null,
+    )
+    Spacer(modifier = Modifier.width(4.dp))
+    Text(
+        text = "${user.followers} followers"
+    )
+    Spacer(modifier = Modifier.width(4.dp))
+    Text(text = "·")
+    Spacer(modifier = Modifier.width(4.dp))
+    Text(
+        text = "${user.following} following"
+    )
 }
 
 @Preview(
@@ -152,8 +231,14 @@ fun UserInfoContainerScreenPreview() {
         user = GithubUserProfile(
             id = "id",
             login = "Obolrom",
-            avatarUrl = "avatar",
-            email = "android@gmail.com"
+            avatarUrl = "https://avatars.githubusercontent.com/u/65775868?v=4",
+            email = "android@gmail.com",
+            followers = 7,
+            following = 1,
+            status = GithubUserProfile.Status(
+                message = "just a nerd",
+                emoji = null,
+            )
         )
     )
 

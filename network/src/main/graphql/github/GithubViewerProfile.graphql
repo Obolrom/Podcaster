@@ -4,7 +4,14 @@ query GetGithubViewerProfile {
         login
         avatarUrl
         email
+        status {
+            message
+            emoji
+        }
         followers {
+            totalCount
+        }
+        following {
             totalCount
         }
         repositories {

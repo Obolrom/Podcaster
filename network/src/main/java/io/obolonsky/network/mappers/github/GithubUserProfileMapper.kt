@@ -32,6 +32,12 @@ class GithubUserProfileMapper : Mapper<GithubUserProfileQuery.Data, GithubUserPr
             login = requireNotNull(input.user?.login),
             avatarUrl = input.user?.avatarUrl.toString(),
             email = requireNotNull(input.user?.email),
+            followers = requireNotNull(input.user?.followers?.totalCount),
+            following = 0,
+            status = GithubUserProfile.Status(
+                message = null,
+                emoji = null,
+            )
         )
     }
 }
@@ -39,11 +45,19 @@ class GithubUserProfileMapper : Mapper<GithubUserProfileQuery.Data, GithubUserPr
 class GithubViewerProfileMapper : Mapper<GetGithubViewerProfileQuery.Data, GithubUserProfile> {
 
     override fun map(input: GetGithubViewerProfileQuery.Data): GithubUserProfile {
+        val viewer = input.viewer
+
         return GithubUserProfile(
-            id = requireNotNull(input.viewer.id),
-            login = requireNotNull(input.viewer.login),
-            avatarUrl = input.viewer.avatarUrl.toString(),
-            email = requireNotNull(input.viewer.email),
+            id = viewer.id,
+            login = viewer.login,
+            avatarUrl = viewer.avatarUrl.toString(),
+            email = viewer.email,
+            followers = viewer.followers.totalCount,
+            following = viewer.following.totalCount,
+            status = GithubUserProfile.Status(
+                message = viewer.status?.message,
+                emoji = viewer.status?.emoji,
+            )
         )
     }
 }

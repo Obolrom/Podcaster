@@ -97,5 +97,6 @@ dependencies {
     // Utilities
     implementation("com.jakewharton.timber:timber:5.0.1")
     implementation("io.coil-kt:coil:2.0.0-rc03")
+    implementation("io.coil-kt:coil-compose:2.2.2")
     implementation("com.github.kirich1409:viewbindingpropertydelegate:1.5.3")
 }

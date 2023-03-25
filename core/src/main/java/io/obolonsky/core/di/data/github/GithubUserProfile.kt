@@ -5,4 +5,13 @@ data class GithubUserProfile(
     val login: String,
     val avatarUrl: String,
     val email: String,
-)
+    val followers: Int,
+    val following: Int,
+    val status: Status,
+) {
+
+    data class Status(
+        val message: String?,
+        val emoji: String?,
+    )
+}

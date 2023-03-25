@@ -1,5 +1,7 @@
 package io.obolonsky.network.mappers.github
 
+import io.obolonsky.core.di.data.github.ContributionChart
+import io.obolonsky.core.di.data.github.GithubDay
 import io.obolonsky.core.di.data.github.GithubRepository
 import io.obolonsky.core.di.data.github.GithubUserProfile
 import io.obolonsky.core.di.utils.Mapper
@@ -46,6 +48,16 @@ class GithubViewerProfileMapper : Mapper<GetGithubViewerProfileQuery.Data, Githu
 
     override fun map(input: GetGithubViewerProfileQuery.Data): GithubUserProfile {
         val viewer = input.viewer
+        val contributionCalendar = viewer.contributionsCollection.contributionCalendar
+        val contributions = contributionCalendar.weeks
+            .flatMap { it.contributionDays }
+            .map {
+                GithubDay(
+                    contributionCount = it.contributionCount,
+                    color = it.color,
+                    date = it.date.toString(),
+                )
+            }
 
         return GithubUserProfile(
             id = viewer.id,
@@ -57,6 +69,10 @@ class GithubViewerProfileMapper : Mapper<GetGithubViewerProfileQuery.Data, Githu
             status = GithubUserProfile.Status(
                 message = viewer.status?.message,
                 emoji = viewer.status?.emoji,
+            ),
+            contributionChart = ContributionChart(
+                totalContributionsForLastYear = contributionCalendar.totalContributions,
+                days = contributions,
             )
         )
     }

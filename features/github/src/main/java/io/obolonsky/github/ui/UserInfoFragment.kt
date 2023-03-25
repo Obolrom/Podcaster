@@ -4,8 +4,13 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -20,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ViewCompositionStrategy
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,6 +34,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.compose.AsyncImage
+import io.obolonsky.core.di.data.github.ContributionChart
+import io.obolonsky.core.di.data.github.GithubDay
 import io.obolonsky.core.di.data.github.GithubUserProfile
 import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.core.di.toaster
@@ -39,13 +45,12 @@ import io.obolonsky.github.redux.userinfo.UserInfoSideEffects
 import io.obolonsky.github.redux.userinfo.UserInfoState
 import io.obolonsky.github.resetNavGraph
 import io.obolonsky.github.ui.compose.theme.ComposeMainTheme
-import io.obolonsky.github.ui.compose.theme.Shapes
 import io.obolonsky.github.viewmodels.ComponentViewModel
 import io.obolonsky.github.viewmodels.UserInfoViewModel
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import kotlin.random.Random
 import io.obolonsky.core.R as CoreR
-import io.obolonsky.coreui.R as CoreUiR
 
 class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
@@ -94,6 +99,7 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
                     findNavController()
                         .navigate(R.id.action_repositoryListFragment_to_searchReposFragment)
                 },
+                onDayClick = viewModel::chartDaySelected,
             )
         }
     }
@@ -109,6 +115,12 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
             is UserInfoSideEffects.LogoutPageCompletedEvent -> {
                 findNavController().resetNavGraph(R.navigation.nav_graph)
             }
+            is UserInfoSideEffects.ChartDayEvent -> {
+                toaster.showToast(
+                    context = requireContext(),
+                    message = "${effect.day.contributionCount} contributions, ${effect.day.date}"
+                )
+            }
         }
     }
 }
@@ -118,14 +130,28 @@ fun UserInfoContainerScreen(
     viewState: UserInfoState,
     onRepoClick: () -> Unit,
     onSearch: () -> Unit,
+    onDayClick: (GithubDay) -> Unit,
 ) = ComposeMainTheme {
 
-    if (viewState.user != null)
-        UserProfile(
-            user = viewState.user,
-            onRepoClick = onRepoClick,
-            onSearch = onSearch,
-        )
+    Column {
+
+        if (viewState.user != null)
+            UserProfile(
+                user = viewState.user,
+                onRepoClick = onRepoClick,
+                onSearch = onSearch,
+            )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        val contributionCalendar = viewState.user?.contributionChart?.days
+        if (contributionCalendar != null)
+            GithubContributionChart(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                contributions = contributionCalendar,
+                onDayClick = onDayClick,
+            )
+    }
 }
 
 @Composable
@@ -209,14 +235,48 @@ fun FollowersFollowing(
         contentDescription = null,
     )
     Spacer(modifier = Modifier.width(4.dp))
-    Text(
-        text = "${user.followers} followers"
-    )
+    Text(text = "${user.followers} followers")
     Spacer(modifier = Modifier.width(4.dp))
     Text(text = "·")
     Spacer(modifier = Modifier.width(4.dp))
-    Text(
-        text = "${user.following} following"
+    Text(text = "${user.following} following")
+}
+
+@Composable
+fun GithubContributionChart(
+    contributions: List<GithubDay>,
+    onDayClick: (GithubDay) -> Unit,
+    modifier: Modifier = Modifier,
+) = LazyHorizontalGrid(
+    modifier = modifier.height(96.dp),
+    rows = GridCells.Fixed(7),
+    verticalArrangement = Arrangement.spacedBy(2.dp),
+    horizontalArrangement = Arrangement.spacedBy(2.dp),
+) {
+    items(
+        items = contributions,
+        key = { day -> day.date },
+    ) { githubDay ->
+        GitDay(
+            githubDay = githubDay,
+            onDayClick = onDayClick,
+        )
+    }
+}
+
+@Composable
+fun GitDay(
+    githubDay: GithubDay,
+    onDayClick: (GithubDay) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Spacer(
+        modifier = modifier
+            .clip(RoundedCornerShape(2.dp))
+            .border(0.dp, Color.LightGray, RoundedCornerShape(2.dp))
+            .clickable { onDayClick(githubDay) }
+            .background(Color(android.graphics.Color.parseColor(githubDay.color)))
+            .size(12.dp)
     )
 }
 
@@ -238,13 +298,22 @@ fun UserInfoContainerScreenPreview() {
             status = GithubUserProfile.Status(
                 message = "just a nerd",
                 emoji = null,
+            ),
+            contributionChart = ContributionChart(
+                totalContributionsForLastYear = 255,
+                days = generateSequence {
+                    GithubDay(4, "#40c463", Random(1_000_000).toString())
+                }
+                    .take(365)
+                    .toList(),
             )
-        )
+        ),
     )
 
     UserInfoContainerScreen(
         viewState = state,
         onRepoClick = { },
         onSearch = { },
+        onDayClick = { },
     )
 }

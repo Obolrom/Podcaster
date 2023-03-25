@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import io.obolonsky.core.di.data.github.GithubDay
 import io.obolonsky.core.di.utils.reactWith
 import io.obolonsky.github.interactors.GitHubProfileInteractor
 import io.obolonsky.github.redux.userinfo.UserInfoSideEffects
@@ -25,7 +26,10 @@ class UserInfoViewModel @AssistedInject constructor(
 ) : ViewModel(), ContainerHost<UserInfoState, UserInfoSideEffects> {
 
     override val container: Container<UserInfoState, UserInfoSideEffects> = container(
-        initialState = UserInfoState(isLoading = false, null),
+        initialState = UserInfoState(
+            isLoading = false,
+            user = null,
+        ),
     )
 
     init {
@@ -35,6 +39,10 @@ class UserInfoViewModel @AssistedInject constructor(
     @Suppress("unused")
     fun corruptAccessToken() {
         gitHubProfileInteractor.corruptAccessToken()
+    }
+
+    fun chartDaySelected(day: GithubDay) = intent {
+        postSideEffect(UserInfoSideEffects.ChartDayEvent(day))
     }
 
     private fun loadUserInfo() = intent {

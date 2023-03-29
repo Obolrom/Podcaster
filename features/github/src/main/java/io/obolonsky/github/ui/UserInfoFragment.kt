@@ -8,9 +8,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -21,11 +23,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.People
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,6 +41,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.compose.AsyncImage
 import io.obolonsky.core.di.data.github.ContributionChart
 import io.obolonsky.core.di.data.github.GithubDay
+import io.obolonsky.core.di.data.github.GithubRepoView
 import io.obolonsky.core.di.data.github.GithubUserProfile
 import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.core.di.toaster
@@ -45,12 +51,14 @@ import io.obolonsky.github.redux.userinfo.UserInfoSideEffects
 import io.obolonsky.github.redux.userinfo.UserInfoState
 import io.obolonsky.github.resetNavGraph
 import io.obolonsky.github.ui.compose.theme.ComposeMainTheme
+import io.obolonsky.github.ui.compose.theme.Typography
 import io.obolonsky.github.viewmodels.ComponentViewModel
 import io.obolonsky.github.viewmodels.UserInfoViewModel
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import kotlin.random.Random
 import io.obolonsky.core.R as CoreR
+import io.obolonsky.coreui.R as CoreUiR
 
 class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
@@ -151,6 +159,12 @@ fun UserInfoContainerScreen(
                 contributions = contributionCalendar,
                 onDayClick = onDayClick,
             )
+
+        if (viewState.repos != null) {
+            ViewerRepos(
+                repos = viewState.repos,
+            )
+        }
     }
 }
 
@@ -221,6 +235,44 @@ fun AvatarLogin(
         text = user.login,
         fontSize = 24.sp
     )
+}
+
+@Composable
+fun ViewerRepos(
+    repos: List<GithubRepoView>,
+    modifier: Modifier = Modifier,
+) = Column(modifier = modifier) {
+    LazyColumn {
+        items(repos) { repo ->
+            ViewerRepo(
+                repo = repo,
+                modifier = Modifier.padding(horizontal = 8.dp),
+            )
+        }
+    }
+}
+
+@Composable
+fun ViewerRepo(
+    repo: GithubRepoView,
+    modifier: Modifier = Modifier,
+) = Column(modifier = modifier) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text(
+            text = repo.repoName,
+            color = colorResource(id = CoreUiR.color.blue),
+            fontWeight = FontWeight.W700,
+            style = Typography.h6,
+        )
+        Spacer(Modifier.width(8.dp))
+        Text(
+            modifier = Modifier
+                .border(1.dp, Color.LightGray, RoundedCornerShape(10.dp))
+                .padding(horizontal = 8.dp, vertical = 2.dp),
+            text = stringResource(id = repo.visibility.resId),
+            style = Typography.caption,
+        )
+    }
 }
 
 @Composable
@@ -308,6 +360,21 @@ fun UserInfoContainerScreenPreview() {
                     .toList(),
             )
         ),
+        repos = listOf(
+            GithubRepoView(
+                id = "id",
+                repoName = "RxJava",
+                owner = "Obolrom",
+                stargazerCount = 3,
+                forkCount = 1,
+                description = "The best application in the world",
+                treeEntries = emptyList(),
+                viewerHasStarred = false,
+                defaultBranchName = "master",
+                isFork = false,
+                updatedAt = "Updated yesterday",
+            ),
+        )
     )
 
     UserInfoContainerScreen(

@@ -50,6 +50,7 @@ class UserInfoViewModel @AssistedInject constructor(
                 },
                 onError = { }
             )
+            .collect()
     }
 
     fun chartDaySelected(day: GithubDay) = intent {

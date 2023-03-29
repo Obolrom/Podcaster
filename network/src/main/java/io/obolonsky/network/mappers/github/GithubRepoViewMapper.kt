@@ -2,10 +2,12 @@ package io.obolonsky.network.mappers.github
 
 import io.obolonsky.core.di.data.github.GithubRepoView
 import io.obolonsky.core.di.data.github.RepoTreeEntry
+import io.obolonsky.core.di.data.github.RepoVisibility
 import io.obolonsky.core.di.utils.Mapper
 import io.obolonsky.network.github.GithubLastCommitQuery
 import io.obolonsky.network.github.GithubRepoBranchesQuery
 import io.obolonsky.network.github.GithubRepoQuery
+import io.obolonsky.network.github.GithubViewerReposQuery
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -90,5 +92,46 @@ class RepoBranchesMapper : Mapper<GithubRepoBranchesQuery.Data, List<String>> {
         return branches.mapNotNull {
             it?.name
         }
+    }
+}
+
+class ViewerReposMapper : Mapper<GithubViewerReposQuery.Data, List<GithubRepoView>> {
+
+    override fun map(input: GithubViewerReposQuery.Data): List<GithubRepoView> {
+        return input.viewer
+            .repositories
+            .edges
+            ?.mapNotNull { it?.node }
+            ?.map {
+                GithubRepoView(
+                    id = it.id,
+                    repoName = it.name,
+                    owner = it.owner.login,
+                    stargazerCount = it.stargazerCount,
+                    forkCount = it.forkCount,
+                    description = it.description,
+                    treeEntries = emptyList(),
+                    viewerHasStarred = it.viewerHasStarred,
+                    defaultBranchName = "no info",
+                    branches = null,
+                    isFork = false,
+                    parent = it.parent?.let { parentRepo ->
+                        GithubRepoView(
+                            id = parentRepo.id,
+                            repoName = parentRepo.name,
+                            owner = parentRepo.owner.login,
+                            stargazerCount = -1,
+                            forkCount = -1,
+                            description = null,
+                            treeEntries = emptyList(),
+                            viewerHasStarred = false,
+                            defaultBranchName = "no info",
+                        )
+                    },
+                    visibility = RepoVisibility.valueOf(it.visibility.rawValue),
+                    updatedAt = it.updatedAt as String,
+                )
+            }
+            .orEmpty()
     }
 }

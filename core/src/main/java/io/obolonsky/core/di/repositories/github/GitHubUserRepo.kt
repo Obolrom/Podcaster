@@ -35,4 +35,9 @@ interface GitHubUserRepo {
      * Returns SINGLE value
      */
     fun getRepoBranches(repoName: String, repoOwner: String): Flow<Reaction<List<String>>>
+
+    /**
+     * Returns SINGLE value
+     */
+    fun getViewerRepos(): Flow<Reaction<List<GithubRepoView>>>
 }

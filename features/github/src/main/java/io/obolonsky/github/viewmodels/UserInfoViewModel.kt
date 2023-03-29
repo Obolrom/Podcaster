@@ -34,11 +34,22 @@ class UserInfoViewModel @AssistedInject constructor(
 
     init {
         loadUserInfo()
+        loadViewerRepos()
     }
 
     @Suppress("unused")
     fun corruptAccessToken() {
         gitHubProfileInteractor.corruptAccessToken()
+    }
+
+    private fun loadViewerRepos() = intent {
+        gitHubProfileInteractor.getViewerRepos()
+            .reactWith(
+                onSuccess = { viewerRepos ->
+                    reduce { state.copy(repos = viewerRepos) }
+                },
+                onError = { }
+            )
     }
 
     fun chartDaySelected(day: GithubDay) = intent {

@@ -11,6 +11,10 @@ data class GithubRepoView(
     val viewerHasStarred: Boolean,
     val defaultBranchName: String,
     val branches: List<String>? = null,
+    val isFork: Boolean = false,
+    val parent: GithubRepoView? = null,
+    val visibility: RepoVisibility = RepoVisibility.PUBLIC,
+    val updatedAt: String? = null,
 )
 
 data class RepoTreeEntry(

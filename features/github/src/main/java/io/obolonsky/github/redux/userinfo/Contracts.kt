@@ -3,11 +3,13 @@ package io.obolonsky.github.redux.userinfo
 import android.content.Intent
 import androidx.annotation.StringRes
 import io.obolonsky.core.di.data.github.GithubDay
+import io.obolonsky.core.di.data.github.GithubRepoView
 import io.obolonsky.core.di.data.github.GithubUserProfile
 
 data class UserInfoState(
     val isLoading: Boolean,
     val user: GithubUserProfile?,
+    val repos: List<GithubRepoView>? = null,
 )
 
 sealed class UserInfoSideEffects {

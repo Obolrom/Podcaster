@@ -23,11 +23,16 @@ class GitHubUserRepository @Inject constructor(
     private val addStarForRepoApiHelper: AddStarForRepoApiHelper,
     private val removeStarForRepoApiHelper: RemoveStarForRepoApiHelper,
     private val getGithubRepoBranches: GetGithubRepoBranches,
+    private val getGithubViewerReposApiHelper: GetGithubViewerReposApiHelper,
 ) : GitHubUserRepo {
 
     @Deprecated("do not use rest implementation")
     override suspend fun getUserInformation(): Reaction<GithubUser> {
         return getGithubUserApiHelper.load(Unit)
+    }
+
+    override fun getViewerRepos(): Flow<Reaction<List<GithubRepoView>>> {
+        return getGithubViewerReposApiHelper.load(Unit)
     }
 
     override fun getReposBySearchQuery(repoName: String): Flow<Reaction<List<GithubRepository>?>> {

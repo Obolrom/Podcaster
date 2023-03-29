@@ -1,0 +1,36 @@
+query GithubViewerRepos {
+    viewer {
+        repositories(first: 50) {
+            edges {
+                node {
+                    id
+                    name
+                    owner {
+                        login
+                    }
+                    isFork
+                    parent {
+                        id
+                        name
+                        owner {
+                            login
+                        }
+                    }
+                    visibility
+                    description
+                    stargazerCount
+                    forkCount
+                    viewerHasStarred
+                    updatedAt
+                    labels(first: 3) {
+                        edges {
+                            node {
+                                id
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

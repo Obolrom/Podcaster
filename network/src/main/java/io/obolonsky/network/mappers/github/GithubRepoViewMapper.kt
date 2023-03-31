@@ -1,6 +1,7 @@
 package io.obolonsky.network.mappers.github
 
 import io.obolonsky.core.di.data.github.GithubRepoView
+import io.obolonsky.core.di.data.github.ProgrammingLang
 import io.obolonsky.core.di.data.github.RepoTreeEntry
 import io.obolonsky.core.di.data.github.RepoVisibility
 import io.obolonsky.core.di.utils.Mapper
@@ -130,6 +131,13 @@ class ViewerReposMapper : Mapper<GithubViewerReposQuery.Data, List<GithubRepoVie
                     },
                     visibility = RepoVisibility.valueOf(it.visibility.rawValue),
                     updatedAt = it.updatedAt as String,
+                    primaryLanguage = it.primaryLanguage?.let { lang ->
+                        ProgrammingLang(
+                            id = lang.id,
+                            color = lang.color,
+                            langName = lang.name,
+                        )
+                    },
                 )
             }
             .orEmpty()

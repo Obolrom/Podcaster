@@ -8,6 +8,11 @@ query GithubViewerRepos {
                     owner {
                         login
                     }
+                    primaryLanguage {
+                        id
+                        color
+                        name
+                    }
                     isFork
                     parent {
                         id

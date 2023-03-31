@@ -362,10 +362,12 @@ fun RepoTreeEntry(
 fun RepoDescription(
     text: String,
     modifier: Modifier = Modifier,
+    maxLines: Int = Int.MAX_VALUE,
 ) {
     Text(
         modifier = modifier,
         text = text,
+        maxLines = maxLines,
     )
 }
 

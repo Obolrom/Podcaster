@@ -39,10 +39,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.compose.AsyncImage
-import io.obolonsky.core.di.data.github.ContributionChart
-import io.obolonsky.core.di.data.github.GithubDay
-import io.obolonsky.core.di.data.github.GithubRepoView
-import io.obolonsky.core.di.data.github.GithubUserProfile
+import io.obolonsky.core.di.data.github.*
 import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.core.di.toaster
 import io.obolonsky.github.R
@@ -155,7 +152,7 @@ fun UserInfoContainerScreen(
         val contributionCalendar = viewState.user?.contributionChart?.days
         if (contributionCalendar != null)
             GithubContributionChart(
-                modifier = Modifier.padding(horizontal = 8.dp),
+                modifier = Modifier.padding(horizontal = 12.dp),
                 contributions = contributionCalendar,
                 onDayClick = onDayClick,
             )
@@ -175,7 +172,7 @@ fun UserProfile(
     onSearch: () -> Unit,
 ) = Column {
     AvatarLogin(
-        modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 8.dp),
+        modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 8.dp),
         user = user,
     )
 
@@ -183,7 +180,7 @@ fun UserProfile(
     if (statusMessage != null) {
         Text(
             modifier = Modifier
-                .padding(start = 8.dp, end = 8.dp, top = 16.dp)
+                .padding(start = 12.dp, end = 12.dp, top = 16.dp)
                 .fillMaxWidth()
                 .border(1.dp, Color.LightGray, RoundedCornerShape(4.dp))
                 .padding(horizontal = 8.dp, vertical = 4.dp),
@@ -191,14 +188,14 @@ fun UserProfile(
         )
     }
     FollowersFollowing(
-        modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp),
+        modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp),
         user = user,
     )
     Divider()
 
     Button(
         modifier = Modifier
-            .padding(horizontal = 8.dp)
+            .padding(horizontal = 12.dp)
             .fillMaxWidth(),
         onClick = onRepoClick,
     ) {
@@ -206,7 +203,7 @@ fun UserProfile(
     }
     Button(
         modifier = Modifier
-            .padding(horizontal = 8.dp)
+            .padding(horizontal = 12.dp)
             .fillMaxWidth(),
         onClick = onSearch,
     ) {
@@ -246,7 +243,13 @@ fun ViewerRepos(
         items(repos) { repo ->
             ViewerRepo(
                 repo = repo,
-                modifier = Modifier.padding(horizontal = 8.dp),
+                modifier = Modifier
+                    .padding(start = 12.dp, end = 12.dp, top = 24.dp, bottom = 20.dp),
+            )
+            Divider(
+                modifier = Modifier
+                    .padding(horizontal = 12.dp)
+                    .weight(1f)
             )
         }
     }
@@ -257,24 +260,73 @@ fun ViewerRepo(
     repo: GithubRepoView,
     modifier: Modifier = Modifier,
 ) = Column(modifier = modifier) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(
-            text = repo.repoName,
-            color = colorResource(id = CoreUiR.color.blue),
-            fontWeight = FontWeight.W700,
-            style = Typography.h6,
-        )
-        Spacer(Modifier.width(8.dp))
-        Text(
-            modifier = Modifier
-                .border(1.dp, Color.LightGray, RoundedCornerShape(10.dp))
-                .padding(horizontal = 8.dp, vertical = 2.dp),
-            text = stringResource(id = repo.visibility.resId),
-            style = Typography.caption,
+    RepoTitle(repo = repo)
+    repo.description?.let { text ->
+        RepoDescription(
+            text = text,
+            modifier = Modifier,
+            maxLines = 4,
         )
     }
+    Row {
+        repo.primaryLanguage?.let { lang ->
+            PrimaryLanguage(
+                lang = lang,
+                modifier = Modifier.padding(vertical = 4.dp),
+            )
+        }
+    }
+    StarButton(
+        viewerHasStarred = repo.viewerHasStarred,
+        onStarClick = { }
+    )
 }
 
+@Composable
+fun PrimaryLanguage(
+    lang: ProgrammingLang,
+    modifier: Modifier = Modifier,
+) = Row(
+    modifier = modifier,
+    verticalAlignment = Alignment.CenterVertically,
+) {
+    // TODO: fix potential NPE with lang.color
+    Spacer(
+       Modifier
+           .size(10.dp)
+           .background(Color(android.graphics.Color.parseColor(lang.color)), CircleShape)
+    )
+    Spacer(Modifier.width(4.dp))
+    Text(
+        text = lang.langName,
+        color = Color.Gray,
+        style = Typography.caption,
+    )
+}
+
+@Composable
+fun RepoTitle(
+    repo: GithubRepoView,
+    modifier: Modifier = Modifier,
+) = Row(
+    modifier = modifier,
+    verticalAlignment = Alignment.CenterVertically,
+) {
+    Text(
+        text = repo.repoName,
+        color = colorResource(id = CoreUiR.color.blue),
+        fontWeight = FontWeight.W700,
+        style = Typography.h6,
+    )
+    Spacer(Modifier.width(8.dp))
+    Text(
+        modifier = Modifier
+            .border(1.dp, Color.LightGray, RoundedCornerShape(10.dp))
+            .padding(horizontal = 8.dp, vertical = 2.dp),
+        text = stringResource(id = repo.visibility.resId),
+        style = Typography.caption,
+    )
+}
 @Composable
 fun FollowersFollowing(
     user: GithubUserProfile,
@@ -373,6 +425,11 @@ fun UserInfoContainerScreenPreview() {
                 defaultBranchName = "master",
                 isFork = false,
                 updatedAt = "Updated yesterday",
+                primaryLanguage = ProgrammingLang(
+                    id = "someId",
+                    color = "#40c463",
+                    langName = "Java",
+                )
             ),
         )
     )

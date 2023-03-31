@@ -15,6 +15,7 @@ data class GithubRepoView(
     val parent: GithubRepoView? = null,
     val visibility: RepoVisibility = RepoVisibility.PUBLIC,
     val updatedAt: String? = null,
+    val primaryLanguage: ProgrammingLang? = null,
 )
 
 data class RepoTreeEntry(
@@ -30,3 +31,9 @@ data class RepoTreeEntry(
         val date: String,
     )
 }
+
+data class ProgrammingLang(
+    val id: String,
+    val color: String?,
+    val langName: String,
+)

@@ -65,8 +65,8 @@ class GitHubUserRepository @Inject constructor(
         }
     }
 
-    override fun getGithubRepoView(): Flow<Reaction<GithubRepoView>> {
-        return getGithubRepoApiHelper.load(Unit)
+    override fun getGithubRepoView(owner: String, repo: String): Flow<Reaction<GithubRepoView>> {
+        return getGithubRepoApiHelper.load(GetGithubRepoApiHelper.Params(owner, repo))
             .flatMapReactionMerge { repoView ->
                 val entriesFlow = repoView.treeEntries
                     .map { entry ->

@@ -21,11 +21,14 @@ import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.syntax.simple.repeatOnSubscription
 import org.orbitmvi.orbit.viewmodel.container
+import javax.inject.Named
 import io.obolonsky.core.R as CoreR
 
 @Suppress("unused_parameter")
 class GithubRepoViewViewModel @AssistedInject constructor(
     @Assisted savedStateHandle: SavedStateHandle,
+    @Assisted("owner") private val owner: String,
+    @Assisted("repo") private val repo: String,
     private val githubRepo: GitHubUserRepo,
     private val networkStatusObservable: NetworkStatusObservable,
 ) : ViewModel(), ContainerHost<GithubRepoViewState, RepoViewSideEffects> {
@@ -102,7 +105,7 @@ class GithubRepoViewViewModel @AssistedInject constructor(
 
     private fun loadRepo() = intent {
 
-        githubRepo.getGithubRepoView()
+        githubRepo.getGithubRepoView(owner, repo)
             .reactWith(
                 onSuccess = {
                     reduce { state.copy(model = it) }
@@ -115,6 +118,10 @@ class GithubRepoViewViewModel @AssistedInject constructor(
     @AssistedFactory
     interface Factory {
 
-        fun create(savedStateHandle: SavedStateHandle): GithubRepoViewViewModel
+        fun create(
+            savedStateHandle: SavedStateHandle,
+            @Assisted("owner") owner: String,
+            @Assisted("repo") repo: String
+        ): GithubRepoViewViewModel
     }
 }

@@ -102,9 +102,10 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
             UserInfoContainerScreen(
                 viewState = state,
-                onRepoClick = {
-                    findNavController()
-                        .navigate(R.id.action_repositoryListFragment_to_githubRepoFragment)
+                onRepoClick = { owner, repoName ->
+                    val directions = UserInfoFragmentDirections
+                        .actionRepositoryListFragmentToGithubRepoFragment(owner, repoName)
+                    findNavController().navigate(directions)
                 },
                 onSearch = {
                     findNavController()
@@ -139,9 +140,9 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 @Composable
 fun UserInfoContainerScreen(
     viewState: UserInfoState,
-    onRepoClick: () -> Unit,
     onSearch: () -> Unit,
     onDayClick: (GithubDay) -> Unit,
+    onRepoClick: (owner: String, repo: String) -> Unit,
 ) = ComposeMainTheme {
 
     Column {
@@ -149,7 +150,6 @@ fun UserInfoContainerScreen(
         if (viewState.user != null)
             UserProfile(
                 user = viewState.user,
-                onRepoClick = onRepoClick,
                 onSearch = onSearch,
             )
 
@@ -166,6 +166,7 @@ fun UserInfoContainerScreen(
         if (viewState.repos != null) {
             ViewerRepos(
                 repos = viewState.repos,
+                onRepoClick = onRepoClick,
             )
         }
     }
@@ -174,7 +175,6 @@ fun UserInfoContainerScreen(
 @Composable
 fun UserProfile(
     user: GithubUserProfile,
-    onRepoClick: () -> Unit,
     onSearch: () -> Unit,
 ) = Column {
     AvatarLogin(
@@ -199,14 +199,6 @@ fun UserProfile(
     )
     Divider()
 
-    Button(
-        modifier = Modifier
-            .padding(horizontal = 12.dp)
-            .fillMaxWidth(),
-        onClick = onRepoClick,
-    ) {
-        Text(text = "To repo view")
-    }
     Button(
         modifier = Modifier
             .padding(horizontal = 12.dp)
@@ -244,6 +236,7 @@ fun AvatarLogin(
 fun ViewerRepos(
     repos: List<GithubRepoView>,
     modifier: Modifier = Modifier,
+    onRepoClick: (owner: String, repo: String) -> Unit,
 ) = Column(modifier = modifier) {
     LazyColumn {
         items(
@@ -252,6 +245,7 @@ fun ViewerRepos(
         ) { repo ->
             ViewerRepo(
                 repo = repo,
+                onRepoClick = onRepoClick,
                 modifier = Modifier
                     .padding(start = 12.dp, end = 12.dp, top = 24.dp, bottom = 20.dp),
             )
@@ -267,9 +261,13 @@ fun ViewerRepos(
 @Composable
 fun ViewerRepo(
     repo: GithubRepoView,
+    onRepoClick: (owner: String, repo: String) -> Unit,
     modifier: Modifier = Modifier,
 ) = Column(modifier = modifier) {
-    RepoTitle(repo = repo)
+    RepoTitle(
+        repo = repo,
+        onRepoClick = onRepoClick,
+    )
     repo.parent?.let { parentRepo ->
         ForkedRepoFrom(
             parentRepo = parentRepo,
@@ -373,12 +371,14 @@ fun PrimaryLanguage(
 @Composable
 fun RepoTitle(
     repo: GithubRepoView,
+    onRepoClick: (owner: String, repo: String) -> Unit,
     modifier: Modifier = Modifier,
 ) = FlowRow(
     modifier = modifier,
     verticalAlignment = Alignment.CenterVertically,
 ) {
     Text(
+        modifier = Modifier.clickable { onRepoClick(repo.owner, repo.repoName) },
         text = repo.repoName,
         color = colorResource(id = CoreUiR.color.blue),
         fontWeight = FontWeight.W700,
@@ -520,7 +520,7 @@ fun UserInfoContainerScreenPreview() {
 
     UserInfoContainerScreen(
         viewState = state,
-        onRepoClick = { },
+        onRepoClick = { _, _ -> },
         onSearch = { },
         onDayClick = { },
     )

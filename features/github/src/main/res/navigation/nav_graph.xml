@@ -45,6 +45,17 @@
         android:id="@+id/githubRepoFragment"
         android:name="io.obolonsky.github.ui.GithubRepoFragment"
         android:label="RepositoryListFragment"
-        />
+        >
+        <argument
+            android:name="owner"
+            app:argType="string"
+            app:nullable="false"
+            />
+        <argument
+            android:name="repoName"
+            app:argType="string"
+            app:nullable="false"
+            />
+    </fragment>
 
 </navigation>

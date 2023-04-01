@@ -13,12 +13,17 @@ import javax.inject.Inject
 class GetGithubRepoApiHelper @Inject constructor(
     @GitHub private val githubClient: ApolloClient,
     dispatchers: CoroutineSchedulers,
-) : BaseSingleFlowGraphQlApiHelper<GithubRepoQuery.Data, GithubRepoView, Unit>(
+) : BaseSingleFlowGraphQlApiHelper<GithubRepoQuery.Data, GithubRepoView, GetGithubRepoApiHelper.Params>(
     dispatchers = dispatchers,
     mapper = GithubRepoViewMapper()
 ) {
 
-    override fun apiRequest(param: Unit): ApolloCall<GithubRepoQuery.Data> {
-        return githubClient.query(GithubRepoQuery("podcaster", "obolrom"))
+    override fun apiRequest(param: Params): ApolloCall<GithubRepoQuery.Data> {
+        return githubClient.query(GithubRepoQuery(param.repo, param.owner))
     }
+
+    data class Params(
+        val owner: String,
+        val repo: String,
+    )
 }

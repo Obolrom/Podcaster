@@ -40,6 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.navArgs
 import io.obolonsky.core.di.data.github.GithubRepoView
 import io.obolonsky.core.di.data.github.RepoTreeEntry
 import io.obolonsky.core.di.lazyViewModel
@@ -60,10 +61,16 @@ class GithubRepoFragment : Fragment() {
 
     private val componentViewModel by activityViewModels<ComponentViewModel>()
 
+    private val args by navArgs<GithubRepoFragmentArgs>()
+
     private val viewModel: GithubRepoViewViewModel by lazyViewModel {
         componentViewModel.gitHubComponent
             .getGithubRepoViewViewModelFactory()
-            .create(it)
+            .create(
+                savedStateHandle = it,
+                owner = args.owner,
+                repo = args.repoName,
+            )
     }
 
     override fun onCreateView(

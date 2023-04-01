@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalLayoutApi::class)
+
 package io.obolonsky.github.ui
 
 import android.app.Activity
@@ -21,6 +23,7 @@ import androidx.compose.material.TabRowDefaults.Divider
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.People
+import androidx.compose.material.icons.rounded.StarOutline
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -53,6 +56,9 @@ import io.obolonsky.github.viewmodels.ComponentViewModel
 import io.obolonsky.github.viewmodels.UserInfoViewModel
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.random.Random
 import io.obolonsky.core.R as CoreR
 import io.obolonsky.coreui.R as CoreUiR
@@ -240,7 +246,10 @@ fun ViewerRepos(
     modifier: Modifier = Modifier,
 ) = Column(modifier = modifier) {
     LazyColumn {
-        items(repos) { repo ->
+        items(
+            items = repos,
+            key = { repo -> repo.id },
+        ) { repo ->
             ViewerRepo(
                 repo = repo,
                 modifier = Modifier
@@ -264,27 +273,60 @@ fun ViewerRepo(
     repo.parent?.let { parentRepo ->
         ForkedRepoFrom(
             parentRepo = parentRepo,
-            modifier = Modifier,
+            modifier = Modifier.padding(top = 4.dp),
         )
     }
     repo.description?.let { text ->
         RepoDescription(
             text = text,
-            modifier = Modifier,
+            modifier = Modifier.padding(top = 4.dp),
             maxLines = 4,
+            color = Color.Gray,
+            style = Typography.body2,
         )
     }
-    Row {
+    FlowRow(
+        modifier = Modifier.padding(top = 4.dp),
+    ) {
         repo.primaryLanguage?.let { lang ->
-            PrimaryLanguage(
-                lang = lang,
-                modifier = Modifier.padding(vertical = 4.dp),
-            )
+            PrimaryLanguage(lang = lang)
+            Spacer(Modifier.width(12.dp))
         }
+        if (repo.stargazerCount != 0) {
+            GithubRepoStarsCount(
+                stars = repo.stargazerCount,
+            )
+            Spacer(Modifier.width(12.dp))
+        }
+        Timber.d("fuckingFuck ${repo.updatedAt}")
+        repo.updatedAt
+            ?.let(SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT)::parse)
+            ?.let(SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH)::format)
+            ?.let { updatedAt ->
+                Text(
+                    text = updatedAt,
+                    color = Color.Gray,
+                    style = Typography.caption,
+                )
+            }
     }
-    StarButton(
-        viewerHasStarred = repo.viewerHasStarred,
-        onStarClick = { }
+}
+
+@Composable
+fun GithubRepoStarsCount(
+    stars: Int,
+    modifier: Modifier = Modifier,
+) = Row(modifier = modifier) {
+    Icon(
+        modifier = Modifier.size(16.dp),
+        imageVector = Icons.Rounded.StarOutline,
+        tint = Color.Gray,
+        contentDescription = null
+    )
+    Text(
+        text = stars.toString(),
+        color = Color.Gray,
+        style = Typography.caption,
     )
 }
 
@@ -332,7 +374,7 @@ fun PrimaryLanguage(
 fun RepoTitle(
     repo: GithubRepoView,
     modifier: Modifier = Modifier,
-) = Row(
+) = FlowRow(
     modifier = modifier,
     verticalAlignment = Alignment.CenterVertically,
 ) {
@@ -438,8 +480,26 @@ fun UserInfoContainerScreenPreview() {
         ),
         repos = listOf(
             GithubRepoView(
-                id = "id",
+                id = "id-1",
                 repoName = "RxJava",
+                owner = "Obolrom",
+                stargazerCount = 0,
+                forkCount = 1,
+                description = "The best application in the world",
+                treeEntries = emptyList(),
+                viewerHasStarred = false,
+                defaultBranchName = "master",
+                isFork = false,
+                updatedAt = "2023-03-31T19:59:44Z",
+                primaryLanguage = ProgrammingLang(
+                    id = "someId",
+                    color = "#40c463",
+                    langName = "Java",
+                )
+            ),
+            GithubRepoView(
+                id = "id-2",
+                repoName = "TV-Guide-EPG-Android-Recyclerview",
                 owner = "Obolrom",
                 stargazerCount = 3,
                 forkCount = 1,
@@ -448,7 +508,7 @@ fun UserInfoContainerScreenPreview() {
                 viewerHasStarred = false,
                 defaultBranchName = "master",
                 isFork = false,
-                updatedAt = "Updated yesterday",
+                updatedAt = "2021-08-07T14:31:35Z",
                 primaryLanguage = ProgrammingLang(
                     id = "someId",
                     color = "#40c463",

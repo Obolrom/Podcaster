@@ -261,6 +261,12 @@ fun ViewerRepo(
     modifier: Modifier = Modifier,
 ) = Column(modifier = modifier) {
     RepoTitle(repo = repo)
+    repo.parent?.let { parentRepo ->
+        ForkedRepoFrom(
+            parentRepo = parentRepo,
+            modifier = Modifier,
+        )
+    }
     repo.description?.let { text ->
         RepoDescription(
             text = text,
@@ -283,6 +289,24 @@ fun ViewerRepo(
 }
 
 @Composable
+fun ForkedRepoFrom(
+    parentRepo: GithubRepoView,
+    modifier: Modifier = Modifier,
+) = Row(modifier = modifier) {
+    Text(
+        text = stringResource(id = CoreR.string.forked_from),
+        color = Color.Gray,
+        style = Typography.caption,
+    )
+    Spacer(Modifier.width(4.dp))
+    Text(
+        text = "${parentRepo.owner}/${parentRepo.repoName}",
+        color = Color.Gray,
+        style = Typography.caption,
+    )
+}
+
+@Composable
 fun PrimaryLanguage(
     lang: ProgrammingLang,
     modifier: Modifier = Modifier,
@@ -292,9 +316,9 @@ fun PrimaryLanguage(
 ) {
     // TODO: fix potential NPE with lang.color
     Spacer(
-       Modifier
-           .size(10.dp)
-           .background(Color(android.graphics.Color.parseColor(lang.color)), CircleShape)
+        Modifier
+            .size(10.dp)
+            .background(Color(android.graphics.Color.parseColor(lang.color)), CircleShape)
     )
     Spacer(Modifier.width(4.dp))
     Text(

@@ -48,6 +48,7 @@
     <string name="visibility_public">Public</string>
     <string name="visibility_private">Private</string>
     <string name="visibility_internal">Internal</string>
+    <string name="forked_from">Forked from</string>
     <string name="stars_count">%d stars</string>
     <string name="forks_count">%d forks</string>
 

@@ -2,23 +2,17 @@ package io.obolonsky.github.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
-import io.obolonsky.core.di.data.github.GithubRepository
+import io.obolonsky.core.di.data.github.GithubRepoView
+import io.obolonsky.core.di.data.github.ProgrammingLang
 import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.core.di.toaster
 import io.obolonsky.github.R
@@ -26,7 +20,6 @@ import io.obolonsky.github.databinding.FragmentSearchReposBinding
 import io.obolonsky.github.redux.searchrepos.SearchReposSideEffects
 import io.obolonsky.github.redux.searchrepos.SearchReposState
 import io.obolonsky.github.ui.compose.theme.ComposeMainTheme
-import io.obolonsky.github.ui.compose.theme.Shapes
 import io.obolonsky.github.viewmodels.ComponentViewModel
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.viewmodel.observe
@@ -76,36 +69,10 @@ fun SearchReposContainerScreen(
     viewState: SearchReposState,
 ) = ComposeMainTheme {
     Column {
-        LazyColumn {
-            val items = viewState.searchResults ?: return@LazyColumn
-            items(items) { repoItem ->
-                SearchRepoItemCard(repoItem)
-                Spacer(modifier = Modifier.height(4.dp))
-            }
+        if (viewState.searchResults != null) {
+            ViewerRepos(viewState.searchResults, { _, _ -> })
         }
     }
-}
-
-@Composable
-fun SearchRepoItemCard(
-    repoItem: GithubRepository,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier = modifier
-            .background(Color.LightGray, Shapes.large)
-            .padding(8.dp)
-            .fillMaxWidth(),
-    ) {
-        Text(
-            text = repoItem.name,
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        Text(
-            text = repoItem.stargazerCount.toString(),
-        )
-    }
-
 }
 
 @Preview(
@@ -116,15 +83,41 @@ fun SearchRepoItemCard(
 fun SearchReposResultsContainerPreview() {
     val state = SearchReposState(
         searchResults = listOf(
-            GithubRepository(
-                name = "Podcaster",
-                nameWithOwner = "Podcaster/Obolrom",
-                stargazerCount = 3,
+            GithubRepoView(
+                id = "id-1",
+                repoName = "RxJava",
+                owner = "Obolrom",
+                stargazerCount = 0,
+                forkCount = 1,
+                description = "The best application in the world",
+                treeEntries = emptyList(),
+                viewerHasStarred = false,
+                defaultBranchName = "master",
+                isFork = false,
+                updatedAt = "2023-03-31T19:59:44Z",
+                primaryLanguage = ProgrammingLang(
+                    id = "someId",
+                    color = "#40c463",
+                    langName = "Java",
+                )
             ),
-            GithubRepository(
-                name = "RxJava",
-                nameWithOwner = "ReactiveX/RxJava",
-                stargazerCount = 46_800,
+            GithubRepoView(
+                id = "id-2",
+                repoName = "TV-Guide-EPG-Android-Recyclerview",
+                owner = "Obolrom",
+                stargazerCount = 3,
+                forkCount = 1,
+                description = "The best application in the world",
+                treeEntries = emptyList(),
+                viewerHasStarred = false,
+                defaultBranchName = "master",
+                isFork = false,
+                updatedAt = "2021-08-07T14:31:35Z",
+                primaryLanguage = ProgrammingLang(
+                    id = "someId",
+                    color = "#40c463",
+                    langName = "Java",
+                )
             ),
         )
     )

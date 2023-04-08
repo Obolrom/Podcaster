@@ -27,10 +27,21 @@ query GithubViewerRepos {
                     forkCount
                     viewerHasStarred
                     updatedAt
-                    labels(first: 3) {
+                    repositoryTopics(first: 5) {
+                        edges {
+                            node {
+                                topic {
+                                    name
+                                }
+                            }
+                        }
+                    }
+                    labels(first: 5) {
                         edges {
                             node {
                                 id
+                                color
+                                name
                             }
                         }
                     }

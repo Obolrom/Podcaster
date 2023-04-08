@@ -19,7 +19,7 @@ interface GitHubUserRepo {
      */
     fun getGithubRepoView(owner: String, repo: String): Flow<Reaction<GithubRepoView>>
 
-    fun getReposBySearchQuery(repoName: String): Flow<Reaction<List<GithubRepository>?>>
+    fun getReposBySearchQuery(repoName: String): Flow<Reaction<List<GithubRepoView>?>>
 
     /**
      * Returns SINGLE value

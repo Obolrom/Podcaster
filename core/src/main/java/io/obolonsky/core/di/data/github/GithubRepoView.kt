@@ -16,6 +16,7 @@ data class GithubRepoView(
     val visibility: RepoVisibility = RepoVisibility.PUBLIC,
     val updatedAt: String? = null,
     val primaryLanguage: ProgrammingLang? = null,
+    val topics: List<Topic> = emptyList(),
 )
 
 data class RepoTreeEntry(
@@ -36,4 +37,8 @@ data class ProgrammingLang(
     val id: String,
     val color: String?,
     val langName: String,
+)
+
+data class Topic(
+    val name: String,
 )

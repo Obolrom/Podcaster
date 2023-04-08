@@ -1,26 +1,52 @@
 package io.obolonsky.network.mappers.github
 
-import io.obolonsky.core.di.data.github.ContributionChart
-import io.obolonsky.core.di.data.github.GithubDay
-import io.obolonsky.core.di.data.github.GithubRepository
-import io.obolonsky.core.di.data.github.GithubUserProfile
+import io.obolonsky.core.di.data.github.*
 import io.obolonsky.core.di.utils.Mapper
 import io.obolonsky.network.github.GetGithubViewerProfileQuery
 import io.obolonsky.network.github.GithubRepositoriesSearchQuery
 import io.obolonsky.network.github.GithubUserProfileQuery
 
 class GithubSearchReposMapper :
-    Mapper<GithubRepositoriesSearchQuery.Data, List<GithubRepository>?> {
+    Mapper<GithubRepositoriesSearchQuery.Data, List<GithubRepoView>?> {
 
-    override fun map(input: GithubRepositoriesSearchQuery.Data): List<GithubRepository>? {
+    override fun map(input: GithubRepositoriesSearchQuery.Data): List<GithubRepoView>? {
         return input.search
             .repos
             ?.mapNotNull { it?.repo?.onRepository }
             ?.map { repo ->
-                GithubRepository(
-                    name = repo.name,
-                    nameWithOwner = repo.nameWithOwner,
+                GithubRepoView(
+                    id = repo.id,
+                    repoName = repo.name,
+                    owner = repo.owner.login,
                     stargazerCount = repo.stargazerCount,
+                    forkCount = repo.forkCount,
+                    description = repo.description,
+                    treeEntries = emptyList(),
+                    viewerHasStarred = repo.viewerHasStarred,
+                    defaultBranchName = "",
+                    isFork = repo.isFork,
+                    visibility = RepoVisibility.valueOf(repo.visibility.rawValue),
+                    updatedAt = repo.updatedAt as String,
+                    parent = repo.parent?.let { parentRepo ->
+                        GithubRepoView(
+                            id = parentRepo.id,
+                            repoName = parentRepo.name,
+                            owner = parentRepo.owner.login,
+                            stargazerCount = -1,
+                            forkCount = -1,
+                            description = null,
+                            treeEntries = emptyList(),
+                            viewerHasStarred = false,
+                            defaultBranchName = "no info",
+                        )
+                    },
+                    primaryLanguage = repo.primaryLanguage?.let { lang ->
+                        ProgrammingLang(
+                            id = lang.id,
+                            color = lang.color,
+                            langName = lang.name,
+                        )
+                    },
                 )
             }
     }

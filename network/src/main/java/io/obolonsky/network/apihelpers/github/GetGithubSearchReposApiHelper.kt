@@ -2,6 +2,7 @@ package io.obolonsky.network.apihelpers.github
 
 import com.apollographql.apollo3.ApolloCall
 import com.apollographql.apollo3.ApolloClient
+import io.obolonsky.core.di.data.github.GithubRepoView
 import io.obolonsky.core.di.data.github.GithubRepository
 import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.network.apihelpers.base.BaseSingleFlowGraphQlApiHelper
@@ -15,7 +16,7 @@ class GetGithubSearchReposApiHelper @Inject constructor(
     dispatchers: CoroutineSchedulers,
 ) : BaseSingleFlowGraphQlApiHelper<
         GithubRepositoriesSearchQuery.Data,
-        List<GithubRepository>?,
+        List<GithubRepoView>?,
         String>(
     dispatchers = dispatchers,
     mapper = GithubSearchReposMapper()

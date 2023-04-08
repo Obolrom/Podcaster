@@ -14,9 +14,37 @@ query GithubRepositoriesSearch(
         repos: edges {
             repo: node {
                 ... on Repository {
+                    id
                     name
-                    nameWithOwner
+                    owner {
+                        login
+                    }
+                    primaryLanguage {
+                        id
+                        color
+                        name
+                    }
+                    isFork
+                    parent {
+                        id
+                        name
+                        owner {
+                            login
+                        }
+                    }
+                    visibility
+                    description
                     stargazerCount
+                    forkCount
+                    viewerHasStarred
+                    updatedAt
+                    labels(first: 3) {
+                        edges {
+                            node {
+                                id
+                            }
+                        }
+                    }
                 }
             }
         }

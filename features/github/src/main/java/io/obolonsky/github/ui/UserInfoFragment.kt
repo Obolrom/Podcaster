@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalLayoutApi::class)
+@file:OptIn(ExperimentalLayoutApi::class, ExperimentalLayoutApi::class)
 
 package io.obolonsky.github.ui
 
@@ -235,8 +235,8 @@ fun AvatarLogin(
 @Composable
 fun ViewerRepos(
     repos: List<GithubRepoView>,
-    modifier: Modifier = Modifier,
     onRepoClick: (owner: String, repo: String) -> Unit,
+    modifier: Modifier = Modifier,
 ) = Column(modifier = modifier) {
     LazyColumn {
         items(
@@ -284,7 +284,17 @@ fun ViewerRepo(
         )
     }
     FlowRow(
-        modifier = Modifier.padding(top = 4.dp),
+        modifier = Modifier.padding(top = 8.dp),
+    ) {
+        repo.topics.forEach { topic ->
+            GithubTopic(
+                modifier = Modifier.padding(2.dp),
+                topic = topic,
+            )
+        }
+    }
+    FlowRow(
+        modifier = Modifier.padding(top = 8.dp),
     ) {
         repo.primaryLanguage?.let { lang ->
             PrimaryLanguage(lang = lang)
@@ -308,6 +318,25 @@ fun ViewerRepo(
                 )
             }
     }
+}
+
+@Composable
+fun GithubTopic(
+    topic: Topic,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        modifier = modifier
+            .background(
+                color = colorResource(id = CoreUiR.color.blue).copy(alpha = 0.2f),
+                shape = RoundedCornerShape(10.dp)
+            )
+            .padding(vertical = 2.dp, horizontal = 12.dp),
+        text = topic.name,
+        color = colorResource(id = CoreUiR.color.blue),
+        style = Typography.caption,
+        fontWeight = FontWeight.W500,
+    )
 }
 
 @Composable
@@ -513,6 +542,11 @@ fun UserInfoContainerScreenPreview() {
                     id = "someId",
                     color = "#40c463",
                     langName = "Java",
+                ),
+                topics = listOf(
+                    Topic("android"),
+                    Topic("shazam"),
+                    Topic("kotlin"),
                 )
             ),
         )

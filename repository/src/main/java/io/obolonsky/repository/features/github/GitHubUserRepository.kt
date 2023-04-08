@@ -35,7 +35,7 @@ class GitHubUserRepository @Inject constructor(
         return getGithubViewerReposApiHelper.load(Unit)
     }
 
-    override fun getReposBySearchQuery(repoName: String): Flow<Reaction<List<GithubRepository>?>> {
+    override fun getReposBySearchQuery(repoName: String): Flow<Reaction<List<GithubRepoView>?>> {
         return getGithubSearchReposApiHelper.load(repoName)
     }
 

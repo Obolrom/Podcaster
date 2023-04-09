@@ -38,6 +38,15 @@ query GithubRepositoriesSearch(
                     forkCount
                     viewerHasStarred
                     updatedAt
+                    repositoryTopics(first: 5) {
+                        edges {
+                            node {
+                                topic {
+                                    name
+                                }
+                            }
+                        }
+                    }
                     labels(first: 3) {
                         edges {
                             node {

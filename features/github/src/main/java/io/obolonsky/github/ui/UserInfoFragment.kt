@@ -306,7 +306,6 @@ fun ViewerRepo(
             )
             Spacer(Modifier.width(12.dp))
         }
-        Timber.d("fuckingFuck ${repo.updatedAt}")
         repo.updatedAt
             ?.let(SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT)::parse)
             ?.let(SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH)::format)

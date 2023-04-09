@@ -47,6 +47,11 @@ class GithubSearchReposMapper :
                             langName = lang.name,
                         )
                     },
+                    topics = repo.repositoryTopics
+                        .edges
+                        ?.mapNotNull { edge -> edge?.node?.topic }
+                        ?.map { topic -> Topic(topic.name) }
+                        .orEmpty(),
                 )
             }
     }

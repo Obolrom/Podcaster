@@ -7,6 +7,7 @@ query GithubViewerRepos {
                     name
                     owner {
                         login
+                        avatarUrl
                     }
                     primaryLanguage {
                         id

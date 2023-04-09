@@ -3,7 +3,7 @@ package io.obolonsky.core.di.data.github
 data class GithubRepoView(
     val id: String,
     val repoName: String,
-    val owner: String,
+    val owner: RepoOwner,
     val stargazerCount: Int,
     val forkCount: Int,
     val description: String?,
@@ -17,6 +17,7 @@ data class GithubRepoView(
     val updatedAt: String? = null,
     val primaryLanguage: ProgrammingLang? = null,
     val topics: List<Topic> = emptyList(),
+    val isInOrganization: Boolean = false,
 )
 
 data class RepoTreeEntry(
@@ -32,6 +33,11 @@ data class RepoTreeEntry(
         val date: String,
     )
 }
+
+data class RepoOwner(
+    val login: String,
+    val avatarUrl: String? = null,
+)
 
 data class ProgrammingLang(
     val id: String,

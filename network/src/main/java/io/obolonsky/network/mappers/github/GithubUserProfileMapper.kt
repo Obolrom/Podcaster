@@ -17,7 +17,10 @@ class GithubSearchReposMapper :
                 GithubRepoView(
                     id = repo.id,
                     repoName = repo.name,
-                    owner = repo.owner.login,
+                    owner = RepoOwner(
+                        login = repo.owner.login,
+                        avatarUrl = repo.owner.avatarUrl as String,
+                    ),
                     stargazerCount = repo.stargazerCount,
                     forkCount = repo.forkCount,
                     description = repo.description,
@@ -31,7 +34,9 @@ class GithubSearchReposMapper :
                         GithubRepoView(
                             id = parentRepo.id,
                             repoName = parentRepo.name,
-                            owner = parentRepo.owner.login,
+                            owner = RepoOwner(
+                                login = parentRepo.owner.login,
+                            ),
                             stargazerCount = -1,
                             forkCount = -1,
                             description = null,
@@ -52,6 +57,7 @@ class GithubSearchReposMapper :
                         ?.mapNotNull { edge -> edge?.node?.topic }
                         ?.map { topic -> Topic(topic.name) }
                         .orEmpty(),
+                    isInOrganization = repo.isInOrganization,
                 )
             }
     }

@@ -18,7 +18,9 @@ query GithubRepositoriesSearch(
                     name
                     owner {
                         login
+                        avatarUrl
                     }
+                    isInOrganization
                     primaryLanguage {
                         id
                         color

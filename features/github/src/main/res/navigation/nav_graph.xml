@@ -39,7 +39,12 @@
         android:name="io.obolonsky.github.ui.SearchReposFragment"
         android:label="RepositoryListFragment"
         tools:layout="@layout/fragment_search_repos"
-        />
+        >
+        <action
+            android:id="@+id/action_searchReposFragment_to_githubRepoFragment"
+            app:destination="@id/githubRepoFragment"
+            />
+    </fragment>
 
     <fragment
         android:id="@+id/githubRepoFragment"

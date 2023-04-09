@@ -56,7 +56,6 @@ import io.obolonsky.github.viewmodels.ComponentViewModel
 import io.obolonsky.github.viewmodels.UserInfoViewModel
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.random.Random
@@ -406,7 +405,7 @@ fun RepoTitle(
     verticalAlignment = Alignment.CenterVertically,
 ) {
     Text(
-        modifier = Modifier.clickable { onRepoClick(repo.owner, repo.repoName) },
+        modifier = Modifier.clickable { onRepoClick(repo.owner.login, repo.repoName) },
         text = repo.repoName,
         color = colorResource(id = CoreUiR.color.blue),
         fontWeight = FontWeight.W700,
@@ -421,6 +420,7 @@ fun RepoTitle(
         style = Typography.caption,
     )
 }
+
 @Composable
 fun FollowersFollowing(
     user: GithubUserProfile,
@@ -510,7 +510,10 @@ fun UserInfoContainerScreenPreview() {
             GithubRepoView(
                 id = "id-1",
                 repoName = "RxJava",
-                owner = "Obolrom",
+                owner = RepoOwner(
+                    login = "Obolrom",
+                    avatarUrl = "url",
+                ),
                 stargazerCount = 0,
                 forkCount = 1,
                 description = "The best application in the world",
@@ -528,7 +531,10 @@ fun UserInfoContainerScreenPreview() {
             GithubRepoView(
                 id = "id-2",
                 repoName = "TV-Guide-EPG-Android-Recyclerview",
-                owner = "Obolrom",
+                owner = RepoOwner(
+                    login = "Obolrom",
+                    avatarUrl = "url",
+                ),
                 stargazerCount = 3,
                 forkCount = 1,
                 description = "The best application in the world",

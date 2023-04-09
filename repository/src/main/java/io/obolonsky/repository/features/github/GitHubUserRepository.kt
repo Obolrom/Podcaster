@@ -72,7 +72,7 @@ class GitHubUserRepository @Inject constructor(
                     .map { entry ->
                         getLastCommitForEntryApiHelper.load(GetLastCommitForEntryApiHelper.Params(
                             name = repoView.repoName,
-                            owner = repoView.owner,
+                            owner = repoView.owner.login,
                             branchName = repoView.defaultBranchName,
                             treeEntryPath = entry.treePath,
                         ))

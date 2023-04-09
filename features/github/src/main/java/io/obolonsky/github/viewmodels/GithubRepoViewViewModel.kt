@@ -21,7 +21,6 @@ import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.syntax.simple.repeatOnSubscription
 import org.orbitmvi.orbit.viewmodel.container
-import javax.inject.Named
 import io.obolonsky.core.R as CoreR
 
 @Suppress("unused_parameter")
@@ -82,7 +81,7 @@ class GithubRepoViewViewModel @AssistedInject constructor(
         val repoName = state.model?.repoName ?: return@intent
         val repoOwner = state.model?.owner ?: return@intent
 
-        githubRepo.getRepoBranches(repoName, repoOwner)
+        githubRepo.getRepoBranches(repoName, repoOwner.login)
             .reactWith(
                 onSuccess = { branches ->
                     reduce { state.copy(model = state.model?.copy(branches = branches)) }

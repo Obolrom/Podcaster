@@ -30,7 +30,9 @@ class GithubRepoViewMapper : Mapper<GithubRepoQuery.Data, GithubRepoView> {
         return GithubRepoView(
             id = repo.id,
             repoName = repo.name,
-            owner = repo.owner.login,
+            owner = RepoOwner(
+                login = repo.owner.login,
+            ),
             stargazerCount = repo.stargazerCount,
             forkCount = repo.forkCount,
             description = repo.description,
@@ -104,7 +106,10 @@ class ViewerReposMapper : Mapper<GithubViewerReposQuery.Data, List<GithubRepoVie
                 GithubRepoView(
                     id = it.id,
                     repoName = it.name,
-                    owner = it.owner.login,
+                    owner = RepoOwner(
+                        login = it.owner.login,
+                        avatarUrl = it.owner.avatarUrl as String,
+                    ),
                     stargazerCount = it.stargazerCount,
                     forkCount = it.forkCount,
                     description = it.description,
@@ -117,7 +122,9 @@ class ViewerReposMapper : Mapper<GithubViewerReposQuery.Data, List<GithubRepoVie
                         GithubRepoView(
                             id = parentRepo.id,
                             repoName = parentRepo.name,
-                            owner = parentRepo.owner.login,
+                            owner = RepoOwner(
+                                login = parentRepo.owner.login,
+                            ),
                             stargazerCount = -1,
                             forkCount = -1,
                             description = null,

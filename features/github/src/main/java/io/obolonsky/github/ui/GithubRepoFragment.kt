@@ -42,6 +42,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import io.obolonsky.core.di.data.github.GithubRepoView
+import io.obolonsky.core.di.data.github.RepoOwner
 import io.obolonsky.core.di.data.github.RepoTreeEntry
 import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.core.di.toaster
@@ -158,7 +159,7 @@ fun Screen(
             )
             Spacer(Modifier.width(12.dp))
             Text(
-                text = viewState.model?.owner.orEmpty(),
+                text = viewState.model?.owner?.login.orEmpty(),
                 color = colorResource(id = CoreUiR.color.blue),
             )
             Spacer(Modifier.width(4.dp))
@@ -451,7 +452,10 @@ fun SecondPreview() {
         model = GithubRepoView(
             id = "id",
             repoName = "RxJava",
-            owner = "Obolrom",
+            owner = RepoOwner(
+                login = "Obolrom",
+                avatarUrl = "url",
+            ),
             stargazerCount = 3,
             forkCount = 1,
             description = "The best application in the world",

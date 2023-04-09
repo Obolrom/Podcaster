@@ -10,14 +10,16 @@ plugins {
 }
 
 android {
-    compileSdk = 31
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "io.obolonsky.podcaster"
         minSdk = 21
-        targetSdk = 31
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
+
+        manifestPlaceholders["appAuthRedirectScheme"] = "io.obolonsky.oauth"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -66,6 +68,7 @@ dependencies {
     implementation(project(":spaceX"))
     implementation(project(":nasa"))
     implementation(project(":crypto"))
+    implementation(project(":github"))
 
     implementation("com.google.android.material:material:1.5.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
@@ -73,7 +76,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10")
 
     // Base
     implementation("androidx.appcompat:appcompat:1.4.1")
@@ -99,9 +102,12 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics-ktx:18.2.11")
     implementation("com.google.firebase:firebase-analytics-ktx:21.0.0")
 
+    // AppAuth
+    implementation("net.openid:appauth:0.9.1")
+
     // Dagger 2
-    implementation("com.google.dagger:dagger:2.40.5")
-    kapt("com.google.dagger:dagger-compiler:2.40.5")
+    implementation("com.google.dagger:dagger:2.44.2")
+    kapt("com.google.dagger:dagger-compiler:2.44.2")
 
     implementation("androidx.media3:media3-exoplayer:${Media3.version}")
 

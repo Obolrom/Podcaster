@@ -8,6 +8,8 @@ import retrofit2.http.Path
 
 interface CoinPaprikaApi {
 
+    // https://api.coinpaprika.com/v1/price-converter?base_currency_id=btc-bitcoin&quote_currency_id=eth-ethereum&amount=5
+
     @GET("coins")
     fun getCoinsFeed(): Single<List<CoinFeedItemResponse>>
 

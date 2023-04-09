@@ -1,0 +1,63 @@
+query GithubRepositoriesSearch(
+    $pageSize: Int!,
+    $query: String!
+) {
+    search(
+        first: $pageSize,
+        query: $query,
+        type: REPOSITORY,
+    ) {
+        pageInfo {
+            hasNextPage
+            endCursor
+        }
+        repos: edges {
+            repo: node {
+                ... on Repository {
+                    id
+                    name
+                    owner {
+                        login
+                        avatarUrl
+                    }
+                    isInOrganization
+                    primaryLanguage {
+                        id
+                        color
+                        name
+                    }
+                    isFork
+                    parent {
+                        id
+                        name
+                        owner {
+                            login
+                        }
+                    }
+                    visibility
+                    description
+                    stargazerCount
+                    forkCount
+                    viewerHasStarred
+                    updatedAt
+                    repositoryTopics(first: 5) {
+                        edges {
+                            node {
+                                topic {
+                                    name
+                                }
+                            }
+                        }
+                    }
+                    labels(first: 3) {
+                        edges {
+                            node {
+                                id
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

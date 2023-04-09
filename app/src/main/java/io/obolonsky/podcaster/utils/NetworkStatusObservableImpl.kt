@@ -3,6 +3,7 @@ package io.obolonsky.podcaster.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
+import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
 import android.net.NetworkRequest
 import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.core.di.utils.NetworkStatus
@@ -39,11 +40,11 @@ class NetworkStatusObservableImpl @Inject constructor(
             }
         }
 
-        connectivityManager.registerNetworkCallback(
-            NetworkRequest.Builder()
-                .build(),
-            connectivityCallback
-        )
+        val request = NetworkRequest.Builder()
+            .addCapability(NET_CAPABILITY_INTERNET)
+            .build()
+
+        connectivityManager.registerNetworkCallback(request, connectivityCallback)
 
         awaitClose {
             connectivityManager.unregisterNetworkCallback(connectivityCallback)

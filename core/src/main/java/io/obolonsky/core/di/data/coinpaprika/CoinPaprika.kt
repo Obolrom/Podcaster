@@ -9,6 +9,7 @@ data class CoinPaprika(
     val rank: Int,
     val symbol: String?,
     val type: String?,
+    val description: String?,
     val tags: List<Tag>,
 ) {
 

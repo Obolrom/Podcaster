@@ -1,5 +1,6 @@
 package io.obolonsky.network.di.modules
 
+import android.content.Context
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
@@ -10,7 +11,12 @@ import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import io.obolonsky.core.di.scopes.ApplicationScope
 import io.obolonsky.network.BuildConfig
 import io.obolonsky.network.api.*
+import io.obolonsky.network.apihelpers.github.TokenStorage
+import io.obolonsky.network.interceptors.github.GithubAuthorizationFailedInterceptor
+import io.obolonsky.network.interceptors.github.GithubAuthorizationInterceptor
 import io.obolonsky.network.utils.*
+import net.openid.appauth.AuthorizationService
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -45,13 +51,34 @@ class RemoteApiModule {
     }
 
     @Reusable
+    @GitHub
+    @Provides
+    fun provideGitHubOkHttpClient(
+        loggingInterceptor: HttpLoggingInterceptor,
+        context: Context,
+    ): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addNetworkInterceptor(loggingInterceptor)
+            .addNetworkInterceptor(Interceptor { chain ->
+                val request = chain.request()
+                    .newBuilder()
+                    .addHeader("X-Github-Next-Global-ID", "1")
+                    .build()
+                chain.proceed(request)
+            })
+            .addNetworkInterceptor(GithubAuthorizationInterceptor())
+            .addNetworkInterceptor(GithubAuthorizationFailedInterceptor(AuthorizationService(context), TokenStorage))
+            .build()
+    }
+
+    @Reusable
     @Provides
     fun provideRetrofit(
         client: OkHttpClient,
         converter: GsonConverterFactory,
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://song-recognition.p.rapidapi.com/")
+            .baseUrl("https://shazam-song-recognizer.p.rapidapi.com/")
             .client(client)
             .addCallAdapterFactory(NetworkResponseAdapterFactory())
             .addConverterFactory(converter)
@@ -165,6 +192,21 @@ class RemoteApiModule {
 
     @Reusable
     @Provides
+    fun provideGithubApi(
+        @GitHub githubOkHttpClient: OkHttpClient,
+        gsonConverterFactory: GsonConverterFactory,
+    ): GithubApi {
+        return Retrofit.Builder()
+            .baseUrl("https://api.github.com/")
+            .client(githubOkHttpClient)
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .addConverterFactory(gsonConverterFactory)
+            .build()
+            .create()
+    }
+
+    @Reusable
+    @Provides
     fun provideSongRecognitionApi(
         retrofit: Retrofit,
     ): SongRecognitionApi = retrofit.create()
@@ -218,6 +260,18 @@ class RemoteApiModule {
     ): ApolloClient {
         return ApolloClient.Builder()
             .serverUrl("https://api.spacex.land/graphql")
+            .okHttpClient(okHttpClient)
+            .build()
+    }
+
+    @Reusable
+    @GitHub
+    @Provides
+    fun provideGithubApolloClient(
+        @GitHub okHttpClient: OkHttpClient,
+    ): ApolloClient {
+        return ApolloClient.Builder()
+            .serverUrl("https://api.github.com/graphql")
             .okHttpClient(okHttpClient)
             .build()
     }

@@ -3,8 +3,8 @@ package io.obolonsky.network.apihelpers
 import com.apollographql.apollo3.ApolloClient
 import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.utils.CoroutineSchedulers
-import io.obolonsky.network.LaunchNextQuery
 import io.obolonsky.network.apihelpers.base.ApiHelper
+import io.obolonsky.network.spacex.LaunchNextQuery
 import io.obolonsky.network.utils.runWithReaction
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

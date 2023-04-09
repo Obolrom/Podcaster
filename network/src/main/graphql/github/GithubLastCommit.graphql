@@ -1,0 +1,23 @@
+query GithubLastCommit(
+    $name: String!,
+    $owner: String!
+    $branchName: String!,
+    $treeEntryPath: String!,
+) {
+    repository(name: $name, owner: $owner) {
+        ref(qualifiedName: $branchName) {
+            target {
+                ... on Commit {
+                    history(first: 1, path: $treeEntryPath) {
+                        edges {
+                            node {
+                                message
+                                authoredDate
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,10 @@
+mutation RemoveStarForRepo($repoId: ID!) {
+    removeStar(input: { starrableId: $repoId }) {
+        starrable {
+            ... on Repository {
+                viewerHasStarred
+                stargazerCount
+            }
+        }
+    }
+}

@@ -14,6 +14,7 @@ import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.coreui.utils.CrossFadeTransitionFactory
 import io.obolonsky.crypto.R
 import io.obolonsky.crypto.databinding.FragmentCoinDetailsBinding
+import io.obolonsky.crypto.viewmodels.CoinDetailsViewModel.Companion.ID_KEY
 import io.obolonsky.crypto.viewmodels.ComponentViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -23,9 +24,11 @@ class CoinDetailsFragment : Fragment(R.layout.fragment_coin_details) {
     private val componentViewModel by activityViewModels<ComponentViewModel>()
 
     private val coinDetailsViewModel by lazyViewModel {
+        it.set(ID_KEY, requireNotNull(arguments?.getString("id")))
+
         componentViewModel.cryptoComponent
             .coinDetailViewModelFactory()
-            .create(it, requireNotNull(arguments?.getString("id")))
+            .create(it)
     }
 
     private val binding by viewBinding<FragmentCoinDetailsBinding>()
@@ -50,5 +53,9 @@ class CoinDetailsFragment : Fragment(R.layout.fragment_coin_details) {
         context?.imageLoader?.enqueue(request)
 
         binding.name.text = coinPaprika.name
+
+        coinPaprika.description?.let { binding.description.text = it }
+
+        binding.rank.text = coinPaprika.rank.toString()
     }
 }

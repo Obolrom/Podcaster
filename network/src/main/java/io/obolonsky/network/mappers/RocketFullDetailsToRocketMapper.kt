@@ -5,7 +5,7 @@ import io.obolonsky.core.di.data.spaceX.rocket.PayloadWeight
 import io.obolonsky.core.di.data.spaceX.rocket.Rocket
 import io.obolonsky.core.di.data.spaceX.rocket.SecondStage
 import io.obolonsky.core.di.utils.Mapper
-import io.obolonsky.network.RocketFullDetailsQuery
+import io.obolonsky.network.spacex.RocketFullDetailsQuery
 
 object RocketFullDetailsToRocketMapper : Mapper<RocketFullDetailsQuery.Data, Rocket?> {
 

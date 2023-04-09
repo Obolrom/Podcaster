@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    compileSdk = 31
+    compileSdk = 33
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 31
+        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -57,8 +57,8 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.4.1")
 
     // Dagger 2
-    implementation("com.google.dagger:dagger:2.40.5")
-    kapt("com.google.dagger:dagger-compiler:2.40.5")
+    implementation("com.google.dagger:dagger:2.44.2")
+    kapt("com.google.dagger:dagger-compiler:2.44.2")
 
     // Navigation
     implementation("com.github.terrakok:cicerone:7.1")

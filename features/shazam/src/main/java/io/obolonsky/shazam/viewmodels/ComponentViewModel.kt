@@ -11,7 +11,14 @@ internal class ComponentViewModel(
 ) : AndroidViewModel(application) {
 
     val shazamComponent: ShazamComponent by lazy {
+        val appProvider = (application as App).getAppComponent()
+
         DaggerShazamComponent.factory()
-            .create((application as App).getAppComponent())
+            .create(
+                toolsProvider = appProvider,
+                shazamRepoProvider = appProvider,
+                playerActionProvider = appProvider,
+                downloadsActionProvider = appProvider,
+            )
     }
 }

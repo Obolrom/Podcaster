@@ -1,0 +1,33 @@
+query GetGithubViewerProfile {
+    viewer {
+        id
+        login
+        avatarUrl
+        email
+        status {
+            message
+            emoji
+        }
+        followers {
+            totalCount
+        }
+        following {
+            totalCount
+        }
+        repositories {
+            totalCount
+        }
+        contributionsCollection {
+            contributionCalendar {
+                totalContributions
+                weeks {
+                    contributionDays {
+                        contributionCount
+                        date
+                        color
+                    }
+                }
+            }
+        }
+    }
+}

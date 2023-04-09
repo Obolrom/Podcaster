@@ -10,4 +10,6 @@ interface RepositoryProvider :
     BanksRepoProvider,
     DownloadsRepoProvider,
     DownloadsStorageProvider,
-    CryptoRepoProvider
+    CryptoRepoProvider,
+    GitHubAuthRepoProvider,
+    GitHubUserRepoProvider

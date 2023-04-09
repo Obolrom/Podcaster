@@ -9,11 +9,11 @@ plugins {
 }
 
 android {
-    compileSdk = 31
+    compileSdk = 33
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 31
+        targetSdk = 33
 
         buildConfigField(
             type = "String",
@@ -41,6 +41,21 @@ android {
             name = "PRODUCTION_TYPE",
             value = "io.obolonsky.network.utils.ProductionTypes.PROD"
         )
+
+        buildConfigField(
+            type = "String",
+            name = "GITHUB_CLIENT_ID",
+            value = com.android.build.gradle.internal.cxx.configure.gradleLocalProperties(rootDir)
+                .getProperty("githubClientId")
+        )
+
+        buildConfigField(
+            type = "String",
+            name = "GITHUB_CLIENT_SECRET",
+            value = com.android.build.gradle.internal.cxx.configure.gradleLocalProperties(rootDir)
+                .getProperty("githubClientSecret")
+        )
+
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -81,12 +96,15 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxjava:3.0.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-rx3:1.6.1")
 
+    // AppAuth
+    implementation("net.openid:appauth:0.9.1")
+
     // Apollo
     implementation("com.apollographql.apollo3:apollo-runtime:3.5.0")
 
     // Dagger 2
-    implementation("com.google.dagger:dagger:2.40.5")
-    kapt("com.google.dagger:dagger-compiler:2.40.5")
+    implementation("com.google.dagger:dagger:2.44.2")
+    kapt("com.google.dagger:dagger-compiler:2.44.2")
 
     // Utilities
     implementation("com.jakewharton.timber:timber:5.0.1")
@@ -100,8 +118,18 @@ dependencies {
 }
 
 apollo {
-    schemaFile.set(file("src/main/graphql/schema.graphqls"))
-    srcDir(file("src/main/graphql/"))
+    service("spaceX") {
+        packageName.set("io.obolonsky.network.spacex")
+        schemaFile.set(file("src/main/graphql/spaceX/schema.graphqls"))
+        srcDir(file("src/main/graphql/spaceX/"))
+    }
+
+    service("github") {
+        packageName.set("io.obolonsky.network.github")
+//        schemaFile.set(file("src/main/graphql/github/github_schema.json"))
+        schemaFile.set(file("src/main/graphql/github/schema.graphqls"))
+        srcDir(file("src/main/graphql/github/"))
+    }
 
     packageName.set("io.obolonsky.network")
 }

@@ -10,6 +10,11 @@ internal class ComponentViewModel(
 ) : AndroidViewModel(application) {
 
     val cryptoComponent by lazy {
-        CryptoComponent.create((application as App).getAppComponent())
+        val appProvider = (application as App).getAppComponent()
+
+        CryptoComponent.create(
+            toolsProvider = appProvider,
+            cryptoRepoProvider = appProvider,
+        )
     }
 }

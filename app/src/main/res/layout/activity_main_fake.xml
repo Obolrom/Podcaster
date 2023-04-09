@@ -6,6 +6,13 @@
     android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/go_to_github"
+        android:text="@string/go_to_github"
+        android:layout_marginBottom="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/go_to_shazam"
         android:text="@string/go_to_shazam"
         android:layout_marginBottom="20dp"

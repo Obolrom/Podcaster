@@ -159,7 +159,10 @@ class PodcasterPlaybackService : MediaSessionService() {
 
                 DaggerPlayerComponent.factory()
                     .create(
-                        applicationProvider = applicationProvider,
+                        toolsProvider = applicationProvider,
+                        shazamRepoProvider = applicationProvider,
+                        playerDependenciesProvider = applicationProvider,
+                        downloaderProvider = applicationProvider,
                         startDownloadServiceActionProvider = mediaDownloadExportComponent,
                         getDownloadServiceClassActionProvider = mediaDownloadExportComponent,
                     )

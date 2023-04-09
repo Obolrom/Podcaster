@@ -10,8 +10,11 @@ internal class ComponentViewModel(
 ) : AndroidViewModel(application) {
 
     internal val component: NasaComponent by lazy {
+        val appProvider = (application as App).getAppComponent()
+
         NasaComponent.create(
-            applicationProvider = (application as App).getAppComponent()
+            toolsProvider = appProvider,
+            nasaRepoProvider = appProvider,
         )
     }
 }

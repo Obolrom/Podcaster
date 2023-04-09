@@ -33,4 +33,25 @@
     <string name="results">Results</string>
     <string name="genres">Genres</string>
     <string name="library">Library</string>
+    <string name="auth_login">Login</string>
+    <string name="get_user_info">Get user info</string>
+    <string name="corrupt_access_token">Corrupt access token</string>
+    <string name="search_repositories">Search repositories</string>
+    <string name="logout">Logout</string>
+    <string name="go_to_github">Github</string>
+    <string name="auth_canceled">Auth cancelled</string>
+    <string name="get_user_error">Get user error</string>
+
+    <!--  Github  -->
+    <string name="star">Star</string>
+    <string name="starred">Starred</string>
+    <string name="visibility_public">Public</string>
+    <string name="visibility_private">Private</string>
+    <string name="owner_repo_title">%1s/%2s</string>
+    <string name="visibility_internal">Internal</string>
+    <string name="forked_from">Forked from</string>
+    <string name="updated_at">Updated at %s</string>
+    <string name="stars_count">%d stars</string>
+    <string name="forks_count">%d forks</string>
+
 </resources>

@@ -1,0 +1,10 @@
+mutation AddStarForRepo($repoId: ID!) {
+    addStar(input: { starrableId: $repoId }) {
+        starrable {
+            ... on Repository {
+                viewerHasStarred
+                stargazerCount
+            }
+        }
+    }
+}

@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    compileSdk = 31
+    compileSdk = 33
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 31
+        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -43,8 +43,8 @@ dependencies {
     implementation(project(":core"))
 
     // Dagger 2
-    implementation("com.google.dagger:dagger:2.40.5")
-    kapt("com.google.dagger:dagger-compiler:2.40.5")
+    implementation("com.google.dagger:dagger:2.44.2")
+    kapt("com.google.dagger:dagger-compiler:2.44.2")
 
     // Player
     implementation("androidx.media3:media3-exoplayer:${Media3.version}")

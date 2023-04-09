@@ -1,0 +1,10 @@
+{
+  "base_currency_id": "btc-bitcoin",
+  "base_currency_name": "Bitcoin",
+  "base_price_last_updated": "2022-10-15T15:14:49Z",
+  "quote_currency_id": "eth-ethereum",
+  "quote_currency_name": "Ethereum",
+  "quote_price_last_updated": "2022-10-15T15:14:49Z",
+  "amount": 5,
+  "price": 74.30820995330855
+}

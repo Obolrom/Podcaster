@@ -312,7 +312,7 @@ fun ViewerRepo(
             ?.let(SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH)::format)
             ?.let { updatedAt ->
                 Text(
-                    text = updatedAt,
+                    text = stringResource(id = CoreR.string.updated_at, updatedAt),
                     color = Color.Gray,
                     style = Typography.caption,
                 )

@@ -367,7 +367,7 @@ fun ForkedRepoFrom(
     )
     Spacer(Modifier.width(4.dp))
     Text(
-        text = "${parentRepo.owner}/${parentRepo.repoName}",
+        text = "${parentRepo.owner.login}/${parentRepo.repoName}",
         color = Color.Gray,
         style = Typography.caption,
     )

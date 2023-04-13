@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -32,9 +33,8 @@ import androidx.compose.material.TabRowDefaults.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.People
 import androidx.compose.material.icons.rounded.StarOutline
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -223,7 +223,7 @@ fun UserInfoContainerScreen(
                     }
                     GithubInfoTabs.REPOSITORIES -> {
                         if (viewState.repos != null) {
-                            ViewerRepos(
+                            RepositoriesTab(
                                 repos = viewState.repos,
                                 onRepoClick = onRepoClick,
                             )
@@ -241,6 +241,50 @@ fun UserInfoContainerScreen(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun RepositoriesTab(
+    repos: List<GithubRepoView>,
+    onRepoClick: (owner: String, repo: String) -> Unit,
+    modifier: Modifier = Modifier,
+) = Column(modifier = modifier) {
+    var input by rememberSaveable { mutableStateOf("") }
+    val scrollState = rememberLazyListState()
+
+    LazyColumn(
+        state = scrollState,
+    ) {
+        item {
+            OutlinedTextField(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth(),
+                value = input,
+                onValueChange = { input = it },
+                placeholder = @Composable {
+                    Text(text = stringResource(id = CoreR.string.find_repo_hint))
+                }
+            )
+        }
+
+        items(
+            items = repos,
+            key = { repo -> repo.id },
+        ) { repo ->
+            ViewerRepo(
+                repo = repo,
+                onRepoClick = onRepoClick,
+                modifier = Modifier
+                    .padding(start = 12.dp, end = 12.dp, top = 20.dp, bottom = 20.dp),
+            )
+            Divider(
+                modifier = Modifier
+                    .padding(horizontal = 12.dp)
+                    .weight(1f)
+            )
         }
     }
 }
@@ -293,32 +337,6 @@ fun AvatarLogin(
         text = user.login,
         fontSize = 24.sp
     )
-}
-
-@Composable
-fun ViewerRepos(
-    repos: List<GithubRepoView>,
-    onRepoClick: (owner: String, repo: String) -> Unit,
-    modifier: Modifier = Modifier,
-) = Column(modifier = modifier) {
-    LazyColumn {
-        items(
-            items = repos,
-            key = { repo -> repo.id },
-        ) { repo ->
-            ViewerRepo(
-                repo = repo,
-                onRepoClick = onRepoClick,
-                modifier = Modifier
-                    .padding(start = 12.dp, end = 12.dp, top = 24.dp, bottom = 20.dp),
-            )
-            Divider(
-                modifier = Modifier
-                    .padding(horizontal = 12.dp)
-                    .weight(1f)
-            )
-        }
-    }
 }
 
 @Composable

@@ -53,6 +53,7 @@
     <string name="updated_at">Updated at %s</string>
     <string name="stars_count">%d stars</string>
     <string name="forks_count">%d forks</string>
+    <string name="find_repo_hint">Find a repository…</string>
     <string name="user_info_overview">Overview</string>
     <string name="user_info_repos">Repositories</string>
     <string name="user_info_projects">Projects</string>

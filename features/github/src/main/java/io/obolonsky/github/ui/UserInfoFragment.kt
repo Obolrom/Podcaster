@@ -1,11 +1,19 @@
-@file:OptIn(ExperimentalLayoutApi::class, ExperimentalLayoutApi::class)
+@file:OptIn(
+    ExperimentalLayoutApi::class,
+    ExperimentalLayoutApi::class,
+    ExperimentalFoundationApi::class
+)
 
 package io.obolonsky.github.ui
 
 import android.app.Activity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.StringRes
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -15,21 +23,23 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
+import androidx.compose.material.*
 import androidx.compose.material.TabRowDefaults.Divider
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.People
 import androidx.compose.material.icons.rounded.StarOutline
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -40,13 +50,11 @@ import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.compose.AsyncImage
 import io.obolonsky.core.di.data.github.*
 import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.core.di.toaster
 import io.obolonsky.github.R
-import io.obolonsky.github.databinding.FragmentUserInfoBinding
 import io.obolonsky.github.redux.userinfo.UserInfoSideEffects
 import io.obolonsky.github.redux.userinfo.UserInfoState
 import io.obolonsky.github.resetNavGraph
@@ -54,6 +62,7 @@ import io.obolonsky.github.ui.compose.theme.ComposeMainTheme
 import io.obolonsky.github.ui.compose.theme.Typography
 import io.obolonsky.github.viewmodels.ComponentViewModel
 import io.obolonsky.github.viewmodels.UserInfoViewModel
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import java.text.SimpleDateFormat
@@ -62,7 +71,7 @@ import kotlin.random.Random
 import io.obolonsky.core.R as CoreR
 import io.obolonsky.coreui.R as CoreUiR
 
-class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
+class UserInfoFragment : Fragment() {
 
     private val componentViewModel by activityViewModels<ComponentViewModel>()
 
@@ -73,7 +82,6 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
             .getUserInfoViewModelFactory()
             .create(it)
     }
-    private val binding by viewBinding(FragmentUserInfoBinding::bind)
 
     private val logoutResponse = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -81,37 +89,37 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         if (result.resultCode == Activity.RESULT_OK) {
             viewModel.webLogoutComplete()
         } else {
-            // логаут отменен
-            // делаем complete тк github не редиректит после логаута и пользователь закрывает CCT
+            // logout is cancelled
             viewModel.webLogoutComplete()
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.logout.setOnClickListener {
-            viewModel.logout()
-        }
-        binding.composeContainer.setViewCompositionStrategy(
-            ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
-        )
-        binding.composeContainer.setContent {
-            val state by viewModel.collectAsState()
-            viewModel.collectSideEffect(sideEffect = ::sideEffect)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                val state by viewModel.collectAsState()
+                viewModel.collectSideEffect(sideEffect = ::sideEffect)
 
-            UserInfoContainerScreen(
-                viewState = state,
-                onRepoClick = { owner, repoName ->
-                    val directions = UserInfoFragmentDirections
-                        .actionRepositoryListFragmentToGithubRepoFragment(owner, repoName)
-                    findNavController().navigate(directions)
-                },
-                onSearch = {
-                    findNavController()
-                        .navigate(R.id.action_repositoryListFragment_to_searchReposFragment)
-                },
-                onDayClick = viewModel::chartDaySelected,
-            )
+                UserInfoContainerScreen(
+                    viewState = state,
+                    onRepoClick = { owner, repoName ->
+                        val directions = UserInfoFragmentDirections
+                            .actionRepositoryListFragmentToGithubRepoFragment(owner, repoName)
+                        findNavController().navigate(directions)
+                    },
+                    onSearch = {
+                        findNavController()
+                            .navigate(R.id.action_repositoryListFragment_to_searchReposFragment)
+                    },
+                    onDayClick = viewModel::chartDaySelected,
+                    onLogout = viewModel::logout,
+                )
+            }
         }
     }
 
@@ -136,12 +144,21 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
     }
 }
 
+enum class GithubInfoTabs(@StringRes val stringRes: Int) {
+    OVERVIEW(CoreR.string.user_info_overview),
+    REPOSITORIES(CoreR.string.user_info_repos),
+    PROJECTS(CoreR.string.user_info_projects),
+    PACKAGES(CoreR.string.user_info_packages),
+    STARS(CoreR.string.user_info_stars),
+}
+
 @Composable
 fun UserInfoContainerScreen(
     viewState: UserInfoState,
     onSearch: () -> Unit,
     onDayClick: (GithubDay) -> Unit,
     onRepoClick: (owner: String, repo: String) -> Unit,
+    onLogout: () -> Unit,
 ) = ComposeMainTheme {
 
     Column {
@@ -149,24 +166,81 @@ fun UserInfoContainerScreen(
         if (viewState.user != null)
             UserProfile(
                 user = viewState.user,
-                onSearch = onSearch,
             )
 
-        Spacer(modifier = Modifier.height(12.dp))
+        val tabData = GithubInfoTabs.values().asList()
+        val pagerState = rememberPagerState(initialPage = 1)
+        val tabIndex = pagerState.currentPage
+        val coroutineScope = rememberCoroutineScope()
 
-        val contributionCalendar = viewState.user?.contributionChart?.days
-        if (contributionCalendar != null)
-            GithubContributionChart(
-                modifier = Modifier.padding(horizontal = 12.dp),
-                contributions = contributionCalendar,
-                onDayClick = onDayClick,
-            )
+        ScrollableTabRow(
+            selectedTabIndex = tabIndex,
+            backgroundColor = Color.White,
+            edgePadding = 0.dp,
+        ) {
+            tabData.forEachIndexed { index, userInfoTab ->
+                Tab(
+                    selected = tabIndex == index,
+                    onClick = { 
+                        coroutineScope.launch { 
+                            pagerState.animateScrollToPage(index)
+                        }
+                    },
+                    text = {
+                        Text(text = stringResource(id = userInfoTab.stringRes))
+                    }
+                )
+            }
+        }
 
-        if (viewState.repos != null) {
-            ViewerRepos(
-                repos = viewState.repos,
-                onRepoClick = onRepoClick,
-            )
+        HorizontalPager(
+            pageCount = tabData.size,
+            state = pagerState,
+        ) { page ->
+            Column(
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                when (tabData[page]) {
+                    GithubInfoTabs.OVERVIEW -> {
+                        val contributionCalendar = viewState.user?.contributionChart?.days
+                        if (contributionCalendar != null)
+                            Column {
+                                Button(
+                                    modifier = Modifier
+                                        .padding(horizontal = 12.dp)
+                                        .fillMaxWidth(),
+                                    onClick = onSearch,
+                                ) {
+                                    Text(text = stringResource(id = CoreR.string.search_repositories))
+                                }
+
+                                GithubContributionChart(
+                                    modifier = Modifier.padding(horizontal = 12.dp),
+                                    contributions = contributionCalendar,
+                                    onDayClick = onDayClick,
+                                )
+                            }
+                    }
+                    GithubInfoTabs.REPOSITORIES -> {
+                        if (viewState.repos != null) {
+                            ViewerRepos(
+                                repos = viewState.repos,
+                                onRepoClick = onRepoClick,
+                            )
+                        }
+                    }
+                    else -> {
+                        Button(
+                            modifier = Modifier
+                                .height(60.dp)
+                                .fillMaxWidth(),
+                            onClick = onLogout
+                        ) {
+                            Text(text = stringResource(id = CoreR.string.logout))
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -174,7 +248,6 @@ fun UserInfoContainerScreen(
 @Composable
 fun UserProfile(
     user: GithubUserProfile,
-    onSearch: () -> Unit,
 ) = Column {
     AvatarLogin(
         modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 8.dp),
@@ -197,15 +270,6 @@ fun UserProfile(
         user = user,
     )
     Divider()
-
-    Button(
-        modifier = Modifier
-            .padding(horizontal = 12.dp)
-            .fillMaxWidth(),
-        onClick = onSearch,
-    ) {
-        Text(text = stringResource(id = CoreR.string.search_repositories))
-    }
 }
 
 @Composable
@@ -562,5 +626,6 @@ fun UserInfoContainerScreenPreview() {
         onRepoClick = { _, _ -> },
         onSearch = { },
         onDayClick = { },
+        onLogout = { },
     )
 }

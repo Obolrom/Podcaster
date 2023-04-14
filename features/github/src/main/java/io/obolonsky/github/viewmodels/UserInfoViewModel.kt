@@ -6,6 +6,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import io.obolonsky.core.di.data.github.GithubDay
+import io.obolonsky.core.di.data.github.SortFilter
 import io.obolonsky.core.di.utils.reactWith
 import io.obolonsky.github.interactors.GitHubProfileInteractor
 import io.obolonsky.github.redux.userinfo.UserInfoSideEffects
@@ -34,7 +35,9 @@ class UserInfoViewModel @AssistedInject constructor(
 
     init {
         loadUserInfo()
-        loadViewerRepos()
+        intent {
+            loadViewerRepos(state.repoSortFilter)
+        }
     }
 
     @Suppress("unused")
@@ -42,8 +45,18 @@ class UserInfoViewModel @AssistedInject constructor(
         gitHubProfileInteractor.corruptAccessToken()
     }
 
-    private fun loadViewerRepos() = intent {
-        gitHubProfileInteractor.getViewerRepos()
+    fun updateRepoListSort(sortFilter: SortFilter) = intent {
+        if (sortFilter != state.repoSortFilter) {
+            loadViewerRepos(sortFilter)
+        }
+
+        reduce {
+            state.copy(repoSortFilter = sortFilter)
+        }
+    }
+
+    private fun loadViewerRepos(sortFilter: SortFilter) = intent {
+        gitHubProfileInteractor.getViewerRepos(sortFilter)
             .reactWith(
                 onSuccess = { viewerRepos ->
                     reduce { state.copy(repos = viewerRepos) }

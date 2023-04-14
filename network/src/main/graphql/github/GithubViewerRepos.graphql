@@ -1,6 +1,9 @@
-query GithubViewerRepos {
+query GithubViewerRepos($repositoryOrder: RepositoryOrder!) {
     viewer {
-        repositories(first: 50) {
+        repositories(
+            first: 50,
+            orderBy: $repositoryOrder,
+        ) {
             edges {
                 node {
                     id

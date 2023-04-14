@@ -59,5 +59,10 @@
     <string name="user_info_projects">Projects</string>
     <string name="user_info_packages">Packages</string>
     <string name="user_info_stars">Stars</string>
+    <string name="filter_sort">Sort</string>
+    <string name="filter_sort_last_upd">Last updated</string>
+    <string name="filter_sort_name">Name</string>
+    <string name="filter_sort_stars">@string/user_info_stars</string>
+    <string name="filter_sort_select_order">Select order</string>
 
 </resources>

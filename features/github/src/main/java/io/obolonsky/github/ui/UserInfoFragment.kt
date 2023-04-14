@@ -31,6 +31,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.TabRowDefaults.Divider
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowDropDown
+import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.People
 import androidx.compose.material.icons.rounded.StarOutline
 import androidx.compose.runtime.*
@@ -118,6 +120,7 @@ class UserInfoFragment : Fragment() {
                     },
                     onDayClick = viewModel::chartDaySelected,
                     onLogout = viewModel::logout,
+                    onSort = viewModel::updateRepoListSort,
                 )
             }
         }
@@ -159,6 +162,7 @@ fun UserInfoContainerScreen(
     onDayClick: (GithubDay) -> Unit,
     onRepoClick: (owner: String, repo: String) -> Unit,
     onLogout: () -> Unit,
+    onSort: (SortFilter) -> Unit,
 ) = ComposeMainTheme {
 
     Column {
@@ -224,8 +228,10 @@ fun UserInfoContainerScreen(
                     GithubInfoTabs.REPOSITORIES -> {
                         if (viewState.repos != null) {
                             RepositoriesTab(
+                                selectedSortFilter = viewState.repoSortFilter,
                                 repos = viewState.repos,
                                 onRepoClick = onRepoClick,
+                                onSort = onSort,
                             )
                         }
                     }
@@ -247,12 +253,68 @@ fun UserInfoContainerScreen(
 
 @Composable
 fun RepositoriesTab(
+    selectedSortFilter: SortFilter,
     repos: List<GithubRepoView>,
     onRepoClick: (owner: String, repo: String) -> Unit,
+    onSort: (SortFilter) -> Unit,
     modifier: Modifier = Modifier,
 ) = Column(modifier = modifier) {
     var input by rememberSaveable { mutableStateOf("") }
+    val openDialog = remember { mutableStateOf(false) }
     val scrollState = rememberLazyListState()
+
+    if (openDialog.value) {
+        AlertDialog(
+            onDismissRequest = {
+                openDialog.value = false
+            },
+            shape = RoundedCornerShape(12.dp),
+            buttons = @Composable {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(198.dp),
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .padding(12.dp, 12.dp, 12.dp, 12.dp),
+                        text = stringResource(CoreR.string.filter_sort_select_order),
+                        fontWeight = FontWeight.W500,
+                    )
+                    Divider()
+                    Column {
+                        SortFilter.values().asList().forEach { sortFilter ->
+                            Box(
+                                modifier = Modifier
+                                    .height(50.dp)
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        onSort(sortFilter)
+                                        openDialog.value = false
+                                    },
+                                contentAlignment = Alignment.CenterStart,
+                            ) {
+                                if (sortFilter == selectedSortFilter) {
+                                    Icon(
+                                        modifier = Modifier
+                                            .padding(start = 8.dp)
+                                            .size(16.dp),
+                                        imageVector = Icons.Rounded.Check,
+                                        contentDescription = null,
+                                    )
+                                }
+                                Text(
+                                    modifier = Modifier.padding(start = 32.dp),
+                                    text = stringResource(sortFilter.stringId),
+                                )
+                            }
+                            Divider()
+                        }
+                    }
+                }
+            }
+        )
+    }
 
     LazyColumn(
         state = scrollState,
@@ -260,13 +322,32 @@ fun RepositoriesTab(
         item {
             OutlinedTextField(
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(horizontal = 12.dp, vertical = 8.dp)
                     .fillMaxWidth(),
                 value = input,
                 onValueChange = { input = it },
                 placeholder = @Composable {
                     Text(text = stringResource(id = CoreR.string.find_repo_hint))
                 }
+            )
+        }
+
+        item {
+            Row(
+                modifier = Modifier
+                    .fillParentMaxWidth()
+                    .padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
+            ) {
+                FilterButton(
+                    modifier = Modifier,
+                    text = stringResource(CoreR.string.filter_sort),
+                    onClick = { openDialog.value = true },
+                )
+            }
+            Divider(
+                modifier = Modifier
+                    .padding(horizontal = 12.dp)
+                    .weight(1f)
             )
         }
 
@@ -287,6 +368,27 @@ fun RepositoriesTab(
             )
         }
     }
+}
+
+@Composable
+fun FilterButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) = Button(
+    modifier = modifier,
+    onClick = onClick,
+    colors = ButtonDefaults.buttonColors(
+        backgroundColor = Color(android.graphics.Color.parseColor("#f3f4f5")),
+    ),
+) {
+    Text(
+        text = text,
+    )
+    Icon(
+        imageVector = Icons.Rounded.ArrowDropDown,
+        contentDescription = null,
+    )
 }
 
 @Composable
@@ -645,5 +747,6 @@ fun UserInfoContainerScreenPreview() {
         onSearch = { },
         onDayClick = { },
         onLogout = { },
+        onSort = { },
     )
 }

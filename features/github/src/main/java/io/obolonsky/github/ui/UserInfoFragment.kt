@@ -13,6 +13,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -226,14 +229,12 @@ fun UserInfoContainerScreen(
                             }
                     }
                     GithubInfoTabs.REPOSITORIES -> {
-                        if (viewState.repos != null) {
-                            RepositoriesTab(
-                                selectedSortFilter = viewState.repoSortFilter,
-                                repos = viewState.repos,
-                                onRepoClick = onRepoClick,
-                                onSort = onSort,
-                            )
-                        }
+                        RepositoriesTab(
+                            selectedSortFilter = viewState.repoSortFilter,
+                            repos = viewState.repos,
+                            onRepoClick = onRepoClick,
+                            onSort = onSort,
+                        )
                     }
                     else -> {
                         Button(
@@ -254,7 +255,7 @@ fun UserInfoContainerScreen(
 @Composable
 fun RepositoriesTab(
     selectedSortFilter: SortFilter,
-    repos: List<GithubRepoView>,
+    repos: List<GithubRepoView>?,
     onRepoClick: (owner: String, repo: String) -> Unit,
     onSort: (SortFilter) -> Unit,
     modifier: Modifier = Modifier,
@@ -316,56 +317,63 @@ fun RepositoriesTab(
         )
     }
 
-    LazyColumn(
-        state = scrollState,
+    AnimatedVisibility(
+        visible = repos != null,
+        enter = fadeIn(tween())
     ) {
-        item {
-            OutlinedTextField(
-                modifier = Modifier
-                    .padding(horizontal = 12.dp, vertical = 8.dp)
-                    .fillMaxWidth(),
-                value = input,
-                onValueChange = { input = it },
-                placeholder = @Composable {
-                    Text(text = stringResource(id = CoreR.string.find_repo_hint))
-                }
-            )
-        }
-
-        item {
-            Row(
-                modifier = Modifier
-                    .fillParentMaxWidth()
-                    .padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
-            ) {
-                FilterButton(
-                    modifier = Modifier,
-                    text = stringResource(CoreR.string.filter_sort),
-                    onClick = { openDialog.value = true },
+        LazyColumn(
+            state = scrollState,
+        ) {
+            item {
+                OutlinedTextField(
+                    modifier = Modifier
+                        .padding(horizontal = 12.dp, vertical = 8.dp)
+                        .fillMaxWidth(),
+                    value = input,
+                    onValueChange = { input = it },
+                    placeholder = @Composable {
+                        Text(text = stringResource(id = CoreR.string.find_repo_hint))
+                    }
                 )
             }
-            Divider(
-                modifier = Modifier
-                    .padding(horizontal = 12.dp)
-                    .weight(1f)
-            )
-        }
 
-        items(
-            items = repos,
-            key = { repo -> repo.id },
-        ) { repo ->
-            ViewerRepo(
-                repo = repo,
-                onRepoClick = onRepoClick,
-                modifier = Modifier
-                    .padding(start = 12.dp, end = 12.dp, top = 20.dp, bottom = 20.dp),
-            )
-            Divider(
-                modifier = Modifier
-                    .padding(horizontal = 12.dp)
-                    .weight(1f)
-            )
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillParentMaxWidth()
+                        .padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
+                ) {
+                    FilterButton(
+                        modifier = Modifier,
+                        text = stringResource(CoreR.string.filter_sort),
+                        onClick = { openDialog.value = true },
+                    )
+                }
+                Divider(
+                    modifier = Modifier
+                        .padding(horizontal = 12.dp)
+                        .weight(1f)
+                )
+            }
+
+            if (repos != null) {
+                items(
+                    items = repos,
+                    key = { repo -> repo.id },
+                ) { repo ->
+                    ViewerRepo(
+                        repo = repo,
+                        onRepoClick = onRepoClick,
+                        modifier = Modifier
+                            .padding(start = 12.dp, end = 12.dp, top = 20.dp, bottom = 20.dp),
+                    )
+                    Divider(
+                        modifier = Modifier
+                            .padding(horizontal = 12.dp)
+                            .weight(1f)
+                    )
+                }
+            }
         }
     }
 }

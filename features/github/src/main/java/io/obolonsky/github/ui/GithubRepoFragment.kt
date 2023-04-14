@@ -294,7 +294,10 @@ fun Screen(
                     text = "Stub",
                 )
                 Divider()
-                if (viewState.shouldShowRepoTree) {
+                AnimatedVisibility(
+                    visible = viewState.shouldShowRepoTree,
+                    enter = fadeIn(tween(500))
+                ) {
                     LazyColumn {
                         val items = viewState.model?.treeEntries.orEmpty()
                         itemsIndexed(items) { index, treeEntry ->
@@ -309,7 +312,11 @@ fun Screen(
                             }
                         }
                     }
-                } else {
+                }
+                AnimatedVisibility(
+                    visible = !viewState.shouldShowRepoTree,
+                    enter = fadeIn(tween())
+                ) {
                     val interactionSource = remember { MutableInteractionSource() }
 
                     Box(

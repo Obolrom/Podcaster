@@ -2,25 +2,30 @@ package io.obolonsky.shazam.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
 import androidx.fragment.app.commit
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -42,6 +47,7 @@ import io.obolonsky.shazam.ui.compose.theme.ShazamTheme
 import io.obolonsky.shazam.viewmodels.ComponentViewModel
 import io.obolonsky.shazam.viewmodels.ShazamViewModel
 import io.obolonsky.utils.get
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
@@ -50,6 +56,7 @@ import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Provider
+import io.obolonsky.coreui.R as CoreUiR
 
 class ShazamActivity : AppCompatActivity() {
 
@@ -112,7 +119,6 @@ class ShazamActivity : AppCompatActivity() {
 
         savedInstanceState?.getBoolean(PLAYER_IS_PLAYING_KEY)?.let { isPlayerRunning ->
             isPlayerShown = isPlayerRunning
-            binding.shazam.isVisible = !isPlayerRunning
         }
 
         binding.recentTracks.apply {
@@ -127,7 +133,6 @@ class ShazamActivity : AppCompatActivity() {
         intent?.handleIntent()
 
         initViewModel()
-        initViews()
 
         binding.composeView.setContent {
 
@@ -186,7 +191,6 @@ class ShazamActivity : AppCompatActivity() {
                 stop(this@ShazamActivity)
             }
             isPlayerShown = false
-            binding.shazam.visibility = View.VISIBLE
             AudioSource.clear()
         } else {
             super.onBackPressed()
@@ -196,8 +200,6 @@ class ShazamActivity : AppCompatActivity() {
     private fun showPlayer() {
         if (isPlayerShown) return
         isPlayerShown = true
-
-        binding.shazam.visibility = View.GONE
 
         createPlayerScreenAction.get {
             supportFragmentManager.commit {
@@ -218,13 +220,6 @@ class ShazamActivity : AppCompatActivity() {
             else -> {
 //                toaster.showToast(this@ShazamActivity, "intent not handled")
             }
-        }
-    }
-
-    private fun initViews() {
-        binding.shazam.setOnClickListener {
-            it.isEnabled = false
-            recordPermission.requestRecordPermission()
         }
     }
 
@@ -271,7 +266,6 @@ class ShazamActivity : AppCompatActivity() {
     }
 
     private fun onMediaRecorded() {
-        binding.shazam.isEnabled = true
         val file = File(filesDir, RECORDED_AUDIO_FILENAME)
         shazamViewModel.audioDetect(file)
     }
@@ -286,13 +280,104 @@ class ShazamActivity : AppCompatActivity() {
 fun Screen(
     onRequestRecordPermission: () -> Unit,
 ) = ShazamTheme {
-    Column(
-        modifier = Modifier.padding(12.dp)
+    Box(
+        modifier = Modifier
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        Color.Blue.copy(alpha = 0.45f),
+                        Color.Blue.copy(alpha = 0.55f),
+                        Color.Blue.copy(alpha = 0.75f),
+                    ),
+                )
+            ),
     ) {
-        ShazamButton(
-            onRequestRecordPermission = onRequestRecordPermission,
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 80.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            ShazamButton(
+                onRequestRecordPermission = onRequestRecordPermission,
+            )
+
+            Spacer(Modifier.height(50.dp))
+
+            WavesAnimation()
+        }
     }
+}
+
+@Composable
+fun WavesAnimation() {
+
+    val waves = listOf(
+        remember { Animatable(0f) },
+        remember { Animatable(0f) },
+        remember { Animatable(0f) },
+        remember { Animatable(0f) },
+    )
+
+    val animationSpec = infiniteRepeatable<Float>(
+        animation = tween(4000, easing = FastOutLinearInEasing),
+        repeatMode = RepeatMode.Restart,
+    )
+
+    waves.forEachIndexed { index, animatable ->
+        LaunchedEffect(animatable) {
+            delay(index * 1000L)
+            animatable.animateTo(
+                targetValue = 1f, animationSpec = animationSpec
+            )
+        }
+    }
+
+    val dys = waves.map { it.value }
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Center
+    ) {
+        // Waves
+        dys.forEach { dy ->
+            Box(
+                Modifier
+                    .size(50.dp)
+                    .align(Alignment.Center)
+                    .graphicsLayer {
+                        scaleX = dy * 4 + 1
+                        scaleY = dy * 4 + 1
+                        alpha = 1 - dy
+                    },
+            ) {
+                Box(
+                    Modifier
+                        .fillMaxSize()
+                        .background(color = Color.White, shape = CircleShape)
+                )
+            }
+        }
+
+        // Mic icon
+        Box(
+            Modifier
+                .size(50.dp)
+                .align(Alignment.Center)
+                .background(color = Color.White, shape = CircleShape)
+        ) {
+            Icon(
+                painter = painterResource(id = io.obolonsky.coreui.R.drawable.shazam),
+                "",
+                tint = Color.Black,
+                modifier = Modifier
+                    .size(32.dp)
+                    .align(Alignment.Center)
+            )
+        }
+
+    }
+
 }
 
 @Composable
@@ -329,13 +414,19 @@ fun ShazamButton(
         shape = CircleShape,
         modifier = modifier
             .scale(scale.value)
-            .size(52.dp)
+            .size(102.dp)
+            .clip(CircleShape)
             .clickable {
                 isButtonScaled = !isButtonScaled
                 onRequestRecordPermission()
             },
-        content = {},
-    )
+    ) {
+        Icon(
+            modifier = Modifier.padding(12.dp),
+            painter = painterResource(id = CoreUiR.drawable.shazam),
+            contentDescription = null,
+        )
+    }
 }
 
 @Preview(

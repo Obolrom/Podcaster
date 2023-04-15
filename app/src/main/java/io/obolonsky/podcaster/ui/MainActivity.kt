@@ -37,7 +37,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_fake)
 
-        startActivity(Intent(this, GitHubActivity::class.java))
+        goToShazamAction.get {
+            navigate(this@MainActivity)
+        }
 
         binding.goToGithub.setOnClickListener {
             startActivity(Intent(this, GitHubActivity::class.java))

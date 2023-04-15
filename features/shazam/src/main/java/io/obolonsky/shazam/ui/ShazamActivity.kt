@@ -5,6 +5,19 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -15,8 +28,8 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
-import io.obolonsky.core.di.actions.NavigateToDownloadsAction
 import io.obolonsky.core.di.actions.CreatePlayerScreenAction
+import io.obolonsky.core.di.actions.NavigateToDownloadsAction
 import io.obolonsky.core.di.actions.StopPlayerService
 import io.obolonsky.core.di.common.AudioSource
 import io.obolonsky.core.di.common.launchWhenStarted
@@ -25,6 +38,7 @@ import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.core.di.toaster
 import io.obolonsky.shazam.R
 import io.obolonsky.shazam.databinding.ActivityShazamBinding
+import io.obolonsky.shazam.ui.compose.theme.ShazamTheme
 import io.obolonsky.shazam.viewmodels.ComponentViewModel
 import io.obolonsky.shazam.viewmodels.ShazamViewModel
 import io.obolonsky.utils.get
@@ -114,6 +128,13 @@ class ShazamActivity : AppCompatActivity() {
 
         initViewModel()
         initViews()
+
+        binding.composeView.setContent {
+
+            Screen(
+                onRequestRecordPermission = recordPermission::requestRecordPermission,
+            )
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -259,4 +280,71 @@ class ShazamActivity : AppCompatActivity() {
         const val PLAYER_IS_PLAYING_KEY = "PLAYER_IS_PLAYING_KEY"
         const val RECORDED_AUDIO_FILENAME = "fileToDetect.mp3"
     }
+}
+
+@Composable
+fun Screen(
+    onRequestRecordPermission: () -> Unit,
+) = ShazamTheme {
+    Column(
+        modifier = Modifier.padding(12.dp)
+    ) {
+        ShazamButton(
+            onRequestRecordPermission = onRequestRecordPermission,
+        )
+    }
+}
+
+@Composable
+fun ShazamButton(
+    onRequestRecordPermission: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var isButtonScaled by remember { mutableStateOf(false) }
+    val scale = remember { Animatable(initialValue = 1f) }
+
+    LaunchedEffect(isButtonScaled) {
+        if (isButtonScaled) {
+            repeat(7) {
+                scale.animateTo(
+                    targetValue = 1.2f,
+                    animationSpec = tween(durationMillis = 500)
+                )
+                scale.animateTo(
+                    targetValue = 1f,
+                    animationSpec = tween(durationMillis = 500)
+                )
+            }
+            isButtonScaled = false
+        } else {
+            scale.animateTo(
+                targetValue = 1f,
+                animationSpec = tween(durationMillis = 500)
+            )
+        }
+    }
+
+    Surface(
+        color = MaterialTheme.colors.primary,
+        shape = CircleShape,
+        modifier = modifier
+            .scale(scale.value)
+            .size(52.dp)
+            .clickable {
+                isButtonScaled = !isButtonScaled
+                onRequestRecordPermission()
+            },
+        content = {},
+    )
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+)
+@Composable
+fun SecondPreview() {
+    Screen(
+        onRequestRecordPermission = { },
+    )
 }

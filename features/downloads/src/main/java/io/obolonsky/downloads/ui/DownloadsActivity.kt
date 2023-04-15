@@ -91,7 +91,6 @@ class DownloadsActivity : AppCompatActivity() {
                 setMediaItem(
                     MediaItem.fromUri(trackUri)
                 )
-                prepare()
             }
         }
     }

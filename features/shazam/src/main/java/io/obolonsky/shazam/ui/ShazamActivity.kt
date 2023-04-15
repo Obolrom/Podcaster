@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
@@ -298,19 +299,18 @@ fun Screen(
                 .padding(top = 80.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            ShazamButton(
+            WavesAnimation(
                 onRequestRecordPermission = onRequestRecordPermission,
             )
-
-            Spacer(Modifier.height(50.dp))
-
-            WavesAnimation()
         }
     }
 }
 
 @Composable
-fun WavesAnimation() {
+fun WavesAnimation(
+    onRequestRecordPermission: () -> Unit,
+) {
+    var wavesAlpha by remember { mutableStateOf(0f) }
 
     val waves = listOf(
         remember { Animatable(0f) },
@@ -339,17 +339,17 @@ fun WavesAnimation() {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Center
     ) {
-        // Waves
         dys.forEach { dy ->
             Box(
                 Modifier
                     .size(50.dp)
-                    .align(Alignment.Center)
+                    .align(Center)
                     .graphicsLayer {
                         scaleX = dy * 4 + 1
                         scaleY = dy * 4 + 1
                         alpha = 1 - dy
-                    },
+                    }
+                    .alpha(wavesAlpha),
             ) {
                 Box(
                     Modifier
@@ -359,34 +359,25 @@ fun WavesAnimation() {
             }
         }
 
-        // Mic icon
-        Box(
-            Modifier
-                .size(50.dp)
-                .align(Alignment.Center)
-                .background(color = Color.White, shape = CircleShape)
-        ) {
-            Icon(
-                painter = painterResource(id = io.obolonsky.coreui.R.drawable.shazam),
-                "",
-                tint = Color.Black,
-                modifier = Modifier
-                    .size(32.dp)
-                    .align(Alignment.Center)
-            )
-        }
-
+        ShazamButton(
+            onRequestRecordPermission = onRequestRecordPermission,
+            onRecordingStateChange = { isRecording ->
+                wavesAlpha = if (isRecording) 0.5f else 0.0f
+            }
+        )
     }
-
 }
 
 @Composable
 fun ShazamButton(
     onRequestRecordPermission: () -> Unit,
+    onRecordingStateChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var isButtonScaled by remember { mutableStateOf(false) }
     val scale = remember { Animatable(initialValue = 1f) }
+
+    onRecordingStateChange(isButtonScaled)
 
     LaunchedEffect(isButtonScaled) {
         if (isButtonScaled) {

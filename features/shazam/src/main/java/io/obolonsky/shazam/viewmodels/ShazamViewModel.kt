@@ -65,10 +65,6 @@ class ShazamViewModel @AssistedInject constructor(
         }
     }
 
-    fun getRecentShazamTracks(): Flow<List<Track>> {
-        return shazamRepository.getTracksFlow()
-    }
-
     private suspend fun getRelatedTracks(url: String): List<Track> {
         return when (val response = shazamRepository.getRelatedTracks(url)) {
             is Reaction.Success -> {

@@ -65,4 +65,7 @@
     <string name="filter_sort_stars">@string/user_info_stars</string>
     <string name="filter_sort_select_order">Select order</string>
 
+    <!--  Shazam  -->
+    <string name="shazam_tap_to_shazam">Tap to shazam</string>
+
 </resources>

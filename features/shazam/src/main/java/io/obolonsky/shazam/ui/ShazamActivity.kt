@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
@@ -22,17 +23,18 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
-import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.obolonsky.core.di.actions.CreatePlayerScreenAction
 import io.obolonsky.core.di.actions.NavigateToDownloadsAction
@@ -49,7 +51,6 @@ import io.obolonsky.shazam.viewmodels.ComponentViewModel
 import io.obolonsky.shazam.viewmodels.ShazamViewModel
 import io.obolonsky.utils.get
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -58,6 +59,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Provider
 import io.obolonsky.coreui.R as CoreUiR
+import io.obolonsky.core.R as CoreR
 
 class ShazamActivity : AppCompatActivity() {
 
@@ -71,13 +73,6 @@ class ShazamActivity : AppCompatActivity() {
     internal lateinit var navigateToDownloadsAction: NavigateToDownloadsAction
 
     private val componentViewModel by viewModels<ComponentViewModel>()
-
-    private val trackAdapter by lazy {
-        TrackAdapter(
-            onTrackClick = ::onTrackDetected,
-            onRemoveTrack = shazamViewModel::deleteRecentTrack,
-        )
-    }
 
     private val shazamViewModel: ShazamViewModel by lazyViewModel {
         componentViewModel.shazamComponent
@@ -122,15 +117,6 @@ class ShazamActivity : AppCompatActivity() {
             isPlayerShown = isPlayerRunning
         }
 
-        binding.recentTracks.apply {
-            adapter = trackAdapter
-            layoutManager = LinearLayoutManager(
-                this@ShazamActivity,
-                LinearLayoutManager.VERTICAL,
-                true
-            )
-        }
-
         intent?.handleIntent()
 
         initViewModel()
@@ -161,11 +147,6 @@ class ShazamActivity : AppCompatActivity() {
 //                .flowWithLifecycle(lifecycle)
 //                .collect()
         }
-
-        shazamViewModel.getRecentShazamTracks()
-            .onEach(::onRecentTracks)
-            .flowWithLifecycle(lifecycle)
-            .launchIn(lifecycleScope)
     }
 
     private fun Track.metadata(): MediaMetadata {
@@ -262,10 +243,6 @@ class ShazamActivity : AppCompatActivity() {
         mediaRecorderViewModel.record()
     }
 
-    private fun onRecentTracks(tracks: List<Track>) {
-        trackAdapter.submitList(tracks)
-    }
-
     private fun onMediaRecorded() {
         val file = File(filesDir, RECORDED_AUDIO_FILENAME)
         shazamViewModel.audioDetect(file)
@@ -299,11 +276,27 @@ fun Screen(
                 .padding(top = 80.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+
+            TapToShazamMessage()
+
             WavesAnimation(
                 onRequestRecordPermission = onRequestRecordPermission,
             )
         }
     }
+}
+
+@Composable
+fun TapToShazamMessage(
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        modifier = modifier,
+        text = stringResource(CoreR.string.shazam_tap_to_shazam),
+        style = MaterialTheme.typography.h5,
+        fontWeight = FontWeight.W500,
+        color = Color.White,
+    )
 }
 
 @Composable
@@ -342,11 +335,11 @@ fun WavesAnimation(
         dys.forEach { dy ->
             Box(
                 Modifier
-                    .size(50.dp)
+                    .size(136.dp)
                     .align(Center)
                     .graphicsLayer {
-                        scaleX = dy * 4 + 1
-                        scaleY = dy * 4 + 1
+                        scaleX = dy * 2 + 1
+                        scaleY = dy * 2 + 1
                         alpha = 1 - dy
                     }
                     .alpha(wavesAlpha),
@@ -401,11 +394,11 @@ fun ShazamButton(
     }
 
     Surface(
-        color = MaterialTheme.colors.primary,
+        color = colorResource(id = CoreUiR.color.blue),
         shape = CircleShape,
         modifier = modifier
             .scale(scale.value)
-            .size(102.dp)
+            .size(152.dp)
             .clip(CircleShape)
             .clickable {
                 isButtonScaled = !isButtonScaled
@@ -413,8 +406,9 @@ fun ShazamButton(
             },
     ) {
         Icon(
-            modifier = Modifier.padding(12.dp),
+            modifier = Modifier.padding(16.dp),
             painter = painterResource(id = CoreUiR.drawable.shazam),
+            tint = Color.White,
             contentDescription = null,
         )
     }

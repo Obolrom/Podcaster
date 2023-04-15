@@ -34,11 +34,11 @@ object TrackResponseToTrackMapper : Mapper<SongRecognizeResponse.TrackResponse, 
     }
 }
 
-object TrackResponseToTrackListMapper : Mapper<RelatedTracksResponse, List<Track>> {
+object TrackResponseToTrackListMapper : Mapper<RelatedTracksResponse.Result, List<Track>> {
 
-    override fun map(input: RelatedTracksResponse): List<Track> {
-        return input.result
-            ?.tracks
+    override fun map(input: RelatedTracksResponse.Result): List<Track> {
+        return input
+            .tracks
             ?.map(TrackResponseToTrackMapper::map)
             .orEmpty()
     }

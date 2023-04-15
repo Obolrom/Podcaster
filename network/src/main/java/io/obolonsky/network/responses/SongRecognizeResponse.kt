@@ -3,11 +3,15 @@ package io.obolonsky.network.responses
 import com.google.gson.annotations.SerializedName
 
 data class SongRecognizeResponse(
-    @SerializedName("tagid") val tagId: String?,
-    @SerializedName("timestamp") val timestamp: Long?,
-    @SerializedName("result") val track: TrackResponse?,
-    @SerializedName("location") val location: LocationResponse?,
+    @SerializedName("result") val result: Result?,
 ) {
+
+    data class Result(
+        @SerializedName("tagid") val tagId: String?,
+        @SerializedName("timestamp") val timestamp: Long?,
+        @SerializedName("location") val location: LocationResponse?,
+        @SerializedName("track") val track: TrackResponse?,
+    )
 
     data class TrackResponse(
         @SerializedName("subtitle") val subtitle: String?,
@@ -17,6 +21,9 @@ data class SongRecognizeResponse(
         @SerializedName("type") val type: String?,
         @SerializedName("hub") val hub: HubResponse?,
         @SerializedName("images") val images: ImagesResponse?,
+        @SerializedName("tagid") val tagId: String?,
+        @SerializedName("timestamp") val timestamp: Long?,
+        @SerializedName("location") val location: LocationResponse?,
     ) {
 
         data class ImagesResponse(
@@ -51,3 +58,4 @@ data class SongRecognizeResponse(
         @SerializedName("longitude") val longitude: Int,
     )
 }
+

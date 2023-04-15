@@ -15,7 +15,7 @@ interface SongRecognitionApi {
 
     @Headers(
         "X-RapidAPI-Key: ${BuildConfig.SHAZAM_API_KEY}",
-        "X-RapidAPI-Host: shazam-song-recognizer.p.rapidapi.com",
+        "X-RapidAPI-Host: shazam-api6.p.rapidapi.com",
     )
     @POST("recognize")
     suspend fun detect(
@@ -29,5 +29,5 @@ interface SongRecognitionApi {
     @GET
     suspend fun getRelatedTracks(
         @Url url: String,
-    ): NetworkResponse<RelatedTracksResponse, Unit>
+    ): NetworkResponse<RelatedTracksResponse.Result, Unit>
 }

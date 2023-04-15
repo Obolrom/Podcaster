@@ -10,8 +10,8 @@ object SongRecognizeResponseToShazamDetectMapper :
 
     override fun map(input: SongRecognizeResponse): ShazamDetect {
         return ShazamDetect(
-            tagId = input.tagId ?: NO_ID,
-            track = input.track?.let(TrackResponseToTrackMapper::map)
+            tagId = input.result?.track?.tagId ?: NO_ID,
+            track = input.result?.track?.let(TrackResponseToTrackMapper::map)
         )
     }
 }

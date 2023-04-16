@@ -2,33 +2,34 @@ package io.obolonsky.shazam.viewmodels
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.data.ShazamDetect
 import io.obolonsky.core.di.data.Track
-import io.obolonsky.core.di.reactWith
-import io.obolonsky.core.di.utils.CoroutineSchedulers
+import io.obolonsky.core.di.utils.reactWith
 import io.obolonsky.shazam.data.usecases.AudioDetectionUseCase
-import io.obolonsky.shazam.data.usecases.DeleteRecentTrackUseCase
 import io.obolonsky.shazam.di.ScopedShazamRepo
+import io.obolonsky.shazam.redux.ShazamAudioRecordingState
 import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collect
+import org.orbitmvi.orbit.Container
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
 import java.io.File
-import java.util.concurrent.TimeUnit
 
 class ShazamViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
     private val audioDetectionUseCase: AudioDetectionUseCase,
-    private val deleteRecentTrackUseCase: DeleteRecentTrackUseCase,
     private val shazamRepository: ScopedShazamRepo,
-    private val dispatchers: CoroutineSchedulers,
-) : ViewModel() {
+) : ViewModel(), ContainerHost<ShazamAudioRecordingState, Unit> {
 
     private val _shazamDetect by lazy {
         MutableSharedFlow<ShazamDetect>(
@@ -38,31 +39,32 @@ class ShazamViewModel @AssistedInject constructor(
     }
     val shazamDetect: SharedFlow<ShazamDetect> get() = _shazamDetect.asSharedFlow()
 
-    fun audioDetect(audioFile: File) {
-        viewModelScope.launch(dispatchers.computation) {
-            audioDetectionUseCase(audioFile)
-                .reactWith(
-                    onSuccess = { detected ->
-                        delay(TimeUnit.SECONDS.toMillis(1))
-                        val relatedTracks = detected.track
-                            ?.relatedTracksUrl
-                            ?.let { getRelatedTracks(it) }
-                            ?: emptyList()
-                        val full = detected.track?.copy(relatedTracks = relatedTracks)
+    override val container: Container<ShazamAudioRecordingState, Unit> = container(
+        initialState = ShazamAudioRecordingState(
+            detected = null,
+        ),
+    )
 
-                        _shazamDetect.emit(detected.copy(track = full))
-                    },
-                    onError = { error ->
-                        Timber.d(error.toString())
+    fun audioDetect(audioFile: File) = intent {
+        audioDetectionUseCase(audioFile)
+            .reactWith(
+                onSuccess = { detected ->
+                    val relatedTracks = detected.track
+                        ?.relatedTracksUrl
+                        ?.let { getRelatedTracks(it) }
+                        .orEmpty()
+                    val full = detected.track?.copy(relatedTracks = relatedTracks)
+
+                    reduce {
+                        state.copy(detected = detected.copy(track = full))
                     }
-                )
-        }
-    }
-
-    fun deleteRecentTrack(track: Track) {
-        viewModelScope.launch {
-            deleteRecentTrackUseCase(track)
-        }
+                    _shazamDetect.emit(detected.copy(track = full))
+                },
+                onError = { error ->
+                    Timber.d(error.toString())
+                }
+            )
+            .collect()
     }
 
     private suspend fun getRelatedTracks(url: String): List<Track> {

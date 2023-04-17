@@ -46,6 +46,7 @@ import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.core.di.toaster
 import io.obolonsky.shazam.R
 import io.obolonsky.shazam.databinding.ActivityShazamBinding
+import io.obolonsky.shazam.redux.ShazamAudioRecordingSideEffects
 import io.obolonsky.shazam.ui.compose.theme.ShazamTheme
 import io.obolonsky.shazam.viewmodels.ComponentViewModel
 import io.obolonsky.shazam.viewmodels.ShazamViewModel
@@ -53,6 +54,7 @@ import io.obolonsky.utils.get
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
+import org.orbitmvi.orbit.compose.collectSideEffect
 import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -116,6 +118,7 @@ class ShazamActivity : AppCompatActivity() {
         initViewModel()
 
         binding.composeView.setContent {
+            shazamViewModel.collectSideEffect(sideEffect = ::onSideEffect)
 
             Screen(
                 onRequestRecordPermission = recordPermission::requestRecordPermission,
@@ -188,6 +191,12 @@ class ShazamActivity : AppCompatActivity() {
             else -> {
 //                toaster.showToast(this@ShazamActivity, "intent not handled")
             }
+        }
+    }
+
+    private fun onSideEffect(effect: ShazamAudioRecordingSideEffects): Unit = when (effect) {
+        is ShazamAudioRecordingSideEffects.ShazamDetectedSideEffect -> {
+            onTrackDetected(effect.detectedTrack)
         }
     }
 

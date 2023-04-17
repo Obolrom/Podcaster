@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.data.ShazamDetect
 import io.obolonsky.core.di.data.Track
 import io.obolonsky.core.di.reactWithSuccessOrDefault
@@ -14,6 +15,7 @@ import io.obolonsky.core.di.utils.reactWith
 import io.obolonsky.shazam.data.usecases.AudioDetectionUseCase
 import io.obolonsky.shazam.di.ScopedShazamRepo
 import io.obolonsky.shazam.recorder.ShazamMediaRecorder
+import io.obolonsky.shazam.redux.ShazamAudioRecordingSideEffects
 import io.obolonsky.shazam.redux.ShazamAudioRecordingState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.BufferOverflow
@@ -21,6 +23,7 @@ import kotlinx.coroutines.flow.*
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
@@ -33,7 +36,7 @@ class ShazamViewModel @AssistedInject constructor(
     @Assisted recordDurationMs: Long,
     private val audioDetectionUseCase: AudioDetectionUseCase,
     private val shazamRepository: ScopedShazamRepo,
-) : ViewModel(), ContainerHost<ShazamAudioRecordingState, Unit> {
+) : ViewModel(), ContainerHost<ShazamAudioRecordingState, ShazamAudioRecordingSideEffects> {
 
     private val _shazamDetect by lazy {
         MutableSharedFlow<ShazamDetect>(
@@ -50,7 +53,7 @@ class ShazamViewModel @AssistedInject constructor(
         )
     }
 
-    override val container: Container<ShazamAudioRecordingState, Unit> = container(
+    override val container: Container<ShazamAudioRecordingState, ShazamAudioRecordingSideEffects> = container(
         initialState = ShazamAudioRecordingState(
             detected = null,
         ),
@@ -59,21 +62,8 @@ class ShazamViewModel @AssistedInject constructor(
     fun record() = intent {
         flow { emit(audioRecorder.record()) }
             .map { File(outputFilepath) }
-           /* .onEach {
-                    val full = Track(
-                        audioUri = File(outputDir, RECORDED_AUDIO_FILENAME).absolutePath,
-                        subtitle = "recorded",
-                        title = "recorded",
-                        imageUrls = emptyList(),
-                        relatedTracks = emptyList(),
-                        relatedTracksUrl = null,
-                    )
-                reduce {
-                    state.copy(detected = ShazamDetect("", full))
-                }
-                _shazamDetect.emit(ShazamDetect("", full))
-            }*/
             .flatMapLatest(audioDetectionUseCase::invoke)
+//            .map { Reaction.success(ShazamDetect(tagId = "", track = Track(audioUri = outputFilepath, subtitle = "recorded", title = "recorded", imageUrls = emptyList(), relatedTracks = emptyList(), relatedTracksUrl = null,),)) }
             .reactWith(
                 onSuccess = { detected ->
                     val relatedTracks = detected.track
@@ -85,7 +75,13 @@ class ShazamViewModel @AssistedInject constructor(
                     reduce {
                         state.copy(detected = detected.copy(track = full))
                     }
-                    _shazamDetect.emit(detected.copy(track = full))
+                    if (full != null) {
+                        postSideEffect(
+                            ShazamAudioRecordingSideEffects.ShazamDetectedSideEffect(
+                                detectedTrack = full
+                            )
+                        )
+                    }
                 },
                 onError = { error ->
                     Timber.d(error.toString())
@@ -107,9 +103,5 @@ class ShazamViewModel @AssistedInject constructor(
             @Assisted("outputDir") outputDir: String,
             recordDurationMs: Long,
         ): ShazamViewModel
-    }
-
-    private companion object {
-        const val RECORDED_AUDIO_FILENAME = "fileToDetect.mp3"
     }
 }

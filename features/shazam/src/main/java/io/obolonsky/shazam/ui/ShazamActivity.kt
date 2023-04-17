@@ -53,7 +53,6 @@ import io.obolonsky.utils.get
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -77,7 +76,12 @@ class ShazamActivity : AppCompatActivity() {
     private val shazamViewModel: ShazamViewModel by lazyViewModel {
         componentViewModel.shazamComponent
             .shazamViewModel()
-            .create(it)
+            .create(
+                savedStateHandle = it,
+                outputFilepath = File(filesDir, RECORDED_AUDIO_FILENAME).absolutePath,
+                outputDir = filesDir.absolutePath,
+                recordDurationMs = TimeUnit.SECONDS.toMillis(7),
+            )
     }
 
     private val binding: ActivityShazamBinding by viewBinding()
@@ -88,16 +92,6 @@ class ShazamActivity : AppCompatActivity() {
         activityResultRegistry = activityResultRegistry,
         onPermissionGranted = ::onRecordPermissionGranted,
     )
-
-    private val mediaRecorderViewModel by lazyViewModel {
-        componentViewModel.shazamComponent
-            .recorderViewModel()
-            .create(
-                savedStateHandle = it,
-                outputFile = File(filesDir, RECORDED_AUDIO_FILENAME),
-                recordDurationMs = TimeUnit.SECONDS.toMillis(7),
-            )
-    }
 
     private var isPlayerShown = false
 
@@ -135,18 +129,10 @@ class ShazamActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        lifecycleScope.launch {
-            mediaRecorderViewModel.audioRecordingComplete
-                .onEach { onMediaRecorded() }
-                .launchWhenStarted(lifecycleScope)
-
-            shazamViewModel.shazamDetect
-                .mapNotNull { it.track }
-                .onEach(::onTrackDetected)
-                .launchWhenStarted(lifecycleScope)
-//                .flowWithLifecycle(lifecycle)
-//                .collect()
-        }
+        shazamViewModel.shazamDetect
+            .mapNotNull { it.track }
+            .onEach(::onTrackDetected)
+            .launchWhenStarted(lifecycleScope)
     }
 
     private fun Track.metadata(): MediaMetadata {
@@ -240,12 +226,7 @@ class ShazamActivity : AppCompatActivity() {
     }
 
     private fun onRecordPermissionGranted() {
-        mediaRecorderViewModel.record()
-    }
-
-    private fun onMediaRecorded() {
-        val file = File(filesDir, RECORDED_AUDIO_FILENAME)
-        shazamViewModel.audioDetect(file)
+        shazamViewModel.record()
     }
 
     private companion object {

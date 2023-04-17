@@ -18,7 +18,6 @@ import io.obolonsky.shazam.recorder.ShazamMediaRecorder
 import io.obolonsky.shazam.redux.ShazamAudioRecordingSideEffects
 import io.obolonsky.shazam.redux.ShazamAudioRecordingState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
@@ -38,14 +37,6 @@ class ShazamViewModel @AssistedInject constructor(
     private val shazamRepository: ScopedShazamRepo,
 ) : ViewModel(), ContainerHost<ShazamAudioRecordingState, ShazamAudioRecordingSideEffects> {
 
-    private val _shazamDetect by lazy {
-        MutableSharedFlow<ShazamDetect>(
-            replay = 1,
-            onBufferOverflow = BufferOverflow.DROP_OLDEST,
-        )
-    }
-    val shazamDetect: SharedFlow<ShazamDetect> get() = _shazamDetect.asSharedFlow()
-
     private val audioRecorder by lazy {
         ShazamMediaRecorder(
             outputFile = File(outputFilepath),
@@ -63,7 +54,7 @@ class ShazamViewModel @AssistedInject constructor(
         flow { emit(audioRecorder.record()) }
             .map { File(outputFilepath) }
             .flatMapLatest(audioDetectionUseCase::invoke)
-//            .map { Reaction.success(ShazamDetect(tagId = "", track = Track(audioUri = outputFilepath, subtitle = "recorded", title = "recorded", imageUrls = emptyList(), relatedTracks = emptyList(), relatedTracksUrl = null,),)) }
+//            .map { Reaction.success(ShazamDetect(tagId = "", track = Track(audioUri = outputFilepath, subtitle = "recorded", title = "recorded", imageUrls = emptyList(), relatedTracks = emptyList(), relatedTracksUrl = null))) }
             .reactWith(
                 onSuccess = { detected ->
                     val relatedTracks = detected.track

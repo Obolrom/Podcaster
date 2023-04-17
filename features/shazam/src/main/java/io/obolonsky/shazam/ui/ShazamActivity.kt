@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
-import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -40,7 +39,6 @@ import io.obolonsky.core.di.actions.CreatePlayerScreenAction
 import io.obolonsky.core.di.actions.NavigateToDownloadsAction
 import io.obolonsky.core.di.actions.StopPlayerService
 import io.obolonsky.core.di.common.AudioSource
-import io.obolonsky.core.di.common.launchWhenStarted
 import io.obolonsky.core.di.data.Track
 import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.core.di.toaster
@@ -52,15 +50,13 @@ import io.obolonsky.shazam.viewmodels.ComponentViewModel
 import io.obolonsky.shazam.viewmodels.ShazamViewModel
 import io.obolonsky.utils.get
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.coroutines.flow.onEach
 import org.orbitmvi.orbit.compose.collectSideEffect
 import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Provider
-import io.obolonsky.coreui.R as CoreUiR
 import io.obolonsky.core.R as CoreR
+import io.obolonsky.coreui.R as CoreUiR
 
 class ShazamActivity : AppCompatActivity() {
 
@@ -115,8 +111,6 @@ class ShazamActivity : AppCompatActivity() {
 
         intent?.handleIntent()
 
-        initViewModel()
-
         binding.composeView.setContent {
             shazamViewModel.collectSideEffect(sideEffect = ::onSideEffect)
 
@@ -129,13 +123,6 @@ class ShazamActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putBoolean(PLAYER_IS_PLAYING_KEY, isPlayerShown)
         super.onSaveInstanceState(outState)
-    }
-
-    private fun initViewModel() {
-        shazamViewModel.shazamDetect
-            .mapNotNull { it.track }
-            .onEach(::onTrackDetected)
-            .launchWhenStarted(lifecycleScope)
     }
 
     private fun Track.metadata(): MediaMetadata {

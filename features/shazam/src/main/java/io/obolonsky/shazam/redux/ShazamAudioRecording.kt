@@ -5,6 +5,7 @@ import io.obolonsky.core.di.data.Track
 
 data class ShazamAudioRecordingState(
     val detected: ShazamDetect? = null,
+    val isRecordingInProgress: Boolean,
 )
 
 sealed class ShazamAudioRecordingSideEffects {

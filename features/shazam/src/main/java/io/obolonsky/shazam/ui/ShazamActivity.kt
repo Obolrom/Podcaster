@@ -45,11 +45,13 @@ import io.obolonsky.core.di.toaster
 import io.obolonsky.shazam.R
 import io.obolonsky.shazam.databinding.ActivityShazamBinding
 import io.obolonsky.shazam.redux.ShazamAudioRecordingSideEffects
+import io.obolonsky.shazam.redux.ShazamAudioRecordingState
 import io.obolonsky.shazam.ui.compose.theme.ShazamTheme
 import io.obolonsky.shazam.viewmodels.ComponentViewModel
 import io.obolonsky.shazam.viewmodels.ShazamViewModel
 import io.obolonsky.utils.get
 import kotlinx.coroutines.delay
+import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import java.io.File
 import java.util.concurrent.TimeUnit
@@ -112,9 +114,11 @@ class ShazamActivity : AppCompatActivity() {
         intent?.handleIntent()
 
         binding.composeView.setContent {
+            val state by shazamViewModel.collectAsState()
             shazamViewModel.collectSideEffect(sideEffect = ::onSideEffect)
 
             Screen(
+                state = state,
                 onRequestRecordPermission = recordPermission::requestRecordPermission,
             )
         }
@@ -233,6 +237,7 @@ class ShazamActivity : AppCompatActivity() {
 
 @Composable
 fun Screen(
+    state: ShazamAudioRecordingState,
     onRequestRecordPermission: () -> Unit,
 ) = ShazamTheme {
     Box(
@@ -257,6 +262,7 @@ fun Screen(
             TapToShazamMessage()
 
             WavesAnimation(
+                state = state,
                 onRequestRecordPermission = onRequestRecordPermission,
             )
         }
@@ -278,6 +284,7 @@ fun TapToShazamMessage(
 
 @Composable
 fun WavesAnimation(
+    state: ShazamAudioRecordingState,
     onRequestRecordPermission: () -> Unit,
 ) {
     var wavesAlpha by remember { mutableStateOf(0f) }
@@ -330,6 +337,7 @@ fun WavesAnimation(
         }
 
         ShazamButton(
+            state = state,
             onRequestRecordPermission = onRequestRecordPermission,
             onRecordingStateChange = { isRecording ->
                 wavesAlpha = if (isRecording) 0.5f else 0.0f
@@ -340,11 +348,12 @@ fun WavesAnimation(
 
 @Composable
 fun ShazamButton(
+    state: ShazamAudioRecordingState,
     onRequestRecordPermission: () -> Unit,
     onRecordingStateChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var isButtonScaled by remember { mutableStateOf(false) }
+    val isButtonScaled = state.isRecordingInProgress
     val scale = remember { Animatable(initialValue = 1f) }
 
     onRecordingStateChange(isButtonScaled)
@@ -361,7 +370,6 @@ fun ShazamButton(
                     animationSpec = tween(durationMillis = 500)
                 )
             }
-            isButtonScaled = false
         } else {
             scale.animateTo(
                 targetValue = 1f,
@@ -378,7 +386,6 @@ fun ShazamButton(
             .size(152.dp)
             .clip(CircleShape)
             .clickable {
-                isButtonScaled = !isButtonScaled
                 onRequestRecordPermission()
             },
     ) {
@@ -397,7 +404,13 @@ fun ShazamButton(
 )
 @Composable
 fun SecondPreview() {
+    val state = ShazamAudioRecordingState(
+        detected = null,
+        isRecordingInProgress = false,
+    )
+
     Screen(
+        state = state,
         onRequestRecordPermission = { },
     )
 }

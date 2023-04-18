@@ -47,12 +47,18 @@ class ShazamViewModel @AssistedInject constructor(
     override val container: Container<ShazamAudioRecordingState, ShazamAudioRecordingSideEffects> = container(
         initialState = ShazamAudioRecordingState(
             detected = null,
+            isRecordingInProgress = false,
         ),
     )
 
     fun record() = intent {
+        if (state.isRecordingInProgress) {
+            return@intent
+        }
+
         flow { emit(audioRecorder.record()) }
             .map { File(outputFilepath) }
+            .onEach { reduce { state.copy(isRecordingInProgress = false) } }
             .flatMapLatest(audioDetectionUseCase::invoke)
 //            .map { Reaction.success(ShazamDetect(tagId = "", track = Track(audioUri = outputFilepath, subtitle = "recorded", title = "recorded", imageUrls = emptyList(), relatedTracks = emptyList(), relatedTracksUrl = null))) }
             .reactWith(
@@ -78,6 +84,9 @@ class ShazamViewModel @AssistedInject constructor(
                     Timber.d(error.toString())
                 }
             )
+            .onStart {
+                reduce { state.copy(isRecordingInProgress = true) }
+            }
             .collect()
     }
 

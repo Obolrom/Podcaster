@@ -2,6 +2,7 @@ package io.obolonsky.shazam.ui
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.core.*
@@ -93,8 +94,6 @@ class ShazamActivity : AppCompatActivity() {
         onPermissionGranted = ::onRecordPermissionGranted,
     )
 
-    private var isPlayerShown = false
-
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
 
@@ -107,11 +106,21 @@ class ShazamActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shazam)
 
-        savedInstanceState?.getBoolean(PLAYER_IS_PLAYING_KEY)?.let { isPlayerRunning ->
-            isPlayerShown = isPlayerRunning
-        }
-
         intent?.handleIntent()
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (supportFragmentManager.backStackEntryCount > 0) {
+                    supportFragmentManager.popBackStackImmediate()
+                    stopPlayerServiceAction.get {
+                        stop(this@ShazamActivity)
+                    }
+                    AudioSource.clear()
+                } else {
+                    finish()
+                }
+            }
+        })
 
         binding.composeView.setContent {
             val state by shazamViewModel.collectAsState()
@@ -122,11 +131,6 @@ class ShazamActivity : AppCompatActivity() {
                 onRequestRecordPermission = recordPermission::requestRecordPermission,
             )
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putBoolean(PLAYER_IS_PLAYING_KEY, isPlayerShown)
-        super.onSaveInstanceState(outState)
     }
 
     private fun Track.metadata(): MediaMetadata {
@@ -146,23 +150,7 @@ class ShazamActivity : AppCompatActivity() {
             .build()
     }
 
-    override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount > 0) {
-            supportFragmentManager.popBackStackImmediate()
-            stopPlayerServiceAction.get {
-                stop(this@ShazamActivity)
-            }
-            isPlayerShown = false
-            AudioSource.clear()
-        } else {
-            super.onBackPressed()
-        }
-    }
-
     private fun showPlayer() {
-        if (isPlayerShown) return
-        isPlayerShown = true
-
         createPlayerScreenAction.get {
             supportFragmentManager.commit {
                 addToBackStack(null)
@@ -230,7 +218,6 @@ class ShazamActivity : AppCompatActivity() {
     }
 
     private companion object {
-        const val PLAYER_IS_PLAYING_KEY = "PLAYER_IS_PLAYING_KEY"
         const val RECORDED_AUDIO_FILENAME = "fileToDetect.mp3"
     }
 }

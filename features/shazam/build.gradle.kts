@@ -58,6 +58,7 @@ dependencies {
     implementation("com.google.android.material:material:1.6.1")
 
     implementation("androidx.media3:media3-exoplayer:${Media3.version}")
+    implementation("androidx.media3:media3-ui:${Media3.version}")
 
     // Redux
     implementation("org.orbit-mvi:orbit-core:4.6.0")

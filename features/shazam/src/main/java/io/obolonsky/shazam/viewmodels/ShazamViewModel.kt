@@ -59,8 +59,8 @@ class ShazamViewModel @AssistedInject constructor(
         flow { emit(audioRecorder.record()) }
             .map { File(outputFilepath) }
             .onEach { reduce { state.copy(isRecordingInProgress = false) } }
-            .flatMapLatest(audioDetectionUseCase::invoke)
-//            .map { Reaction.success(ShazamDetect(tagId = "", track = Track(audioUri = outputFilepath, subtitle = "recorded", title = "recorded", imageUrls = emptyList(), relatedTracks = emptyList(), relatedTracksUrl = null))) }
+//            .flatMapLatest(audioDetectionUseCase::invoke)
+            .map { Reaction.success(ShazamDetect(tagId = "", track = Track(audioUri = outputFilepath, subtitle = "recorded", title = "recorded", imageUrls = emptyList(), relatedTracks = emptyList(), relatedTracksUrl = null))) }
             .reactWith(
                 onSuccess = { detected ->
                     val relatedTracks = detected.track

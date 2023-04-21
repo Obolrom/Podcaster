@@ -10,17 +10,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.IconButton
+import androidx.compose.material.Text
+import androidx.compose.material.Typography
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.*
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle.Event.*
 import androidx.lifecycle.LifecycleEventObserver
@@ -30,7 +40,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.*
 import androidx.media3.ui.PlayerView
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.codeboy.pager2_transformers.Pager2_ZoomOutTransformer
+import coil.compose.AsyncImage
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
 import io.obolonsky.core.di.actions.StartDownloadServiceAction
@@ -41,7 +51,6 @@ import io.obolonsky.player.databinding.FragmentPlayerNavigationBinding
 import io.obolonsky.player.di.PlayerComponent
 import io.obolonsky.player.player.PodcasterPlaybackService
 import io.obolonsky.player.player.PodcasterPlaybackService.Companion.getPlayerComponent
-import io.obolonsky.player.ui.ImagesAdapter
 import io.obolonsky.player.ui.compose.PlayerTheme
 import io.obolonsky.utils.get
 import timber.log.Timber
@@ -91,8 +100,6 @@ class PlayerFragment : Fragment() {
         }
     }
 
-    private val mediaImagesAdapter by lazy { ImagesAdapter() }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         getComponent().inject(this)
@@ -100,14 +107,6 @@ class PlayerFragment : Fragment() {
 
     // TODO: move to composable
     fun initViews(savedInstanceState: Bundle?) {
-        activity?.window?.navigationBarColor = ContextCompat.getColor(
-            requireContext(),
-            CoreUiR.color.pink_red
-        )
-        binding.playerView.showController()
-        playerNavBinding.images.setPageTransformer(Pager2_ZoomOutTransformer())
-        playerNavBinding.images.adapter = mediaImagesAdapter
-
         playerNavBinding.download.setOnClickListener {
             binding.playerView.player
                 ?.currentMediaItemIndex
@@ -130,9 +129,6 @@ class PlayerFragment : Fragment() {
             ?: mediaMetadata.title
             ?: mediaMetadata.albumTitle
         playerNavBinding.audioTrackTitle.text = trackTitle
-        mediaMetadata.extras
-            ?.getStringArrayList("shazam_images")
-            ?.let(mediaImagesAdapter::submitList)
     }
 
     class MediaControllerListener : MediaController.Listener {
@@ -182,23 +178,41 @@ fun PlayerScreen() = PlayerTheme {
     var player: Player? by remember {
         mutableStateOf(null)
     }
+    val isAudioPlaying = rememberSaveable {
+        mutableStateOf(false)
+    }
+    var metadata by remember {
+        mutableStateOf(MediaMetadata.EMPTY)
+    }
 
     var controllerFuture: ListenableFuture<MediaController>? = remember { null }
 
     DisposableEffect(lifecycleOwner) {
+        val playerListener = object : Player.Listener {
+            override fun onIsPlayingChanged(isPlaying: Boolean) {
+                isAudioPlaying.value = isPlaying
+            }
+
+            override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
+                metadata = mediaMetadata
+            }
+        }
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
                 ON_START -> {
-                    controllerFuture = MediaController.Builder(
+                    val sessionToken = SessionToken(
                         context,
-                        SessionToken(context, ComponentName(context, PodcasterPlaybackService::class.java))
+                        ComponentName(context, PodcasterPlaybackService::class.java)
                     )
+                    controllerFuture = MediaController.Builder(context, sessionToken)
                         .setListener(PlayerFragment.MediaControllerListener())
                         .buildAsync()
 
                     controllerFuture?.addListener({
                         try {
                             player = controllerFuture?.get()
+                            player?.addListener(playerListener)
+                            player?.mediaMetadata?.let { metadata = it }
                         } catch (e: ExecutionException) {
                             e.printStackTrace()
                             Timber.e(e)
@@ -210,6 +224,7 @@ fun PlayerScreen() = PlayerTheme {
                     }, MoreExecutors.directExecutor())
                 }
                 ON_STOP -> {
+                    player?.removeListener(playerListener)
                     player = null
                     controllerFuture?.let(MediaController::releaseFuture)
                 }
@@ -223,7 +238,17 @@ fun PlayerScreen() = PlayerTheme {
         }
     }
 
-    ComposePlayer(player)
+    ComposePlayer(
+        player = player,
+        isPlaying = { isAudioPlaying.value },
+        onPlayPause = {
+            if (player?.isPlaying == true) player?.pause()
+            else player?.play()
+        },
+        metadata = { metadata },
+        onPrevious = { player?.seekToPrevious() },
+        onForward = { player?.seekToNext() },
+    )
 }
 
 // TODO: set player null on ON_STOP event
@@ -231,6 +256,11 @@ fun PlayerScreen() = PlayerTheme {
 @Composable
 fun ComposePlayer(
     player: Player?,
+    isPlaying: () -> Boolean,
+    onPlayPause: () -> Unit,
+    metadata: () -> MediaMetadata,
+    onPrevious: () -> Unit,
+    onForward: () -> Unit,
 ) = Box(modifier = Modifier.fillMaxSize()) {
     val context = LocalContext.current
 
@@ -241,7 +271,7 @@ fun ComposePlayer(
                 .inflate(R.layout.fragment_player, null) as PlayerView
 
             playerView.apply {
-                showController()
+                useController = false
             }
         },
         update = { playerView ->
@@ -252,4 +282,139 @@ fun ComposePlayer(
             playerView.player = null
         }
     )
+
+    PlayerControls(
+        modifier = Modifier,
+        isPlaying = isPlaying,
+        onPlayPause = onPlayPause,
+        metadata = metadata,
+        onPrevious = onPrevious,
+        onForward = onForward,
+    )
+}
+
+@Composable
+fun PlayerControls(
+    isPlaying: () -> Boolean,
+    onPlayPause: () -> Unit,
+    metadata: () -> MediaMetadata,
+    onPrevious: () -> Unit,
+    onForward: () -> Unit,
+    modifier: Modifier = Modifier,
+) = Box(modifier = modifier.background(Color.Black)) {
+
+    PlayerBackground(
+        modifier = Modifier.fillMaxWidth(),
+        metadata = metadata,
+    )
+
+    Text(
+        modifier = Modifier.align(Alignment.TopCenter),
+        text = metadata().title.toString(),
+        style = Typography().subtitle1,
+    )
+
+    MediaControls(
+        modifier = Modifier
+            .fillMaxWidth()
+            .align(Alignment.Center),
+        isPlaying = isPlaying,
+        onPlayPause = onPlayPause,
+        onPrevious = onPrevious,
+        onForward = onForward,
+    )
+}
+
+@Composable
+fun MediaControls(
+    isPlaying: () -> Boolean,
+    onPlayPause: () -> Unit,
+    onPrevious: () -> Unit,
+    onForward: () -> Unit,
+    modifier: Modifier = Modifier,
+) = Row(
+    modifier = modifier,
+    horizontalArrangement = Arrangement.spacedBy(
+        space = 24.dp,
+        alignment = Alignment.CenterHorizontally
+    ),
+    verticalAlignment = Alignment.CenterVertically,
+) {
+    val isAudioPlaying = remember(isPlaying()) {
+        isPlaying()
+    }
+
+    IconButton(
+        onClick = onPrevious,
+    ) {
+        Image(
+            modifier = Modifier.size(52.dp),
+            contentScale = ContentScale.Crop,
+            painter = painterResource(CoreUiR.drawable.ic_round_skip_previous),
+            contentDescription = null,
+        )
+    }
+
+    Box(
+        modifier = Modifier
+            .size(72.dp)
+            .background(Color.White, CircleShape)
+            .clip(CircleShape)
+            .clickable { onPlayPause() },
+        contentAlignment = Alignment.Center,
+    ) {
+        Image(
+            modifier = Modifier.size(52.dp),
+            contentScale = ContentScale.Crop,
+            painter =
+            if (isAudioPlaying) painterResource(CoreUiR.drawable.ic_round_pause)
+            else painterResource(CoreUiR.drawable.ic_round_play_arrow),
+            contentDescription = null,
+        )
+    }
+
+    IconButton(
+        onClick = onForward,
+    ) {
+        Image(
+            modifier = Modifier.size(52.dp),
+            contentScale = ContentScale.Crop,
+            painter = painterResource(CoreUiR.drawable.ic_round_skip_next),
+            contentDescription = null,
+        )
+    }
+}
+
+@Composable
+fun PlayerBackground(
+    metadata: () -> MediaMetadata,
+    modifier: Modifier = Modifier,
+) = Column(modifier = modifier) {
+    val imageUrl = remember(metadata()) {
+        mutableStateOf(
+            metadata().extras
+                ?.getStringArrayList("shazam_images")
+                ?.firstOrNull()
+        )
+    }
+
+    Box(
+        modifier = Modifier.weight(8f),
+    ) {
+        AsyncImage(
+            modifier = Modifier
+                .fillMaxSize(),
+            model = imageUrl.value,
+            contentScale = ContentScale.Crop,
+            contentDescription = null,
+        )
+        Spacer(Modifier
+            .align(Alignment.BottomCenter)
+            .fillMaxWidth()
+            .height(152.dp)
+            .background(brush = Brush.verticalGradient(listOf(Color.Transparent, Color.Black)))
+        )
+    }
+
+    Spacer(Modifier.weight(2f))
 }

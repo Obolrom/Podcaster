@@ -95,6 +95,7 @@ dependencies {
 
     // Utilities
     implementation("com.jakewharton.timber:timber:5.0.1")
+    implementation("com.github.fengdai.compose:media:0.4.0")
     implementation("io.coil-kt:coil:2.2.2")
     implementation("io.coil-kt:coil-compose:2.2.2")
     implementation("com.github.CodeBoy722:ViewPager2_Transformers:1.0.0")

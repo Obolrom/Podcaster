@@ -15,9 +15,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.Typography
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -53,8 +51,11 @@ import io.obolonsky.player.player.PodcasterPlaybackService
 import io.obolonsky.player.player.PodcasterPlaybackService.Companion.getPlayerComponent
 import io.obolonsky.player.ui.compose.PlayerTheme
 import io.obolonsky.utils.get
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import timber.log.Timber
 import java.util.concurrent.ExecutionException
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Provider
 import io.obolonsky.coreui.R as CoreUiR
@@ -184,6 +185,15 @@ fun PlayerScreen() = PlayerTheme {
     var metadata by remember {
         mutableStateOf(MediaMetadata.EMPTY)
     }
+    var totalDuration by rememberSaveable {
+        mutableStateOf(0L)
+    }
+    var currentTime by rememberSaveable {
+        mutableStateOf(0L)
+    }
+    var bufferPercentage by rememberSaveable {
+        mutableStateOf(0)
+    }
 
     var controllerFuture: ListenableFuture<MediaController>? = remember { null }
 
@@ -195,6 +205,12 @@ fun PlayerScreen() = PlayerTheme {
 
             override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
                 metadata = mediaMetadata
+            }
+
+            override fun onEvents(player: Player, events: Player.Events) {
+                totalDuration = player.duration.coerceAtLeast(0L)
+                currentTime = player.currentPosition.coerceAtLeast(0L)
+                bufferPercentage = player.bufferedPercentage
             }
         }
         val observer = LifecycleEventObserver { _, event ->
@@ -224,7 +240,6 @@ fun PlayerScreen() = PlayerTheme {
                     }, MoreExecutors.directExecutor())
                 }
                 ON_STOP -> {
-                    player?.removeListener(playerListener)
                     player = null
                     controllerFuture?.let(MediaController::releaseFuture)
                 }
@@ -234,7 +249,18 @@ fun PlayerScreen() = PlayerTheme {
         lifecycleOwner.lifecycle.addObserver(observer)
 
         onDispose {
+            player?.removeListener(playerListener)
             lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
+    if (isAudioPlaying.value) {
+        LaunchedEffect(lifecycleOwner) {
+            while (isActive) {
+                player?.currentPosition?.let { currentPosition -> currentTime = currentPosition }
+                player?.bufferedPercentage?.let { bufferedPercentage -> bufferPercentage = bufferedPercentage }
+                delay(500L)
+            }
         }
     }
 
@@ -248,6 +274,10 @@ fun PlayerScreen() = PlayerTheme {
         metadata = { metadata },
         onPrevious = { player?.seekToPrevious() },
         onForward = { player?.seekToNext() },
+        totalDuration = { totalDuration },
+        currentTime = { currentTime },
+        bufferPercentage = { bufferPercentage },
+        onSeekChanged = { player?.seekTo(it.toLong()) },
     )
 }
 
@@ -261,6 +291,10 @@ fun ComposePlayer(
     metadata: () -> MediaMetadata,
     onPrevious: () -> Unit,
     onForward: () -> Unit,
+    totalDuration: () -> Long,
+    currentTime: () -> Long,
+    bufferPercentage: () -> Int,
+    onSeekChanged: (timeMs: Float) -> Unit,
 ) = Box(modifier = Modifier.fillMaxSize()) {
     val context = LocalContext.current
 
@@ -290,6 +324,10 @@ fun ComposePlayer(
         metadata = metadata,
         onPrevious = onPrevious,
         onForward = onForward,
+        totalDuration = totalDuration,
+        currentTime = currentTime,
+        bufferPercentage = bufferPercentage,
+        onSeekChanged = onSeekChanged,
     )
 }
 
@@ -300,13 +338,25 @@ fun PlayerControls(
     metadata: () -> MediaMetadata,
     onPrevious: () -> Unit,
     onForward: () -> Unit,
+    totalDuration: () -> Long,
+    currentTime: () -> Long,
+    bufferPercentage: () -> Int,
+    onSeekChanged: (timeMs: Float) -> Unit,
     modifier: Modifier = Modifier,
 ) = Box(modifier = modifier.background(Color.Black)) {
 
     PlayerBackground(
         modifier = Modifier.fillMaxWidth(),
         metadata = metadata,
-    )
+    ) {
+        SeekBar(
+            modifier = Modifier,
+            totalDuration = totalDuration,
+            currentTime = currentTime,
+            bufferPercentage = bufferPercentage,
+            onSeekChanged = onSeekChanged,
+        )
+    }
 
     Text(
         modifier = Modifier.align(Alignment.TopCenter),
@@ -322,6 +372,45 @@ fun PlayerControls(
         onPlayPause = onPlayPause,
         onPrevious = onPrevious,
         onForward = onForward,
+    )
+}
+
+@Composable
+fun SeekBar(
+    totalDuration: () -> Long,
+    currentTime: () -> Long,
+    bufferPercentage: () -> Int,
+    onSeekChanged: (timeMs: Float) -> Unit,
+    modifier: Modifier = Modifier,
+) = Box(modifier = modifier) {
+    val duration = remember(totalDuration()) { totalDuration() }
+
+    val videoTime = remember(currentTime()) { currentTime() }
+
+    val buffer = remember(bufferPercentage()) { bufferPercentage() }
+
+    Slider(
+        modifier = Modifier
+            .fillMaxWidth(),
+        value = buffer.toFloat(),
+        enabled = false,
+        onValueChange = { },
+        valueRange = 0f..100f,
+        colors = SliderDefaults.colors(
+            disabledThumbColor = Color.Transparent,
+            disabledActiveTrackColor = Color.White,
+        ),
+    )
+
+    Slider(
+        modifier = Modifier.fillMaxWidth(),
+        value = videoTime.toFloat(),
+        onValueChange = onSeekChanged,
+        valueRange = 0f..duration.toFloat(),
+        colors = SliderDefaults.colors(
+            thumbColor = Color.Blue,
+            activeTrackColor = Color.Blue,
+        ),
     )
 }
 
@@ -389,6 +478,7 @@ fun MediaControls(
 fun PlayerBackground(
     metadata: () -> MediaMetadata,
     modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
 ) = Column(modifier = modifier) {
     val imageUrl = remember(metadata()) {
         mutableStateOf(
@@ -408,13 +498,18 @@ fun PlayerBackground(
             contentScale = ContentScale.Crop,
             contentDescription = null,
         )
-        Spacer(Modifier
-            .align(Alignment.BottomCenter)
-            .fillMaxWidth()
-            .height(152.dp)
-            .background(brush = Brush.verticalGradient(listOf(Color.Transparent, Color.Black)))
+        Spacer(
+            Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .height(152.dp)
+                .background(brush = Brush.verticalGradient(listOf(Color.Transparent, Color.Black)))
         )
     }
 
-    Spacer(Modifier.weight(2f))
+    Box(
+        modifier = Modifier.weight(2f),
+    ) {
+        content()
+    }
 }

@@ -40,7 +40,6 @@ import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.*
 import androidx.media3.ui.PlayerView
-import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.compose.AsyncImage
 import com.github.fengdai.compose.media.TimeBar
 import com.github.fengdai.compose.media.TimeBarProgress
@@ -50,13 +49,10 @@ import com.google.common.util.concurrent.MoreExecutors
 import io.obolonsky.core.di.actions.StartDownloadServiceAction
 import io.obolonsky.core.di.depsproviders.App
 import io.obolonsky.core.di.lazyViewModel
-import io.obolonsky.player.databinding.FragmentPlayerBinding
-import io.obolonsky.player.databinding.FragmentPlayerNavigationBinding
 import io.obolonsky.player.di.PlayerComponent
 import io.obolonsky.player.player.PodcasterPlaybackService
 import io.obolonsky.player.player.PodcasterPlaybackService.Companion.getPlayerComponent
 import io.obolonsky.player.ui.compose.PlayerTheme
-import io.obolonsky.utils.get
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import timber.log.Timber
@@ -70,23 +66,16 @@ class PlayerFragment : Fragment() {
     @Inject
     internal lateinit var startDownloadServiceAction: Provider<StartDownloadServiceAction>
 
+    @Suppress("unused")
     private val downloadViewModel by lazyViewModel {
         getComponent()
             .downloadViewModelFactory()
             .create(it)
     }
 
-    private val binding by viewBinding<FragmentPlayerBinding>()
-    private val playerNavBinding: FragmentPlayerNavigationBinding by
-        viewBinding(viewBindingRootId = R.id.player_navigation)
-
-    private val playerListener by lazy {
-        object : Player.Listener {
-
-            override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
-                onMediaMetadata(mediaMetadata)
-            }
-        }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        getComponent().inject(this)
     }
 
     override fun onCreateView(
@@ -106,35 +95,10 @@ class PlayerFragment : Fragment() {
         }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        getComponent().inject(this)
-    }
-
-    // TODO: move to composable
-    fun initViews(savedInstanceState: Bundle?) {
-        playerNavBinding.download.setOnClickListener {
-            binding.playerView.player
-                ?.currentMediaItemIndex
-                ?.let(downloadViewModel::download)
-        }
-
-        startDownloadServiceAction.get {
-            start(requireContext())
-        }
-    }
-
     private fun getComponent(): PlayerComponent {
         return getPlayerComponent(
             applicationProvider = (activity?.applicationContext as App).getAppComponent()
         )
-    }
-
-    private fun onMediaMetadata(mediaMetadata: MediaMetadata) {
-        val trackTitle = mediaMetadata.displayTitle
-            ?: mediaMetadata.title
-            ?: mediaMetadata.albumTitle
-        playerNavBinding.audioTrackTitle.text = trackTitle
     }
 
     class MediaControllerListener : MediaController.Listener {

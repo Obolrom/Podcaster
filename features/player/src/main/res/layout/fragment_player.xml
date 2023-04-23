@@ -10,5 +10,4 @@
     app:show_timeout="0"
     app:hide_on_touch="false"
     app:surface_type="none"
-    app:controller_layout_id="@layout/fragment_player_navigation"
     app:auto_show="true" />

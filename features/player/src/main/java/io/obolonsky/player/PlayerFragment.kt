@@ -1,5 +1,5 @@
 @file:UnstableApi
-@file:OptIn(ExperimentalComposeUiApi::class)
+@file:OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 
 package io.obolonsky.player
 
@@ -10,12 +10,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.systemGestureExclusion
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -23,13 +23,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
@@ -59,6 +65,7 @@ import timber.log.Timber
 import java.util.concurrent.ExecutionException
 import javax.inject.Inject
 import javax.inject.Provider
+import kotlin.math.roundToInt
 import io.obolonsky.coreui.R as CoreUiR
 
 class PlayerFragment : Fragment() {
@@ -314,52 +321,59 @@ fun PlayerControls(
     modifier: Modifier = Modifier,
 ) = Box(modifier = modifier.background(Color.Black)) {
 
-    PlayerBackground(
-        modifier = Modifier.fillMaxWidth(),
-        metadata = metadata,
-        overlay = {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .fillMaxWidth()
-                    .height(152.dp)
-                    .background(brush = Brush.verticalGradient(
-                        colors = listOf(Color.Black, Color.Transparent))
-                    ),
+    MyBottomSheet(
+        background = {
+            PlayerBackground(
+                modifier = Modifier.fillMaxWidth(),
+                metadata = metadata,
+                overlay = {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .fillMaxWidth()
+                            .height(152.dp)
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(Color.Black, Color.Transparent)
+                                )
+                            ),
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .align(Alignment.TopCenter)
+                                .padding(top = 8.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                            Text(
+                                modifier = Modifier,
+                                text = metadata().title.toString(),
+                                color = Color.White,
+                                style = Typography().subtitle1,
+                                fontWeight = FontWeight.W500,
+                            )
+                            Text(
+                                modifier = Modifier.padding(top = 4.dp),
+                                text = metadata().artist.toString(),
+                                color = Color.White,
+                                style = Typography().subtitle2,
+                            )
+                        }
+                    }
+                }
             ) {
-                Column(
-                    modifier = Modifier
-                        .align(Alignment.TopCenter)
-                        .padding(top = 8.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Text(
-                        modifier = Modifier,
-                        text = metadata().title.toString(),
-                        color = Color.White,
-                        style = Typography().subtitle1,
-                        fontWeight = FontWeight.W500,
-                    )
-                    Text(
-                        modifier = Modifier.padding(top = 4.dp),
-                        text = metadata().artist.toString(),
-                        color = Color.White,
-                        style = Typography().subtitle2,
+                Column(modifier = Modifier) {
+                    MediaControls(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        isPlaying = isPlaying,
+                        onPlayPause = onPlayPause,
+                        onPrevious = onPrevious,
+                        onForward = onForward,
                     )
                 }
             }
-        }
-    ) {
-        Column(modifier = Modifier) {
-            MediaControls(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                isPlaying = isPlaying,
-                onPlayPause = onPlayPause,
-                onPrevious = onPrevious,
-                onForward = onForward,
-            )
-
+        },
+        header = {
             TimeBar(
                 durationMs = totalDuration(),
                 positionMs = currentTime(),
@@ -367,8 +381,8 @@ fun PlayerControls(
                 modifier = Modifier
                     .systemGestureExclusion()
                     .fillMaxWidth()
-                    .height(48.dp),
-                contentPadding = PaddingValues(vertical = 16.dp),
+                    .height(36.dp),
+                contentPadding = PaddingValues(top = 28.dp),
                 progress = { _, scrubbed, buffered ->
                     TimeBarProgress(
                         played = scrubbed,
@@ -386,6 +400,125 @@ fun PlayerControls(
                 },
                 onScrubStop = onSeekChanged,
             )
+        },
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+        ) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.Yellow),
+            ) {
+                items((0..50).toList()) { item ->
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(28.dp)
+                            .padding(4.dp)
+                            .background(Color.Gray),
+                        text = item.toString(),
+                    )
+                }
+            }
+        }
+    }
+}
+
+// https://proandroiddev.com/how-to-master-swipeable-and-nestedscroll-modifiers-in-compose-bb0635d6a760
+@Composable
+fun MyBottomSheet(
+    background: @Composable () -> Unit,
+    header: @Composable () -> Unit,
+    body: @Composable () -> Unit,
+) {
+    val swipeableState = rememberSwipeableState(initialValue = States.COLLAPSED)
+    val scrollState = rememberScrollState()
+
+    BoxWithConstraints(
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        val constraintsScope = this
+        val maxOffsetHeight = with(LocalDensity.current) {
+            (constraintsScope.maxHeight * 0.8f).toPx()
+        }
+        val minOffsetHeight = with(LocalDensity.current) {
+            (constraintsScope.maxHeight * 0.25f).toPx()
+        }
+        val connection = remember {
+            object : NestedScrollConnection {
+
+                override fun onPreScroll(
+                    available: Offset,
+                    source: NestedScrollSource
+                ): Offset {
+                    val delta = available.y
+                    return if (delta < 0) {
+                        swipeableState.performDrag(delta).toOffset()
+                    } else {
+                        Offset.Zero
+                    }
+                }
+
+                override fun onPostScroll(
+                    consumed: Offset,
+                    available: Offset,
+                    source: NestedScrollSource
+                ): Offset {
+                    val delta = available.y
+                    return swipeableState.performDrag(delta).toOffset()
+                }
+
+                override suspend fun onPreFling(available: Velocity): Velocity {
+                    return if (available.y < 0 && scrollState.value == 0) {
+                        swipeableState.performFling(available.y)
+                        available
+                    } else {
+                        Velocity.Zero
+                    }
+                }
+
+                override suspend fun onPostFling(
+                    consumed: Velocity,
+                    available: Velocity
+                ): Velocity {
+                    swipeableState.performFling(velocity = available.y)
+                    return super.onPostFling(consumed, available)
+                }
+
+                private fun Float.toOffset() = Offset(0f, this)
+            }
+        }
+
+        background()
+
+        Box(
+            modifier = Modifier
+                .offset {
+                    IntOffset(
+                        x = 0,
+                        y = swipeableState.offset.value.roundToInt(),
+                    )
+                }
+                .swipeable(
+                    state = swipeableState,
+                    orientation = Orientation.Vertical,
+                    anchors = mapOf(
+                        minOffsetHeight to States.EXPANDED,
+                        maxOffsetHeight to States.COLLAPSED,
+                    ),
+                )
+                .nestedScroll(connection),
+        ) {
+            Column(Modifier.fillMaxHeight()) {
+                header()
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    body()
+                }
+            }
         }
     }
 }
@@ -493,4 +626,9 @@ fun PlayerBackground(
     ) {
         content()
     }
+}
+
+enum class States {
+    EXPANDED,
+    COLLAPSED
 }

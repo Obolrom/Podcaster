@@ -411,7 +411,7 @@ fun PlayerControls(
     ) {
         Box(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxHeight(0.74f),
         ) {
             LazyColumn(
                 modifier = Modifier

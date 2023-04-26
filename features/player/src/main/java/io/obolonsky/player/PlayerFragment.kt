@@ -34,9 +34,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.Velocity
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.*
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle.Event.*
@@ -50,6 +48,7 @@ import coil.compose.AsyncImage
 import com.github.fengdai.compose.media.TimeBar
 import com.github.fengdai.compose.media.TimeBarProgress
 import com.github.fengdai.compose.media.TimeBarScrubber
+import com.google.android.material.math.MathUtils
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
 import io.obolonsky.core.di.actions.StartDownloadServiceAction
@@ -321,7 +320,14 @@ fun PlayerControls(
     modifier: Modifier = Modifier,
 ) = Box(modifier = modifier.background(Color.Black)) {
 
+    var mediaControlsVerticalOffset by remember {
+        mutableStateOf(0.dp)
+    }
+
     MyBottomSheet(
+        onSheetOffsetChanged = { offset ->
+            mediaControlsVerticalOffset = offset
+        },
         background = {
             PlayerBackground(
                 modifier = Modifier.fillMaxWidth(),
@@ -364,7 +370,8 @@ fun PlayerControls(
                 Column(modifier = Modifier) {
                     MediaControls(
                         modifier = Modifier
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .offset(y = mediaControlsVerticalOffset),
                         isPlaying = isPlaying,
                         onPlayPause = onPlayPause,
                         onPrevious = onPrevious,
@@ -429,6 +436,7 @@ fun PlayerControls(
 // https://proandroiddev.com/how-to-master-swipeable-and-nestedscroll-modifiers-in-compose-bb0635d6a760
 @Composable
 fun MyBottomSheet(
+    onSheetOffsetChanged: (Dp) -> Unit,
     background: @Composable () -> Unit,
     header: @Composable () -> Unit,
     body: @Composable () -> Unit,
@@ -489,6 +497,12 @@ fun MyBottomSheet(
 
                 private fun Float.toOffset() = Offset(0f, this)
             }
+        }
+
+        if (swipeableState.progress.to == States.COLLAPSED) {
+            onSheetOffsetChanged(MathUtils.lerp((-440).dp.value, 0.dp.value, swipeableState.progress.fraction).dp)
+        } else {
+            onSheetOffsetChanged(MathUtils.lerp(0.dp.value, (-440).dp.value, swipeableState.progress.fraction).dp)
         }
 
         background()

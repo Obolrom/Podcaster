@@ -24,9 +24,9 @@ object TrackResponseToTrackMapper : Mapper<SongRecognizeResponse.TrackResponse, 
         }
 
         return Track(
-            audioUri = audioUri,
-            subtitle = input.subtitle,
-            title = input.title,
+            audioUri = requireNotNull(audioUri),
+            subtitle = requireNotNull(input.subtitle),
+            title = requireNotNull(input.title),
             imageUrls = imageUrls.toImmutableList(),
             relatedTracksUrl = input.relatedTracksUrl,
             relatedTracks = emptyList()

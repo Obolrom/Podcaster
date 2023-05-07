@@ -17,6 +17,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -32,6 +34,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.*
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
@@ -52,14 +55,17 @@ import com.google.android.material.math.MathUtils
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
 import io.obolonsky.core.di.actions.StartDownloadServiceAction
+import io.obolonsky.core.di.data.Track
 import io.obolonsky.core.di.depsproviders.App
 import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.player.di.PlayerComponent
 import io.obolonsky.player.player.PodcasterPlaybackService
 import io.obolonsky.player.player.PodcasterPlaybackService.Companion.getPlayerComponent
+import io.obolonsky.player.redux.PlayerUiState
 import io.obolonsky.player.ui.compose.PlayerTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
+import org.orbitmvi.orbit.compose.collectAsState
 import timber.log.Timber
 import java.util.concurrent.ExecutionException
 import javax.inject.Inject
@@ -95,8 +101,11 @@ class PlayerFragment : Fragment() {
             )
 
             setContent {
+                val state by downloadViewModel.collectAsState()
 
-                PlayerScreen()
+                PlayerScreen(
+                    state = state,
+                )
             }
         }
     }
@@ -147,7 +156,9 @@ class PlayerFragment : Fragment() {
 }
 
 @Composable
-fun PlayerScreen() = PlayerTheme {
+fun PlayerScreen(
+    state: PlayerUiState,
+) = PlayerTheme {
     val context = LocalContext.current.applicationContext
     val lifecycleOwner = LocalLifecycleOwner.current
 
@@ -240,6 +251,7 @@ fun PlayerScreen() = PlayerTheme {
     }
 
     ComposePlayer(
+        state = state,
         player = player,
         isPlaying = { isAudioPlaying.value },
         onPlayPause = {
@@ -260,6 +272,7 @@ fun PlayerScreen() = PlayerTheme {
 @SuppressLint("InflateParams")
 @Composable
 fun ComposePlayer(
+    state: PlayerUiState,
     player: Player?,
     isPlaying: () -> Boolean,
     onPlayPause: () -> Unit,
@@ -293,6 +306,7 @@ fun ComposePlayer(
     )
 
     PlayerControls(
+        state = state,
         modifier = Modifier,
         isPlaying = isPlaying,
         onPlayPause = onPlayPause,
@@ -308,6 +322,7 @@ fun ComposePlayer(
 
 @Composable
 fun PlayerControls(
+    state: PlayerUiState,
     isPlaying: () -> Boolean,
     onPlayPause: () -> Unit,
     metadata: () -> MediaMetadata,
@@ -411,25 +426,57 @@ fun PlayerControls(
     ) {
         Box(
             modifier = Modifier
-                .fillMaxHeight(0.74f),
+                .fillMaxHeight(0.74f)
+                .background(colorResource(CoreUiR.color.beige)),
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.Yellow),
-            ) {
-                items((0..50).toList()) { item ->
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(28.dp)
-                            .padding(4.dp)
-                            .background(Color.Gray),
-                        text = item.toString(),
-                    )
+            if (state.tracks != null) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                ) {
+                    items(
+                        items = state.tracks,
+                        key = { track -> track.title + track.subtitle + track.audioUri },
+                    ) { track ->
+                        TrackItem(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {  }
+                                .padding(start = 16.dp, end = 4.dp, top = 8.dp, bottom = 12.dp),
+                            track = track,
+                        )
+                    }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun TrackItem(
+    track: Track,
+    modifier: Modifier = Modifier,
+) = Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+    Column(
+        modifier = Modifier.weight(1.0f),
+    ) {
+        Text(
+            text = track.title,
+            fontSize = 18.sp,
+            style = MaterialTheme.typography.subtitle2,
+        )
+        Text(
+            text = track.subtitle,
+            style = MaterialTheme.typography.body2,
+        )
+    }
+    IconButton(
+        onClick = { /*TODO*/ },
+    ) {
+        Icon(
+            imageVector = Icons.Rounded.MoreVert,
+            contentDescription = null,
+        )
     }
 }
 

@@ -36,7 +36,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
@@ -72,6 +74,7 @@ import javax.inject.Inject
 import javax.inject.Provider
 import kotlin.math.roundToInt
 import io.obolonsky.coreui.R as CoreUiR
+import io.obolonsky.core.R as CoreR
 
 class PlayerFragment : Fragment() {
 
@@ -105,6 +108,7 @@ class PlayerFragment : Fragment() {
 
                 PlayerScreen(
                     state = state,
+                    onTrackIndexSelected = downloadViewModel::updateCurrentTrack,
                 )
             }
         }
@@ -158,6 +162,7 @@ class PlayerFragment : Fragment() {
 @Composable
 fun PlayerScreen(
     state: PlayerUiState,
+    onTrackIndexSelected: (Int) -> Unit,
 ) = PlayerTheme {
     val context = LocalContext.current.applicationContext
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -193,6 +198,14 @@ fun PlayerScreen(
                 metadata = mediaMetadata
             }
 
+            override fun onPositionDiscontinuity(
+                oldPosition: Player.PositionInfo,
+                newPosition: Player.PositionInfo,
+                reason: Int
+            ) {
+                onTrackIndexSelected(newPosition.mediaItemIndex)
+            }
+
             override fun onEvents(player: Player, events: Player.Events) {
                 totalDuration = player.duration.coerceAtLeast(0L)
                 currentTime = player.currentPosition.coerceAtLeast(0L)
@@ -215,6 +228,7 @@ fun PlayerScreen(
                             player = controllerFuture?.get()
                             player?.addListener(playerListener)
                             player?.mediaMetadata?.let { metadata = it }
+                            player?.currentMediaItemIndex?.let(onTrackIndexSelected)
                         } catch (e: ExecutionException) {
                             e.printStackTrace()
                             Timber.e(e)
@@ -259,6 +273,12 @@ fun PlayerScreen(
             else player?.play()
         },
         metadata = { metadata },
+        onTrackSelected = { track ->
+            val index = state.tracks?.indexOf(track)
+            if (index != null && index != -1) {
+                player?.seekTo(index, 0L)
+            }
+        },
         onPrevious = { player?.seekToPrevious() },
         onForward = { player?.seekToNext() },
         totalDuration = { totalDuration },
@@ -277,6 +297,7 @@ fun ComposePlayer(
     isPlaying: () -> Boolean,
     onPlayPause: () -> Unit,
     metadata: () -> MediaMetadata,
+    onTrackSelected: (Track) -> Unit,
     onPrevious: () -> Unit,
     onForward: () -> Unit,
     totalDuration: () -> Long,
@@ -311,6 +332,7 @@ fun ComposePlayer(
         isPlaying = isPlaying,
         onPlayPause = onPlayPause,
         metadata = metadata,
+        onTrackSelected = onTrackSelected,
         onPrevious = onPrevious,
         onForward = onForward,
         totalDuration = totalDuration,
@@ -326,6 +348,7 @@ fun PlayerControls(
     isPlaying: () -> Boolean,
     onPlayPause: () -> Unit,
     metadata: () -> MediaMetadata,
+    onTrackSelected: (Track) -> Unit,
     onPrevious: () -> Unit,
     onForward: () -> Unit,
     totalDuration: () -> Long,
@@ -434,6 +457,28 @@ fun PlayerControls(
                     modifier = Modifier
                         .fillMaxWidth(),
                 ) {
+                    item {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                        ) {
+                            Text(
+                                text = stringResource(CoreR.string.shazam_playing).uppercase(),
+                                fontSize = 18.sp,
+                                style = MaterialTheme.typography.subtitle2,
+                                color = Color.Blue,
+                            )
+                            if (state.currentPlaying != null) {
+                                Text(
+                                    modifier = Modifier.padding(start = 8.dp),
+                                    text = state.currentPlaying.title,
+                                    fontSize = 18.sp,
+                                    style = MaterialTheme.typography.subtitle2,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            }
+                        }
+                    }
+
                     items(
                         items = state.tracks,
                         key = { track -> track.title + track.subtitle + track.audioUri },
@@ -441,7 +486,7 @@ fun PlayerControls(
                         TrackItem(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable {  }
+                                .clickable { onTrackSelected(track) }
                                 .padding(start = 16.dp, end = 4.dp, top = 8.dp, bottom = 12.dp),
                             track = track,
                         )

@@ -67,5 +67,6 @@
 
     <!--  Shazam  -->
     <string name="shazam_tap_to_shazam">Tap to shazam</string>
+    <string name="shazam_playing">Playing</string>
 
 </resources>

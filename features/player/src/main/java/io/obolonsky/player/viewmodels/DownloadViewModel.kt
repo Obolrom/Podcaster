@@ -38,6 +38,14 @@ internal class DownloadViewModel @AssistedInject constructor(
         }
     }
 
+    fun updateCurrentTrack(index: Int) = intent {
+        val currentPlaying = state.tracks?.get(index)
+
+        reduce {
+            state.copy(currentPlaying = currentPlaying)
+        }
+    }
+
     fun download(currentIndex: Int) {
         AudioSource.tracks
             .getOrNull(currentIndex)

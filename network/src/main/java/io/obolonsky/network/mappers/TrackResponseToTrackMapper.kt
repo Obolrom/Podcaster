@@ -25,8 +25,8 @@ object TrackResponseToTrackMapper : Mapper<SongRecognizeResponse.TrackResponse, 
 
         return Track(
             audioUri = requireNotNull(audioUri),
-            subtitle = requireNotNull(input.subtitle),
-            title = requireNotNull(input.title),
+            subtitle = input.subtitle,
+            title = input.title,
             imageUrls = imageUrls.toImmutableList(),
             relatedTracksUrl = input.relatedTracksUrl,
             relatedTracks = emptyList()
@@ -39,7 +39,9 @@ object TrackResponseToTrackListMapper : Mapper<RelatedTracksResponse.Result, Lis
     override fun map(input: RelatedTracksResponse.Result): List<Track> {
         return input
             .tracks
-            ?.map(TrackResponseToTrackMapper::map)
+            ?.mapNotNull { related ->
+                runCatching { TrackResponseToTrackMapper.map(related) }.getOrNull()
+            }
             .orEmpty()
     }
 }

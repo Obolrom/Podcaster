@@ -269,6 +269,9 @@ fun PlayerScreen(
         player = player,
         isPlaying = { isAudioPlaying.value },
         onPlayPause = {
+            if (player?.playbackState == Player.STATE_IDLE) {
+                player?.prepare()
+            }
             if (player?.isPlaying == true) player?.pause()
             else player?.play()
         },

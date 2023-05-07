@@ -1,122 +1,117 @@
+@file:UnstableApi
+@file:OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
+
 package io.obolonsky.player
 
+import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Context
 import android.os.Bundle
-import androidx.core.content.ContextCompat
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.*
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.*
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle.Event.*
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.*
-import by.kirich1409.viewbindingdelegate.viewBinding
-import com.codeboy.pager2_transformers.Pager2_ZoomOutTransformer
+import androidx.media3.ui.PlayerView
+import coil.compose.AsyncImage
+import com.github.fengdai.compose.media.TimeBar
+import com.github.fengdai.compose.media.TimeBarProgress
+import com.github.fengdai.compose.media.TimeBarScrubber
+import com.google.android.material.math.MathUtils
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
 import io.obolonsky.core.di.actions.StartDownloadServiceAction
+import io.obolonsky.core.di.data.Track
 import io.obolonsky.core.di.depsproviders.App
 import io.obolonsky.core.di.lazyViewModel
-import io.obolonsky.coreui.BaseFragment
-import io.obolonsky.player.databinding.FragmentPlayerBinding
-import io.obolonsky.player.databinding.FragmentPlayerNavigationBinding
 import io.obolonsky.player.di.PlayerComponent
 import io.obolonsky.player.player.PodcasterPlaybackService
 import io.obolonsky.player.player.PodcasterPlaybackService.Companion.getPlayerComponent
-import io.obolonsky.player.ui.ImagesAdapter
-import io.obolonsky.utils.get
+import io.obolonsky.player.redux.PlayerUiState
+import io.obolonsky.player.ui.compose.PlayerTheme
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import org.orbitmvi.orbit.compose.collectAsState
 import timber.log.Timber
 import java.util.concurrent.ExecutionException
 import javax.inject.Inject
 import javax.inject.Provider
+import kotlin.math.roundToInt
 import io.obolonsky.coreui.R as CoreUiR
+import io.obolonsky.core.R as CoreR
 
-class PlayerFragment : BaseFragment(R.layout.fragment_player) {
+class PlayerFragment : Fragment() {
 
     @Inject
     internal lateinit var startDownloadServiceAction: Provider<StartDownloadServiceAction>
 
+    @Suppress("unused")
     private val downloadViewModel by lazyViewModel {
         getComponent()
             .downloadViewModelFactory()
             .create(it)
     }
 
-    private val binding by viewBinding<FragmentPlayerBinding>()
-    private val playerNavBinding: FragmentPlayerNavigationBinding by
-        viewBinding(viewBindingRootId = R.id.player_navigation)
-
-    private val sessionToken by lazy {
-        SessionToken(
-            requireContext(),
-            ComponentName(requireContext(), PodcasterPlaybackService::class.java)
-        )
-    }
-
-    private val playerListener by lazy {
-        object : Player.Listener {
-
-            override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
-                onMediaMetadata(mediaMetadata)
-            }
-        }
-    }
-
-    private val mediaImagesAdapter by lazy { ImagesAdapter() }
-
-    private var controllerFuture: ListenableFuture<MediaController>? = null
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         getComponent().inject(this)
     }
 
-    override fun initViewModels() { }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(
+                ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+            )
 
-    override fun initViews(savedInstanceState: Bundle?) {
-        activity?.window?.navigationBarColor = ContextCompat.getColor(
-            requireContext(),
-            CoreUiR.color.pink_red
-        )
-        binding.playerView.showController()
-        playerNavBinding.images.setPageTransformer(Pager2_ZoomOutTransformer())
-        playerNavBinding.images.adapter = mediaImagesAdapter
+            setContent {
+                val state by downloadViewModel.collectAsState()
 
-        playerNavBinding.download.setOnClickListener {
-            binding.playerView.player
-                ?.currentMediaItemIndex
-                ?.let(downloadViewModel::download)
-        }
-
-        startDownloadServiceAction.get {
-            start(requireContext())
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        controllerFuture = MediaController.Builder(requireContext(), sessionToken)
-            .setListener(MediaControllerListener())
-            .buildAsync()
-
-        controllerFuture?.addListener({
-            try {
-                val player = controllerFuture?.get()
-                binding.playerView.player = player
-                player?.addListener(playerListener)
-                player?.mediaMetadata?.let(::onMediaMetadata)
-            } catch (e: ExecutionException) {
-                e.printStackTrace()
-                Timber.e(e)
-                if (e.cause is SecurityException) {
-                    Timber.e("SecurityException at controllerFuture.addListener ${e.cause}")
-                    // The session rejected the connection.
-                }
+                PlayerScreen(
+                    state = state,
+                    onTrackIndexSelected = downloadViewModel::updateCurrentTrack,
+                )
             }
-        }, MoreExecutors.directExecutor())
-    }
-
-    override fun onStop() {
-        super.onStop()
-        controllerFuture?.let(MediaController::releaseFuture)
-        binding.playerView.player?.removeListener(playerListener)
+        }
     }
 
     private fun getComponent(): PlayerComponent {
@@ -125,17 +120,7 @@ class PlayerFragment : BaseFragment(R.layout.fragment_player) {
         )
     }
 
-    private fun onMediaMetadata(mediaMetadata: MediaMetadata) {
-        val trackTitle = mediaMetadata.displayTitle
-            ?: mediaMetadata.title
-            ?: mediaMetadata.albumTitle
-        playerNavBinding.audioTrackTitle.text = trackTitle
-        mediaMetadata.extras
-            ?.getStringArrayList("shazam_images")
-            ?.let(mediaImagesAdapter::submitList)
-    }
-
-    inner class MediaControllerListener : MediaController.Listener {
+    class MediaControllerListener : MediaController.Listener {
 
         override fun onDisconnected(controller: MediaController) {
             Timber.d("MediaControllerListener onDisconnected")
@@ -172,4 +157,587 @@ class PlayerFragment : BaseFragment(R.layout.fragment_player) {
             super.onExtrasChanged(controller, extras)
         }
     }
+}
+
+@Composable
+fun PlayerScreen(
+    state: PlayerUiState,
+    onTrackIndexSelected: (Int) -> Unit,
+) = PlayerTheme {
+    val context = LocalContext.current.applicationContext
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    var player: Player? by remember {
+        mutableStateOf(null)
+    }
+    val isAudioPlaying = rememberSaveable {
+        mutableStateOf(false)
+    }
+    var metadata by remember {
+        mutableStateOf(MediaMetadata.EMPTY)
+    }
+    var totalDuration by rememberSaveable {
+        mutableStateOf(0L)
+    }
+    var currentTime by rememberSaveable {
+        mutableStateOf(0L)
+    }
+    var bufferPosition by rememberSaveable {
+        mutableStateOf(0L)
+    }
+
+    var controllerFuture: ListenableFuture<MediaController>? = remember { null }
+
+    DisposableEffect(lifecycleOwner) {
+        val playerListener = object : Player.Listener {
+            override fun onIsPlayingChanged(isPlaying: Boolean) {
+                isAudioPlaying.value = isPlaying
+            }
+
+            override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
+                metadata = mediaMetadata
+            }
+
+            override fun onPositionDiscontinuity(
+                oldPosition: Player.PositionInfo,
+                newPosition: Player.PositionInfo,
+                reason: Int
+            ) {
+                onTrackIndexSelected(newPosition.mediaItemIndex)
+            }
+
+            override fun onEvents(player: Player, events: Player.Events) {
+                totalDuration = player.duration.coerceAtLeast(0L)
+                currentTime = player.currentPosition.coerceAtLeast(0L)
+                bufferPosition = player.bufferedPosition
+            }
+        }
+        val observer = LifecycleEventObserver { _, event ->
+            when (event) {
+                ON_START -> {
+                    val sessionToken = SessionToken(
+                        context,
+                        ComponentName(context, PodcasterPlaybackService::class.java)
+                    )
+                    controllerFuture = MediaController.Builder(context, sessionToken)
+                        .setListener(PlayerFragment.MediaControllerListener())
+                        .buildAsync()
+
+                    controllerFuture?.addListener({
+                        try {
+                            player = controllerFuture?.get()
+                            player?.addListener(playerListener)
+                            player?.mediaMetadata?.let { metadata = it }
+                            player?.currentMediaItemIndex?.let(onTrackIndexSelected)
+                        } catch (e: ExecutionException) {
+                            e.printStackTrace()
+                            Timber.e(e)
+                            if (e.cause is SecurityException) {
+                                Timber.e("SecurityException at controllerFuture.addListener ${e.cause}")
+                                // The session rejected the connection.
+                            }
+                        }
+                    }, MoreExecutors.directExecutor())
+                }
+                ON_STOP -> {
+                    player = null
+                    controllerFuture?.let(MediaController::releaseFuture)
+                }
+                else -> { }
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+            player?.removeListener(playerListener)
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
+    if (isAudioPlaying.value) {
+        LaunchedEffect(lifecycleOwner) {
+            while (isActive) {
+                player?.currentPosition?.let { currentPosition -> currentTime = currentPosition }
+                player?.bufferedPosition?.let { bufferedPercentage -> bufferPosition = bufferedPercentage }
+                delay(500L)
+            }
+        }
+    }
+
+    ComposePlayer(
+        state = state,
+        player = player,
+        isPlaying = { isAudioPlaying.value },
+        onPlayPause = {
+            if (player?.playbackState == Player.STATE_IDLE) {
+                player?.prepare()
+            }
+            if (player?.isPlaying == true) player?.pause()
+            else player?.play()
+        },
+        metadata = { metadata },
+        onTrackSelected = { track ->
+            val index = state.tracks?.indexOf(track)
+            if (index != null && index != -1) {
+                player?.seekTo(index, 0L)
+            }
+        },
+        onPrevious = { player?.seekToPrevious() },
+        onForward = { player?.seekToNext() },
+        totalDuration = { totalDuration },
+        currentTime = { currentTime },
+        bufferPercentage = { bufferPosition },
+        onSeekChanged = { player?.seekTo(it) },
+    )
+}
+
+// TODO: set player null on ON_STOP event
+@SuppressLint("InflateParams")
+@Composable
+fun ComposePlayer(
+    state: PlayerUiState,
+    player: Player?,
+    isPlaying: () -> Boolean,
+    onPlayPause: () -> Unit,
+    metadata: () -> MediaMetadata,
+    onTrackSelected: (Track) -> Unit,
+    onPrevious: () -> Unit,
+    onForward: () -> Unit,
+    totalDuration: () -> Long,
+    currentTime: () -> Long,
+    bufferPercentage: () -> Long,
+    onSeekChanged: (timeMs: Long) -> Unit,
+) = Box(modifier = Modifier.fillMaxSize()) {
+    val context = LocalContext.current
+
+    AndroidView(
+        factory = {
+            val playerView = LayoutInflater
+                .from(context)
+                .inflate(R.layout.fragment_player, null) as PlayerView
+
+            playerView.apply {
+                useController = false
+            }
+        },
+        update = { playerView ->
+            playerView.player = player
+        },
+        onReset = { },
+        onRelease = { playerView ->
+            playerView.player = null
+        }
+    )
+
+    PlayerControls(
+        state = state,
+        modifier = Modifier,
+        isPlaying = isPlaying,
+        onPlayPause = onPlayPause,
+        metadata = metadata,
+        onTrackSelected = onTrackSelected,
+        onPrevious = onPrevious,
+        onForward = onForward,
+        totalDuration = totalDuration,
+        currentTime = currentTime,
+        bufferPercentage = bufferPercentage,
+        onSeekChanged = onSeekChanged,
+    )
+}
+
+@Composable
+fun PlayerControls(
+    state: PlayerUiState,
+    isPlaying: () -> Boolean,
+    onPlayPause: () -> Unit,
+    metadata: () -> MediaMetadata,
+    onTrackSelected: (Track) -> Unit,
+    onPrevious: () -> Unit,
+    onForward: () -> Unit,
+    totalDuration: () -> Long,
+    currentTime: () -> Long,
+    bufferPercentage: () -> Long,
+    onSeekChanged: (Long) -> Unit,
+    modifier: Modifier = Modifier,
+) = Box(modifier = modifier.background(Color.Black)) {
+
+    var mediaControlsVerticalOffset by remember {
+        mutableStateOf(0.dp)
+    }
+
+    MyBottomSheet(
+        onSheetOffsetChanged = { offset ->
+            mediaControlsVerticalOffset = offset
+        },
+        background = {
+            PlayerBackground(
+                modifier = Modifier.fillMaxWidth(),
+                metadata = metadata,
+                overlay = {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .fillMaxWidth()
+                            .height(152.dp)
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(Color.Black, Color.Transparent)
+                                )
+                            ),
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .align(Alignment.TopCenter)
+                                .padding(top = 8.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                            Text(
+                                modifier = Modifier,
+                                text = metadata().title.toString(),
+                                color = Color.White,
+                                style = Typography().subtitle1,
+                                fontWeight = FontWeight.W500,
+                            )
+                            Text(
+                                modifier = Modifier.padding(top = 4.dp),
+                                text = metadata().artist.toString(),
+                                color = Color.White,
+                                style = Typography().subtitle2,
+                            )
+                        }
+                    }
+                }
+            ) {
+                Column(modifier = Modifier) {
+                    MediaControls(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .offset(y = mediaControlsVerticalOffset),
+                        isPlaying = isPlaying,
+                        onPlayPause = onPlayPause,
+                        onPrevious = onPrevious,
+                        onForward = onForward,
+                    )
+                }
+            }
+        },
+        header = {
+            TimeBar(
+                durationMs = totalDuration(),
+                positionMs = currentTime(),
+                bufferedPositionMs = bufferPercentage(),
+                modifier = Modifier
+                    .systemGestureExclusion()
+                    .fillMaxWidth()
+                    .height(36.dp),
+                contentPadding = PaddingValues(top = 28.dp),
+                progress = { _, scrubbed, buffered ->
+                    TimeBarProgress(
+                        played = scrubbed,
+                        buffered = buffered,
+                        playedColor = Color.Blue,
+                        bufferedColor = Color.LightGray,
+                    )
+                },
+                scrubber = { enabled, scrubbing ->
+                    TimeBarScrubber(
+                        enabled = enabled,
+                        scrubbing = scrubbing,
+                        color = Color.Transparent,
+                    )
+                },
+                onScrubStop = onSeekChanged,
+            )
+        },
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxHeight(0.74f)
+                .background(colorResource(CoreUiR.color.beige)),
+        ) {
+            if (state.tracks != null) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                ) {
+                    item {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                        ) {
+                            Text(
+                                text = stringResource(CoreR.string.shazam_playing).uppercase(),
+                                fontSize = 18.sp,
+                                style = MaterialTheme.typography.subtitle2,
+                                color = Color.Blue,
+                            )
+                            if (state.currentPlaying != null) {
+                                Text(
+                                    modifier = Modifier.padding(start = 8.dp),
+                                    text = state.currentPlaying.title,
+                                    fontSize = 18.sp,
+                                    style = MaterialTheme.typography.subtitle2,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            }
+                        }
+                    }
+
+                    items(
+                        items = state.tracks,
+                        key = { track -> track.title + track.subtitle + track.audioUri },
+                    ) { track ->
+                        TrackItem(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { onTrackSelected(track) }
+                                .padding(start = 16.dp, end = 4.dp, top = 8.dp, bottom = 12.dp),
+                            track = track,
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun TrackItem(
+    track: Track,
+    modifier: Modifier = Modifier,
+) = Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+    Column(
+        modifier = Modifier.weight(1.0f),
+    ) {
+        Text(
+            text = track.title,
+            fontSize = 18.sp,
+            style = MaterialTheme.typography.subtitle2,
+        )
+        Text(
+            text = track.subtitle,
+            style = MaterialTheme.typography.body2,
+        )
+    }
+    IconButton(
+        onClick = { /*TODO*/ },
+    ) {
+        Icon(
+            imageVector = Icons.Rounded.MoreVert,
+            contentDescription = null,
+        )
+    }
+}
+
+// https://proandroiddev.com/how-to-master-swipeable-and-nestedscroll-modifiers-in-compose-bb0635d6a760
+@Composable
+fun MyBottomSheet(
+    onSheetOffsetChanged: (Dp) -> Unit,
+    background: @Composable () -> Unit,
+    header: @Composable () -> Unit,
+    body: @Composable () -> Unit,
+) {
+    val swipeableState = rememberSwipeableState(initialValue = States.COLLAPSED)
+    val scrollState = rememberScrollState()
+
+    BoxWithConstraints(
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        val constraintsScope = this
+        val maxOffsetHeight = with(LocalDensity.current) {
+            (constraintsScope.maxHeight * 0.8f).toPx()
+        }
+        val minOffsetHeight = with(LocalDensity.current) {
+            (constraintsScope.maxHeight * 0.25f).toPx()
+        }
+        val connection = remember {
+            object : NestedScrollConnection {
+
+                override fun onPreScroll(
+                    available: Offset,
+                    source: NestedScrollSource
+                ): Offset {
+                    val delta = available.y
+                    return if (delta < 0) {
+                        swipeableState.performDrag(delta).toOffset()
+                    } else {
+                        Offset.Zero
+                    }
+                }
+
+                override fun onPostScroll(
+                    consumed: Offset,
+                    available: Offset,
+                    source: NestedScrollSource
+                ): Offset {
+                    val delta = available.y
+                    return swipeableState.performDrag(delta).toOffset()
+                }
+
+                override suspend fun onPreFling(available: Velocity): Velocity {
+                    return if (available.y < 0 && scrollState.value == 0) {
+                        swipeableState.performFling(available.y)
+                        available
+                    } else {
+                        Velocity.Zero
+                    }
+                }
+
+                override suspend fun onPostFling(
+                    consumed: Velocity,
+                    available: Velocity
+                ): Velocity {
+                    swipeableState.performFling(velocity = available.y)
+                    return super.onPostFling(consumed, available)
+                }
+
+                private fun Float.toOffset() = Offset(0f, this)
+            }
+        }
+
+        if (swipeableState.progress.to == States.COLLAPSED) {
+            onSheetOffsetChanged(MathUtils.lerp((-440).dp.value, 0.dp.value, swipeableState.progress.fraction).dp)
+        } else {
+            onSheetOffsetChanged(MathUtils.lerp(0.dp.value, (-440).dp.value, swipeableState.progress.fraction).dp)
+        }
+
+        background()
+
+        Box(
+            modifier = Modifier
+                .offset {
+                    IntOffset(
+                        x = 0,
+                        y = swipeableState.offset.value.roundToInt(),
+                    )
+                }
+                .swipeable(
+                    state = swipeableState,
+                    orientation = Orientation.Vertical,
+                    anchors = mapOf(
+                        minOffsetHeight to States.EXPANDED,
+                        maxOffsetHeight to States.COLLAPSED,
+                    ),
+                )
+                .nestedScroll(connection),
+        ) {
+            Column(Modifier.fillMaxHeight()) {
+                header()
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    body()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun MediaControls(
+    isPlaying: () -> Boolean,
+    onPlayPause: () -> Unit,
+    onPrevious: () -> Unit,
+    onForward: () -> Unit,
+    modifier: Modifier = Modifier,
+) = Row(
+    modifier = modifier,
+    horizontalArrangement = Arrangement.spacedBy(
+        space = 24.dp,
+        alignment = Alignment.CenterHorizontally
+    ),
+    verticalAlignment = Alignment.CenterVertically,
+) {
+    val isAudioPlaying = remember(isPlaying()) {
+        isPlaying()
+    }
+
+    IconButton(
+        onClick = onPrevious,
+    ) {
+        Image(
+            modifier = Modifier.size(52.dp),
+            contentScale = ContentScale.Crop,
+            painter = painterResource(CoreUiR.drawable.ic_round_skip_previous),
+            colorFilter = ColorFilter.tint(Color.Blue),
+            contentDescription = null,
+        )
+    }
+
+    Box(
+        modifier = Modifier
+            .size(72.dp)
+            .background(Color.Blue, CircleShape)
+            .clip(CircleShape)
+            .clickable { onPlayPause() },
+        contentAlignment = Alignment.Center,
+    ) {
+        Image(
+            modifier = Modifier.size(52.dp),
+            contentScale = ContentScale.Crop,
+            painter =
+                if (isAudioPlaying) painterResource(CoreUiR.drawable.ic_round_pause)
+                else painterResource(CoreUiR.drawable.ic_round_play_arrow),
+            colorFilter = ColorFilter.tint(Color.White),
+            contentDescription = null,
+        )
+    }
+
+    IconButton(
+        onClick = onForward,
+    ) {
+        Image(
+            modifier = Modifier.size(52.dp),
+            contentScale = ContentScale.Crop,
+            painter = painterResource(CoreUiR.drawable.ic_round_skip_next),
+            colorFilter = ColorFilter.tint(Color.Blue),
+            contentDescription = null,
+        )
+    }
+}
+
+@Composable
+fun PlayerBackground(
+    metadata: () -> MediaMetadata,
+    modifier: Modifier = Modifier,
+    overlay: @Composable BoxScope.() -> Unit,
+    content: @Composable () -> Unit,
+) = Column(modifier = modifier) {
+    val imageUrl = remember(metadata()) {
+        mutableStateOf(
+            metadata().extras
+                ?.getStringArrayList("shazam_images")
+                ?.getOrNull(1)
+        )
+    }
+
+    Box(
+        modifier = Modifier.weight(7f),
+    ) {
+        AsyncImage(
+            modifier = Modifier
+                .fillMaxSize(),
+            model = imageUrl.value,
+            contentScale = ContentScale.Crop,
+            contentDescription = null,
+        )
+        overlay()
+        Spacer(
+            Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .height(152.dp)
+                .background(brush = Brush.verticalGradient(listOf(Color.Transparent, Color.Black)))
+        )
+    }
+
+    Box(
+        modifier = Modifier.weight(3f),
+    ) {
+        content()
+    }
+}
+
+enum class States {
+    EXPANDED,
+    COLLAPSED
 }

@@ -5,15 +5,15 @@ import io.obolonsky.core.di.Error
 import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.data.ShazamDetect
 import io.obolonsky.core.di.data.Track
+import io.obolonsky.core.di.reactWith
 import io.obolonsky.core.di.repositories.ShazamRepo
 import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.network.apihelpers.GetRelatedTracksApiHelper
 import io.obolonsky.network.apihelpers.ShazamSongRecognitionApiHelper
 import io.obolonsky.storage.database.daos.ShazamTrackDao
 import io.obolonsky.storage.database.entities.ShazamTrack
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.File
@@ -29,17 +29,16 @@ class ShazamRepository @Inject constructor(
     private val dispatchers: CoroutineSchedulers,
 ) : ShazamRepo {
 
-    override suspend fun audioDetect(audioFile: File): Reaction<ShazamDetect> {
-        val apiResult = songRecognitionHelper.load(audioFile)
-
-        when (apiResult) {
-            is Reaction.Success -> {
-                shazamTrackDao.insert(apiResult.data.mapEntity())
+    override fun audioDetect(audioFile: File): Flow<Reaction<ShazamDetect>> {
+        return flow { emit(songRecognitionHelper.load(audioFile)) }
+            .onEach { detectReaction ->
+                detectReaction.reactWith(
+                    onSuccess = { apiResult ->
+                        shazamTrackDao.insert(apiResult.mapEntity())
+                    },
+                    onError = { }
+                )
             }
-            else -> { }
-        }
-
-        return apiResult
     }
 
     override suspend fun saveTrack(track: Track): Reaction<Unit> {

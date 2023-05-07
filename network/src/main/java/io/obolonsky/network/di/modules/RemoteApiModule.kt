@@ -78,7 +78,7 @@ class RemoteApiModule {
         converter: GsonConverterFactory,
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://shazam-song-recognizer.p.rapidapi.com/")
+            .baseUrl("https://shazam-api6.p.rapidapi.com/shazam/")
             .client(client)
             .addCallAdapterFactory(NetworkResponseAdapterFactory())
             .addConverterFactory(converter)

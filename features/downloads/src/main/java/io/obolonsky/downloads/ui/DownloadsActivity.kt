@@ -1,7 +1,9 @@
 package io.obolonsky.downloads.ui
 
+import android.Manifest
 import android.os.Build
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
@@ -52,6 +54,10 @@ class DownloadsActivity : AppCompatActivity() {
 
     private val binding by viewBinding<ActivityPlayerBinding>()
 
+    private val notificationRequest = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) {  }
+
     private val trackAdapter by lazy {
         TrackAdapter(
             onTrackClick = ::onTrackClick,
@@ -82,6 +88,7 @@ class DownloadsActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         downloadTracker.release()
+        notificationRequest.unregister()
         super.onDestroy()
     }
 
@@ -91,12 +98,18 @@ class DownloadsActivity : AppCompatActivity() {
                 setMediaItem(
                     MediaItem.fromUri(trackUri)
                 )
-                prepare()
             }
         }
     }
 
     private fun onDownloadTrack(track: Track) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            notificationRequest.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+        downloadTrack(track)
+    }
+
+    private fun downloadTrack(track: Track) {
         track.audioUri?.let { trackUri ->
             downloadTracker.toggleDownload(
                 mediaItem = MediaItem.fromUri(trackUri),

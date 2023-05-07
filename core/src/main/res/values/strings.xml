@@ -53,5 +53,20 @@
     <string name="updated_at">Updated at %s</string>
     <string name="stars_count">%d stars</string>
     <string name="forks_count">%d forks</string>
+    <string name="find_repo_hint">Find a repository…</string>
+    <string name="user_info_overview">Overview</string>
+    <string name="user_info_repos">Repositories</string>
+    <string name="user_info_projects">Projects</string>
+    <string name="user_info_packages">Packages</string>
+    <string name="user_info_stars">Stars</string>
+    <string name="filter_sort">Sort</string>
+    <string name="filter_sort_last_upd">Last updated</string>
+    <string name="filter_sort_name">Name</string>
+    <string name="filter_sort_stars">@string/user_info_stars</string>
+    <string name="filter_sort_select_order">Select order</string>
+
+    <!--  Shazam  -->
+    <string name="shazam_tap_to_shazam">Tap to shazam</string>
+    <string name="shazam_playing">Playing</string>
 
 </resources>

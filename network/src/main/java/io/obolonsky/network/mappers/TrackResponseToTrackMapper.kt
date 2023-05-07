@@ -24,7 +24,7 @@ object TrackResponseToTrackMapper : Mapper<SongRecognizeResponse.TrackResponse, 
         }
 
         return Track(
-            audioUri = audioUri,
+            audioUri = requireNotNull(audioUri),
             subtitle = input.subtitle,
             title = input.title,
             imageUrls = imageUrls.toImmutableList(),
@@ -34,12 +34,14 @@ object TrackResponseToTrackMapper : Mapper<SongRecognizeResponse.TrackResponse, 
     }
 }
 
-object TrackResponseToTrackListMapper : Mapper<RelatedTracksResponse, List<Track>> {
+object TrackResponseToTrackListMapper : Mapper<RelatedTracksResponse.Result, List<Track>> {
 
-    override fun map(input: RelatedTracksResponse): List<Track> {
-        return input.result
-            ?.tracks
-            ?.map(TrackResponseToTrackMapper::map)
+    override fun map(input: RelatedTracksResponse.Result): List<Track> {
+        return input
+            .tracks
+            ?.mapNotNull { related ->
+                runCatching { TrackResponseToTrackMapper.map(related) }.getOrNull()
+            }
             .orEmpty()
     }
 }

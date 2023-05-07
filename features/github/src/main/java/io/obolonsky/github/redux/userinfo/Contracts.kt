@@ -5,11 +5,13 @@ import androidx.annotation.StringRes
 import io.obolonsky.core.di.data.github.GithubDay
 import io.obolonsky.core.di.data.github.GithubRepoView
 import io.obolonsky.core.di.data.github.GithubUserProfile
+import io.obolonsky.core.di.data.github.SortFilter
 
 data class UserInfoState(
     val isLoading: Boolean,
     val user: GithubUserProfile?,
     val repos: List<GithubRepoView>? = null,
+    val repoSortFilter: SortFilter = SortFilter.LAST_UPDATED,
 )
 
 sealed class UserInfoSideEffects {

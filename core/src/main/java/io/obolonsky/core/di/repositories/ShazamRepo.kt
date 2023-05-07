@@ -8,7 +8,10 @@ import java.io.File
 
 interface ShazamRepo {
 
-    suspend fun audioDetect(audioFile: File): Reaction<ShazamDetect>
+    /**
+     * Returns SINGLE value
+     */
+    fun audioDetect(audioFile: File): Flow<Reaction<ShazamDetect>>
 
     suspend fun saveTrack(track: Track): Reaction<Unit>
 

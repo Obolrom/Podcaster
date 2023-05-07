@@ -10,14 +10,41 @@ import io.obolonsky.core.di.actions.GetDownloadServiceClassAction
 import io.obolonsky.core.di.common.AudioSource
 import io.obolonsky.core.di.downloads.Downloader
 import io.obolonsky.player.di.ScopedShazamRepo
+import io.obolonsky.player.redux.PlayerUiState
 import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.Container
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.viewmodel.container
 
+@Suppress("unused_parameter")
 internal class DownloadViewModel @AssistedInject constructor(
     @Assisted savedStateHandle: SavedStateHandle,
     private val downloader: Downloader,
     private val shazamRepository: ScopedShazamRepo,
     private val getDownloadServiceClassAction: GetDownloadServiceClassAction,
-) : ViewModel() {
+) : ViewModel(), ContainerHost<PlayerUiState, Unit> {
+
+    override val container: Container<PlayerUiState, Unit> = container(
+        initialState = PlayerUiState(
+            tracks = null,
+        )
+    )
+
+    init {
+        intent {
+            reduce { state.copy(tracks = AudioSource.tracks) }
+        }
+    }
+
+    fun updateCurrentTrack(index: Int) = intent {
+        val currentPlaying = state.tracks?.get(index)
+
+        reduce {
+            state.copy(currentPlaying = currentPlaying)
+        }
+    }
 
     fun download(currentIndex: Int) {
         AudioSource.tracks

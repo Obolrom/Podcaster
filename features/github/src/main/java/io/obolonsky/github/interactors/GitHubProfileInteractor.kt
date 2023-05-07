@@ -6,6 +6,7 @@ import io.obolonsky.core.di.Reaction
 import io.obolonsky.core.di.data.github.GithubRepoView
 import io.obolonsky.core.di.data.github.GithubUser
 import io.obolonsky.core.di.data.github.GithubUserProfile
+import io.obolonsky.core.di.data.github.SortFilter
 import io.obolonsky.core.di.repositories.github.GitHubAuthRepo
 import io.obolonsky.core.di.repositories.github.GitHubUserRepo
 import io.obolonsky.core.di.scopes.FeatureScope
@@ -41,8 +42,8 @@ class GitHubProfileInteractor @Inject constructor(
         return userRepository.getViewerProfile()
     }
 
-    fun getViewerRepos(): Flow<Reaction<List<GithubRepoView>>> {
-        return userRepository.getViewerRepos()
+    fun getViewerRepos(sortFilter: SortFilter): Flow<Reaction<List<GithubRepoView>>> {
+        return userRepository.getViewerRepos(sortFilter)
     }
 
     fun logout() {

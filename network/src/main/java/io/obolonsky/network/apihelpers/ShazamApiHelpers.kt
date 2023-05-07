@@ -41,12 +41,12 @@ class ShazamSongRecognitionApiHelper @Inject constructor(
 class GetRelatedTracksApiHelper @Inject constructor(
     private val songRecognitionApi: SongRecognitionApi,
     dispatchers: CoroutineSchedulers,
-) : CoroutinesApiHelper<RelatedTracksResponse, List<Track>, String>(
+) : CoroutinesApiHelper<RelatedTracksResponse.Result, List<Track>, String>(
     dispatchers = dispatchers,
     mapper = TrackResponseToTrackListMapper,
 ) {
 
-    override suspend fun apiRequest(param: String): NetworkResponse<RelatedTracksResponse, *> {
+    override suspend fun apiRequest(param: String): NetworkResponse<RelatedTracksResponse.Result, *> {
         return songRecognitionApi.getRelatedTracks(param)
     }
 }

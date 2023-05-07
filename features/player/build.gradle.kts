@@ -38,7 +38,12 @@ android {
     }
 
     buildFeatures {
+        compose = true
         viewBinding = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.2"
     }
 }
 
@@ -65,6 +70,24 @@ dependencies {
     implementation("com.google.dagger:dagger:2.44.2")
     kapt("com.google.dagger:dagger-compiler:2.44.2")
 
+    // Redux
+    implementation("org.orbit-mvi:orbit-core:4.6.0")
+    implementation("org.orbit-mvi:orbit-viewmodel:4.6.0")
+    implementation("org.orbit-mvi:orbit-compose:4.6.0")
+
+    // Compose
+    val composeBom = platform("androidx.compose:compose-bom:2023.01.00")
+    implementation(composeBom)
+    implementation("androidx.compose.ui:ui:1.4.0")
+    implementation("androidx.compose.material:material:1.4.0")
+    implementation("androidx.compose.material:material-icons-core:1.4.0")
+    implementation("androidx.compose.material:material-icons-extended:1.4.0")
+    implementation("androidx.activity:activity-compose:1.7.0")
+    // Android Studio Preview support
+    implementation("androidx.compose.ui:ui-tooling-preview:1.4.0")
+    implementation("androidx.compose.ui:ui-tooling:1.4.0")
+
+
     // Player
     implementation("androidx.media3:media3-ui:${Media3.version}")
     implementation("androidx.media3:media3-exoplayer:${Media3.version}")
@@ -72,7 +95,9 @@ dependencies {
 
     // Utilities
     implementation("com.jakewharton.timber:timber:5.0.1")
-    implementation("io.coil-kt:coil:2.0.0-rc03")
+    implementation("com.github.fengdai.compose:media:0.4.0")
+    implementation("io.coil-kt:coil:2.2.2")
+    implementation("io.coil-kt:coil-compose:2.2.2")
     implementation("com.github.CodeBoy722:ViewPager2_Transformers:1.0.0")
     implementation("com.github.kirich1409:viewbindingpropertydelegate:1.5.3")
 }

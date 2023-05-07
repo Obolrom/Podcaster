@@ -39,5 +39,5 @@ interface GitHubUserRepo {
     /**
      * Returns SINGLE value
      */
-    fun getViewerRepos(): Flow<Reaction<List<GithubRepoView>>>
+    fun getViewerRepos(sortFilter: SortFilter): Flow<Reaction<List<GithubRepoView>>>
 }

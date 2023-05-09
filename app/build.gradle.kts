@@ -69,6 +69,7 @@ dependencies {
     implementation(project(":nasa"))
     implementation(project(":crypto"))
     implementation(project(":github"))
+    implementation(project(":quizzy"))
 
     implementation("com.google.android.material:material:1.5.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")

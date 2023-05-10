@@ -17,6 +17,6 @@ object Dependencies {
     }
 
     object Media3 {
-        const val version = "1.0.0"
+        const val version = "1.0.1"
     }
 }

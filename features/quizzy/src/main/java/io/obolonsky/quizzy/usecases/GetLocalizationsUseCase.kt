@@ -5,7 +5,6 @@ import io.obolonsky.core.di.scopes.FeatureScope
 import io.obolonsky.core.di.utils.JsonConverter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import timber.log.Timber
 import javax.inject.Inject
 
 @FeatureScope
@@ -16,11 +15,11 @@ class GetLocalizationsUseCase @Inject constructor(
 
     fun get(): Flow<Map<String, String>> = flow {
         val type = mutableMapOf<String, String>().javaClass
-        val assetReader = context.assets
+        val localizationMap = context.assets
             .open("strings/en.json")
             .readBytes()
             .let(::String)
-        val translations = jsonConverter.fromJson(assetReader, type)
+        val translations = jsonConverter.fromJson(localizationMap, type)
         emit(translations)
     }
 }

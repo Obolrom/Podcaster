@@ -27,8 +27,6 @@ class QuizActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        quizzyViewModel.test()
-
         setContent {
             val state = quizzyViewModel.collectAsState()
 

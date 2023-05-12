@@ -9,6 +9,7 @@ import io.obolonsky.github.ui.GitHubActivity
 import io.obolonsky.podcaster.PodcasterApp
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.databinding.ActivityMainFakeBinding
+import io.obolonsky.quizzy.ui.QuizActivity
 import io.obolonsky.utils.get
 import javax.inject.Inject
 import javax.inject.Provider
@@ -37,9 +38,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_fake)
 
-        goToShazamAction.get {
-            navigate(this@MainActivity)
-        }
+        startActivity(Intent(this, QuizActivity::class.java))
 
         binding.goToGithub.setOnClickListener {
             startActivity(Intent(this, GitHubActivity::class.java))
@@ -49,6 +48,10 @@ class MainActivity : AppCompatActivity() {
             goToShazamAction.get {
                 navigate(this@MainActivity)
             }
+        }
+
+        binding.goToQuizzy.setOnClickListener {
+            startActivity(Intent(this, QuizActivity::class.java))
         }
 
         binding.goToSpaceX.setOnClickListener {

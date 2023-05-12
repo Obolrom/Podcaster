@@ -48,6 +48,11 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
+            android:name="io.obolonsky.quizzy.ui.QuizActivity"
+            android:exported="true"
+            />
+
+        <activity
             android:name="io.obolonsky.shazam.ui.ShazamActivity"
             android:exported="true"
             android:launchMode="singleTask"

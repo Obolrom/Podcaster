@@ -17,6 +17,7 @@ data class QuizTemplate(
         val type: UiElementTypes,
         val labelKey: String,
         val subfields: List<Field>,
+        val weight: Float? = null,
     )
 }
 
@@ -28,7 +29,8 @@ data class QuizTemplateInput(
         val id: String,
         val type: String,
         val label_key: String,
-        val subfields: List<Field>? = null,
+        val weight: Float? = null,
+        val subfields: List<Field>? = null
     )
 }
 

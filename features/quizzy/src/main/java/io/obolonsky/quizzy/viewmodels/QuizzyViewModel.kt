@@ -69,6 +69,7 @@ class QuizzyViewModel @AssistedInject constructor(
                                         type = field.type,
                                         id = field.type.name,
                                         label = localizations[field.labelKey] ?: "",
+                                        weight = field.weight,
                                     )
                                 }
                                 CHECKBOX -> {
@@ -77,6 +78,7 @@ class QuizzyViewModel @AssistedInject constructor(
                                         type = field.type,
                                         label = localizations[field.labelKey] ?: "",
                                         isChecked = false,
+                                        weight = field.weight,
                                     )
                                 }
                                 INPUT -> {
@@ -85,6 +87,7 @@ class QuizzyViewModel @AssistedInject constructor(
                                         type = field.type,
                                         label = localizations[field.labelKey] ?: "",
                                         value = "",
+                                        weight = field.weight,
                                     )
                                 }
                                 ROW -> {
@@ -96,25 +99,28 @@ class QuizzyViewModel @AssistedInject constructor(
                                             when (subfield.type) {
                                                 TEXT_LABEL -> {
                                                     TextLabelUiElement(
-                                                        type = field.type,
-                                                        id = field.type.name,
-                                                        label = localizations[field.labelKey] ?: "",
+                                                        type = subfield.type,
+                                                        id = subfield.type.name,
+                                                        label = localizations[subfield.labelKey] ?: "",
+                                                        weight = subfield.weight,
                                                     )
                                                 }
                                                 CHECKBOX -> {
                                                     CheckBoxUiElement(
-                                                        id = field.id,
-                                                        type = field.type,
-                                                        label = localizations[field.labelKey] ?: "",
+                                                        id = subfield.id,
+                                                        type = subfield.type,
+                                                        label = localizations[subfield.labelKey] ?: "",
                                                         isChecked = false,
+                                                        weight = subfield.weight,
                                                     )
                                                 }
                                                 INPUT -> {
                                                     InputUiElement(
-                                                        id = field.id,
-                                                        type = field.type,
-                                                        label = localizations[field.labelKey] ?: "",
+                                                        id = subfield.id,
+                                                        type = subfield.type,
+                                                        label = localizations[subfield.labelKey] ?: "",
                                                         value = "",
+                                                        weight = subfield.weight,
                                                     )
                                                 }
                                                 ROW -> error("Not supported")

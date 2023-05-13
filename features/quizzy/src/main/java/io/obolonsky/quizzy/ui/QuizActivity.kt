@@ -52,6 +52,7 @@ fun QuizScreen(
             when (field) {
                 is TextLabelUiElement -> {
                     TextComponent(
+
                         uiElement = field,
                     )
                 }
@@ -64,7 +65,11 @@ fun QuizScreen(
                 is InputUiElement -> {
                     Row(modifier = Modifier.fillMaxWidth()) {
                         InputComponent(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier
+                                .then(
+                                    if (field.weight != null) Modifier.weight(field.weight!!)
+                                    else Modifier
+                                ),
                             uiElement = field,
                             onAction = onAction,
                         )
@@ -76,17 +81,32 @@ fun QuizScreen(
                             when (subcomponent) {
                                 is TextLabelUiElement -> {
                                     TextComponent(
+                                        modifier = Modifier
+                                            .then(
+                                                if (subcomponent.weight != null) Modifier.weight(subcomponent.weight!!)
+                                                else Modifier
+                                            ),
                                         uiElement = subcomponent,
                                     )
                                 }
                                 is CheckBoxUiElement -> {
                                     CheckBoxComponent(
+                                        modifier = Modifier
+                                            .then(
+                                                if (subcomponent.weight != null) Modifier.weight(subcomponent.weight!!)
+                                                else Modifier
+                                            ),
                                         uiElement = subcomponent,
                                         onAction = onAction,
                                     )
                                 }
                                 is InputUiElement -> {
                                     InputComponent(
+                                        modifier = Modifier
+                                            .then(
+                                                if (subcomponent.weight != null) Modifier.weight(subcomponent.weight!!)
+                                                else Modifier
+                                            ),
                                         uiElement = subcomponent,
                                         onAction = onAction,
                                     )

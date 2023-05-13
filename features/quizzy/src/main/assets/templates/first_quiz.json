@@ -18,7 +18,8 @@
     {
       "id": "INPUT_SOME_VALUE",
       "type": "INPUT",
-      "label_key": "quiz_title"
+      "label_key": "quiz_title",
+      "weight": 1.0
     },
     {
       "id": "ROW_ID",
@@ -28,12 +29,14 @@
         {
           "id": "INPUT_SOME_VALUE",
           "type": "INPUT",
-          "label_key": "quiz_title"
+          "label_key": "quiz_title",
+          "weight": 2.0
         },
         {
           "id": "QUIZ_SUBTITLE",
           "type": "TEXT_LABEL",
-          "label_key": "quiz_title"
+          "label_key": "test2",
+          "weight": 6.0
         }
       ]
     }

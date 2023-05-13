@@ -14,6 +14,11 @@
       "id": "SOME_CHECK",
       "type": "CHECKBOX",
       "label_key": "quiz_title"
+    },
+    {
+      "id": "INPUT_SOME_VALUE",
+      "type": "INPUT",
+      "label_key": "quiz_title"
     }
   ]
 }

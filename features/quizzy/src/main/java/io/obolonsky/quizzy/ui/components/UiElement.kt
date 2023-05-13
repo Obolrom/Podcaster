@@ -23,3 +23,10 @@ data class CheckBoxUiElement(
     override val label: String,
     val isChecked: Boolean,
 ) : UiElement
+
+data class InputUiElement(
+    override val type: UiElementTypes,
+    override val id: String,
+    override val label: String,
+    val value: String,
+) : UiElement

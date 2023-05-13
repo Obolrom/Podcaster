@@ -9,3 +9,8 @@ data class ToggleCheckBoxAction(
     override val id: String,
     val isChecked: Boolean,
 ) : UiAction
+
+data class InputChangedAction(
+    override val id: String,
+    val newValue: String,
+) : UiAction

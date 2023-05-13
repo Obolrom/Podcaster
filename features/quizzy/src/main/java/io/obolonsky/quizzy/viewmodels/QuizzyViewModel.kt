@@ -7,10 +7,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import io.obolonsky.quizzy.redux.QuizScreenState
 import io.obolonsky.quizzy.redux.UiElementTypes.*
-import io.obolonsky.quizzy.ui.components.CheckBoxUiElement
-import io.obolonsky.quizzy.ui.components.TextLabelUiElement
-import io.obolonsky.quizzy.ui.components.ToggleCheckBoxAction
-import io.obolonsky.quizzy.ui.components.UiAction
+import io.obolonsky.quizzy.ui.components.*
 import io.obolonsky.quizzy.usecases.GetLocalizationsUseCase
 import io.obolonsky.quizzy.usecases.GetTemplateUseCase
 import kotlinx.coroutines.flow.collect
@@ -80,6 +77,14 @@ class QuizzyViewModel @AssistedInject constructor(
                                         type = field.type,
                                         label = localizations[field.labelKey] ?: "",
                                         isChecked = false,
+                                    )
+                                }
+                                INPUT -> {
+                                    InputUiElement(
+                                        id = field.id,
+                                        type = field.type,
+                                        label = localizations[field.labelKey] ?: "",
+                                        value = "",
                                     )
                                 }
                             }

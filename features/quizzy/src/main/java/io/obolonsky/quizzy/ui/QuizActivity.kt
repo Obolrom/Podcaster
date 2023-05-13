@@ -5,7 +5,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Checkbox
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -56,6 +55,12 @@ fun QuizScreen(
                 }
                 is CheckBoxUiElement -> {
                     CheckBoxComponent(
+                        uiElement = field,
+                        onAction = onAction,
+                    )
+                }
+                is InputUiElement -> {
+                    InputComponent(
                         uiElement = field,
                         onAction = onAction,
                     )

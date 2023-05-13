@@ -33,4 +33,5 @@ data class QuizTemplateInput(
 enum class UiElementTypes {
     TEXT_LABEL,
     CHECKBOX,
+    INPUT,
 }

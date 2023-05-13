@@ -30,3 +30,10 @@ data class InputUiElement(
     override val label: String,
     val value: String,
 ) : UiElement
+
+data class RowUiElement(
+    override val type: UiElementTypes,
+    override val id: String,
+    override val label: String,
+    val subcomponents: List<UiElement>,
+) : UiElement

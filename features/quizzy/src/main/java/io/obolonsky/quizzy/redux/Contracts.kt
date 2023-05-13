@@ -16,6 +16,7 @@ data class QuizTemplate(
         val id: String,
         val type: UiElementTypes,
         val labelKey: String,
+        val subfields: List<Field>,
     )
 }
 
@@ -27,6 +28,7 @@ data class QuizTemplateInput(
         val id: String,
         val type: String,
         val label_key: String,
+        val subfields: List<Field>? = null,
     )
 }
 
@@ -34,4 +36,5 @@ enum class UiElementTypes {
     TEXT_LABEL,
     CHECKBOX,
     INPUT,
+    ROW,
 }

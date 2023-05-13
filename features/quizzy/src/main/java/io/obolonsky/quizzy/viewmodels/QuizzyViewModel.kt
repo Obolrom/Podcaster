@@ -87,6 +87,41 @@ class QuizzyViewModel @AssistedInject constructor(
                                         value = "",
                                     )
                                 }
+                                ROW -> {
+                                    RowUiElement(
+                                        id = field.id,
+                                        type = field.type,
+                                        label = localizations[field.labelKey] ?: "",
+                                        subcomponents = field.subfields.map { subfield ->
+                                            when (subfield.type) {
+                                                TEXT_LABEL -> {
+                                                    TextLabelUiElement(
+                                                        type = field.type,
+                                                        id = field.type.name,
+                                                        label = localizations[field.labelKey] ?: "",
+                                                    )
+                                                }
+                                                CHECKBOX -> {
+                                                    CheckBoxUiElement(
+                                                        id = field.id,
+                                                        type = field.type,
+                                                        label = localizations[field.labelKey] ?: "",
+                                                        isChecked = false,
+                                                    )
+                                                }
+                                                INPUT -> {
+                                                    InputUiElement(
+                                                        id = field.id,
+                                                        type = field.type,
+                                                        label = localizations[field.labelKey] ?: "",
+                                                        value = "",
+                                                    )
+                                                }
+                                                ROW -> error("Not supported")
+                                            }
+                                        }
+                                    )
+                                }
                             }
                         }
                     )

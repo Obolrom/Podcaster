@@ -19,6 +19,23 @@
       "id": "INPUT_SOME_VALUE",
       "type": "INPUT",
       "label_key": "quiz_title"
+    },
+    {
+      "id": "ROW_ID",
+      "type": "ROW",
+      "label_key": "test1",
+      "subfields": [
+        {
+          "id": "INPUT_SOME_VALUE",
+          "type": "INPUT",
+          "label_key": "quiz_title"
+        },
+        {
+          "id": "QUIZ_SUBTITLE",
+          "type": "TEXT_LABEL",
+          "label_key": "quiz_title"
+        }
+      ]
     }
   ]
 }

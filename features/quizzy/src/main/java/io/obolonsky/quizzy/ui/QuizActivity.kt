@@ -5,6 +5,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -60,10 +62,39 @@ fun QuizScreen(
                     )
                 }
                 is InputUiElement -> {
-                    InputComponent(
-                        uiElement = field,
-                        onAction = onAction,
-                    )
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        InputComponent(
+                            modifier = Modifier.weight(1f),
+                            uiElement = field,
+                            onAction = onAction,
+                        )
+                    }
+                }
+                is RowUiElement -> {
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        field.subcomponents.forEach { subcomponent ->
+                            when (subcomponent) {
+                                is TextLabelUiElement -> {
+                                    TextComponent(
+                                        uiElement = subcomponent,
+                                    )
+                                }
+                                is CheckBoxUiElement -> {
+                                    CheckBoxComponent(
+                                        uiElement = subcomponent,
+                                        onAction = onAction,
+                                    )
+                                }
+                                is InputUiElement -> {
+                                    InputComponent(
+                                        uiElement = subcomponent,
+                                        onAction = onAction,
+                                    )
+                                }
+                                is RowUiElement -> error("Not supported")
+                            }
+                        }
+                    }
                 }
             }
         }

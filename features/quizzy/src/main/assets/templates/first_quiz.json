@@ -1,4 +1,19 @@
 {
-  "type": "TEXT_LABEL",
-  "label_key": "select_correct_answer"
+  "fields": [
+    {
+      "id": "SELECT_CORRECT_ANSWER",
+      "type": "TEXT_LABEL",
+      "label_key": "select_correct_answer"
+    },
+    {
+      "id": "QUIZ_SUBTITLE",
+      "type": "TEXT_LABEL",
+      "label_key": "quiz_title"
+    },
+    {
+      "id": "SOME_CHECK",
+      "type": "CHECKBOX",
+      "label_key": "quiz_title"
+    }
+  ]
 }

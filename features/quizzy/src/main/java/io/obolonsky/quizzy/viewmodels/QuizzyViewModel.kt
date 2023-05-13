@@ -6,6 +6,11 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import io.obolonsky.quizzy.redux.QuizScreenState
+import io.obolonsky.quizzy.redux.UiElementTypes.*
+import io.obolonsky.quizzy.ui.components.CheckBoxUiElement
+import io.obolonsky.quizzy.ui.components.TextLabelUiElement
+import io.obolonsky.quizzy.ui.components.ToggleCheckBoxAction
+import io.obolonsky.quizzy.ui.components.UiAction
 import io.obolonsky.quizzy.usecases.GetLocalizationsUseCase
 import io.obolonsky.quizzy.usecases.GetTemplateUseCase
 import kotlinx.coroutines.flow.collect
@@ -34,25 +39,56 @@ class QuizzyViewModel @AssistedInject constructor(
         loadTemplate()
     }
 
-    fun test() = intent {
-        getLocalizationsUseCase.get()
-            .onEach { localizations ->
-                reduce { state.copy(title = localizations["quiz_title"] ?: "") }
+    fun onAction(action: UiAction) = intent {
+        val changedId = action.id
+        val reduced = state.copy(uiElements = state.uiElements?.map { component ->
+            if (component is CheckBoxUiElement
+                && action is ToggleCheckBoxAction
+                && changedId == component.id) {
+                component.copy(isChecked = action.isChecked)
             }
-            .collect()
+            else component
+        })
+
+        reduce { reduced }
     }
 
-    fun loadTemplate() = intent {
+    private fun loadTemplate() = intent {
         getTemplateUseCase.get("templates/first_quiz.json")
             .combine(getLocalizationsUseCase.get()) { template, localizations ->
                 template to localizations
             }
             .onEach { (template, localizations) ->
-                reduce { state.copy(title = localizations[template.labelKey], template = template) }
+                reduce {
+                    state.copy(
+                        template = template.copy(
+                            fields = template.fields
+                                .map { it.copy(labelKey = localizations[it.labelKey] ?: "") }
+                        ),
+                        uiElements = template.fields.map { field ->
+                            when (field.type) {
+                                TEXT_LABEL -> {
+                                    TextLabelUiElement(
+                                        type = field.type,
+                                        id = field.type.name,
+                                        label = localizations[field.labelKey] ?: "",
+                                    )
+                                }
+                                CHECKBOX -> {
+                                    CheckBoxUiElement(
+                                        id = field.id,
+                                        type = field.type,
+                                        label = localizations[field.labelKey] ?: "",
+                                        isChecked = false,
+                                    )
+                                }
+                            }
+                        }
+                    )
+                }
             }
             .collect()
     }
-
 
     @AssistedFactory
     interface Factory {

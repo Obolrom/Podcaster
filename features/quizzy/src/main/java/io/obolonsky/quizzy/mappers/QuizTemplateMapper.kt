@@ -8,9 +8,15 @@ import io.obolonsky.quizzy.redux.UiElementTypes
 class QuizTemplateMapper : Mapper<QuizTemplateInput, QuizTemplate> {
 
     override fun map(input: QuizTemplateInput): QuizTemplate {
+        val fields = input.fields.map { field ->
+            QuizTemplate.Field(
+                id = field.id,
+                type = UiElementTypes.valueOf(field.type),
+                labelKey = field.label_key,
+            )
+        }
         return QuizTemplate(
-            type = UiElementTypes.valueOf(input.type),
-            labelKey = input.label_key,
+            fields = fields,
         )
     }
 }

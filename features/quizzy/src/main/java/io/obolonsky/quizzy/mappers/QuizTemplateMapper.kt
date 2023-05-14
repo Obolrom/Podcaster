@@ -23,6 +23,12 @@ class QuizTemplateMapper : Mapper<QuizTemplateInput, QuizTemplate> {
                         subfields = emptyList(),
                     )
                 }.orEmpty(),
+                values = field.values?.map {
+                    QuizTemplate.Field.Value(
+                        id = it.id,
+                        labelKey = it.label_key,
+                    )
+                },
             )
         }
         return QuizTemplate(

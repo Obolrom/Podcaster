@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import io.obolonsky.core.di.utils.NO_ID
 import io.obolonsky.quizzy.redux.QuizScreenState
 import io.obolonsky.quizzy.redux.UiElementTypes.*
 import io.obolonsky.quizzy.ui.components.*
@@ -43,8 +44,13 @@ class QuizzyViewModel @AssistedInject constructor(
                 && action is ToggleCheckBoxAction
                 && changedId == component.id) {
                 component.copy(isChecked = action.isChecked)
+            } else if (component is RadioGroupUiElement
+                && action is SelectRadioButtonAction
+                && changedId == component.id) {
+                component.copy(selectedId = action.selectedButtonId)
+            } else {
+                component
             }
-            else component
         })
 
         reduce { reduced }
@@ -124,8 +130,24 @@ class QuizzyViewModel @AssistedInject constructor(
                                                     )
                                                 }
                                                 ROW -> error("Not supported")
+                                                RADIO -> error("Not supported")
                                             }
                                         }
+                                    )
+                                }
+                                RADIO -> {
+                                    RadioGroupUiElement(
+                                        id = field.id,
+                                        type = field.type,
+                                        label = localizations[field.labelKey] ?: "",
+                                        weight = field.weight,
+                                        values = field.values?.map { radioValue ->
+                                            RadioGroupUiElement.RadioButtonUiElement(
+                                                id = radioValue.id,
+                                                label = localizations[radioValue.labelKey] ?: "",
+                                            )
+                                        }.orEmpty(),
+                                        selectedId = NO_ID,
                                     )
                                 }
                             }

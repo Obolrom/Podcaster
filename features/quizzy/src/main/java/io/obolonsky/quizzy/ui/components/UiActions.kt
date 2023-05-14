@@ -14,3 +14,8 @@ data class InputChangedAction(
     override val id: String,
     val newValue: String,
 ) : UiAction
+
+data class SelectRadioButtonAction(
+    override val id: String,
+    val selectedButtonId: String,
+) : UiAction

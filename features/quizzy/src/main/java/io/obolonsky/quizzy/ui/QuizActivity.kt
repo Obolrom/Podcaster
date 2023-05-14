@@ -112,9 +112,21 @@ fun QuizScreen(
                                     )
                                 }
                                 is RowUiElement -> error("Not supported")
+                                is RadioGroupUiElement -> {
+                                    RadioGroupComponent(
+                                        uiElement = subcomponent,
+                                        onAction = onAction,
+                                    )
+                                }
                             }
                         }
                     }
+                }
+                is RadioGroupUiElement -> {
+                    RadioGroupComponent(
+                        uiElement = field,
+                        onAction = onAction,
+                    )
                 }
             }
         }

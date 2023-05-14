@@ -39,6 +39,25 @@
           "weight": 6.0
         }
       ]
+    },
+    {
+      "id": "RADIO_ID",
+      "type": "RADIO",
+      "label_key": "test1",
+      "values": [
+        {
+          "id": "RADIO_KEY1",
+          "label_key": "radio_key1"
+        },
+        {
+          "id": "RADIO_KEY2",
+          "label_key": "radio_key2"
+        },
+        {
+          "id": "RADIO_KEY3",
+          "label_key": "radio_key3"
+        }
+      ]
     }
   ]
 }

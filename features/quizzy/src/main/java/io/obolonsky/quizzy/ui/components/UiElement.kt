@@ -43,3 +43,18 @@ data class RowUiElement(
     override val weight: Float? = null,
     val subcomponents: List<UiElement>,
 ) : UiElement
+
+data class RadioGroupUiElement(
+    override val type: UiElementTypes,
+    override val id: String,
+    override val label: String,
+    override val weight: Float? = null,
+    val values: List<RadioButtonUiElement>,
+    val selectedId: String,
+) : UiElement {
+
+    data class RadioButtonUiElement(
+        val id: String,
+        val label: String,
+    )
+}

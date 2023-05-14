@@ -1,6 +1,6 @@
 package io.obolonsky.quizzy.redux
 
-import io.obolonsky.quizzy.ui.components.UiElement
+import io.obolonsky.quizzy.data.UiElement
 
 data class QuizScreenState(
     val title: String?,

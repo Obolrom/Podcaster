@@ -71,5 +71,6 @@
 
     <!--  Quizzy  -->
     <string name="quiz_title">Quizzy</string>
+    <string name="quiz_submit">Submit</string>
 
 </resources>

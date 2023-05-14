@@ -4,18 +4,24 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Button
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import io.obolonsky.core.di.lazyViewModel
+import io.obolonsky.quizzy.data.*
 import io.obolonsky.quizzy.redux.QuizScreenState
 import io.obolonsky.quizzy.ui.components.*
 import io.obolonsky.quizzy.viewmodels.ComponentViewModel
 import org.orbitmvi.orbit.compose.collectAsState
+import io.obolonsky.core.R as CoreR
 
 class QuizActivity : AppCompatActivity() {
 
@@ -36,6 +42,7 @@ class QuizActivity : AppCompatActivity() {
             QuizScreen(
                 state = state.value,
                 onAction = quizzyViewModel::onAction,
+                onSubmit = quizzyViewModel::submit,
             )
         }
     }
@@ -45,6 +52,7 @@ class QuizActivity : AppCompatActivity() {
 fun QuizScreen(
     state: QuizScreenState,
     onAction: (UiAction) -> Unit,
+    onSubmit: () -> Unit,
     modifier: Modifier = Modifier,
 ) = Surface(modifier = modifier) {
     Column {
@@ -130,6 +138,19 @@ fun QuizScreen(
                 }
             }
         }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            Button(
+                onClick = onSubmit,
+            ) {
+                Text(
+                    text = stringResource(CoreR.string.quiz_submit),
+                )
+            }
+        }
     }
 }
 
@@ -144,5 +165,6 @@ fun QuizScreenPreview() {
             title = "Quizzy",
         ),
         onAction = { },
+        onSubmit = { },
     )
 }

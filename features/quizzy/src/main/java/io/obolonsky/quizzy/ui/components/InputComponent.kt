@@ -6,6 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import io.obolonsky.quizzy.data.InputChangedAction
+import io.obolonsky.quizzy.data.InputUiElement
+import io.obolonsky.quizzy.data.UiAction
 
 @Composable
 fun InputComponent(

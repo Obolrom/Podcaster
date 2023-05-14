@@ -16,7 +16,7 @@
       "label_key": "quiz_title"
     },
     {
-      "id": "INPUT_SOME_VALUE",
+      "id": "INPUT_SOME_VALUE_1",
       "type": "INPUT",
       "label_key": "quiz_title",
       "weight": 1.0
@@ -27,7 +27,7 @@
       "label_key": "test1",
       "subfields": [
         {
-          "id": "INPUT_SOME_VALUE",
+          "id": "INPUT_SOME_VALUE_2",
           "type": "INPUT",
           "label_key": "quiz_title",
           "weight": 2.0

@@ -13,6 +13,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.obolonsky.quizzy.data.RadioGroupUiElement
+import io.obolonsky.quizzy.data.SelectRadioButtonAction
+import io.obolonsky.quizzy.data.UiAction
 
 @Composable
 fun RadioGroupComponent(
@@ -26,7 +29,8 @@ fun RadioGroupComponent(
                 .fillMaxWidth()
                 .height(56.dp)
                 .clickable {
-                    onAction(SelectRadioButtonAction(
+                    onAction(
+                        SelectRadioButtonAction(
                         id = uiElement.id,
                         selectedButtonId = radioButton.id),
                     )

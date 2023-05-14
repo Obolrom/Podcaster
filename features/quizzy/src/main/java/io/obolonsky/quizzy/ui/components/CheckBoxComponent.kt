@@ -7,6 +7,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import io.obolonsky.quizzy.data.CheckBoxUiElement
+import io.obolonsky.quizzy.data.ToggleCheckBoxAction
+import io.obolonsky.quizzy.data.UiAction
 
 @Composable
 fun CheckBoxComponent(

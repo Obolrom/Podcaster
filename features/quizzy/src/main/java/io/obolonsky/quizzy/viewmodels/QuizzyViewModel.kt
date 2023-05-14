@@ -6,6 +6,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import io.obolonsky.core.di.utils.NO_ID
+import io.obolonsky.quizzy.data.*
 import io.obolonsky.quizzy.redux.QuizScreenState
 import io.obolonsky.quizzy.redux.UiElementTypes.*
 import io.obolonsky.quizzy.ui.components.*
@@ -19,6 +20,8 @@ import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
+import java.util.*
 
 @Suppress("unused_parameter")
 class QuizzyViewModel @AssistedInject constructor(
@@ -48,12 +51,74 @@ class QuizzyViewModel @AssistedInject constructor(
                 && action is SelectRadioButtonAction
                 && changedId == component.id) {
                 component.copy(selectedId = action.selectedButtonId)
+            } else if (component is InputUiElement
+                && action is InputChangedAction
+                && changedId == component.id) {
+                component.copy(value = action.newValue)
+            } else if (component is RowUiElement
+                && component.subcomponents.find { it.id == changedId } is InputUiElement
+                && action is InputChangedAction) {
+                val reducedSubcomponents = component.subcomponents
+                    .map { uiElement ->
+                        if (uiElement.id == changedId && uiElement is InputUiElement)
+                            uiElement.copy(value = action.newValue)
+                        else
+                            uiElement
+                    }
+                component.copy(subcomponents = reducedSubcomponents)
             } else {
                 component
             }
         })
 
         reduce { reduced }
+    }
+
+    fun submit() = intent {
+        val checkBoxData = state.uiElements
+            ?.filterIsInstance<CheckBoxUiElement>()
+            ?.fold(mutableMapOf<String, Boolean>()) { output, uiData ->
+                output.apply { put(uiData.id, uiData.isChecked) }
+            }
+            .orEmpty()
+
+        val inputData = state.uiElements
+            ?.filterIsInstance<InputUiElement>()
+            ?.filter { it.value.isNotBlank() }
+            ?.fold(mutableMapOf<String, String>()) { output, uiData ->
+                output.apply { put(uiData.id, uiData.value) }
+            }
+            .orEmpty()
+
+        // TODO: add collecting for other types
+        val inputSubfieldsData = state.uiElements
+            ?.asSequence()
+            ?.filterIsInstance<RowUiElement>()
+            ?.map { it.subcomponents }
+            ?.flatten()
+            ?.filterIsInstance<InputUiElement>()
+            ?.filter { it.value.isNotBlank() }
+            ?.fold(mutableMapOf<String, String>()) { output, uiData ->
+                output.apply { put(uiData.id, uiData.value) }
+            }
+            .orEmpty()
+
+        val radioData = state.uiElements
+            ?.filterIsInstance<RadioGroupUiElement>()
+            ?.filter { it.selectedId != NO_ID }
+            ?.fold(mutableMapOf<String, String>()) { output, uiData ->
+                output.apply { put(uiData.id, uiData.selectedId) }
+            }
+            .orEmpty()
+
+        val quizOutput = QuizOutput(
+            id = UUID.randomUUID(),
+            inputs = inputData + inputSubfieldsData,
+            checkBoxes = checkBoxData,
+            radioGroups = radioData,
+        )
+
+        Timber.d("quizOutput $quizOutput")
     }
 
     private fun loadTemplate() = intent {

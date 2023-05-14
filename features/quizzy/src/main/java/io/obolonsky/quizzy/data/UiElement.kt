@@ -1,4 +1,4 @@
-package io.obolonsky.quizzy.ui.components
+package io.obolonsky.quizzy.data
 
 import io.obolonsky.quizzy.redux.UiElementTypes
 

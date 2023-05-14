@@ -8,6 +8,11 @@ data class QuizScreenState(
     val uiElements: List<UiElement>? = null,
 )
 
+sealed class QuizScreenSideEffect {
+
+    object NotAllRequiredFieldsAreFilled : QuizScreenSideEffect()
+}
+
 data class QuizTemplate(
     val fields: List<Field>,
 ) {
@@ -19,6 +24,7 @@ data class QuizTemplate(
         val subfields: List<Field>,
         val weight: Float? = null,
         val values: List<Value>? = null,
+        val required: Boolean? = null,
     ) {
 
         data class Value(
@@ -39,6 +45,7 @@ data class QuizTemplateInput(
         val weight: Float? = null,
         val subfields: List<Field>? = null,
         val values: List<Value>? = null,
+        val required: Boolean? = null,
     ) {
 
         data class Value(

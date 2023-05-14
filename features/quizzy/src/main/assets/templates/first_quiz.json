@@ -19,6 +19,7 @@
       "id": "INPUT_SOME_VALUE_1",
       "type": "INPUT",
       "label_key": "quiz_title",
+      "required": true,
       "weight": 1.0
     },
     {
@@ -44,6 +45,7 @@
       "id": "RADIO_ID",
       "type": "RADIO",
       "label_key": "test1",
+      "required": true,
       "values": [
         {
           "id": "RADIO_KEY1",

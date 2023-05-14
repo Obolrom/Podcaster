@@ -13,6 +13,13 @@ sealed interface UiElement {
     val weight: Float?
 }
 
+interface Requireable {
+
+    val id: String
+
+    val required: Boolean?
+}
+
 data class TextLabelUiElement(
     override val type: UiElementTypes,
     override val id: String,
@@ -25,16 +32,18 @@ data class CheckBoxUiElement(
     override val id: String,
     override val label: String,
     override val weight: Float? = null,
+    override val required: Boolean? = null,
     val isChecked: Boolean,
-) : UiElement
+) : UiElement, Requireable
 
 data class InputUiElement(
     override val type: UiElementTypes,
     override val id: String,
     override val label: String,
     override val weight: Float? = null,
+    override val required: Boolean? = null,
     val value: String,
-) : UiElement
+) : UiElement, Requireable
 
 data class RowUiElement(
     override val type: UiElementTypes,
@@ -49,9 +58,10 @@ data class RadioGroupUiElement(
     override val id: String,
     override val label: String,
     override val weight: Float? = null,
+    override val required: Boolean? = null,
     val values: List<RadioButtonUiElement>,
     val selectedId: String,
-) : UiElement {
+) : UiElement, Requireable {
 
     data class RadioButtonUiElement(
         val id: String,

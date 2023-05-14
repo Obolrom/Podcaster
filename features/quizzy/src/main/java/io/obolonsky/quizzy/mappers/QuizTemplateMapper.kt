@@ -21,6 +21,7 @@ class QuizTemplateMapper : Mapper<QuizTemplateInput, QuizTemplate> {
                         labelKey = subfield.label_key,
                         weight = subfield.weight,
                         subfields = emptyList(),
+                        required = subfield.required,
                     )
                 }.orEmpty(),
                 values = field.values?.map {
@@ -29,6 +30,7 @@ class QuizTemplateMapper : Mapper<QuizTemplateInput, QuizTemplate> {
                         labelKey = it.label_key,
                     )
                 },
+                required = field.required,
             )
         }
         return QuizTemplate(

@@ -7,6 +7,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import io.obolonsky.core.di.utils.NO_ID
 import io.obolonsky.quizzy.data.*
+import io.obolonsky.quizzy.redux.QuizScreenSideEffect
 import io.obolonsky.quizzy.redux.QuizScreenState
 import io.obolonsky.quizzy.redux.UiElementTypes.*
 import io.obolonsky.quizzy.ui.components.*
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.onEach
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
@@ -28,9 +30,9 @@ class QuizzyViewModel @AssistedInject constructor(
     @Assisted savedStateHandle: SavedStateHandle,
     private val getLocalizationsUseCase: GetLocalizationsUseCase,
     private val getTemplateUseCase: GetTemplateUseCase,
-) : ViewModel(), ContainerHost<QuizScreenState, Unit> {
+) : ViewModel(), ContainerHost<QuizScreenState, QuizScreenSideEffect> {
 
-    override val container: Container<QuizScreenState, Unit> = container(
+    override val container: Container<QuizScreenState, QuizScreenSideEffect> = container(
         initialState = QuizScreenState(
             title = null,
         )
@@ -119,6 +121,28 @@ class QuizzyViewModel @AssistedInject constructor(
         )
 
         Timber.d("quizOutput $quizOutput")
+
+        val keys = quizOutput.inputs.keys +
+                quizOutput.checkBoxes.keys +
+                quizOutput.radioGroups.keys
+        val requiredFields = (state.uiElements
+            ?.filterIsInstance<Requireable>()
+            ?.filter { it.required == true }
+            .orEmpty() +
+                state.uiElements
+            ?.asSequence()
+            ?.filterIsInstance<RowUiElement>()
+            ?.map { it.subcomponents }
+            ?.flatten()
+            ?.filterIsInstance<Requireable>()
+            ?.toList()
+            ?.filter { it.required == true }
+            .orEmpty())
+            .map { it.id }
+
+        if (!keys.containsAll(requiredFields)) {
+            postSideEffect(QuizScreenSideEffect.NotAllRequiredFieldsAreFilled)
+        }
     }
 
     private fun loadTemplate() = intent {
@@ -150,6 +174,7 @@ class QuizzyViewModel @AssistedInject constructor(
                                         label = localizations[field.labelKey] ?: "",
                                         isChecked = false,
                                         weight = field.weight,
+                                        required = field.required,
                                     )
                                 }
                                 INPUT -> {
@@ -159,6 +184,7 @@ class QuizzyViewModel @AssistedInject constructor(
                                         label = localizations[field.labelKey] ?: "",
                                         value = "",
                                         weight = field.weight,
+                                        required = field.required,
                                     )
                                 }
                                 ROW -> {
@@ -183,6 +209,7 @@ class QuizzyViewModel @AssistedInject constructor(
                                                         label = localizations[subfield.labelKey] ?: "",
                                                         isChecked = false,
                                                         weight = subfield.weight,
+                                                        required = subfield.required,
                                                     )
                                                 }
                                                 INPUT -> {
@@ -192,6 +219,7 @@ class QuizzyViewModel @AssistedInject constructor(
                                                         label = localizations[subfield.labelKey] ?: "",
                                                         value = "",
                                                         weight = subfield.weight,
+                                                        required = subfield.required,
                                                     )
                                                 }
                                                 ROW -> error("Not supported")
@@ -213,6 +241,7 @@ class QuizzyViewModel @AssistedInject constructor(
                                             )
                                         }.orEmpty(),
                                         selectedId = NO_ID,
+                                        required = field.required,
                                     )
                                 }
                             }

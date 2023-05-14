@@ -1,6 +1,7 @@
 package io.obolonsky.quizzy.ui
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -16,11 +17,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import io.obolonsky.core.di.lazyViewModel
+import io.obolonsky.core.di.toaster
 import io.obolonsky.quizzy.data.*
+import io.obolonsky.quizzy.redux.QuizScreenSideEffect
 import io.obolonsky.quizzy.redux.QuizScreenState
 import io.obolonsky.quizzy.ui.components.*
 import io.obolonsky.quizzy.viewmodels.ComponentViewModel
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 import io.obolonsky.core.R as CoreR
 
 class QuizActivity : AppCompatActivity() {
@@ -33,17 +37,26 @@ class QuizActivity : AppCompatActivity() {
             .create(it)
     }
 
+    private val toaster by toaster()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
             val state = quizzyViewModel.collectAsState()
+            quizzyViewModel.collectSideEffect(sideEffect = ::onSideEffect)
 
             QuizScreen(
                 state = state.value,
                 onAction = quizzyViewModel::onAction,
                 onSubmit = quizzyViewModel::submit,
             )
+        }
+    }
+
+    private fun onSideEffect(effect: QuizScreenSideEffect) = when (effect) {
+        is QuizScreenSideEffect.NotAllRequiredFieldsAreFilled -> {
+            toaster.showToast(this, "Fill all fields")
         }
     }
 }

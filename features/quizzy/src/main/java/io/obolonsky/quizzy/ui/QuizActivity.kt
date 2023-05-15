@@ -1,14 +1,10 @@
 package io.obolonsky.quizzy.ui
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -16,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import io.obolonsky.core.di.lazyViewModel
 import io.obolonsky.core.di.toaster
 import io.obolonsky.quizzy.data.*
@@ -73,12 +70,25 @@ fun QuizScreen(
             when (field) {
                 is TextLabelUiElement -> {
                     TextComponent(
-
+                        modifier = Modifier
+                            .padding(PaddingValues(
+                                start = (field.paddings?.start ?: 0).dp,
+                                end = (field.paddings?.end ?: 0).dp,
+                                top = (field.paddings?.top ?: 0).dp,
+                                bottom = (field.paddings?.bottom ?: 0).dp,
+                            )),
                         uiElement = field,
                     )
                 }
                 is CheckBoxUiElement -> {
                     CheckBoxComponent(
+                        modifier = Modifier
+                            .padding(PaddingValues(
+                                start = (field.paddings?.start ?: 0).dp,
+                                end = (field.paddings?.end ?: 0).dp,
+                                top = (field.paddings?.top ?: 0).dp,
+                                bottom = (field.paddings?.bottom ?: 0).dp,
+                            )),
                         uiElement = field,
                         onAction = onAction,
                     )
@@ -90,14 +100,29 @@ fun QuizScreen(
                                 .then(
                                     if (field.weight != null) Modifier.weight(field.weight!!)
                                     else Modifier
-                                ),
+                                )
+                                .padding(PaddingValues(
+                                    start = (field.paddings?.start ?: 0).dp,
+                                    end = (field.paddings?.end ?: 0).dp,
+                                    top = (field.paddings?.top ?: 0).dp,
+                                    bottom = (field.paddings?.bottom ?: 0).dp,
+                                )),
                             uiElement = field,
                             onAction = onAction,
                         )
                     }
                 }
                 is RowUiElement -> {
-                    Row(modifier = Modifier.fillMaxWidth()) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(PaddingValues(
+                                start = (field.paddings?.start ?: 0).dp,
+                                end = (field.paddings?.end ?: 0).dp,
+                                top = (field.paddings?.top ?: 0).dp,
+                                bottom = (field.paddings?.bottom ?: 0).dp,
+                            )),
+                    ) {
                         field.subcomponents.forEach { subcomponent ->
                             when (subcomponent) {
                                 is TextLabelUiElement -> {
@@ -145,6 +170,13 @@ fun QuizScreen(
                 }
                 is RadioGroupUiElement -> {
                     RadioGroupComponent(
+                        modifier = Modifier
+                            .padding(PaddingValues(
+                                start = (field.paddings?.start ?: 0).dp,
+                                end = (field.paddings?.end ?: 0).dp,
+                                top = (field.paddings?.top ?: 0).dp,
+                                bottom = (field.paddings?.bottom ?: 0).dp,
+                            )),
                         uiElement = field,
                         onAction = onAction,
                     )

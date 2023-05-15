@@ -3,7 +3,13 @@
     {
       "id": "SELECT_CORRECT_ANSWER",
       "type": "TEXT_LABEL",
-      "label_key": "select_correct_answer"
+      "label_key": "select_correct_answer",
+      "paddings": {
+        "start": 16,
+        "end": 16,
+        "top": 20,
+        "bottom": 8
+      }
     },
     {
       "id": "QUIZ_SUBTITLE",
@@ -20,12 +26,24 @@
       "type": "INPUT",
       "label_key": "quiz_title",
       "required": true,
-      "weight": 1.0
+      "weight": 1.0,
+      "paddings": {
+        "start": 16,
+        "end": 16,
+        "top": 4,
+        "bottom": 8
+      }
     },
     {
       "id": "ROW_ID",
       "type": "ROW",
       "label_key": "test1",
+      "paddings": {
+        "start": 16,
+        "end": 16,
+        "top": 0,
+        "bottom": 8
+      },
       "subfields": [
         {
           "id": "INPUT_SOME_VALUE_2",
@@ -46,6 +64,12 @@
       "type": "RADIO",
       "label_key": "test1",
       "required": true,
+      "paddings": {
+        "start": 16,
+        "end": 16,
+        "top": 0,
+        "bottom": 8
+      },
       "values": [
         {
           "id": "RADIO_KEY1",

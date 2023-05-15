@@ -165,6 +165,14 @@ class QuizzyViewModel @AssistedInject constructor(
                                         id = field.type.name,
                                         label = localizations[field.labelKey] ?: "",
                                         weight = field.weight,
+                                        paddings = field.paddings?.let { paddings ->
+                                            Paddings(
+                                                start = paddings.start,
+                                                end = paddings.end,
+                                                top = paddings.top,
+                                                bottom = paddings.bottom,
+                                            )
+                                        },
                                     )
                                 }
                                 CHECKBOX -> {
@@ -175,6 +183,14 @@ class QuizzyViewModel @AssistedInject constructor(
                                         isChecked = false,
                                         weight = field.weight,
                                         required = field.required,
+                                        paddings = field.paddings?.let { paddings ->
+                                            Paddings(
+                                                start = paddings.start,
+                                                end = paddings.end,
+                                                top = paddings.top,
+                                                bottom = paddings.bottom,
+                                            )
+                                        },
                                     )
                                 }
                                 INPUT -> {
@@ -185,6 +201,14 @@ class QuizzyViewModel @AssistedInject constructor(
                                         value = "",
                                         weight = field.weight,
                                         required = field.required,
+                                        paddings = field.paddings?.let { paddings ->
+                                            Paddings(
+                                                start = paddings.start,
+                                                end = paddings.end,
+                                                top = paddings.top,
+                                                bottom = paddings.bottom,
+                                            )
+                                        },
                                     )
                                 }
                                 ROW -> {
@@ -200,6 +224,14 @@ class QuizzyViewModel @AssistedInject constructor(
                                                         id = subfield.type.name,
                                                         label = localizations[subfield.labelKey] ?: "",
                                                         weight = subfield.weight,
+                                                        paddings = subfield.paddings?.let { paddings ->
+                                                            Paddings(
+                                                                start = paddings.start,
+                                                                end = paddings.end,
+                                                                top = paddings.top,
+                                                                bottom = paddings.bottom,
+                                                            )
+                                                        },
                                                     )
                                                 }
                                                 CHECKBOX -> {
@@ -210,6 +242,14 @@ class QuizzyViewModel @AssistedInject constructor(
                                                         isChecked = false,
                                                         weight = subfield.weight,
                                                         required = subfield.required,
+                                                        paddings = subfield.paddings?.let { paddings ->
+                                                            Paddings(
+                                                                start = paddings.start,
+                                                                end = paddings.end,
+                                                                top = paddings.top,
+                                                                bottom = paddings.bottom,
+                                                            )
+                                                        },
                                                     )
                                                 }
                                                 INPUT -> {
@@ -220,12 +260,29 @@ class QuizzyViewModel @AssistedInject constructor(
                                                         value = "",
                                                         weight = subfield.weight,
                                                         required = subfield.required,
+                                                        paddings = subfield.paddings?.let { paddings ->
+                                                            Paddings(
+                                                                start = paddings.start,
+                                                                end = paddings.end,
+                                                                top = paddings.top,
+                                                                bottom = paddings.bottom,
+                                                            )
+                                                        },
                                                     )
                                                 }
                                                 ROW -> error("Not supported")
                                                 RADIO -> error("Not supported")
                                             }
-                                        }
+                                        },
+                                        weight = field.weight,
+                                        paddings = field.paddings?.let { paddings ->
+                                            Paddings(
+                                                start = paddings.start,
+                                                end = paddings.end,
+                                                top = paddings.top,
+                                                bottom = paddings.bottom,
+                                            )
+                                        },
                                     )
                                 }
                                 RADIO -> {
@@ -242,6 +299,14 @@ class QuizzyViewModel @AssistedInject constructor(
                                         }.orEmpty(),
                                         selectedId = NO_ID,
                                         required = field.required,
+                                        paddings = field.paddings?.let { paddings ->
+                                            Paddings(
+                                                start = paddings.start,
+                                                end = paddings.end,
+                                                top = paddings.top,
+                                                bottom = paddings.bottom,
+                                            )
+                                        },
                                     )
                                 }
                             }

@@ -25,11 +25,19 @@ data class QuizTemplate(
         val weight: Float? = null,
         val values: List<Value>? = null,
         val required: Boolean? = null,
+        val paddings: Paddings? = null,
     ) {
 
         data class Value(
             val id: String,
             val labelKey: String,
+        )
+
+        data class Paddings(
+            val start: Int,
+            val end: Int,
+            val top: Int,
+            val bottom: Int,
         )
     }
 }
@@ -46,11 +54,19 @@ data class QuizTemplateInput(
         val subfields: List<Field>? = null,
         val values: List<Value>? = null,
         val required: Boolean? = null,
+        val paddings: Paddings? = null,
     ) {
 
         data class Value(
             val id: String,
             val label_key: String,
+        )
+
+        data class Paddings(
+            val start: Int,
+            val end: Int,
+            val top: Int,
+            val bottom: Int,
         )
     }
 }

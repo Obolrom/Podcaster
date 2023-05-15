@@ -22,6 +22,14 @@ class QuizTemplateMapper : Mapper<QuizTemplateInput, QuizTemplate> {
                         weight = subfield.weight,
                         subfields = emptyList(),
                         required = subfield.required,
+                        paddings = subfield.paddings?.let { paddings ->
+                            QuizTemplate.Field.Paddings(
+                                start = paddings.start,
+                                end = paddings.end,
+                                top = paddings.top,
+                                bottom = paddings.bottom,
+                            )
+                        },
                     )
                 }.orEmpty(),
                 values = field.values?.map {
@@ -31,6 +39,14 @@ class QuizTemplateMapper : Mapper<QuizTemplateInput, QuizTemplate> {
                     )
                 },
                 required = field.required,
+                paddings = field.paddings?.let { paddings ->
+                    QuizTemplate.Field.Paddings(
+                        start = paddings.start,
+                        end = paddings.end,
+                        top = paddings.top,
+                        bottom = paddings.bottom,
+                    )
+                },
             )
         }
         return QuizTemplate(

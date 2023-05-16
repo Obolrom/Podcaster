@@ -68,6 +68,17 @@ class QuizzyViewModel @AssistedInject constructor(
                             uiElement
                     }
                 component.copy(subcomponents = reducedSubcomponents)
+            } else if (component is RowUiElement
+                && component.subcomponents.find { it.id == changedId } is RadioGroupUiElement
+                && action is SelectRadioButtonAction) {
+                val reducedSubcomponents = component.subcomponents
+                    .map { uiElement ->
+                        if (uiElement.id == changedId && uiElement is RadioGroupUiElement)
+                            uiElement.copy(selectedId = action.selectedButtonId)
+                        else
+                            uiElement
+                    }
+                component.copy(subcomponents = reducedSubcomponents)
             } else {
                 component
             }
@@ -268,7 +279,30 @@ class QuizzyViewModel @AssistedInject constructor(
                                                     )
                                                 }
                                                 ROW -> error("Not supported")
-                                                RADIO -> error("Not supported")
+                                                RADIO -> {
+                                                    RadioGroupUiElement(
+                                                        id = subfield.id,
+                                                        type = subfield.type,
+                                                        label = localization.getString(subfield.labelKey),
+                                                        weight = subfield.weight,
+                                                        values = subfield.values?.map { radioValue ->
+                                                            RadioGroupUiElement.RadioButtonUiElement(
+                                                                id = radioValue.id,
+                                                                label = localization.getString(radioValue.labelKey),
+                                                            )
+                                                        }.orEmpty(),
+                                                        selectedId = NO_ID,
+                                                        required = subfield.required,
+                                                        paddings = subfield.paddings?.let { paddings ->
+                                                            Paddings(
+                                                                start = paddings.start,
+                                                                end = paddings.end,
+                                                                top = paddings.top,
+                                                                bottom = paddings.bottom,
+                                                            )
+                                                        },
+                                                    )
+                                                }
                                             }
                                         },
                                         weight = field.weight,

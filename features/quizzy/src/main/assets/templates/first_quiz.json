@@ -96,6 +96,46 @@
           "label_key": "radio_key3"
         }
       ]
+    },
+    {
+      "id": "ROW_ID_2",
+      "type": "ROW",
+      "label_key": "test1",
+      "paddings": {
+        "start": 16,
+        "end": 16,
+        "top": 0,
+        "bottom": 8
+      },
+      "subfields": [
+        {
+          "id": "BACKEND_LANG",
+          "type": "RADIO",
+          "label_key": "test1",
+          "weight": 4.0,
+          "required": true,
+          "values": [
+            {
+              "id": "GO",
+              "label_key": "radio_backend_lang_1"
+            },
+            {
+              "id": "PYTHON",
+              "label_key": "radio_backend_lang_2"
+            },
+            {
+              "id": "C_SHARP",
+              "label_key": "radio_backend_lang_3"
+            }
+          ]
+        },
+        {
+          "id": "radio_backend_lang_3_id",
+          "type": "TEXT_LABEL",
+          "label_key": "radio_backend_lang_3",
+          "weight": 1.0
+        }
+      ]
     }
   ]
 }

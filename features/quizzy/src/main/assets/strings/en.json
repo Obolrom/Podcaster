@@ -5,5 +5,8 @@
   "select_correct_answer": "Select correct answer",
   "radio_key1": "Java",
   "radio_key2": "Kotlin",
-  "radio_key3": "Scala"
+  "radio_key3": "Scala",
+  "radio_backend_lang_1": "Go",
+  "radio_backend_lang_2": "Python",
+  "radio_backend_lang_3": "C#"
 }

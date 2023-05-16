@@ -179,6 +179,10 @@ fun QuizScreen(
                                 is RadioGroupUiElement -> {
                                     RadioGroupComponent(
                                         modifier = Modifier
+                                            .then(
+                                                if (subcomponent.weight != null) Modifier.weight(subcomponent.weight!!)
+                                                else Modifier
+                                            )
                                             .padding(PaddingValues(
                                                 start = (subcomponent.paddings?.start ?: 0).dp,
                                                 end = (subcomponent.paddings?.end ?: 0).dp,

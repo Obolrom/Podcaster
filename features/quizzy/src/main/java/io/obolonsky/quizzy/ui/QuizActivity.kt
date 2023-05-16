@@ -131,7 +131,13 @@ fun QuizScreen(
                                             .then(
                                                 if (subcomponent.weight != null) Modifier.weight(subcomponent.weight!!)
                                                 else Modifier
-                                            ),
+                                            )
+                                            .padding(PaddingValues(
+                                                start = (subcomponent.paddings?.start ?: 0).dp,
+                                                end = (subcomponent.paddings?.end ?: 0).dp,
+                                                top = (subcomponent.paddings?.top ?: 0).dp,
+                                                bottom = (subcomponent.paddings?.bottom ?: 0).dp,
+                                            )),
                                         uiElement = subcomponent,
                                     )
                                 }
@@ -141,7 +147,13 @@ fun QuizScreen(
                                             .then(
                                                 if (subcomponent.weight != null) Modifier.weight(subcomponent.weight!!)
                                                 else Modifier
-                                            ),
+                                            )
+                                            .padding(PaddingValues(
+                                                start = (subcomponent.paddings?.start ?: 0).dp,
+                                                end = (subcomponent.paddings?.end ?: 0).dp,
+                                                top = (subcomponent.paddings?.top ?: 0).dp,
+                                                bottom = (subcomponent.paddings?.bottom ?: 0).dp,
+                                            )),
                                         uiElement = subcomponent,
                                         onAction = onAction,
                                     )
@@ -152,7 +164,13 @@ fun QuizScreen(
                                             .then(
                                                 if (subcomponent.weight != null) Modifier.weight(subcomponent.weight!!)
                                                 else Modifier
-                                            ),
+                                            )
+                                            .padding(PaddingValues(
+                                                start = (subcomponent.paddings?.start ?: 0).dp,
+                                                end = (subcomponent.paddings?.end ?: 0).dp,
+                                                top = (subcomponent.paddings?.top ?: 0).dp,
+                                                bottom = (subcomponent.paddings?.bottom ?: 0).dp,
+                                            )),
                                         uiElement = subcomponent,
                                         onAction = onAction,
                                     )
@@ -160,6 +178,13 @@ fun QuizScreen(
                                 is RowUiElement -> error("Not supported")
                                 is RadioGroupUiElement -> {
                                     RadioGroupComponent(
+                                        modifier = Modifier
+                                            .padding(PaddingValues(
+                                                start = (subcomponent.paddings?.start ?: 0).dp,
+                                                end = (subcomponent.paddings?.end ?: 0).dp,
+                                                top = (subcomponent.paddings?.top ?: 0).dp,
+                                                bottom = (subcomponent.paddings?.bottom ?: 0).dp,
+                                            )),
                                         uiElement = subcomponent,
                                         onAction = onAction,
                                     )

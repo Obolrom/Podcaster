@@ -19,7 +19,13 @@
     {
       "id": "SOME_CHECK",
       "type": "CHECKBOX",
-      "label_key": "quiz_title"
+      "label_key": "quiz_title",
+      "paddings": {
+        "start": 16,
+        "end": 16,
+        "top": 20,
+        "bottom": 8
+      }
     },
     {
       "id": "INPUT_SOME_VALUE_1",
@@ -55,7 +61,13 @@
           "id": "QUIZ_SUBTITLE",
           "type": "TEXT_LABEL",
           "label_key": "test2",
-          "weight": 6.0
+          "weight": 6.0,
+          "paddings": {
+            "start": 16,
+            "end": 0,
+            "top": 0,
+            "bottom": 0
+          }
         }
       ]
     },

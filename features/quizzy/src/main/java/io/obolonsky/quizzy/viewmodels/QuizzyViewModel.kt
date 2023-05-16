@@ -122,9 +122,6 @@ class QuizzyViewModel @AssistedInject constructor(
 
         Timber.d("quizOutput $quizOutput")
 
-        val keys = quizOutput.inputs.keys +
-                quizOutput.checkBoxes.keys +
-                quizOutput.radioGroups.keys
         val requiredFields = (state.uiElements
             ?.filterIsInstance<Requireable>()
             ?.filter { it.required == true }
@@ -140,7 +137,7 @@ class QuizzyViewModel @AssistedInject constructor(
             .orEmpty())
             .map { it.id }
 
-        if (!keys.containsAll(requiredFields)) {
+        if (!quizOutput.allKeys.containsAll(requiredFields)) {
             postSideEffect(QuizScreenSideEffect.NotAllRequiredFieldsAreFilled)
         }
     }
@@ -150,12 +147,12 @@ class QuizzyViewModel @AssistedInject constructor(
             .combine(getLocalizationsUseCase.get()) { template, localizations ->
                 template to localizations
             }
-            .onEach { (template, localizations) ->
+            .onEach { (template, localization) ->
                 reduce {
                     state.copy(
                         template = template.copy(
                             fields = template.fields
-                                .map { it.copy(labelKey = localizations[it.labelKey] ?: "") }
+                                .map { it.copy(labelKey = localization.getString(it.labelKey)) }
                         ),
                         uiElements = template.fields.map { field ->
                             when (field.type) {
@@ -163,7 +160,7 @@ class QuizzyViewModel @AssistedInject constructor(
                                     TextLabelUiElement(
                                         type = field.type,
                                         id = field.type.name,
-                                        label = localizations[field.labelKey] ?: "",
+                                        label = localization.getString(field.labelKey),
                                         weight = field.weight,
                                         paddings = field.paddings?.let { paddings ->
                                             Paddings(
@@ -179,7 +176,7 @@ class QuizzyViewModel @AssistedInject constructor(
                                     CheckBoxUiElement(
                                         id = field.id,
                                         type = field.type,
-                                        label = localizations[field.labelKey] ?: "",
+                                        label = localization.getString(field.labelKey),
                                         isChecked = false,
                                         weight = field.weight,
                                         required = field.required,
@@ -197,7 +194,7 @@ class QuizzyViewModel @AssistedInject constructor(
                                     InputUiElement(
                                         id = field.id,
                                         type = field.type,
-                                        label = localizations[field.labelKey] ?: "",
+                                        label = localization.getString(field.labelKey),
                                         value = "",
                                         weight = field.weight,
                                         required = field.required,
@@ -215,14 +212,14 @@ class QuizzyViewModel @AssistedInject constructor(
                                     RowUiElement(
                                         id = field.id,
                                         type = field.type,
-                                        label = localizations[field.labelKey] ?: "",
+                                        label = localization.getString(field.labelKey),
                                         subcomponents = field.subfields.map { subfield ->
                                             when (subfield.type) {
                                                 TEXT_LABEL -> {
                                                     TextLabelUiElement(
                                                         type = subfield.type,
                                                         id = subfield.type.name,
-                                                        label = localizations[subfield.labelKey] ?: "",
+                                                        label = localization.getString(subfield.labelKey),
                                                         weight = subfield.weight,
                                                         paddings = subfield.paddings?.let { paddings ->
                                                             Paddings(
@@ -238,7 +235,7 @@ class QuizzyViewModel @AssistedInject constructor(
                                                     CheckBoxUiElement(
                                                         id = subfield.id,
                                                         type = subfield.type,
-                                                        label = localizations[subfield.labelKey] ?: "",
+                                                        label = localization.getString(subfield.labelKey),
                                                         isChecked = false,
                                                         weight = subfield.weight,
                                                         required = subfield.required,
@@ -256,7 +253,7 @@ class QuizzyViewModel @AssistedInject constructor(
                                                     InputUiElement(
                                                         id = subfield.id,
                                                         type = subfield.type,
-                                                        label = localizations[subfield.labelKey] ?: "",
+                                                        label = localization.getString(subfield.labelKey),
                                                         value = "",
                                                         weight = subfield.weight,
                                                         required = subfield.required,
@@ -289,12 +286,12 @@ class QuizzyViewModel @AssistedInject constructor(
                                     RadioGroupUiElement(
                                         id = field.id,
                                         type = field.type,
-                                        label = localizations[field.labelKey] ?: "",
+                                        label = localization.getString(field.labelKey),
                                         weight = field.weight,
                                         values = field.values?.map { radioValue ->
                                             RadioGroupUiElement.RadioButtonUiElement(
                                                 id = radioValue.id,
-                                                label = localizations[radioValue.labelKey] ?: "",
+                                                label = localization.getString(radioValue.labelKey),
                                             )
                                         }.orEmpty(),
                                         selectedId = NO_ID,

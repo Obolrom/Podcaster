@@ -10,4 +10,8 @@ data class QuizOutput(
     val inputs: Map<String, String>,
     val checkBoxes: Map<String, Boolean>,
     val radioGroups: Map<String, String>,
-)
+) {
+
+    val allKeys: Set<String>
+        get() = inputs.keys + checkBoxes.keys + radioGroups.keys
+}

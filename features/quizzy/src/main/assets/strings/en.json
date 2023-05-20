@@ -8,5 +8,6 @@
   "radio_key3": "Scala",
   "radio_backend_lang_1": "Go",
   "radio_backend_lang_2": "Python",
-  "radio_backend_lang_3": "C#"
+  "radio_backend_lang_3": "C#",
+  "nested_check": "Nested check"
 }

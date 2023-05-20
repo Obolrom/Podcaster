@@ -5,6 +5,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -65,7 +67,9 @@ fun QuizScreen(
     onSubmit: () -> Unit,
     modifier: Modifier = Modifier,
 ) = Surface(modifier = modifier) {
-    Column {
+    Column(
+        modifier = Modifier.verticalScroll(rememberScrollState()),
+    ) {
         state.uiElements?.forEach { field ->
             when (field) {
                 is TextLabelUiElement -> {
@@ -101,12 +105,14 @@ fun QuizScreen(
                                     if (field.weight != null) Modifier.weight(field.weight!!)
                                     else Modifier
                                 )
-                                .padding(PaddingValues(
-                                    start = (field.paddings?.start ?: 0).dp,
-                                    end = (field.paddings?.end ?: 0).dp,
-                                    top = (field.paddings?.top ?: 0).dp,
-                                    bottom = (field.paddings?.bottom ?: 0).dp,
-                                )),
+                                .padding(
+                                    PaddingValues(
+                                        start = (field.paddings?.start ?: 0).dp,
+                                        end = (field.paddings?.end ?: 0).dp,
+                                        top = (field.paddings?.top ?: 0).dp,
+                                        bottom = (field.paddings?.bottom ?: 0).dp,
+                                    )
+                                ),
                             uiElement = field,
                             onAction = onAction,
                         )
@@ -116,12 +122,14 @@ fun QuizScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(PaddingValues(
-                                start = (field.paddings?.start ?: 0).dp,
-                                end = (field.paddings?.end ?: 0).dp,
-                                top = (field.paddings?.top ?: 0).dp,
-                                bottom = (field.paddings?.bottom ?: 0).dp,
-                            )),
+                            .padding(
+                                PaddingValues(
+                                    start = (field.paddings?.start ?: 0).dp,
+                                    end = (field.paddings?.end ?: 0).dp,
+                                    top = (field.paddings?.top ?: 0).dp,
+                                    bottom = (field.paddings?.bottom ?: 0).dp,
+                                )
+                            ),
                     ) {
                         field.subcomponents.forEach { subcomponent ->
                             when (subcomponent) {
@@ -129,15 +137,20 @@ fun QuizScreen(
                                     TextComponent(
                                         modifier = Modifier
                                             .then(
-                                                if (subcomponent.weight != null) Modifier.weight(subcomponent.weight!!)
+                                                if (subcomponent.weight != null) Modifier.weight(
+                                                    subcomponent.weight!!
+                                                )
                                                 else Modifier
                                             )
-                                            .padding(PaddingValues(
-                                                start = (subcomponent.paddings?.start ?: 0).dp,
-                                                end = (subcomponent.paddings?.end ?: 0).dp,
-                                                top = (subcomponent.paddings?.top ?: 0).dp,
-                                                bottom = (subcomponent.paddings?.bottom ?: 0).dp,
-                                            )),
+                                            .padding(
+                                                PaddingValues(
+                                                    start = (subcomponent.paddings?.start ?: 0).dp,
+                                                    end = (subcomponent.paddings?.end ?: 0).dp,
+                                                    top = (subcomponent.paddings?.top ?: 0).dp,
+                                                    bottom = (subcomponent.paddings?.bottom
+                                                        ?: 0).dp,
+                                                )
+                                            ),
                                         uiElement = subcomponent,
                                     )
                                 }
@@ -145,15 +158,20 @@ fun QuizScreen(
                                     CheckBoxComponent(
                                         modifier = Modifier
                                             .then(
-                                                if (subcomponent.weight != null) Modifier.weight(subcomponent.weight!!)
+                                                if (subcomponent.weight != null) Modifier.weight(
+                                                    subcomponent.weight!!
+                                                )
                                                 else Modifier
                                             )
-                                            .padding(PaddingValues(
-                                                start = (subcomponent.paddings?.start ?: 0).dp,
-                                                end = (subcomponent.paddings?.end ?: 0).dp,
-                                                top = (subcomponent.paddings?.top ?: 0).dp,
-                                                bottom = (subcomponent.paddings?.bottom ?: 0).dp,
-                                            )),
+                                            .padding(
+                                                PaddingValues(
+                                                    start = (subcomponent.paddings?.start ?: 0).dp,
+                                                    end = (subcomponent.paddings?.end ?: 0).dp,
+                                                    top = (subcomponent.paddings?.top ?: 0).dp,
+                                                    bottom = (subcomponent.paddings?.bottom
+                                                        ?: 0).dp,
+                                                )
+                                            ),
                                         uiElement = subcomponent,
                                         onAction = onAction,
                                     )
@@ -162,15 +180,20 @@ fun QuizScreen(
                                     InputComponent(
                                         modifier = Modifier
                                             .then(
-                                                if (subcomponent.weight != null) Modifier.weight(subcomponent.weight!!)
+                                                if (subcomponent.weight != null) Modifier.weight(
+                                                    subcomponent.weight!!
+                                                )
                                                 else Modifier
                                             )
-                                            .padding(PaddingValues(
-                                                start = (subcomponent.paddings?.start ?: 0).dp,
-                                                end = (subcomponent.paddings?.end ?: 0).dp,
-                                                top = (subcomponent.paddings?.top ?: 0).dp,
-                                                bottom = (subcomponent.paddings?.bottom ?: 0).dp,
-                                            )),
+                                            .padding(
+                                                PaddingValues(
+                                                    start = (subcomponent.paddings?.start ?: 0).dp,
+                                                    end = (subcomponent.paddings?.end ?: 0).dp,
+                                                    top = (subcomponent.paddings?.top ?: 0).dp,
+                                                    bottom = (subcomponent.paddings?.bottom
+                                                        ?: 0).dp,
+                                                )
+                                            ),
                                         uiElement = subcomponent,
                                         onAction = onAction,
                                     )
@@ -180,15 +203,20 @@ fun QuizScreen(
                                     RadioGroupComponent(
                                         modifier = Modifier
                                             .then(
-                                                if (subcomponent.weight != null) Modifier.weight(subcomponent.weight!!)
+                                                if (subcomponent.weight != null) Modifier.weight(
+                                                    subcomponent.weight!!
+                                                )
                                                 else Modifier
                                             )
-                                            .padding(PaddingValues(
-                                                start = (subcomponent.paddings?.start ?: 0).dp,
-                                                end = (subcomponent.paddings?.end ?: 0).dp,
-                                                top = (subcomponent.paddings?.top ?: 0).dp,
-                                                bottom = (subcomponent.paddings?.bottom ?: 0).dp,
-                                            )),
+                                            .padding(
+                                                PaddingValues(
+                                                    start = (subcomponent.paddings?.start ?: 0).dp,
+                                                    end = (subcomponent.paddings?.end ?: 0).dp,
+                                                    top = (subcomponent.paddings?.top ?: 0).dp,
+                                                    bottom = (subcomponent.paddings?.bottom
+                                                        ?: 0).dp,
+                                                )
+                                            ),
                                         uiElement = subcomponent,
                                         onAction = onAction,
                                     )

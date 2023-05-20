@@ -79,6 +79,17 @@ class QuizzyViewModel @AssistedInject constructor(
                             uiElement
                     }
                 component.copy(subcomponents = reducedSubcomponents)
+            } else if (component is RowUiElement
+                && component.subcomponents.find { it.id == changedId } is CheckBoxUiElement
+                && action is ToggleCheckBoxAction) {
+                val reducedSubcomponents = component.subcomponents
+                    .map { uiElement ->
+                        if (uiElement.id == changedId && uiElement is CheckBoxUiElement)
+                            uiElement.copy(isChecked = action.isChecked)
+                        else
+                            uiElement
+                    }
+                component.copy(subcomponents = reducedSubcomponents)
             } else {
                 component
             }
@@ -89,6 +100,17 @@ class QuizzyViewModel @AssistedInject constructor(
 
     fun submit() = intent {
         val checkBoxData = state.uiElements
+            ?.filterIsInstance<CheckBoxUiElement>()
+            ?.fold(mutableMapOf<String, Boolean>()) { output, uiData ->
+                output.apply { put(uiData.id, uiData.isChecked) }
+            }
+            .orEmpty()
+
+        val checkBoxSubfieldsData = state.uiElements
+            ?.asSequence()
+            ?.filterIsInstance<RowUiElement>()
+            ?.map { it.subcomponents }
+            ?.flatten()
             ?.filterIsInstance<CheckBoxUiElement>()
             ?.fold(mutableMapOf<String, Boolean>()) { output, uiData ->
                 output.apply { put(uiData.id, uiData.isChecked) }
@@ -124,11 +146,23 @@ class QuizzyViewModel @AssistedInject constructor(
             }
             .orEmpty()
 
+        val radioSubfieldsData = state.uiElements
+            ?.asSequence()
+            ?.filterIsInstance<RowUiElement>()
+            ?.map { it.subcomponents }
+            ?.flatten()
+            ?.filterIsInstance<RadioGroupUiElement>()
+            ?.filter { it.selectedId != NO_ID }
+            ?.fold(mutableMapOf<String, String>()) { output, uiData ->
+                output.apply { put(uiData.id, uiData.selectedId) }
+            }
+            .orEmpty()
+
         val quizOutput = QuizOutput(
             id = UUID.randomUUID(),
             inputs = inputData + inputSubfieldsData,
-            checkBoxes = checkBoxData,
-            radioGroups = radioData,
+            checkBoxes = checkBoxData + checkBoxSubfieldsData,
+            radioGroups = radioData + radioSubfieldsData,
         )
 
         Timber.d("quizOutput $quizOutput")

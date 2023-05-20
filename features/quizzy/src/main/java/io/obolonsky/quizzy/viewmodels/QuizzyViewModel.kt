@@ -10,6 +10,7 @@ import io.obolonsky.quizzy.data.*
 import io.obolonsky.quizzy.redux.QuizScreenSideEffect
 import io.obolonsky.quizzy.redux.QuizScreenState
 import io.obolonsky.quizzy.redux.UiElementTypes.*
+import io.obolonsky.quizzy.repositories.QuizOutputRepository
 import io.obolonsky.quizzy.ui.components.*
 import io.obolonsky.quizzy.usecases.GetLocalizationsUseCase
 import io.obolonsky.quizzy.usecases.GetTemplateUseCase
@@ -30,6 +31,7 @@ class QuizzyViewModel @AssistedInject constructor(
     @Assisted savedStateHandle: SavedStateHandle,
     private val getLocalizationsUseCase: GetLocalizationsUseCase,
     private val getTemplateUseCase: GetTemplateUseCase,
+    private val quizOutputRepository: QuizOutputRepository,
 ) : ViewModel(), ContainerHost<QuizScreenState, QuizScreenSideEffect> {
 
     override val container: Container<QuizScreenState, QuizScreenSideEffect> = container(
@@ -184,6 +186,9 @@ class QuizzyViewModel @AssistedInject constructor(
 
         if (!quizOutput.allKeys.containsAll(requiredFields)) {
             postSideEffect(QuizScreenSideEffect.NotAllRequiredFieldsAreFilled)
+        } else {
+            quizOutputRepository.saveQuiz(quizOutput)
+                .collect()
         }
     }
 

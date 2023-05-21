@@ -197,13 +197,12 @@ class QuizzyViewModel @AssistedInject constructor(
             .combine(getLocalizationsUseCase.get()) { template, localizations ->
                 template to localizations
             }
-            .onEach { (template, localization) ->
+            .combine(quizOutputRepository.getSavedQuizzes()) { (template, localizations), saved ->
+                Triple(template, localizations, saved.first())
+            }
+            .onEach { (template, localization, saved) ->
                 reduce {
                     state.copy(
-                        template = template.copy(
-                            fields = template.fields
-                                .map { it.copy(labelKey = localization.getString(it.labelKey)) }
-                        ),
                         uiElements = template.fields.map { field ->
                             when (field.type) {
                                 TEXT_LABEL -> {
@@ -227,7 +226,7 @@ class QuizzyViewModel @AssistedInject constructor(
                                         id = field.id,
                                         type = field.type,
                                         label = localization.getString(field.labelKey),
-                                        isChecked = false,
+                                        isChecked = saved.checkBoxes[field.id] ?: false,
                                         weight = field.weight,
                                         required = field.required,
                                         paddings = field.paddings?.let { paddings ->
@@ -245,7 +244,7 @@ class QuizzyViewModel @AssistedInject constructor(
                                         id = field.id,
                                         type = field.type,
                                         label = localization.getString(field.labelKey),
-                                        value = "",
+                                        value = saved.inputs[field.id] ?: "",
                                         weight = field.weight,
                                         required = field.required,
                                         paddings = field.paddings?.let { paddings ->
@@ -286,7 +285,7 @@ class QuizzyViewModel @AssistedInject constructor(
                                                         id = subfield.id,
                                                         type = subfield.type,
                                                         label = localization.getString(subfield.labelKey),
-                                                        isChecked = false,
+                                                        isChecked = saved.checkBoxes[subfield.id] ?: false,
                                                         weight = subfield.weight,
                                                         required = subfield.required,
                                                         paddings = subfield.paddings?.let { paddings ->
@@ -304,7 +303,7 @@ class QuizzyViewModel @AssistedInject constructor(
                                                         id = subfield.id,
                                                         type = subfield.type,
                                                         label = localization.getString(subfield.labelKey),
-                                                        value = "",
+                                                        value = saved.inputs[subfield.id] ?: "",
                                                         weight = subfield.weight,
                                                         required = subfield.required,
                                                         paddings = subfield.paddings?.let { paddings ->
@@ -330,7 +329,7 @@ class QuizzyViewModel @AssistedInject constructor(
                                                                 label = localization.getString(radioValue.labelKey),
                                                             )
                                                         }.orEmpty(),
-                                                        selectedId = NO_ID,
+                                                        selectedId = saved.radioGroups[subfield.id] ?: NO_ID,
                                                         required = subfield.required,
                                                         paddings = subfield.paddings?.let { paddings ->
                                                             Paddings(
@@ -367,7 +366,7 @@ class QuizzyViewModel @AssistedInject constructor(
                                                 label = localization.getString(radioValue.labelKey),
                                             )
                                         }.orEmpty(),
-                                        selectedId = NO_ID,
+                                        selectedId = saved.radioGroups[field.id] ?: NO_ID,
                                         required = field.required,
                                         paddings = field.paddings?.let { paddings ->
                                             Paddings(

@@ -1,8 +1,5 @@
 package io.obolonsky.quizzy.ui
 
-import android.os.Bundle
-import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -15,54 +12,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.obolonsky.core.di.lazyViewModel
-import io.obolonsky.core.di.toaster
 import io.obolonsky.quizzy.data.*
-import io.obolonsky.quizzy.redux.QuizScreenSideEffect
 import io.obolonsky.quizzy.redux.QuizScreenState
 import io.obolonsky.quizzy.ui.components.*
-import io.obolonsky.quizzy.viewmodels.ComponentViewModel
-import org.orbitmvi.orbit.compose.collectAsState
-import org.orbitmvi.orbit.compose.collectSideEffect
 import io.obolonsky.core.R as CoreR
+import io.obolonsky.quizzy.R
 
 /*
  * reference - https://habr.com/ru/companies/alfa/articles/668754/
  */
 
-class QuizActivity : AppCompatActivity() {
-
-    private val componentViewModel by viewModels<ComponentViewModel>()
-
-    private val quizzyViewModel by lazyViewModel {
-        componentViewModel.component
-            .getQuizzyViewModelFactory()
-            .create(it)
-    }
-
-    private val toaster by toaster()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setContent {
-            val state = quizzyViewModel.collectAsState()
-            quizzyViewModel.collectSideEffect(sideEffect = ::onSideEffect)
-
-            QuizScreen(
-                state = state.value,
-                onAction = quizzyViewModel::onAction,
-                onSubmit = quizzyViewModel::submit,
-            )
-        }
-    }
-
-    private fun onSideEffect(effect: QuizScreenSideEffect) = when (effect) {
-        is QuizScreenSideEffect.NotAllRequiredFieldsAreFilled -> {
-            toaster.showToast(this, "Fill all fields")
-        }
-    }
-}
+class QuizActivity : AppCompatActivity(R.layout.quiz_activity)
 
 @Composable
 fun QuizScreen(

@@ -26,6 +26,10 @@ import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import io.obolonsky.core.R as CoreR
 
+/*
+ * reference - https://habr.com/ru/companies/alfa/articles/668754/
+ */
+
 class QuizActivity : AppCompatActivity() {
 
     private val componentViewModel by viewModels<ComponentViewModel>()

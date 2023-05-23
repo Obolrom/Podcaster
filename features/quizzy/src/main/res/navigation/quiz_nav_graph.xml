@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:startDestination="@id/quizFeedFragment"
-    android:id="@+id/nav_graph.xml">
+    android:id="@+id/quiz_nav_graph.xml">
 
     <fragment
         android:id="@+id/quizFeedFragment"
@@ -10,10 +10,8 @@
         android:label="QuizFeedFragment"
         >
         <action
-            android:id="@+id/action_authFragment_to_repositoryListFragment"
+            android:id="@+id/action_quizFeedFragment_to_quizFragment"
             app:destination="@id/quizFragment"
-            app:popUpTo="@id/quizFeedFragment"
-            app:popUpToInclusive="true"
             />
     </fragment>
 
@@ -22,11 +20,6 @@
         android:name="io.obolonsky.quizzy.ui.QuizFragment"
         android:label="QuizFragment"
         >
-        <argument
-            android:name="quizId"
-            app:argType="string"
-            app:nullable="false"
-            />
     </fragment>
 
 </navigation>

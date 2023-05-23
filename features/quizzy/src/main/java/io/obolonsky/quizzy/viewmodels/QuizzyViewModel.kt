@@ -29,6 +29,7 @@ import java.util.*
 @Suppress("unused_parameter")
 class QuizzyViewModel @AssistedInject constructor(
     @Assisted savedStateHandle: SavedStateHandle,
+    @Assisted private val quizId: UUID,
     private val getLocalizationsUseCase: GetLocalizationsUseCase,
     private val getTemplateUseCase: GetTemplateUseCase,
     private val quizOutputRepository: QuizOutputRepository,
@@ -197,8 +198,17 @@ class QuizzyViewModel @AssistedInject constructor(
             .combine(getLocalizationsUseCase.get()) { template, localizations ->
                 template to localizations
             }
-            .combine(quizOutputRepository.getSavedQuizzes()) { (template, localizations), saved ->
-                Triple(template, localizations, saved.first())
+            .combine(quizOutputRepository.getQuiz(quizId)) { (template, localizations), saved ->
+                Triple(
+                    first = template,
+                    second = localizations,
+                    third = saved ?: QuizOutput(
+                        id = quizId,
+                        inputs = emptyMap(),
+                        checkBoxes = emptyMap(),
+                        radioGroups = emptyMap(),
+                    ),
+                )
             }
             .onEach { (template, localization, saved) ->
                 reduce {
@@ -389,6 +399,9 @@ class QuizzyViewModel @AssistedInject constructor(
     @AssistedFactory
     interface Factory {
 
-        fun create(savedStateHandle: SavedStateHandle): QuizzyViewModel
+        fun create(
+            savedStateHandle: SavedStateHandle,
+            quizId: UUID,
+        ): QuizzyViewModel
     }
 }

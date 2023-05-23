@@ -4,11 +4,9 @@ import android.content.Context
 import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.core.di.utils.JsonConverter
 import io.obolonsky.quizzy.data.QuizOutput
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import java.io.File
+import java.util.UUID
 import javax.inject.Inject
 
 class QuizOutputRepository @Inject constructor(
@@ -27,6 +25,19 @@ class QuizOutputRepository @Inject constructor(
             emit(Unit)
         }
             .flowOn(coroutineSchedulers.io)
+    }
+
+    fun getQuiz(id: UUID): Flow<QuizOutput?> {
+        return flow {
+            val quizFile = quizDirectory
+                .walkTopDown()
+                .filter { it.isFile && it.name == "$id.json" }
+                .firstOrNull()
+            emit(quizFile)
+        }
+            .mapNotNull { quizFile ->
+                jsonConverter.fromJson(quizFile?.readText(), QuizOutput::class.java)
+            }
     }
 
     fun getSavedQuizzes(): Flow<List<QuizOutput>> {

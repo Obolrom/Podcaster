@@ -14,6 +14,7 @@ import io.obolonsky.quizzy.redux.QuizScreenSideEffect
 import io.obolonsky.quizzy.viewmodels.ComponentViewModel
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import java.util.UUID
 
 class QuizFragment : Fragment() {
 
@@ -22,10 +23,14 @@ class QuizFragment : Fragment() {
     private val quizzyViewModel by lazyViewModel {
         componentViewModel.component
             .getQuizzyViewModelFactory()
-            .create(it)
+            .create(it, quizId)
     }
 
     private val toaster by toaster()
+
+    private val quizId by lazy(LazyThreadSafetyMode.NONE) {
+        UUID.fromString(arguments!!.getString("quizId")!!)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -17,10 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import io.obolonsky.core.di.lazyViewModel
+import io.obolonsky.quizzy.R
 import io.obolonsky.quizzy.data.QuizOutput
 import io.obolonsky.quizzy.redux.QuizFeedSideEffects
 import io.obolonsky.quizzy.redux.QuizFeedState
@@ -63,9 +65,12 @@ class QuizFeedFragment : Fragment() {
     private fun onSideEffect(effect: QuizFeedSideEffects): Unit = when (effect) {
         is QuizFeedSideEffects.NavigateToQuizSideEffect -> {
             findNavController()
-                .navigate(QuizFeedFragmentDirections.actionAuthFragmentToRepositoryListFragment(
-                    effect.quizId.toString()
-                ))
+                .navigate(
+                    resId = R.id.action_quizFeedFragment_to_quizFragment,
+                    args = bundleOf(
+                        "quizId" to effect.quizId.toString()
+                    ),
+                )
         }
     }
 }

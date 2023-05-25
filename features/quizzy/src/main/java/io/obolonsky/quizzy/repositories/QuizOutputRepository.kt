@@ -1,6 +1,9 @@
 package io.obolonsky.quizzy.repositories
 
 import android.content.Context
+import arrow.core.*
+import arrow.core.raise.ensureNotNull
+import arrow.core.raise.option
 import io.obolonsky.core.di.utils.CoroutineSchedulers
 import io.obolonsky.core.di.utils.JsonConverter
 import io.obolonsky.quizzy.data.QuizOutput
@@ -26,6 +29,17 @@ class QuizOutputRepository @Inject constructor(
         }
             .flowOn(coroutineSchedulers.io)
     }
+
+    fun getOptionQuiz(id: UUID): Option<QuizOutput> = option {
+        val quizFile = quizDirectory
+            .walkTopDown()
+            .filter { it.isFile && it.name == "$id.json" }
+            .firstOrNull()
+        ensureNotNull(quizFile)
+    }
+        .map { quizFile ->
+            jsonConverter.fromJson(quizFile.readText(), QuizOutput::class.java)
+        }
 
     fun getQuiz(id: UUID): Flow<QuizOutput?> {
         return flow {

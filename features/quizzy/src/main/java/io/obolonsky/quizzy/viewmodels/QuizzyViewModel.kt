@@ -2,6 +2,8 @@ package io.obolonsky.quizzy.viewmodels
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import arrow.core.raise.option
+import arrow.core.recover
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -9,6 +11,7 @@ import io.obolonsky.core.di.utils.NO_ID
 import io.obolonsky.quizzy.data.*
 import io.obolonsky.quizzy.redux.QuizScreenSideEffect
 import io.obolonsky.quizzy.redux.QuizScreenState
+import io.obolonsky.quizzy.redux.QuizTemplate
 import io.obolonsky.quizzy.redux.UiElementTypes.*
 import io.obolonsky.quizzy.repositories.QuizOutputRepository
 import io.obolonsky.quizzy.ui.components.*
@@ -19,6 +22,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.SimpleContext
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -42,7 +46,8 @@ class QuizzyViewModel @AssistedInject constructor(
     )
 
     init {
-        loadTemplate()
+//        loadTemplate()
+        loadTemplateNew()
     }
 
     fun onAction(action: UiAction) = intent {
@@ -193,6 +198,27 @@ class QuizzyViewModel @AssistedInject constructor(
         }
     }
 
+    private fun loadTemplateNew() = intent {
+        option {
+            val template = getTemplateUseCase.getTemplate("templates/first_quiz.json").bind()
+            val localization = getLocalizationsUseCase.getLocalization().bind()
+            val saved = quizOutputRepository.getOptionQuiz(quizId)
+                .recover {
+                    QuizOutput(
+                        id = quizId,
+                        inputs = emptyMap(),
+                        checkBoxes = emptyMap(),
+                        radioGroups = emptyMap(),
+                    )
+                }
+                .bind()
+            Triple(template, localization, saved)
+        }
+            .onSome { (template, localization, saved) ->
+                reduce { reduceQuiz(template, localization, saved) }
+            }
+    }
+
     private fun loadTemplate() = intent {
         getTemplateUseCase.get("templates/first_quiz.json")
             .combine(getLocalizationsUseCase.get()) { template, localizations ->
@@ -211,189 +237,195 @@ class QuizzyViewModel @AssistedInject constructor(
                 )
             }
             .onEach { (template, localization, saved) ->
-                reduce {
-                    state.copy(
-                        uiElements = template.fields.map { field ->
-                            when (field.type) {
-                                TEXT_LABEL -> {
-                                    TextLabelUiElement(
-                                        type = field.type,
-                                        id = field.type.name,
-                                        label = localization.getString(field.labelKey),
-                                        weight = field.weight,
-                                        paddings = field.paddings?.let { paddings ->
-                                            Paddings(
-                                                start = paddings.start,
-                                                end = paddings.end,
-                                                top = paddings.top,
-                                                bottom = paddings.bottom,
-                                            )
-                                        },
-                                    )
-                                }
-                                CHECKBOX -> {
-                                    CheckBoxUiElement(
-                                        id = field.id,
-                                        type = field.type,
-                                        label = localization.getString(field.labelKey),
-                                        isChecked = saved.checkBoxes[field.id] ?: false,
-                                        weight = field.weight,
-                                        required = field.required,
-                                        paddings = field.paddings?.let { paddings ->
-                                            Paddings(
-                                                start = paddings.start,
-                                                end = paddings.end,
-                                                top = paddings.top,
-                                                bottom = paddings.bottom,
-                                            )
-                                        },
-                                    )
-                                }
-                                INPUT -> {
-                                    InputUiElement(
-                                        id = field.id,
-                                        type = field.type,
-                                        label = localization.getString(field.labelKey),
-                                        value = saved.inputs[field.id] ?: "",
-                                        weight = field.weight,
-                                        required = field.required,
-                                        paddings = field.paddings?.let { paddings ->
-                                            Paddings(
-                                                start = paddings.start,
-                                                end = paddings.end,
-                                                top = paddings.top,
-                                                bottom = paddings.bottom,
-                                            )
-                                        },
-                                    )
-                                }
-                                ROW -> {
-                                    RowUiElement(
-                                        id = field.id,
-                                        type = field.type,
-                                        label = localization.getString(field.labelKey),
-                                        subcomponents = field.subfields.map { subfield ->
-                                            when (subfield.type) {
-                                                TEXT_LABEL -> {
-                                                    TextLabelUiElement(
-                                                        type = subfield.type,
-                                                        id = subfield.type.name,
-                                                        label = localization.getString(subfield.labelKey),
-                                                        weight = subfield.weight,
-                                                        paddings = subfield.paddings?.let { paddings ->
-                                                            Paddings(
-                                                                start = paddings.start,
-                                                                end = paddings.end,
-                                                                top = paddings.top,
-                                                                bottom = paddings.bottom,
-                                                            )
-                                                        },
-                                                    )
-                                                }
-                                                CHECKBOX -> {
-                                                    CheckBoxUiElement(
-                                                        id = subfield.id,
-                                                        type = subfield.type,
-                                                        label = localization.getString(subfield.labelKey),
-                                                        isChecked = saved.checkBoxes[subfield.id] ?: false,
-                                                        weight = subfield.weight,
-                                                        required = subfield.required,
-                                                        paddings = subfield.paddings?.let { paddings ->
-                                                            Paddings(
-                                                                start = paddings.start,
-                                                                end = paddings.end,
-                                                                top = paddings.top,
-                                                                bottom = paddings.bottom,
-                                                            )
-                                                        },
-                                                    )
-                                                }
-                                                INPUT -> {
-                                                    InputUiElement(
-                                                        id = subfield.id,
-                                                        type = subfield.type,
-                                                        label = localization.getString(subfield.labelKey),
-                                                        value = saved.inputs[subfield.id] ?: "",
-                                                        weight = subfield.weight,
-                                                        required = subfield.required,
-                                                        paddings = subfield.paddings?.let { paddings ->
-                                                            Paddings(
-                                                                start = paddings.start,
-                                                                end = paddings.end,
-                                                                top = paddings.top,
-                                                                bottom = paddings.bottom,
-                                                            )
-                                                        },
-                                                    )
-                                                }
-                                                ROW -> error("Not supported")
-                                                RADIO -> {
-                                                    RadioGroupUiElement(
-                                                        id = subfield.id,
-                                                        type = subfield.type,
-                                                        label = localization.getString(subfield.labelKey),
-                                                        weight = subfield.weight,
-                                                        values = subfield.values?.map { radioValue ->
-                                                            RadioGroupUiElement.RadioButtonUiElement(
-                                                                id = radioValue.id,
-                                                                label = localization.getString(radioValue.labelKey),
-                                                            )
-                                                        }.orEmpty(),
-                                                        selectedId = saved.radioGroups[subfield.id] ?: NO_ID,
-                                                        required = subfield.required,
-                                                        paddings = subfield.paddings?.let { paddings ->
-                                                            Paddings(
-                                                                start = paddings.start,
-                                                                end = paddings.end,
-                                                                top = paddings.top,
-                                                                bottom = paddings.bottom,
-                                                            )
-                                                        },
-                                                    )
-                                                }
-                                            }
-                                        },
-                                        weight = field.weight,
-                                        paddings = field.paddings?.let { paddings ->
-                                            Paddings(
-                                                start = paddings.start,
-                                                end = paddings.end,
-                                                top = paddings.top,
-                                                bottom = paddings.bottom,
-                                            )
-                                        },
-                                    )
-                                }
-                                RADIO -> {
-                                    RadioGroupUiElement(
-                                        id = field.id,
-                                        type = field.type,
-                                        label = localization.getString(field.labelKey),
-                                        weight = field.weight,
-                                        values = field.values?.map { radioValue ->
-                                            RadioGroupUiElement.RadioButtonUiElement(
-                                                id = radioValue.id,
-                                                label = localization.getString(radioValue.labelKey),
-                                            )
-                                        }.orEmpty(),
-                                        selectedId = saved.radioGroups[field.id] ?: NO_ID,
-                                        required = field.required,
-                                        paddings = field.paddings?.let { paddings ->
-                                            Paddings(
-                                                start = paddings.start,
-                                                end = paddings.end,
-                                                top = paddings.top,
-                                                bottom = paddings.bottom,
-                                            )
-                                        },
-                                    )
-                                }
-                            }
-                        }
-                    )
-                }
+                reduce { reduceQuiz(template, localization, saved) }
             }
             .collect()
+    }
+
+    private fun SimpleContext<QuizScreenState>.reduceQuiz(
+        template: QuizTemplate,
+        localization: Localization,
+        saved: QuizOutput,
+    ): QuizScreenState {
+        return state.copy(
+            uiElements = template.fields.map { field ->
+                when (field.type) {
+                    TEXT_LABEL -> {
+                        TextLabelUiElement(
+                            type = field.type,
+                            id = field.type.name,
+                            label = localization.getString(field.labelKey),
+                            weight = field.weight,
+                            paddings = field.paddings?.let { paddings ->
+                                Paddings(
+                                    start = paddings.start,
+                                    end = paddings.end,
+                                    top = paddings.top,
+                                    bottom = paddings.bottom,
+                                )
+                            },
+                        )
+                    }
+                    CHECKBOX -> {
+                        CheckBoxUiElement(
+                            id = field.id,
+                            type = field.type,
+                            label = localization.getString(field.labelKey),
+                            isChecked = saved.checkBoxes[field.id] ?: false,
+                            weight = field.weight,
+                            required = field.required,
+                            paddings = field.paddings?.let { paddings ->
+                                Paddings(
+                                    start = paddings.start,
+                                    end = paddings.end,
+                                    top = paddings.top,
+                                    bottom = paddings.bottom,
+                                )
+                            },
+                        )
+                    }
+                    INPUT -> {
+                        InputUiElement(
+                            id = field.id,
+                            type = field.type,
+                            label = localization.getString(field.labelKey),
+                            value = saved.inputs[field.id] ?: "",
+                            weight = field.weight,
+                            required = field.required,
+                            paddings = field.paddings?.let { paddings ->
+                                Paddings(
+                                    start = paddings.start,
+                                    end = paddings.end,
+                                    top = paddings.top,
+                                    bottom = paddings.bottom,
+                                )
+                            },
+                        )
+                    }
+                    ROW -> {
+                        RowUiElement(
+                            id = field.id,
+                            type = field.type,
+                            label = localization.getString(field.labelKey),
+                            subcomponents = field.subfields.map { subfield ->
+                                when (subfield.type) {
+                                    TEXT_LABEL -> {
+                                        TextLabelUiElement(
+                                            type = subfield.type,
+                                            id = subfield.type.name,
+                                            label = localization.getString(subfield.labelKey),
+                                            weight = subfield.weight,
+                                            paddings = subfield.paddings?.let { paddings ->
+                                                Paddings(
+                                                    start = paddings.start,
+                                                    end = paddings.end,
+                                                    top = paddings.top,
+                                                    bottom = paddings.bottom,
+                                                )
+                                            },
+                                        )
+                                    }
+                                    CHECKBOX -> {
+                                        CheckBoxUiElement(
+                                            id = subfield.id,
+                                            type = subfield.type,
+                                            label = localization.getString(subfield.labelKey),
+                                            isChecked = saved.checkBoxes[subfield.id] ?: false,
+                                            weight = subfield.weight,
+                                            required = subfield.required,
+                                            paddings = subfield.paddings?.let { paddings ->
+                                                Paddings(
+                                                    start = paddings.start,
+                                                    end = paddings.end,
+                                                    top = paddings.top,
+                                                    bottom = paddings.bottom,
+                                                )
+                                            },
+                                        )
+                                    }
+                                    INPUT -> {
+                                        InputUiElement(
+                                            id = subfield.id,
+                                            type = subfield.type,
+                                            label = localization.getString(subfield.labelKey),
+                                            value = saved.inputs[subfield.id] ?: "",
+                                            weight = subfield.weight,
+                                            required = subfield.required,
+                                            paddings = subfield.paddings?.let { paddings ->
+                                                Paddings(
+                                                    start = paddings.start,
+                                                    end = paddings.end,
+                                                    top = paddings.top,
+                                                    bottom = paddings.bottom,
+                                                )
+                                            },
+                                        )
+                                    }
+                                    ROW -> error("Not supported")
+                                    RADIO -> {
+                                        RadioGroupUiElement(
+                                            id = subfield.id,
+                                            type = subfield.type,
+                                            label = localization.getString(subfield.labelKey),
+                                            weight = subfield.weight,
+                                            values = subfield.values?.map { radioValue ->
+                                                RadioGroupUiElement.RadioButtonUiElement(
+                                                    id = radioValue.id,
+                                                    label = localization.getString(radioValue.labelKey),
+                                                )
+                                            }.orEmpty(),
+                                            selectedId = saved.radioGroups[subfield.id] ?: NO_ID,
+                                            required = subfield.required,
+                                            paddings = subfield.paddings?.let { paddings ->
+                                                Paddings(
+                                                    start = paddings.start,
+                                                    end = paddings.end,
+                                                    top = paddings.top,
+                                                    bottom = paddings.bottom,
+                                                )
+                                            },
+                                        )
+                                    }
+                                }
+                            },
+                            weight = field.weight,
+                            paddings = field.paddings?.let { paddings ->
+                                Paddings(
+                                    start = paddings.start,
+                                    end = paddings.end,
+                                    top = paddings.top,
+                                    bottom = paddings.bottom,
+                                )
+                            },
+                        )
+                    }
+                    RADIO -> {
+                        RadioGroupUiElement(
+                            id = field.id,
+                            type = field.type,
+                            label = localization.getString(field.labelKey),
+                            weight = field.weight,
+                            values = field.values?.map { radioValue ->
+                                RadioGroupUiElement.RadioButtonUiElement(
+                                    id = radioValue.id,
+                                    label = localization.getString(radioValue.labelKey),
+                                )
+                            }.orEmpty(),
+                            selectedId = saved.radioGroups[field.id] ?: NO_ID,
+                            required = field.required,
+                            paddings = field.paddings?.let { paddings ->
+                                Paddings(
+                                    start = paddings.start,
+                                    end = paddings.end,
+                                    top = paddings.top,
+                                    bottom = paddings.bottom,
+                                )
+                            },
+                        )
+                    }
+                }
+            }
+        )
     }
 
     @AssistedFactory

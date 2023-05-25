@@ -82,6 +82,8 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.4.0")
 
     // Utilities
+    implementation("io.arrow-kt:arrow-core:1.2.0-RC")
+    implementation("io.arrow-kt:arrow-fx-coroutines:1.2.0-RC")
     implementation("com.jakewharton.timber:timber:5.0.1")
     implementation("io.coil-kt:coil:2.0.0-rc03")
     implementation("io.coil-kt:coil-compose:2.2.2")

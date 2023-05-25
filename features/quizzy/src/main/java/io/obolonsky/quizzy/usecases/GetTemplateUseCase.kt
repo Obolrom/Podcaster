@@ -1,6 +1,8 @@
 package io.obolonsky.quizzy.usecases
 
 import android.content.Context
+import arrow.core.Option
+import arrow.core.raise.option
 import io.obolonsky.core.di.scopes.FeatureScope
 import io.obolonsky.core.di.utils.JsonConverter
 import io.obolonsky.quizzy.mappers.QuizTemplateMapper
@@ -18,6 +20,16 @@ class GetTemplateUseCase @Inject constructor(
 ) {
 
     private val mapper = QuizTemplateMapper()
+
+    fun getTemplate(assetPath: String): Option<QuizTemplate> = option {
+        val templateJson = context.assets
+            .open(assetPath)
+            .use { inputStream -> inputStream.readBytes() }
+            .let(::String)
+        ensureNotNull(templateJson)
+    }
+        .map { templateJson -> jsonConverter.fromJson(templateJson, QuizTemplateInput::class.java) }
+        .map(mapper::map)
 
     fun get(assetPath: String): Flow<QuizTemplate> {
         return flow {

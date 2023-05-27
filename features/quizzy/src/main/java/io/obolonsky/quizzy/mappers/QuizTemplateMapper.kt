@@ -1,9 +1,7 @@
 package io.obolonsky.quizzy.mappers
 
 import io.obolonsky.core.di.utils.Mapper
-import io.obolonsky.quizzy.redux.QuizTemplate
-import io.obolonsky.quizzy.redux.QuizTemplateInput
-import io.obolonsky.quizzy.redux.UiElementTypes
+import io.obolonsky.quizzy.redux.*
 
 class QuizTemplateMapper : Mapper<QuizTemplateInput, QuizTemplate> {
 
@@ -55,8 +53,29 @@ class QuizTemplateMapper : Mapper<QuizTemplateInput, QuizTemplate> {
                 },
             )
         }
+        val triggers = input.triggers.map { trigger ->
+            QuizTemplate.Trigger(
+                fieldId = trigger.field_id,
+                actionType = ActionType.valueOf(trigger.action_type),
+                conditions = trigger.conditions.map { condition ->
+                    QuizTemplate.Trigger.Condition(
+                        conditionType = ConditionType.valueOf(condition.condition_type),
+                        value = condition.value,
+                    )
+                },
+                operations = trigger.operations.map { operation ->
+                    QuizTemplate.Trigger.Operation(
+                        fieldId = operation.field_id,
+                        operationType = OperationType.valueOf(operation.operation_type),
+                        value = operation.value,
+                    )
+                },
+            )
+        }
+
         return QuizTemplate(
             fields = fields,
+            triggers = triggers,
         )
     }
 }

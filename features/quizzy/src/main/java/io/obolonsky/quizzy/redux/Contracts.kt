@@ -15,6 +15,7 @@ sealed class QuizScreenSideEffect {
 
 data class QuizTemplate(
     val fields: List<Field>,
+    val triggers: List<Trigger>,
 ) {
 
     data class Field(
@@ -40,10 +41,31 @@ data class QuizTemplate(
             val bottom: Int,
         )
     }
+
+    data class Trigger(
+        val fieldId: String,
+        val actionType: ActionType,
+        val conditions: List<Condition>,
+        val operations: List<Operation>,
+    ) {
+
+        // TODO: now we can check only with static data
+        data class Condition(
+            val conditionType: ConditionType,
+            val value: String,
+        )
+
+        data class Operation(
+            val fieldId: String,
+            val operationType: OperationType,
+            val value: String?,
+        )
+    }
 }
 
 data class QuizTemplateInput(
     val fields: List<Field>,
+    val triggers: List<Trigger>,
 ) {
 
     data class Field(
@@ -69,6 +91,26 @@ data class QuizTemplateInput(
             val bottom: Int,
         )
     }
+
+    data class Trigger(
+        val field_id: String,
+        val action_type: String,
+        val conditions: List<Condition>,
+        val operations: List<Operation>,
+    ) {
+
+        // TODO: now we can check only with static data
+        data class Condition(
+            val condition_type: String,
+            val value: String,
+        )
+
+        data class Operation(
+            val field_id: String,
+            val operation_type: String,
+            val value: String?,
+        )
+    }
 }
 
 enum class UiElementTypes {
@@ -77,4 +119,16 @@ enum class UiElementTypes {
     INPUT,
     ROW,
     RADIO,
+}
+
+enum class ActionType {
+    CHANGE,
+}
+
+enum class ConditionType {
+    EQUALS,
+}
+
+enum class OperationType {
+    SET_VALUE,
 }

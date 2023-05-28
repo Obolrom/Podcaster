@@ -118,12 +118,10 @@ class QuizzyViewModel @AssistedInject constructor(
                 }
             }
 
-        Timber.d("fuckingFuck crap: $triggered")
-
-        var tempState = reduced.copy()
-        triggered
-            ?.fold(reduced) { state, trigger ->
-                state.copy(uiElements = tempState.uiElements?.map { component ->
+        val finalReduced = triggered
+            .orEmpty()
+            .fold(reduced) { state, trigger ->
+                state.copy(uiElements = state.uiElements?.map { component ->
                     val operation = trigger.operations.find { component.id == it.fieldId }
                     if (component is InputUiElement && operation != null) {
                         when (operation.operationType) {
@@ -136,28 +134,8 @@ class QuizzyViewModel @AssistedInject constructor(
                     }
                 })
             }
-        triggered?.forEach { trigger ->
-            tempState = tempState.copy(
-                uiElements = tempState.uiElements?.map { component ->
-                    val operation = trigger.operations.find { component.id == it.fieldId }
-                    if (component is InputUiElement && operation != null) {
-                        Timber.d("fuckingFuck that's it: ${operation.value.toString()}")
-                        val shit = when (operation.operationType) {
-                            OperationType.SET_VALUE -> {
-                                component.copy(value = operation.value.toString())
-                            }
-                        }
-                        Timber.d("fuckingFuck nu ebal rot, '${shit.value}'")
-                        shit
-                    } else {
-                        component
-                    }
-                },
-            )
-        }
 
-//        reduce { reduced }
-        reduce { tempState }
+        reduce { finalReduced }
     }
 
     fun submit() = intent {

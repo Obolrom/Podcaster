@@ -9,9 +9,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import io.obolonsky.core.di.utils.NO_ID
 import io.obolonsky.quizzy.data.*
-import io.obolonsky.quizzy.redux.QuizScreenSideEffect
-import io.obolonsky.quizzy.redux.QuizScreenState
-import io.obolonsky.quizzy.redux.QuizTemplate
+import io.obolonsky.quizzy.redux.*
 import io.obolonsky.quizzy.redux.UiElementTypes.*
 import io.obolonsky.quizzy.repositories.QuizOutputRepository
 import io.obolonsky.quizzy.ui.components.*
@@ -103,7 +101,63 @@ class QuizzyViewModel @AssistedInject constructor(
             }
         })
 
-        reduce { reduced }
+        val triggered = reduced.uiElements
+            ?.mapNotNull { component ->
+                if (component is CheckBoxUiElement
+                    && action is ToggleCheckBoxAction
+                    && changedId == component.id) {
+                    val trigger = state.triggers?.find { it.fieldId == changedId }
+                    val condition = trigger?.conditions?.find {
+                        it.conditionType == ConditionType.EQUALS && it.value.toString()
+                            .toBoolean() == action.isChecked
+                    }
+
+                    if (condition != null) trigger else null
+                } else {
+                    null
+                }
+            }
+
+        Timber.d("fuckingFuck crap: $triggered")
+
+        var tempState = reduced.copy()
+        triggered
+            ?.fold(reduced) { state, trigger ->
+                state.copy(uiElements = tempState.uiElements?.map { component ->
+                    val operation = trigger.operations.find { component.id == it.fieldId }
+                    if (component is InputUiElement && operation != null) {
+                        when (operation.operationType) {
+                            OperationType.SET_VALUE -> {
+                                component.copy(value = operation.value.toString())
+                            }
+                        }
+                    } else {
+                        component
+                    }
+                })
+            }
+        triggered?.forEach { trigger ->
+            tempState = tempState.copy(
+                uiElements = tempState.uiElements?.map { component ->
+                    val operation = trigger.operations.find { component.id == it.fieldId }
+                    if (component is InputUiElement && operation != null) {
+                        Timber.d("fuckingFuck that's it: ${operation.value.toString()}")
+                        val shit = when (operation.operationType) {
+                            OperationType.SET_VALUE -> {
+                                component.copy(value = operation.value.toString())
+                            }
+                        }
+                        Timber.d("fuckingFuck nu ebal rot, '${shit.value}'")
+                        shit
+                    } else {
+                        component
+                    }
+                },
+            )
+        }
+
+//        reduce { reduced }
+        reduce { tempState }
     }
 
     fun submit() = intent {
@@ -424,7 +478,8 @@ class QuizzyViewModel @AssistedInject constructor(
                         )
                     }
                 }
-            }
+            },
+            triggers = template.triggers,
         )
     }
 

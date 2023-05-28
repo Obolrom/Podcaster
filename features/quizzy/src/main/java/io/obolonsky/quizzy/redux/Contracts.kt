@@ -6,6 +6,7 @@ data class QuizScreenState(
     val title: String?,
     val template: QuizTemplate? = null,
     val uiElements: List<UiElement>? = null,
+    val triggers: List<QuizTemplate.Trigger>? = null,
 )
 
 sealed class QuizScreenSideEffect {
@@ -52,7 +53,7 @@ data class QuizTemplate(
         // TODO: now we can check only with static data
         data class Condition(
             val conditionType: ConditionType,
-            val value: String,
+            val value: Any,
         )
 
         data class Operation(
@@ -102,7 +103,7 @@ data class QuizTemplateInput(
         // TODO: now we can check only with static data
         data class Condition(
             val condition_type: String,
-            val value: String,
+            val value: Any,
         )
 
         data class Operation(

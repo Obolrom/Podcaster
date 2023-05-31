@@ -193,6 +193,28 @@
           "value": false
         }
       ]
+    },
+    {
+      "field_id": "NESTED_CHECK",
+      "action_type": "CHANGE",
+      "conditions": [
+        {
+          "condition_type": "EQUALS",
+          "value": true
+        }
+      ],
+      "operations": [
+        {
+          "field_id": "INPUT_SOME_VALUE_1",
+          "operation_type": "SET_VALUE",
+          "value": ""
+        },
+        {
+          "field_id": "some_input",
+          "operation_type": "SET_VALUE",
+          "value": ""
+        }
+      ]
     }
   ]
 }

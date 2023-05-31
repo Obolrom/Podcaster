@@ -107,13 +107,31 @@ class QuizzyViewModel @AssistedInject constructor(
                 if (component is CheckBoxUiElement
                     && action is ToggleCheckBoxAction
                     && changedId == component.id) {
-                    val trigger = state.triggers?.find { it.fieldId == changedId }
+                    val trigger = reduced.triggers?.find { it.fieldId == changedId }
                     val condition = trigger?.conditions?.find {
                         it.conditionType == ConditionType.EQUALS && it.value.toString()
                             .toBoolean() == action.isChecked
                     }
 
                     if (condition != null) trigger else null
+                } else if (component is RowUiElement) {
+                    val checkBox = component.subcomponents.find { subcomponent ->
+                        subcomponent is CheckBoxUiElement
+                                && action is ToggleCheckBoxAction
+                                && changedId == subcomponent.id
+                    }
+
+                    if (checkBox is CheckBoxUiElement && action is ToggleCheckBoxAction) {
+                        val trigger = reduced.triggers?.find { it.fieldId == changedId }
+                        val condition = trigger?.conditions?.find {
+                            it.conditionType == ConditionType.EQUALS && it.value.toString()
+                                .toBoolean() == action.isChecked
+                        }
+
+                        if (condition != null) trigger else null
+                    } else {
+                        null
+                    }
                 } else {
                     null
                 }

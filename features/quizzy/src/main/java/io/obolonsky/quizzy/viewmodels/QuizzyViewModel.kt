@@ -136,6 +136,39 @@ class QuizzyViewModel @AssistedInject constructor(
                                 component.copy(selectedId = operation.value.toString())
                             }
                         }
+                    } else if (component is CheckBoxUiElement && operation != null) {
+                        when (operation.operationType) {
+                            SET_VALUE -> {
+                                component.copy(isChecked = operation.value.toString().toBoolean())
+                            }
+                        }
+                    } else if (component is RowUiElement) {
+                        component.copy(subcomponents = component.subcomponents.map { subcomponent ->
+                            val subOperation = trigger.operations
+                                .find { subcomponent.id == it.fieldId }
+
+                            if (subcomponent is InputUiElement && subOperation != null) {
+                                when (subOperation.operationType) {
+                                    SET_VALUE -> {
+                                        subcomponent.copy(value = subOperation.value.toString())
+                                    }
+                                }
+                            } else if (subcomponent is RadioGroupUiElement && subOperation != null) {
+                                when (subOperation.operationType) {
+                                    SET_VALUE -> {
+                                        subcomponent.copy(selectedId = subOperation.value.toString())
+                                    }
+                                }
+                            } else if (subcomponent is CheckBoxUiElement && subOperation != null) {
+                                when (subOperation.operationType) {
+                                    SET_VALUE -> {
+                                        subcomponent.copy(isChecked = subOperation.value.toString().toBoolean())
+                                    }
+                                }
+                            } else {
+                                subcomponent
+                            }
+                        })
                     } else {
                         component
                     }

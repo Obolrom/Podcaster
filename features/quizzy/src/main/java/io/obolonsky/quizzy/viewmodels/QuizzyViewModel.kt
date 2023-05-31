@@ -10,6 +10,7 @@ import dagger.assisted.AssistedInject
 import io.obolonsky.core.di.utils.NO_ID
 import io.obolonsky.quizzy.data.*
 import io.obolonsky.quizzy.redux.*
+import io.obolonsky.quizzy.redux.OperationType.*
 import io.obolonsky.quizzy.redux.UiElementTypes.*
 import io.obolonsky.quizzy.repositories.QuizOutputRepository
 import io.obolonsky.quizzy.ui.components.*
@@ -125,8 +126,14 @@ class QuizzyViewModel @AssistedInject constructor(
                     val operation = trigger.operations.find { component.id == it.fieldId }
                     if (component is InputUiElement && operation != null) {
                         when (operation.operationType) {
-                            OperationType.SET_VALUE -> {
+                            SET_VALUE -> {
                                 component.copy(value = operation.value.toString())
+                            }
+                        }
+                    } else if (component is RadioGroupUiElement && operation != null) {
+                        when (operation.operationType) {
+                            SET_VALUE -> {
+                                component.copy(selectedId = operation.value.toString())
                             }
                         }
                     } else {

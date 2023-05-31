@@ -213,6 +213,21 @@
           "field_id": "some_input",
           "operation_type": "SET_VALUE",
           "value": ""
+        },
+        {
+          "field_id": "RADIO_ID",
+          "operation_type": "SET_VALUE",
+          "value": "NO_ID"
+        },
+        {
+          "field_id": "BACKEND_LANG",
+          "operation_type": "SET_VALUE",
+          "value": "NO_ID"
+        },
+        {
+          "field_id": "SUB_SOME_CHECK",
+          "operation_type": "SET_VALUE",
+          "value": true
         }
       ]
     }

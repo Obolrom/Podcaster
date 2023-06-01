@@ -264,11 +264,20 @@ class QuizzyViewModel @AssistedInject constructor(
             }
             .orEmpty()
 
+        val multiselectData = state.uiElements
+            ?.filterIsInstance<MultiselectUiElement>()
+            ?.filter { it.selectedIds.isNotEmpty() }
+            ?.fold(mutableMapOf<String, Set<String>>()) { output, uiData ->
+                output.apply { put(uiData.id, uiData.selectedIds) }
+            }
+            .orEmpty()
+
         val quizOutput = QuizOutput(
             id = UUID.randomUUID(),
             inputs = inputData + inputSubfieldsData,
             checkBoxes = checkBoxData + checkBoxSubfieldsData,
             radioGroups = radioData + radioSubfieldsData,
+            multiselect = multiselectData,
         )
 
         Timber.d("quizOutput $quizOutput")
@@ -307,6 +316,7 @@ class QuizzyViewModel @AssistedInject constructor(
                         inputs = emptyMap(),
                         checkBoxes = emptyMap(),
                         radioGroups = emptyMap(),
+                        multiselect = emptyMap(),
                     )
                 }
                 .bind()
@@ -331,6 +341,7 @@ class QuizzyViewModel @AssistedInject constructor(
                         inputs = emptyMap(),
                         checkBoxes = emptyMap(),
                         radioGroups = emptyMap(),
+                        multiselect = emptyMap(),
                     ),
                 )
             }
@@ -534,7 +545,7 @@ class QuizzyViewModel @AssistedInject constructor(
                                     label = localization.getString(radioValue.labelKey),
                                 )
                             }.orEmpty(),
-                            selectedIds = emptySet(),
+                            selectedIds = saved.multiselect[field.id] ?: emptySet(),
                             required = field.required,
                             paddings = field.paddings?.let { paddings ->
                                 Paddings(

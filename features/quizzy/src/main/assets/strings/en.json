@@ -9,5 +9,8 @@
   "radio_backend_lang_1": "Go",
   "radio_backend_lang_2": "Python",
   "radio_backend_lang_3": "C#",
-  "nested_check": "Nested check"
+  "nested_check": "Nested check",
+  "rx_java": "RxJava",
+  "coroutines": "Coroutines",
+  "room": "Room"
 }

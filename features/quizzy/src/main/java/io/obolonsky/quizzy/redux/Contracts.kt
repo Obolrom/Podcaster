@@ -120,6 +120,7 @@ enum class UiElementTypes {
     INPUT,
     ROW,
     RADIO,
+    MULTISELECT,
 }
 
 enum class ActionType {

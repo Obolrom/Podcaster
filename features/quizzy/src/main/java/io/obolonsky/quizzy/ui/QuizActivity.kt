@@ -185,12 +185,26 @@ fun QuizScreen(
                                         onAction = onAction,
                                     )
                                 }
+                                is MultiselectUiElement -> TODO()
                             }
                         }
                     }
                 }
                 is RadioGroupUiElement -> {
                     RadioGroupComponent(
+                        modifier = Modifier
+                            .padding(PaddingValues(
+                                start = (field.paddings?.start ?: 0).dp,
+                                end = (field.paddings?.end ?: 0).dp,
+                                top = (field.paddings?.top ?: 0).dp,
+                                bottom = (field.paddings?.bottom ?: 0).dp,
+                            )),
+                        uiElement = field,
+                        onAction = onAction,
+                    )
+                }
+                is MultiselectUiElement -> {
+                    MultiselectComponent(
                         modifier = Modifier
                             .padding(PaddingValues(
                                 start = (field.paddings?.start ?: 0).dp,

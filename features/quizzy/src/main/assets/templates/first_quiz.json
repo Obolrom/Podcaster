@@ -144,6 +144,32 @@
           "required": true
         }
       ]
+    },
+    {
+      "id": "SELECT_TECHNOLOGIES",
+      "type": "MULTISELECT",
+      "label_key": "test1",
+      "required": true,
+      "paddings": {
+        "start": 16,
+        "end": 16,
+        "top": 0,
+        "bottom": 8
+      },
+      "values": [
+        {
+          "id": "rx",
+          "label_key": "rx_java"
+        },
+        {
+          "id": "coroutines",
+          "label_key": "coroutines"
+        },
+        {
+          "id": "room",
+          "label_key": "room"
+        }
+      ]
     }
   ],
   "triggers": [

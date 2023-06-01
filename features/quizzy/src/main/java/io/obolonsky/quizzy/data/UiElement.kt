@@ -82,3 +82,20 @@ data class RadioGroupUiElement(
         val label: String,
     )
 }
+
+data class MultiselectUiElement(
+    override val type: UiElementTypes,
+    override val id: String,
+    override val label: String,
+    override val weight: Float? = null,
+    override val required: Boolean? = null,
+    override val paddings: Paddings?,
+    val values: List<SelectElement>,
+    val selectedIds: Set<String>,
+) : UiElement, Requireable {
+
+    data class SelectElement(
+        val id: String,
+        val label: String,
+    )
+}

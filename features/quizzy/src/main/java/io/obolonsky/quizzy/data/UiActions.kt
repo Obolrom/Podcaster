@@ -19,3 +19,8 @@ data class SelectRadioButtonAction(
     override val id: String,
     val selectedButtonId: String,
 ) : UiAction
+
+data class MultiselectSelectToggleAction(
+    override val id: String,
+    val selectedId: String,
+) : UiAction

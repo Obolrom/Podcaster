@@ -64,6 +64,15 @@ class QuizzyViewModel @AssistedInject constructor(
                 && action is InputChangedAction
                 && changedId == component.id) {
                 component.copy(value = action.newValue)
+            } else if (component is MultiselectUiElement
+                && action is MultiselectSelectToggleAction
+                && changedId == component.id) {
+                val newSelectedIds = if (component.selectedIds.contains(action.selectedId)) {
+                    component.selectedIds.toMutableSet().apply { remove(action.selectedId) }
+                } else {
+                    component.selectedIds.toMutableSet().apply { add(action.selectedId) }
+                }
+                component.copy(selectedIds = newSelectedIds)
             } else if (component is RowUiElement
                 && component.subcomponents.find { it.id == changedId } is InputUiElement
                 && action is InputChangedAction) {
@@ -475,6 +484,7 @@ class QuizzyViewModel @AssistedInject constructor(
                                             },
                                         )
                                     }
+                                    MULTISELECT -> error("Not supported")
                                 }
                             },
                             weight = field.weight,
@@ -501,6 +511,30 @@ class QuizzyViewModel @AssistedInject constructor(
                                 )
                             }.orEmpty(),
                             selectedId = saved.radioGroups[field.id] ?: NO_ID,
+                            required = field.required,
+                            paddings = field.paddings?.let { paddings ->
+                                Paddings(
+                                    start = paddings.start,
+                                    end = paddings.end,
+                                    top = paddings.top,
+                                    bottom = paddings.bottom,
+                                )
+                            },
+                        )
+                    }
+                    MULTISELECT -> {
+                        MultiselectUiElement(
+                            id = field.id,
+                            type = field.type,
+                            label = localization.getString(field.labelKey),
+                            weight = field.weight,
+                            values = field.values?.map { radioValue ->
+                                MultiselectUiElement.SelectElement(
+                                    id = radioValue.id,
+                                    label = localization.getString(radioValue.labelKey),
+                                )
+                            }.orEmpty(),
+                            selectedIds = emptySet(),
                             required = field.required,
                             paddings = field.paddings?.let { paddings ->
                                 Paddings(

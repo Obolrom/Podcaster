@@ -112,63 +112,53 @@ class QuizzyViewModel @AssistedInject constructor(
         })
 
         val triggered = reduced.uiElements
-            ?.mapNotNull { component ->
+            .orEmpty()
+            .asSequence()
+            .filterIsInstance<RowUiElement>()
+            .map(RowUiElement::subcomponents)
+            .flatten()
+            .plus(reduced.uiElements.orEmpty())
+            .toList()
+            .mapNotNull { component ->
                 if (component is CheckBoxUiElement
                     && action is ToggleCheckBoxAction
                     && changedId == component.id) {
                     val trigger = reduced.triggers?.find { it.fieldId == changedId }
                     val condition = trigger?.conditions?.find { condition ->
                         reduced.uiElements
+                            .orEmpty()
                             .asSequence()
                             .filterIsInstance<RowUiElement>()
                             .map(RowUiElement::subcomponents)
                             .flatten()
-                            .plus(reduced.uiElements)
+                            .plus(reduced.uiElements.orEmpty())
                             .toList()
                             .find {
-                                it.id == condition.conditionFieldId
-                                        && it is CheckBoxUiElement
-                                        && condition.conditionType == ConditionType.EQUALS
-                                        && condition.value.toString().toBoolean() == it.isChecked
+                                when (it) {
+                                    is CheckBoxUiElement -> {
+                                        when (condition.conditionType) {
+                                            ConditionType.EQUALS -> {
+                                                it.id == condition.conditionFieldId
+                                                        && condition.value.toString().toBoolean() == it.isChecked
+                                            }
+                                        }
+                                    }
+                                    is InputUiElement -> false
+                                    is MultiselectUiElement -> false
+                                    is RadioGroupUiElement -> false
+                                    is RowUiElement -> false
+                                    is TextLabelUiElement -> false
+                                }
                             } != null
                     }
 
                     if (condition != null) trigger else null
-                } else if (component is RowUiElement) {
-                    component.subcomponents.firstNotNullOfOrNull { subcomponent ->
-                        if (subcomponent is CheckBoxUiElement
-                            && action is ToggleCheckBoxAction
-                            && changedId == subcomponent.id
-                        ) {
-                            val trigger = reduced.triggers?.find { it.fieldId == changedId }
-                            val condition = trigger?.conditions?.find { condition ->
-                                reduced.uiElements
-                                    .asSequence()
-                                    .filterIsInstance<RowUiElement>()
-                                    .map(RowUiElement::subcomponents)
-                                    .flatten()
-                                    .plus(reduced.uiElements)
-                                    .toList() // maybe unnecessary
-                                    .find {
-                                        it.id == condition.conditionFieldId
-                                                && it is CheckBoxUiElement
-                                                && condition.conditionType == ConditionType.EQUALS
-                                                && condition.value.toString().toBoolean() == it.isChecked
-                                    } != null
-                            }
-
-                            if (condition != null) trigger else null
-                        } else {
-                            null
-                        }
-                    }
                 } else {
                     null
                 }
             }
 
         val finalReduced = triggered
-            .orEmpty()
             .fold(reduced) { state, trigger ->
                 state.copy(uiElements = state.uiElements?.map { component ->
                     val operation = trigger.operations.find { component.id == it.fieldId }

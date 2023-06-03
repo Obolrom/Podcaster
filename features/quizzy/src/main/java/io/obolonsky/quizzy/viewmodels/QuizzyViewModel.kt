@@ -117,9 +117,20 @@ class QuizzyViewModel @AssistedInject constructor(
                     && action is ToggleCheckBoxAction
                     && changedId == component.id) {
                     val trigger = reduced.triggers?.find { it.fieldId == changedId }
-                    val condition = trigger?.conditions?.find {
-                        it.conditionType == ConditionType.EQUALS && it.value.toString()
-                            .toBoolean() == action.isChecked
+                    val condition = trigger?.conditions?.find { condition ->
+                        reduced.uiElements
+                            .asSequence()
+                            .filterIsInstance<RowUiElement>()
+                            .map(RowUiElement::subcomponents)
+                            .flatten()
+                            .plus(reduced.uiElements)
+                            .toList()
+                            .find {
+                                it.id == condition.conditionFieldId
+                                        && it is CheckBoxUiElement
+                                        && condition.conditionType == ConditionType.EQUALS
+                                        && condition.value.toString().toBoolean() == it.isChecked
+                            } != null
                     }
 
                     if (condition != null) trigger else null
@@ -130,9 +141,20 @@ class QuizzyViewModel @AssistedInject constructor(
                             && changedId == subcomponent.id
                         ) {
                             val trigger = reduced.triggers?.find { it.fieldId == changedId }
-                            val condition = trigger?.conditions?.find {
-                                it.conditionType == ConditionType.EQUALS && it.value.toString()
-                                    .toBoolean() == action.isChecked
+                            val condition = trigger?.conditions?.find { condition ->
+                                reduced.uiElements
+                                    .asSequence()
+                                    .filterIsInstance<RowUiElement>()
+                                    .map(RowUiElement::subcomponents)
+                                    .flatten()
+                                    .plus(reduced.uiElements)
+                                    .toList() // maybe unnecessary
+                                    .find {
+                                        it.id == condition.conditionFieldId
+                                                && it is CheckBoxUiElement
+                                                && condition.conditionType == ConditionType.EQUALS
+                                                && condition.value.toString().toBoolean() == it.isChecked
+                                    } != null
                             }
 
                             if (condition != null) trigger else null

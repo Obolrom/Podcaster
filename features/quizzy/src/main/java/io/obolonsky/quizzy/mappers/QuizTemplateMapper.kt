@@ -59,6 +59,7 @@ class QuizTemplateMapper : Mapper<QuizTemplateInput, QuizTemplate> {
                 actionType = ActionType.valueOf(trigger.action_type),
                 conditions = trigger.conditions.map { condition ->
                     QuizTemplate.Trigger.Condition(
+                        conditionFieldId = condition.condition_field_id,
                         conditionType = ConditionType.valueOf(condition.condition_type),
                         value = condition.value,
                     )

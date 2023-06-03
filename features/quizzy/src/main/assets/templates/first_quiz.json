@@ -178,6 +178,7 @@
       "action_type": "CHANGE",
       "conditions": [
         {
+          "condition_field_id": "NESTED_CHECK",
           "condition_type": "EQUALS",
           "value": true
         }
@@ -225,6 +226,7 @@
       "action_type": "CHANGE",
       "conditions": [
         {
+          "condition_field_id": "NESTED_CHECK",
           "condition_type": "EQUALS",
           "value": true
         }

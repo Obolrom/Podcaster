@@ -52,6 +52,7 @@ data class QuizTemplate(
 
         // TODO: now we can check only with static data
         data class Condition(
+            val conditionFieldId: String,
             val conditionType: ConditionType,
             val value: Any,
         )
@@ -102,6 +103,7 @@ data class QuizTemplateInput(
 
         // TODO: now we can check only with static data
         data class Condition(
+            val condition_field_id: String,
             val condition_type: String,
             val value: Any,
         )

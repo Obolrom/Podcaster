@@ -3,12 +3,16 @@ package io.obolonsky.podcaster.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.datastore.core.DataStore
+import androidx.datastore.dataStore
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.obolonsky.core.di.actions.*
 import io.obolonsky.github.ui.GitHubActivity
+import io.obolonsky.podcaster.MyPrefs
 import io.obolonsky.podcaster.PodcasterApp
 import io.obolonsky.podcaster.R
 import io.obolonsky.podcaster.databinding.ActivityMainFakeBinding
+import io.obolonsky.podcaster.misc.MyPrefsSerializer
 import io.obolonsky.quizzy.ui.QuizActivity
 import io.obolonsky.utils.get
 import javax.inject.Inject
@@ -31,6 +35,11 @@ class MainActivity : AppCompatActivity() {
     @Inject
     internal lateinit var goToCryptoAction: Provider<GoToCryptoAction>
 
+    private val preferences: DataStore<MyPrefs> by dataStore(
+        fileName = "PodcasterPreferences",
+        serializer = MyPrefsSerializer(),
+    )
+
     private val binding: ActivityMainFakeBinding by viewBinding()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_fake)
 
-        startActivity(Intent(this, QuizActivity::class.java))
+//        startActivity(Intent(this, QuizActivity::class.java))
 
         binding.goToGithub.setOnClickListener {
             startActivity(Intent(this, GitHubActivity::class.java))

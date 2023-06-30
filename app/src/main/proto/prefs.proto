@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option java_package = "io.obolonsky.podcaster";
+option java_multiple_files = true;
+
+message MyPrefs {
+    int32 counter = 1;
+    string some_string = 2;
+}

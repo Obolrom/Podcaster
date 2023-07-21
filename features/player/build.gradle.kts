@@ -67,8 +67,8 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.4.1")
 
     // Dagger 2
-    implementation("com.google.dagger:dagger:2.44.2")
-    kapt("com.google.dagger:dagger-compiler:2.44.2")
+    implementation("com.google.dagger:dagger:2.47")
+    kapt("com.google.dagger:dagger-compiler:2.47")
 
     // Redux
     implementation("org.orbit-mvi:orbit-core:4.6.0")

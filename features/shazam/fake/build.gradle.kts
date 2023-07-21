@@ -42,8 +42,8 @@ dependencies {
     implementation(project(":core_ui"))
 
     // Dagger 2
-    implementation("com.google.dagger:dagger:2.44.2")
-    kapt("com.google.dagger:dagger-compiler:2.44.2")
+    implementation("com.google.dagger:dagger:2.47")
+    kapt("com.google.dagger:dagger-compiler:2.47")
 
     // Utilities
     implementation("com.jakewharton.timber:timber:5.0.1")

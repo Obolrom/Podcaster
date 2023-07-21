@@ -50,8 +50,8 @@ dependencies {
     implementation("com.google.android.material:material:1.9.0")
 
     // Dagger 2
-    implementation("com.google.dagger:dagger:2.44.2")
-    kapt("com.google.dagger:dagger-compiler:2.44.2")
+    implementation("com.google.dagger:dagger:2.47")
+    kapt("com.google.dagger:dagger-compiler:2.47")
 
     // Redux
     implementation("org.orbit-mvi:orbit-core:4.6.0")

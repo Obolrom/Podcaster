@@ -3,7 +3,7 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("com.apollographql.apollo3") version "3.5.0"
+    id("com.apollographql.apollo3") version "3.8.1"
     id("kotlin-android")
     id("kotlin-kapt")
 }
@@ -100,11 +100,11 @@ dependencies {
     implementation("net.openid:appauth:0.9.1")
 
     // Apollo
-    implementation("com.apollographql.apollo3:apollo-runtime:3.5.0")
+    implementation("com.apollographql.apollo3:apollo-runtime:3.8.1")
 
     // Dagger 2
-    implementation("com.google.dagger:dagger:2.47")
-    kapt("com.google.dagger:dagger-compiler:2.47")
+    implementation("com.google.dagger:dagger:2.48")
+    kapt("com.google.dagger:dagger-compiler:2.48")
 
     // Utilities
     implementation("com.jakewharton.timber:timber:5.0.1")
@@ -113,7 +113,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
     testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
-    testImplementation("com.apollographql.apollo3:apollo-mockserver:3.5.0")
+    testImplementation("com.apollographql.apollo3:apollo-mockserver:3.8.1")
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
 }
 

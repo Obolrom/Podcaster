@@ -178,7 +178,7 @@ fun UserInfoContainerScreen(
         val pagerState = rememberPagerState(
             initialPage = 1,
             initialPageOffsetFraction = 0f
-        ) { 0 }
+        ) { tabData.size }
         val tabIndex = pagerState.currentPage
         val coroutineScope = rememberCoroutineScope()
 

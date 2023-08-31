@@ -5,14 +5,15 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-android")
     id("kotlin-kapt")
+    id("com.google.devtools.ksp")
 }
 
 android {
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 33
+        targetSdk = 34
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -46,9 +47,9 @@ dependencies {
     kapt("com.google.dagger:dagger-compiler:2.47")
 
     // Room
-    implementation(Dependencies.Room.runtime)
-    implementation(Dependencies.Room.ktx)
-    kapt(Dependencies.Room.kapt)
+    implementation("androidx.room:room-runtime:2.5.2")
+    implementation("androidx.room:room-ktx:2.5.2")
+    ksp("androidx.room:room-compiler:2.5.2")
 
     // Player
     implementation("androidx.media3:media3-ui:${Media3.version}")

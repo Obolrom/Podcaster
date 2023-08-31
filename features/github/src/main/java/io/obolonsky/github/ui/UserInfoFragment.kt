@@ -27,8 +27,7 @@ import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.pager.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -176,7 +175,10 @@ fun UserInfoContainerScreen(
             )
 
         val tabData = GithubInfoTabs.values().asList()
-        val pagerState = rememberPagerState(initialPage = 1)
+        val pagerState = rememberPagerState(
+            initialPage = 1,
+            initialPageOffsetFraction = 0f
+        ) { 0 }
         val tabIndex = pagerState.currentPage
         val coroutineScope = rememberCoroutineScope()
 
@@ -201,7 +203,7 @@ fun UserInfoContainerScreen(
         }
 
         HorizontalPager(
-            pageCount = tabData.size,
+            pageSize = PageSize.Fill,
             state = pagerState,
         ) { page ->
             Column(
@@ -594,7 +596,7 @@ fun RepoTitle(
     modifier: Modifier = Modifier,
 ) = FlowRow(
     modifier = modifier,
-    verticalAlignment = Alignment.CenterVertically,
+    verticalArrangement = Arrangement.Center,
 ) {
     Text(
         modifier = Modifier.clickable { onRepoClick(repo.owner.login, repo.repoName) },

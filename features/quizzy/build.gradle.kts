@@ -8,11 +8,11 @@ plugins {
 
 android {
     namespace = "io.obolonsky.quizzy"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 33
+        targetSdk = 34
     }
 
     buildTypes {
@@ -35,7 +35,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.2"
+        kotlinCompilerExtensionVersion = "1.5.0"
     }
 }
 
@@ -61,14 +61,14 @@ dependencies {
     // Compose
     val composeBom = platform("androidx.compose:compose-bom:2023.01.00")
     implementation(composeBom)
-    implementation("androidx.compose.ui:ui:1.4.0")
-    implementation("androidx.compose.material:material:1.4.0")
-    implementation("androidx.compose.material:material-icons-core:1.4.0")
-    implementation("androidx.compose.material:material-icons-extended:1.4.0")
-    implementation("androidx.activity:activity-compose:1.7.0")
+    implementation("androidx.compose.ui:ui:1.5.0")
+    implementation("androidx.compose.material:material:1.5.0")
+    implementation("androidx.compose.material:material-icons-core:1.5.0")
+    implementation("androidx.compose.material:material-icons-extended:1.5.0")
+    implementation("androidx.activity:activity-compose:1.7.2")
     // Android Studio Preview support
-    implementation("androidx.compose.ui:ui-tooling-preview:1.4.0")
-    implementation("androidx.compose.ui:ui-tooling:1.4.0")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.5.0")
+    implementation("androidx.compose.ui:ui-tooling:1.5.0")
 
     // KTX
     implementation("androidx.core:core-ktx:1.7.0")

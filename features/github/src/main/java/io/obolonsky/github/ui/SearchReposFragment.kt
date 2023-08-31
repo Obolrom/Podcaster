@@ -14,7 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -164,7 +163,7 @@ fun SearchRepo(
     }
     FlowRow(
         modifier = Modifier.padding(top = 4.dp),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalArrangement = Arrangement.Center,
     ) {
         repo.primaryLanguage?.let { lang ->
             PrimaryLanguage(lang = lang)
@@ -200,7 +199,7 @@ fun RepoTitleWithOwner(
     modifier: Modifier = Modifier,
 ) = FlowRow(
     modifier = modifier,
-    verticalAlignment = Alignment.CenterVertically,
+    verticalArrangement = Arrangement.Center,
 ) {
     val imageShape = if (repo.isInOrganization) RoundedCornerShape(5.dp) else CircleShape
 

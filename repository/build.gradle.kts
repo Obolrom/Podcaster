@@ -45,8 +45,8 @@ dependencies {
     implementation(project(":storage"))
 
     // Dagger 2
-    implementation("com.google.dagger:dagger:2.48")
-    ksp("com.google.dagger:dagger-compiler:2.48")
+    implementation("com.google.dagger:dagger:2.49")
+    ksp("com.google.dagger:dagger-compiler:2.49")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
 

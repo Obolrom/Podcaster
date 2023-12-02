@@ -103,8 +103,8 @@ dependencies {
     implementation("com.apollographql.apollo3:apollo-runtime:3.8.1")
 
     // Dagger 2
-    implementation("com.google.dagger:dagger:2.48")
-    kapt("com.google.dagger:dagger-compiler:2.48")
+    implementation("com.google.dagger:dagger:2.49")
+    kapt("com.google.dagger:dagger-compiler:2.49")
 
     // Utilities
     implementation("com.jakewharton.timber:timber:5.0.1")

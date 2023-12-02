@@ -57,8 +57,8 @@ dependencies {
     implementation("com.google.android.material:material:1.6.1")
 
     // Dagger 2
-    implementation("com.google.dagger:dagger:2.48")
-    ksp("com.google.dagger:dagger-compiler:2.48")
+    implementation("com.google.dagger:dagger:2.49")
+    ksp("com.google.dagger:dagger-compiler:2.49")
 
     // AppAuth
     implementation("net.openid:appauth:0.9.1")

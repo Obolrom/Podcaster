@@ -7,6 +7,7 @@
     <string name="nasa">NASA</string>
     <string name="downloads">Downloads</string>
     <string name="crypto">Crypto</string>
+    <string name="chat">Chat</string>
 
     <string-array name="shazam_synonyms">
         <item>shazam</item>

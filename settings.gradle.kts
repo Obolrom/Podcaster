@@ -61,3 +61,6 @@ project(":github").projectDir = File(rootDir, "features/github")
 
 include(":quizzy")
 project(":quizzy").projectDir = File(rootDir, "features/quizzy")
+
+include(":chat")
+project(":chat").projectDir = File(rootDir, "chat")

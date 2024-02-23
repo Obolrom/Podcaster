@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import by.kirich1409.viewbindingdelegate.viewBinding
+import io.obolonsky.chat.ChatActivity
 import io.obolonsky.core.di.actions.*
 import io.obolonsky.github.ui.GitHubActivity
 import io.obolonsky.podcaster.MyPrefs
@@ -85,6 +86,10 @@ class MainActivity : AppCompatActivity() {
             goToCryptoAction.get {
                 navigate(this@MainActivity)
             }
+        }
+
+        binding.goToChat.setOnClickListener {
+            startActivity(Intent(this, ChatActivity::class.java))
         }
     }
 }
